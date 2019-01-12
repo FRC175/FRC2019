@@ -7,8 +7,6 @@ import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.ctre.phoenix.motorcontrol.can.WPI_TalonSRX;
 
 /**
- * TODO: Make this Factory as configurable as possible. Consider adding Builder class.
- *
  * @author Arvind
  */
 public class CTREFactory {

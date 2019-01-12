@@ -16,12 +16,11 @@ import frc.robot.util.Constants;
  */
 public class Breadboard extends Subsystem {
 
-    private TalonSRX mLeftMotor;
-    private TalonSRX mCIMMotor;
-    private VictorSPX mRightMotor;
+    private TalonSRX mLeft;
+    private TalonSRX mCIM;
+    private VictorSPX mRight;
 
-    private CANSparkMax mNEOMotor;
-    private CANSparkMaxLowLevel.MotorType mType;
+    // private CANSparkMax mNEO;
 
     private static Breadboard sInstance;
 
@@ -38,46 +37,44 @@ public class Breadboard extends Subsystem {
     }
 
     private Breadboard() {
-        mLeftMotor = CTREFactory.getSRX(Constants.LEFT_MOTOR_PORT);
-        mRightMotor = CTREFactory.getSPX(Constants.RIGHT_MOTOR_PORT);
-        mCIMMotor = CTREFactory.getSRX(Constants.CIM_MOTOR_PORT);
+        mLeft = CTREFactory.getSRX(Constants.LEFT_MOTOR_PORT);
+        mRight = CTREFactory.getSPX(Constants.RIGHT_MOTOR_PORT);
+        mCIM = CTREFactory.getSRX(Constants.CIM_MOTOR_PORT);
 
-        //mType = MotorType.kBrushed;
-
-        mNEOMotor = new CANSparkMax(Constants.NEO_MOTOR_PORT, MotorType.kBrushless);
+        // mNEO = new CANSparkMax(Constants.NEO_MOTOR_PORT, MotorType.kBrushless);
     }
 
     public void setLeftPower(double power) {
-        mLeftMotor.set(ControlMode.PercentOutput, power);
+        mLeft.set(ControlMode.PercentOutput, power);
     }
 
     public void setRightPower(double power) {
-        mRightMotor.set(ControlMode.PercentOutput, power);
+        mRight.set(ControlMode.PercentOutput, power);
     }
 
     public void setCIMPower(double power) {
-        mCIMMotor.set(ControlMode.PercentOutput, power);
+        mCIM.set(ControlMode.PercentOutput, power);
     }
 
-    public void setNEOPower(double power) {
-        mNEOMotor.set(power);
-    }
+    // public void setNEOPower(double power) {
+    //     mNEO.set(power);
+    // }
 
     public double getLeftPower() {
-        return mLeftMotor.getMotorOutputPercent();
+        return mLeft.getMotorOutputPercent();
     }
 
     public double getRightPower() {
-        return mRightMotor.getMotorOutputPercent();
+        return mRight.getMotorOutputPercent();
     }
 
     public double getCIMPower() {
-        return mCIMMotor.getMotorOutputPercent();
+        return mCIM.getMotorOutputPercent();
     }
 
-    public double getNEOPower() {
-        return mNEOMotor.get();
-    }
+    // public double getNEOPower() {
+    //     return mNEO.get();
+    // }
 
     @Override
     protected void initDefaultCommand() {

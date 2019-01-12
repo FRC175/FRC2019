@@ -139,12 +139,12 @@ public class Robot extends TimedRobot {
 		Breadboard.getInstance().setLeftPower(1);
 		Breadboard.getInstance().setRightPower(1);
 		Breadboard.getInstance().setCIMPower(1);
-		Breadboard.getInstance().setNEOPower(0.2);
+		// Breadboard.getInstance().setNEOPower(0.2);
 
 		// System.out.println(Breadboard.getInstance().getLeftPower());
 		// System.out.println(Breadboard.getInstance().getRightPower());
 		// System.out.println(Breadboard.getInstance().getCIMPower());
-		System.out.println("NEO: " + Breadboard.getInstance().getNEOPower());
+		// System.out.println("NEO: " + Breadboard.getInstance().getNEOPower());
 	}
 
 	/**
