@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.examples.ExampleCommand;
 import frc.robot.examples.ExampleSubsystem;
+import frc.robot.subsystems.Breadboard;
 import frc.robot.util.OI;
 
 /**
@@ -134,6 +135,16 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
+		
+		Breadboard.getInstance().setLeftPower(1);
+		Breadboard.getInstance().setRightPower(1);
+		Breadboard.getInstance().setCIMPower(1);
+		Breadboard.getInstance().setNEOPower(0.2);
+
+		// System.out.println(Breadboard.getInstance().getLeftPower());
+		// System.out.println(Breadboard.getInstance().getRightPower());
+		// System.out.println(Breadboard.getInstance().getCIMPower());
+		System.out.println("NEO: " + Breadboard.getInstance().getNEOPower());
 	}
 
 	/**
