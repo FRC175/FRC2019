@@ -1,26 +1,31 @@
 package frc.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
-import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.wpilibj.DigitalInput;
+import frc.robot.commands.ManualCIMControl;
+import frc.robot.util.AldrinTalonSRX;
+import frc.robot.util.AldrinVictorSPX;
 import frc.robot.util.CTREFactory;
 import frc.robot.util.Constants;
 
 /**
  * @author Arvind
  */
-public class Breadboard extends Subsystem {
+public class Breadboard extends AldrinSubsystem {
 
-    private TalonSRX mLeft;
-    private TalonSRX mCIM;
-    private VictorSPX mRight;
+    // CTRE Motor Controllers
+    private AldrinTalonSRX mLeft;
+    private AldrinVictorSPX mRight;
+    private AldrinTalonSRX mCIM;
 
+    // Spark MAXs
     // private CANSparkMax mNEO;
+
+    // Optical Sensors
+    private DigitalInput mSensor;
 
     private static Breadboard sInstance;
 
@@ -37,23 +42,25 @@ public class Breadboard extends Subsystem {
     }
 
     private Breadboard() {
-        mLeft = CTREFactory.getSRX(Constants.LEFT_MOTOR_PORT);
-        mRight = CTREFactory.getSPX(Constants.RIGHT_MOTOR_PORT);
-        mCIM = CTREFactory.getSRX(Constants.CIM_MOTOR_PORT);
+        mLeft = CTREFactory.getSRX(Constants.kLeftTalonPort);
+        mRight = CTREFactory.getSPX(Constants.kRightVictorPort);
+        mCIM = CTREFactory.getSRX(Constants.kCIMTalonPort);
 
         // mNEO = new CANSparkMax(Constants.NEO_MOTOR_PORT, MotorType.kBrushless);
+
+        mSensor = new DigitalInput(Constants.kOpticalSensorPort);
     }
 
     public void setLeftPower(double power) {
-        mLeft.set(ControlMode.PercentOutput, power);
+        mLeft.setPower(power);
     }
 
     public void setRightPower(double power) {
-        mRight.set(ControlMode.PercentOutput, power);
+        mRight.setPower(power);
     }
 
     public void setCIMPower(double power) {
-        mCIM.set(ControlMode.PercentOutput, power);
+        mCIM.setPower(power);
     }
 
     // public void setNEOPower(double power) {
@@ -61,24 +68,42 @@ public class Breadboard extends Subsystem {
     // }
 
     public double getLeftPower() {
-        return mLeft.getMotorOutputPercent();
+        return mLeft.getPower();
     }
 
     public double getRightPower() {
-        return mRight.getMotorOutputPercent();
+        return mRight.getPower();
     }
 
     public double getCIMPower() {
-        return mCIM.getMotorOutputPercent();
+        return mCIM.getPower();
     }
 
     // public double getNEOPower() {
     //     return mNEO.get();
     // }
 
+    public boolean doesSensorSee() {
+        return mSensor.get();
+    }
+
     @Override
     protected void initDefaultCommand() {
+        setDefaultCommand(new ManualCIMControl());
+    }
 
+    private void outputToConsole() {
+        // System.out.println("Left Power: " + getLeftPower());
+		// System.out.println("Right Power: " + getRightPower());
+        // System.out.println("CIM Power: " + getCIMPower());
+        // System.out.println("NEO Power: " + getNEOPower());
+        System.out.println("Does sensor see white? " + doesSensorSee());
+        System.out.println();
+    }
+
+    @Override
+    public void onTeleop() {
+        outputToConsole();
     }
 
 }

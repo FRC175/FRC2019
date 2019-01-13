@@ -47,6 +47,10 @@ repositories {
 // Defining my dependencies. In this case, WPILib (+ friends), and vendor libraries.
 // Also defines JUnit 4.
 dependencies {
+    compile group: 'org.slf4j', name:'slf4j-api', version: '1.7.25'
+    compile group: 'ch.qos.logback', name:'logback-classic', version: '1.2.3'
+    compile group: 'ch.qos.logback', name:'logback-core', version: '1.2.3'
+
     compile wpi.deps.wpilib()
     compile wpi.deps.vendor.java()
     // compile 'com.github.Team319:BobTrajectory:v1.0.0'

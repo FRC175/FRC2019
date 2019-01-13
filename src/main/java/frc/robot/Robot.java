@@ -8,8 +8,13 @@
 package frc.robot;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -19,6 +24,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.examples.ExampleCommand;
 import frc.robot.examples.ExampleSubsystem;
 import frc.robot.subsystems.Breadboard;
+import frc.robot.subsystems.Camera;
+import frc.robot.subsystems.AldrinSubsystem;
 import frc.robot.util.OI;
 
 /**
@@ -32,11 +39,17 @@ import frc.robot.util.OI;
  */
 public class Robot extends TimedRobot {
 
-	private Subsystem mExampleSubsystem;
+	private ExampleSubsystem mExampleSubsystem;
+	private Breadboard mBreadboard;
+	private Camera mCamera;
 	private OI mOI;
 
 	private Command mAutonomousCommand;
 	private SendableChooser<Command> mChooser;
+
+	private List<AldrinSubsystem> mSubsystems;
+
+	private static final Logger log = LoggerFactory.getLogger(Robot.class);
 
 	/**
 	 * This function is run when the robot is first started up and should be used
@@ -45,13 +58,20 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 		mExampleSubsystem = ExampleSubsystem.getInstance();
+		mBreadboard = Breadboard.getInstance();
+		// mCamera = Camera.getInstance();
 		mOI = OI.getInstance();
 
 		mChooser = new SendableChooser<>();
+		mSubsystems = Arrays.asList(mBreadboard);
 
+		// mCamera.run();
 		mChooser.setDefaultOption("Default Auto", new ExampleCommand());
 		// mChooser.addOption("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", mChooser);
+
+		// mSubsystems.add(mBreadboard);
+		// mSubsystems.add(mCamera);
 	}
 
 	/**
@@ -135,16 +155,8 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-		
-		Breadboard.getInstance().setLeftPower(1);
-		Breadboard.getInstance().setRightPower(1);
-		Breadboard.getInstance().setCIMPower(1);
-		// Breadboard.getInstance().setNEOPower(0.2);
 
-		// System.out.println(Breadboard.getInstance().getLeftPower());
-		// System.out.println(Breadboard.getInstance().getRightPower());
-		// System.out.println(Breadboard.getInstance().getCIMPower());
-		// System.out.println("NEO: " + Breadboard.getInstance().getNEOPower());
+		mSubsystems.forEach((s) -> { s.onTeleop(); });
 	}
 
 	/**

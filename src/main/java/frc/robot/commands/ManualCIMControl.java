@@ -2,14 +2,14 @@ package frc.robot.commands;
 
 import edu.wpi.first.wpilibj.command.Command;
 import frc.robot.subsystems.Breadboard;
-
+import frc.robot.util.OI;
 
 /**
  * @author Arvind
  */
-public class ManualMotorControl extends Command {
+public class ManualCIMControl extends Command {
 
-    public ManualMotorControl() {
+    public ManualCIMControl() {
         requires(Breadboard.getInstance());
     }
 
@@ -21,6 +21,7 @@ public class ManualMotorControl extends Command {
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
+        Breadboard.getInstance().setCIMPower(OI.getInstance().getDriverStickY());
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -32,12 +33,14 @@ public class ManualMotorControl extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
+        Breadboard.getInstance().setCIMPower(0);
     }
 
     // Called when another command which requires one or more of the same
     // subsystems is scheduled to run
     @Override
     protected void interrupted() {
+        end();
     }
 
 }
