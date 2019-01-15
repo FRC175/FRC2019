@@ -1,4 +1,4 @@
-package frc.robot.util;
+package frc.team175.robot.util;
 
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
@@ -25,16 +25,16 @@ public class CTREFactory {
         bmc.setNeutralMode(NeutralMode.Brake);
     }
 
-    public static AldrinTalonSRX getSRX(int portNum) {
-        AldrinTalonSRX srx = new AldrinTalonSRX(portNum);
-        config(srx);
-        return srx;
+    public static AldrinTalonSRX getTalon(int portNum) {
+        AldrinTalonSRX talon = new AldrinTalonSRX(portNum);
+        config(talon);
+        return talon;
     }
 
-    public static AldrinVictorSPX getSPX(int portNum) {
-        AldrinVictorSPX spx = new AldrinVictorSPX(portNum);
-        config(spx);
-        return spx;
+    public static AldrinVictorSPX getVictor(int portNum) {
+        AldrinVictorSPX victor = new AldrinVictorSPX(portNum);
+        config(victor);
+        return victor;
     }
 
 }

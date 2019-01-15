@@ -1,15 +1,15 @@
-package frc.robot.subsystems;
+package frc.team175.robot.subsystems;
 
 import com.revrobotics.CANSparkMax;
 import com.revrobotics.CANSparkMaxLowLevel;
 import com.revrobotics.CANSparkMaxLowLevel.MotorType;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import frc.robot.commands.ManualCIMControl;
-import frc.robot.util.AldrinTalonSRX;
-import frc.robot.util.AldrinVictorSPX;
-import frc.robot.util.CTREFactory;
-import frc.robot.util.Constants;
+import frc.team175.robot.commands.ManualCIMControl;
+import frc.team175.robot.util.AldrinTalonSRX;
+import frc.team175.robot.util.AldrinVictorSPX;
+import frc.team175.robot.util.CTREFactory;
+import frc.team175.robot.util.Constants;
 
 /**
  * @author Arvind
@@ -21,7 +21,7 @@ public class Breadboard extends AldrinSubsystem {
     private AldrinVictorSPX mRight;
     private AldrinTalonSRX mCIM;
 
-    // Spark MAXs
+    // Spark MAX
     // private CANSparkMax mNEO;
 
     // Optical Sensors
@@ -42,12 +42,17 @@ public class Breadboard extends AldrinSubsystem {
     }
 
     private Breadboard() {
-        mLeft = CTREFactory.getSRX(Constants.kLeftTalonPort);
-        mRight = CTREFactory.getSPX(Constants.kRightVictorPort);
-        mCIM = CTREFactory.getSRX(Constants.kCIMTalonPort);
+        /* Instantiation */
+        // CTREFactory.getTalon(portNum : int)
+        // CTREFactory.getVictor(portNum : int)
+        mLeft = CTREFactory.getTalon(Constants.kLeftTalonPort);
+        mRight = CTREFactory.getVictor(Constants.kRightVictorPort);
+        mCIM = CTREFactory.getTalon(Constants.kCIMTalonPort);
 
+        // CANSparkMax(deviceID : int, type : MotorType)
         // mNEO = new CANSparkMax(Constants.NEO_MOTOR_PORT, MotorType.kBrushless);
 
+        // DigitalInput(io : int)
         mSensor = new DigitalInput(Constants.kOpticalSensorPort);
     }
 

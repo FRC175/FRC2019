@@ -1,4 +1,13 @@
 package frc.team175.robot.util;
 
-public class CSVLogger {
+/**
+ * @author Arvind
+ */
+public class CSVLogger implements Runnable {
+
+    @Override
+    public void run() {
+
+    }
+
 }

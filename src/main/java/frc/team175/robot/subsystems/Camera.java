@@ -1,8 +1,7 @@
-package frc.robot.subsystems;
+package frc.team175.robot.subsystems;
 
 import edu.wpi.cscore.UsbCamera;
-import edu.wpi.first.wpilibj.CameraServer;
-import edu.wpi.first.wpilibj.command.Subsystem;
+import edu.wpi.first.cameraserver.CameraServer;
 
 public class Camera extends AldrinSubsystem implements Runnable {
     
@@ -33,16 +32,15 @@ public class Camera extends AldrinSubsystem implements Runnable {
     }
 
     @Override
+    public void onTeleop() {
+    }
+
+    @Override
     protected void initDefaultCommand() {
     }
 
     @Override
     public void run() {
-    }
-
-    @Override
-    public void onTeleop() {
-        
     }
 
 }

@@ -5,28 +5,25 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.robot;
+package frc.team175.robot;
 
-import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.command.Subsystem;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.robot.examples.ExampleCommand;
-import frc.robot.examples.ExampleSubsystem;
-import frc.robot.subsystems.Breadboard;
-import frc.robot.subsystems.Camera;
-import frc.robot.subsystems.AldrinSubsystem;
-import frc.robot.util.OI;
+import frc.team175.robot.examples.ExampleCommand;
+import frc.team175.robot.examples.ExampleSubsystem;
+import frc.team175.robot.subsystems.Breadboard;
+import frc.team175.robot.subsystems.Camera;
+import frc.team175.robot.subsystems.AldrinSubsystem;
+import frc.team175.robot.util.OI;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -59,19 +56,16 @@ public class Robot extends TimedRobot {
 	public void robotInit() {
 		mExampleSubsystem = ExampleSubsystem.getInstance();
 		mBreadboard = Breadboard.getInstance();
-		// mCamera = Camera.getInstance();
+		mCamera = Camera.getInstance();
 		mOI = OI.getInstance();
 
 		mChooser = new SendableChooser<>();
-		mSubsystems = Arrays.asList(mBreadboard);
+		mSubsystems = Arrays.asList(mBreadboard, mCamera);
 
 		// mCamera.run();
 		mChooser.setDefaultOption("Default Auto", new ExampleCommand());
 		// mChooser.addOption("My Auto", new MyAutoCommand());
 		SmartDashboard.putData("Auto mode", mChooser);
-
-		// mSubsystems.add(mBreadboard);
-		// mSubsystems.add(mCamera);
 	}
 
 	/**
