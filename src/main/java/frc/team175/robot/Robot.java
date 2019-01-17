@@ -46,8 +46,6 @@ public class Robot extends TimedRobot {
 
 	private List<AldrinSubsystem> mSubsystems;
 
-	private static final Logger log = LoggerFactory.getLogger(Robot.class);
-
 	/**
 	 * This function is run when the robot is first started up and should be used
 	 * for any initialization code.
