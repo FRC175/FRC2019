@@ -22,9 +22,15 @@ public class Camera extends AldrinSubsystem implements Runnable {
     }
 
     private Camera() {
-        // camera = CameraServer.getInstance().startAutomaticCapture();
-        // camera.setResolution(640, 480);
-        // camera.setFPS(60);
+        try {
+            // camera = CameraServer.getInstance().startAutomaticCapture();
+            // camera.setResolution(640, 480);
+            // camera.setFPS(60);
+        } catch (Exception e) {
+            mLogger.error("Camera failed to instantiate.\n{}", e);
+        }
+
+        mLogger.info("Camera instantiated succesfully!");
     }
 
     public void setExposure(int value) {
