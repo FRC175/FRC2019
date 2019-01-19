@@ -11,7 +11,11 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public abstract class AldrinSubsystem extends Subsystem {
 
     // Logger
-    protected Logger mLogger = LoggerFactory.getLogger(getClass()); 
+    protected Logger mLogger;
+    
+    {
+        mLogger = LoggerFactory.getLogger(getClass()); 
+    }
 
     // public abstract void onAuto();
 

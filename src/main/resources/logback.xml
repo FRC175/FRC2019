@@ -1,19 +1,19 @@
 <configuration>
-  <timestamp key="filePattern" datePattern="yyyyMMdd'T'"/>
+  <timestamp key="filePattern" datePattern="yyyy-MM-dd-HH-mm"/>
 
   <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
     <!-- encoders are assigned the type
          ch.qos.logback.classic.encoder.PatternLayoutEncoder by default -->
     <encoder>
-      <pattern>%d{HH:mm:ss.SSS} %green([%thread]) %highlight(%-5level) %logger{36} - %msg%n</pattern>
+      <pattern>%d{HH:mm:ss.SSS} %green([%thread]) %highlight(%-5level) %logger{50} - %msg%n</pattern>
     </encoder>
   </appender>
 
-  <appender name="FILE" class="ch.qos.logback.core.rolling.RollingsFileAppender">
+  <!-- <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
     <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-      <fileNamePattern>~/log/log-${filePattern}.log</fileNamePattern>
-      <!-- <maxHistory>120</maxHistory> 
-      <totalSizeCap>1GB</totalSizeCap> -->
+      <fileNamePattern>~/log/log-%d.log</fileNamePattern>
+      <maxHistory>120</maxHistory> 
+      <totalSizeCap>1GB</totalSizeCap>
     </rollingPolicy>
     <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
       <maxFileSize>5MB</maxFileSize>
@@ -21,7 +21,16 @@
     <encoder>
       <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
     </encoder>
-  </appender>
+  </appender> -->
+
+  <appender name="FILE" class="ch.qos.logback.core.FileAppender">
+    <file>/home/lvuser/log/log-${filePattern}.log</file>
+    <append>true</append>
+    <encoder>
+      <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{100} - %msg%n</pattern>
+    </encoder>
+   </appender>
+
 
   <root level="debug">
     <appender-ref ref="STDOUT" />

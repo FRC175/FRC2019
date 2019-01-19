@@ -4,18 +4,14 @@ import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 
 public class Camera extends AldrinSubsystem implements Runnable {
-    
+
     private UsbCamera camera;
 
     private static Camera sInstance;
 
     public static Camera getInstance() {
         if (sInstance == null) {
-            try {
-                sInstance = new Camera();
-            } catch(Exception e) {
-                // Insert log here
-            }
+            sInstance = new Camera();
         }
 
         return sInstance;
@@ -39,6 +35,7 @@ public class Camera extends AldrinSubsystem implements Runnable {
 
     @Override
     public void onTeleop() {
+        // mLogger.debug("Camera periodic message");
     }
 
     @Override

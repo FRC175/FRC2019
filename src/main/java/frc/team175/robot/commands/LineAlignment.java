@@ -1,15 +1,13 @@
 package frc.team175.robot.commands;
 
-import edu.wpi.first.wpilibj.command.Command;
-import frc.team175.robot.subsystems.Breadboard.LineSensorPosition;
 import frc.team175.robot.subsystems.Breadboard;
 
 /**
  * @author Arvind
  */
-public class PlatformAlignment extends Command {
+public class LineAlignment extends AldrinCommand {
 
-    public PlatformAlignment() {
+    public LineAlignment() {
         requires(Breadboard.getInstance());
     }
 
@@ -18,6 +16,7 @@ public class PlatformAlignment extends Command {
     protected void initialize() {
         Breadboard.getInstance().setCIMPower(0);
         Breadboard.getInstance().deployLateral(true);
+        mLogger.info("LineAlignment command initialized.");
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -36,6 +35,7 @@ public class PlatformAlignment extends Command {
     @Override
     protected void end() {
         Breadboard.getInstance().deployLateral(false);
+        mLogger.info("LineAlignment command ended/interrupted.");
     }
 
     // Called when another command which requires one or more of the same

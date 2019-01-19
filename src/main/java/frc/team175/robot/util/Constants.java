@@ -18,11 +18,11 @@ public class Constants {
 
     // Digital Inputs
     public static final int kOpticalSensorPort = 0;
-    public static final int kFarLeftSensorPort = 5;
-    public static final int kLeftSensorPort = 4;
+    public static final int kLeftTwoSensorPort = 5;
+    public static final int kLeftOneSensorPort = 4;
     public static final int kCenterSensorPort = 3;
-    public static final int kRightSensorPort = 2;
-    public static final int kFarRightSensorPort = 1;
+    public static final int kRightOneSensorPort = 2;
+    public static final int kRightTwoSensorPort = 1;
 
     // CTRE Constants
     public static final int kSlotIdx = 0;
@@ -34,6 +34,7 @@ public class Constants {
     public static final int kOperatorStickPort = 1;
 
     // Driver Stick Button Map
+    public static final int kLineAlignButton = 12;
 
     // Operator Stick Button Map
 

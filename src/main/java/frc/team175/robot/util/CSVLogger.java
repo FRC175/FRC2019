@@ -5,9 +5,13 @@ package frc.team175.robot.util;
  */
 public class CSVLogger implements Runnable {
 
+    public CSVLogger() {
+
+    }
+
     @Override
     public void run() {
-
+        
     }
 
 }

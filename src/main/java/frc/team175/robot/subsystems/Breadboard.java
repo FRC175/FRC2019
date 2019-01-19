@@ -44,11 +44,15 @@ public class Breadboard extends AldrinSubsystem {
     // Enum
     public enum LineSensorPosition {
         /* Political Spectrum */
-        FAR_LEFT(-50),
-        LEFT(-25),
+        EXTREME_LEFT(-100),
+        LEFTIST(-75),
+        LEFT(-50),
+        CENTER_LEFT(-25),
         CENTER(0),
-        RIGHT(25),
-        FAR_RIGHT(50),
+        CENTER_RIGHT(25),
+        RIGHT(50),
+        RIGHTIST(75),
+        EXTREME_RIGHT(100),
         ERROR(0);
 
         private final int POSITION;
@@ -90,11 +94,11 @@ public class Breadboard extends AldrinSubsystem {
             // DigitalInput(io : int)
             mSensor = new DigitalInput(Constants.kOpticalSensorPort);
             mLineSensors = Map.of(
-                    "FarLeft", new DigitalInput(Constants.kFarLeftSensorPort),
-                    "Left", new DigitalInput(Constants.kLeftSensorPort),
+                    "LeftTwo", new DigitalInput(Constants.kLeftTwoSensorPort),
+                    "LeftOne", new DigitalInput(Constants.kLeftOneSensorPort),
                     "Center", new DigitalInput(Constants.kCenterSensorPort),
-                    "Right", new DigitalInput(Constants.kRightSensorPort),
-                    "FarRight", new DigitalInput(Constants.kFarRightSensorPort)
+                    "RightOne", new DigitalInput(Constants.kRightOneSensorPort),
+                    "RightTwo", new DigitalInput(Constants.kRightTwoSensorPort)
             );
         } catch (Exception e) {
             mLogger.error("Breadboard failed to instantiate.\n{}", e);
@@ -165,11 +169,11 @@ public class Breadboard extends AldrinSubsystem {
 
     private String getLineSensorArray() {
         String binarySensorArray = "";
-        binarySensorArray += mLineSensors.get("FarLeft").get() ? "1" : "0";
-        binarySensorArray += mLineSensors.get("Left").get() ? "1" : "0";
+        binarySensorArray += mLineSensors.get("LeftTwo").get() ? "1" : "0";
+        binarySensorArray += mLineSensors.get("LeftOne").get() ? "1" : "0";
         binarySensorArray += mLineSensors.get("Center").get() ? "1" : "0";
-        binarySensorArray += mLineSensors.get("Right").get() ? "1" : "0";
-        binarySensorArray += mLineSensors.get("FarRight").get() ? "1" : "0";
+        binarySensorArray += mLineSensors.get("RightOne").get() ? "1" : "0";
+        binarySensorArray += mLineSensors.get("RightTwo").get() ? "1" : "0";
 
         return binarySensorArray;
     }
@@ -177,23 +181,23 @@ public class Breadboard extends AldrinSubsystem {
     public LineSensorPosition getLineSensorPosition() {
         switch (getLineSensorArray()) {
             case "10000":
-                return LineSensorPosition.FAR_LEFT;
+                return LineSensorPosition.EXTREME_LEFT;
             case "11000":
-                //
+                return LineSensorPosition.LEFTIST;
             case "01000":
                 return LineSensorPosition.LEFT;
             case "01100":
-                // 
+                return LineSensorPosition.CENTER_LEFT;
             case "00100":
                 return LineSensorPosition.CENTER;
             case "00110":
-                // 
+                return LineSensorPosition.CENTER_RIGHT;
             case "00010":
                 return LineSensorPosition.RIGHT;
             case "00011":
-                // 
+                return LineSensorPosition.RIGHTIST;
             case "00001":
-                return LineSensorPosition.FAR_RIGHT;
+                return LineSensorPosition.EXTREME_RIGHT;
             default:
                 // Robot orientation wrong
                 return LineSensorPosition.ERROR;
@@ -219,9 +223,8 @@ public class Breadboard extends AldrinSubsystem {
 
     @Override
     public void onTeleop() {
-        // outputToConsole();
-        mLogger.debug("Epic!");
-        mLogger.debug("mourad");
+        outputToConsole();
+        // mLogger.debug("Breadboard periodic message");
     }
 
 }
