@@ -2,32 +2,13 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3e6f0885-15de-43fe-95ed-a2b9cd45fd4a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/LoggableCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/util/AldrinVictorSPX.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/util/CSVLogger.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/tools/fetch-latest-log.sh" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/build.gradle" beforeDir="false" afterPath="$PROJECT_DIR$/build.gradle" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/team175/robot/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/Main.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/team175/robot/Robot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/Robot.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/team175/robot/commands/ManualCIMControl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/deprecated/ManualCIMControl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/team175/robot/commands/ManualNEOControl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/deprecated/ManualNEOControl.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/team175/robot/commands/PlatformAlignment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/teleop/LineAlignment.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/team175/robot/examples/ExampleCommand.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/examples/ExampleCommand.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/team175/robot/examples/ExampleSubsystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/examples/ExampleSubsystem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/team175/robot/subsystems/AldrinSubsystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/subsystems/AldrinSubsystem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/team175/robot/subsystems/Breadboard.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/subsystems/deprecated/Breadboard.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/team175/robot/subsystems/Camera.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/subsystems/Camera.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/team175/robot/util/AldrinTalonSRX.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/util/AldrinTalonSRX.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/team175/robot/util/AldrinVictorSPX.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/team175/robot/util/CSVLogger.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/team175/robot/util/CTREFactory.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/util/CTREFactory.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/team175/robot/util/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/util/Constants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/team175/robot/util/Diagnosable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/util/Diagnosable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/team175/robot/util/Loggable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/util/Loggable.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/frc/team175/robot/util/OI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/util/OI.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/logback.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/logback.xml" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/deprecated/AldrinCommand.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/deprecated/LineAlignment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/deprecated/LineAlignment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/deprecated/ManualCIMControl.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/deprecated/ManualCIMControl.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/teleop/LineAlignment.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/teleop/LineAlignment.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/subsystems/AldrinSubsystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/subsystems/AldrinSubsystem.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/util/OI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/util/OI.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/frc/team175/robot/util/CSVLogger.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/frc/team175/robot/util/CSVLogger.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/bin/default/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -57,7 +38,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/subsystems/AldrinSubsystem.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="567">
-              <caret line="27" selection-start-line="27" selection-end-line="27" />
+              <caret line="35" selection-start-line="35" selection-end-line="35" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -69,7 +50,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/util/CSVLogger.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="147">
-              <caret line="7" column="3" lean-forward="true" selection-start-line="7" selection-start-column="3" selection-end-line="7" selection-end-column="3" />
+              <caret line="7" column="3" selection-start-line="7" selection-start-column="3" selection-end-line="7" selection-end-column="3" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -81,7 +62,7 @@
         <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/commands/teleop/LineAlignment.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="483">
-              <caret line="25" column="5" lean-forward="true" selection-start-line="25" selection-start-column="5" selection-end-line="25" selection-end-column="5" />
+              <caret line="25" column="5" selection-start-line="25" selection-start-column="5" selection-end-line="25" selection-end-column="5" />
               <folding>
                 <element signature="e#964#965#0" expanded="true" />
                 <element signature="e#992#993#0" expanded="true" />
@@ -242,6 +223,14 @@
               <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="robot" type="462c0819:PsiDirectoryNode" />
+              <item name="util" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="FRC2019" type="b2602c69:ProjectViewProjectNode" />
+              <item name="FRC2019" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
+              <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="util" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -697,7 +686,7 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/subsystems/AldrinSubsystem.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="567">
-          <caret line="27" selection-start-line="27" selection-end-line="27" />
+          <caret line="35" selection-start-line="35" selection-end-line="35" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
@@ -707,17 +696,24 @@
     <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/util/CSVLogger.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="147">
-          <caret line="7" column="3" lean-forward="true" selection-start-line="7" selection-start-column="3" selection-end-line="7" selection-end-column="3" />
+          <caret line="7" column="3" selection-start-line="7" selection-start-column="3" selection-end-line="7" selection-end-column="3" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/frc/team175/robot/util/CSVLogger.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state>
+          <caret column="31" lean-forward="true" selection-start-column="31" selection-end-column="31" />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/commands/teleop/LineAlignment.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="483">
-          <caret line="25" column="5" lean-forward="true" selection-start-line="25" selection-start-column="5" selection-end-line="25" selection-end-column="5" />
+          <caret line="25" column="5" selection-start-line="25" selection-start-column="5" selection-end-line="25" selection-end-column="5" />
           <folding>
             <element signature="e#964#965#0" expanded="true" />
             <element signature="e#992#993#0" expanded="true" />
