@@ -5,9 +5,12 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.team175.robot.util;
+package com.team175.robot.util;
 
 import edu.wpi.first.wpilibj.Joystick;
+import edu.wpi.first.wpilibj.buttons.Button;
+import edu.wpi.first.wpilibj.buttons.JoystickButton;
+import com.team175.robot.commands.teleop.LineAlignment;
 
 /**
  * @author Arvind
@@ -18,6 +21,10 @@ public class OI {
     private Joystick mDriverStick;
     private Joystick mOperatorStick;
 
+    // Driver Stick Buttons
+    private Button mLineAlign;
+
+    // Singleton Instance
     private static OI sInstance;
 
     public static OI getInstance() {
@@ -35,6 +42,10 @@ public class OI {
     private OI() {
         mDriverStick = new Joystick(Constants.kDriverStickPort);
         mOperatorStick = new Joystick(Constants.kOperatorStickPort);
+
+        mLineAlign = new JoystickButton(mDriverStick, Constants.kLineAlignButton);
+
+        mLineAlign.whileHeld(new LineAlignment());
     }
 
     public double getDriverStickX() {

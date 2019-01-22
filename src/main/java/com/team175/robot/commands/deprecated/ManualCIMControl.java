@@ -1,13 +1,13 @@
-package frc.team175.robot.commands;
+package com.team175.robot.commands.deprecated;
 
-import edu.wpi.first.wpilibj.command.Command;
-import frc.team175.robot.subsystems.Breadboard;
-import frc.team175.robot.util.OI;
+import com.team175.robot.commands.LoggableCommand;
+import com.team175.robot.subsystems.deprecated.Breadboard;
+import com.team175.robot.util.OI;
 
 /**
  * @author Arvind
  */
-public class ManualCIMControl extends Command {
+public class ManualCIMControl extends LoggableCommand {
 
     public ManualCIMControl() {
         requires(Breadboard.getInstance());
@@ -16,6 +16,7 @@ public class ManualCIMControl extends Command {
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
+        mLogger.info("ManualCIMCommand command initialized.");
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -34,6 +35,7 @@ public class ManualCIMControl extends Command {
     @Override
     protected void end() {
         Breadboard.getInstance().setCIMPower(0);
+        mLogger.info("ManualCIMControl command ended/interrupted.");
     }
 
     // Called when another command which requires one or more of the same

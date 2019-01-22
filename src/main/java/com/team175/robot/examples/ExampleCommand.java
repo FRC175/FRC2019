@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.team175.robot.examples;
+package com.team175.robot.examples;
 
 import edu.wpi.first.wpilibj.command.Command;
 

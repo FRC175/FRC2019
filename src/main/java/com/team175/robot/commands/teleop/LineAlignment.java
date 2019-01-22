@@ -1,29 +1,29 @@
-package frc.team175.robot.commands;
+package com.team175.robot.commands.teleop;
 
-import edu.wpi.first.wpilibj.command.Command;
-import frc.team175.robot.subsystems.Breadboard.LineSensorPosition;
-import frc.team175.robot.subsystems.Breadboard;
+import com.team175.robot.commands.LoggableCommand;
+import com.team175.robot.subsystems.deprecated.Breadboard;
 
 /**
  * @author Arvind
  */
-public class PlatformAlignment extends Command {
+public class LineAlignment extends LoggableCommand {
 
-    public PlatformAlignment() {
-        requires(Breadboard.getInstance());
+    public LineAlignment() {
+        // requires(Breadboard.getInstance());
     }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        Breadboard.getInstance().setCIMPower(0);
-        Breadboard.getInstance().deployLateral(true);
+        // Breadboard.getInstance().setCIMPower(0);
+        // Breadboard.getInstance().deployLateral(true);
+        mLogger.info("LineAlignment command initialized.");
     }
 
     // Called repeatedly when this Command is scheduled to run
     @Override
     protected void execute() {
-        Breadboard.getInstance().setCIMPosition(Breadboard.getInstance().getLineSensorPosition().positionToMove());
+        // Breadboard.getInstance().setCIMPosition(Breadboard.getInstance().getLineSensorPosition().positionToMove());
     }
 
     // Make this return true when this Command no longer needs to run execute()
@@ -35,7 +35,8 @@ public class PlatformAlignment extends Command {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        Breadboard.getInstance().deployLateral(false);
+        // Breadboard.getInstance().deployLateral(false);
+        mLogger.info("LineAlignment command ended/interrupted.");
     }
 
     // Called when another command which requires one or more of the same

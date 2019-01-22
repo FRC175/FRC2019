@@ -5,25 +5,23 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package frc.team175.robot;
+package com.team175.robot;
 
 import java.util.Arrays;
 import java.util.List;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import com.team175.robot.examples.ExampleCommand;
+import com.team175.robot.examples.ExampleSubsystem;
+import com.team175.robot.subsystems.AldrinSubsystem;
+import com.team175.robot.subsystems.Camera;
+import com.team175.robot.subsystems.deprecated.Breadboard;
+import com.team175.robot.util.OI;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import frc.team175.robot.examples.ExampleCommand;
-import frc.team175.robot.examples.ExampleSubsystem;
-import frc.team175.robot.subsystems.Breadboard;
-import frc.team175.robot.subsystems.Camera;
-import frc.team175.robot.subsystems.AldrinSubsystem;
-import frc.team175.robot.util.OI;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -36,8 +34,8 @@ import frc.team175.robot.util.OI;
  */
 public class Robot extends TimedRobot {
 
-	private ExampleSubsystem mExampleSubsystem;
-	private Breadboard mBreadboard;
+	/*private ExampleSubsystem mExampleSubsystem;
+	private Breadboard mBreadboard;*/
 	private Camera mCamera;
 	private OI mOI;
 
@@ -52,13 +50,13 @@ public class Robot extends TimedRobot {
 	 */
 	@Override
 	public void robotInit() {
-		mExampleSubsystem = ExampleSubsystem.getInstance();
-		mBreadboard = Breadboard.getInstance();
+		/*mExampleSubsystem = ExampleSubsystem.getInstance();
+		mBreadboard = Breadboard.getInstance();*/
 		mCamera = Camera.getInstance();
 		mOI = OI.getInstance();
 
 		mChooser = new SendableChooser<>();
-		mSubsystems = Arrays.asList(mBreadboard, mCamera);
+		// mSubsystems = Arrays.asList(mBreadboard, mCamera);
 
 		// mCamera.run();
 		mChooser.setDefaultOption("Default Auto", new ExampleCommand());
@@ -147,8 +145,6 @@ public class Robot extends TimedRobot {
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
-
-		mSubsystems.forEach((s) -> { s.onTeleop(); });
 	}
 
 	/**

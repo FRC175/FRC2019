@@ -1,12 +1,12 @@
-package frc.team175.robot.commands;
+package com.team175.robot.commands.deprecated;
 
-import edu.wpi.first.wpilibj.command.Command;
-import frc.team175.robot.subsystems.Breadboard;
+import com.team175.robot.commands.LoggableCommand;
+import com.team175.robot.subsystems.deprecated.Breadboard;
 
 /**
  * @author Arvind
  */
-public class ManualNEOControl extends Command {
+public class ManualNEOControl extends LoggableCommand {
 
     public ManualNEOControl() {
         requires(Breadboard.getInstance());

@@ -1,21 +1,17 @@
-package frc.team175.robot.subsystems;
+package com.team175.robot.subsystems;
 
 import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
 
 public class Camera extends AldrinSubsystem implements Runnable {
-    
+
     private UsbCamera camera;
 
     private static Camera sInstance;
 
     public static Camera getInstance() {
         if (sInstance == null) {
-            try {
-                sInstance = new Camera();
-            } catch(Exception e) {
-                // Insert log here
-            }
+            sInstance = new Camera();
         }
 
         return sInstance;
@@ -23,9 +19,9 @@ public class Camera extends AldrinSubsystem implements Runnable {
 
     private Camera() {
         try {
-            // camera = CameraServer.getInstance().startAutomaticCapture();
-            // camera.setResolution(640, 480);
-            // camera.setFPS(60);
+            camera = CameraServer.getInstance().startAutomaticCapture();
+            /*camera.setResolution(640, 480);
+            camera.setFPS(60);*/
         } catch (Exception e) {
             mLogger.error("Camera failed to instantiate.\n{}", e);
         }
@@ -33,12 +29,13 @@ public class Camera extends AldrinSubsystem implements Runnable {
         mLogger.info("Camera instantiated succesfully!");
     }
 
-    public void setExposure(int value) {
+    /*public void setExposure(int value) {
         camera.setExposureManual(value);
-    }
+    }*/
 
     @Override
     public void onTeleop() {
+        // mLogger.debug("Camera periodic message");
     }
 
     @Override
