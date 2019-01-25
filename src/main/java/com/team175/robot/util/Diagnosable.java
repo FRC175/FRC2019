@@ -3,19 +3,8 @@ package com.team175.robot.util;
 /**
  * @author Arvind
  */
+@FunctionalInterface
 public interface Diagnosable {
-
-    void outputToDashboard();
-
-    void outputToCSV();
-
-    void outputToLog();
-
-    void outputToConsole();
-
-    void outputToDriverStation();
-
-    void setLoggingState();
 
     boolean checkSubsystem();
     

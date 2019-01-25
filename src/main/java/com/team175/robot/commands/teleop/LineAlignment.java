@@ -4,6 +4,8 @@ import com.team175.robot.commands.LoggableCommand;
 import com.team175.robot.subsystems.deprecated.Breadboard;
 
 /**
+ * TODO: Update for lateral drive method calls.
+ *
  * @author Arvind
  */
 public class LineAlignment extends LoggableCommand {

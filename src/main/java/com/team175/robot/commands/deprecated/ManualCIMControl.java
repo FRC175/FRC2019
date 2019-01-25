@@ -2,7 +2,7 @@ package com.team175.robot.commands.deprecated;
 
 import com.team175.robot.commands.LoggableCommand;
 import com.team175.robot.subsystems.deprecated.Breadboard;
-import com.team175.robot.util.OI;
+import com.team175.robot.OI;
 
 /**
  * @author Arvind

@@ -18,8 +18,8 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  *      EX: private int mInteger;
  * - When dealing with private static variables, there must be a prefix of s.
  *      EX: private static int sInteger;
- * - When dealing with all final variables, all letters must be capitalized.
- *      EX: private final int INTEGER;
+ * - When dealing with all static final variables, there must be a prefix of k.
+ *      EX: private final int kInteger;
  * - When dealing with all other variables, there is nothing special.
  *      EX: public int integer;
  * 

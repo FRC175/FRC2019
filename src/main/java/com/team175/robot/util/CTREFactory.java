@@ -3,25 +3,26 @@ package com.team175.robot.util;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
+import com.team175.robot.Constants;
 
 /**
  * @author Arvind
  */
 public class CTREFactory {
 
-    // Prevent TalonSRXFactory from being instantiated
+    // Prevent CTREFactory from being instantiated
     private CTREFactory() {
     }
 
     private static void config(BaseMotorController bmc) {
-        bmc.configNominalOutputForward(0, Constants.kTimeoutMs);
-        bmc.configNominalOutputReverse(0, Constants.kTimeoutMs);
-        bmc.configPeakOutputForward(1, Constants.kTimeoutMs);
-        bmc.configPeakOutputReverse(-1, Constants.kTimeoutMs);
+        bmc.configNominalOutputForward(0, Constants.TIMEOUT_MS);
+        bmc.configNominalOutputReverse(0, Constants.TIMEOUT_MS);
+        bmc.configPeakOutputForward(1, Constants.TIMEOUT_MS);
+        bmc.configPeakOutputReverse(-1, Constants.TIMEOUT_MS);
 
-        bmc.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
-        bmc.configAllowableClosedloopError(Constants.kSlotIdx, 10, Constants.kTimeoutMs);
-        bmc.setSelectedSensorPosition(0, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+        bmc.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, Constants.PID_LOOP_INDEX, Constants.TIMEOUT_MS);
+        bmc.configAllowableClosedloopError(Constants.SLOT_INDEX, 10, Constants.TIMEOUT_MS);
+        bmc.setSelectedSensorPosition(0, Constants.PID_LOOP_INDEX, Constants.TIMEOUT_MS);
 
         bmc.setNeutralMode(NeutralMode.Brake);
     }

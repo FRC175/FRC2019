@@ -11,7 +11,7 @@ import com.team175.robot.subsystems.AldrinSubsystem;
 import com.team175.robot.util.AldrinTalonSRX;
 import com.team175.robot.util.AldrinVictorSPX;
 import com.team175.robot.util.CTREFactory;
-import com.team175.robot.util.Constants;
+import com.team175.robot.Constants;
 
 import java.util.Map;
 
@@ -20,6 +20,7 @@ import java.util.Map;
  */
 public class Breadboard extends AldrinSubsystem {
 
+    /* Declarations */
     // CTRE Motor Controllers
     private AldrinTalonSRX mLeft;
     private AldrinVictorSPX mRight;
@@ -40,8 +41,8 @@ public class Breadboard extends AldrinSubsystem {
     private static Breadboard sInstance;
 
     // Enum
-    public enum LineSensorPosition {
-        /* Political Spectrum */
+    /*public enum LineSensorPosition {
+        *//* Political Spectrum *//*
         EXTREME_LEFT(-100),
         LEFTIST(-75),
         LEFT(-50),
@@ -62,7 +63,7 @@ public class Breadboard extends AldrinSubsystem {
         public int positionToMove() {
             return POSITION;
         }
-    }
+    }*/
 
     public static Breadboard getInstance() {
         if (sInstance == null) {
@@ -74,35 +75,35 @@ public class Breadboard extends AldrinSubsystem {
 
     private Breadboard() {
         try {
-            /* Instantiation */
+            /* Instantiations */
             // CTREFactory.getTalon(portNum : int)
             // CTREFactory.getVictor(portNum : int)
-            mLeft = CTREFactory.getTalon(Constants.kLeftTalonPort);
-            mRight = CTREFactory.getVictor(Constants.kRightVictorPort);
-            mCIM = CTREFactory.getTalon(Constants.kCIMTalonPort);
+            mLeft = CTREFactory.getTalon(Constants.LEFT_TALON_PORT);
+            mRight = CTREFactory.getVictor(Constants.RIGHT_VICTOR_PORT);
+            mCIM = CTREFactory.getTalon(Constants.CIM_TALON_PORT);
 
             // CANSparkMax(deviceID : int, type : MotorType)
             // mNEO = new CANSparkMax(Constants.NEO_MOTOR_PORT, MotorType.kBrushless);
 
             // Solenoid
             // DoubleSolenoid
-            mShift = new Solenoid(Constants.kShiftChannel);
-            mLateralDeploy = new DoubleSolenoid(Constants.kLateralDeployForwardChannel, Constants.kLateralDeployReverseChannel);
+            mShift = new Solenoid(Constants.SHIFT_CHANNEL);
+            mLateralDeploy = new DoubleSolenoid(Constants.LATERAL_DEPLOY_FORWARD_CHANNEL, Constants.LATERAL_DEPLOY_REVERSE_CHANNEL);
 
             // DigitalInput(io : int)
-            mSensor = new DigitalInput(Constants.kOpticalSensorPort);
-            mLineSensors = Map.of(
-                    "LeftTwo", new DigitalInput(Constants.kLeftTwoSensorPort),
-                    "LeftOne", new DigitalInput(Constants.kLeftOneSensorPort),
-                    "Center", new DigitalInput(Constants.kCenterSensorPort),
-                    "RightOne", new DigitalInput(Constants.kRightOneSensorPort),
-                    "RightTwo", new DigitalInput(Constants.kRightTwoSensorPort)
-            );
+            mSensor = new DigitalInput(Constants.OPTICAL_SENSOR_PORT);
+            /*mLineSensors = Map.of(
+                    "LeftTwo", new DigitalInput(Constants.LEFT_TWO_SENSOR_PORT),
+                    "LeftOne", new DigitalInput(Constants.LEFT_ONE_SENSOR_PORT),
+                    "Center", new DigitalInput(Constants.CENTER_SENSOR_PORT),
+                    "RightOne", new DigitalInput(Constants.RIGHT_ONE_PORT),
+                    "RightTwo", new DigitalInput(Constants.RIGHT_TWO_PORT)
+            );*/
         } catch (Exception e) {
-            mLogger.error("Breadboard failed to instantiate.\n{}", e);
+            mLogger.error("Breadboard failed to instantiate.", e);
         }
 
-        mLogger.info("Breadboard instantiated succesfully!");
+        mLogger.info("Breadboard instantiated successfully!");
     }
 
     public void setLeftPower(double power) {
@@ -149,7 +150,7 @@ public class Breadboard extends AldrinSubsystem {
         return mSensor.get();
     }
 
-    private String getLineSensorArray() {
+    /*private String getLineSensorArray() {
         String binarySensorArray = "";
         binarySensorArray += mLineSensors.get("LeftTwo").get() ? "1" : "0";
         binarySensorArray += mLineSensors.get("LeftOne").get() ? "1" : "0";
@@ -186,12 +187,18 @@ public class Breadboard extends AldrinSubsystem {
         }
     }
 
-    /*public void setNEOPower(double power) {
+    public void setNEOPower(double power) {
         mNEO.set(power);
-    }*/
+    }
 
-    /*public double getNEOPower() {
+    public double getNEOPower() {
         return mNEO.get();
+    }
+
+    @Override
+    public void onTeleop() {
+        outputToConsole();
+        // mLogger.debug("Breadboard periodic message");
     }*/
 
     @Override
@@ -207,16 +214,12 @@ public class Breadboard extends AldrinSubsystem {
         // System.out.println("Does sensor see white? " + doesSensorSee());
         // System.out.println("Line Sensor Array: " + getLineSensorArray());
         // mLineSensors.forEach((str, sensor) -> { System.out.printf("%s State: %s", str, sensor.get()); } );
-        mLogger.debug("Line Sensor Array: {}", getLineSensorArray());
+
+        // Lateral Drive
+        /*mLogger.debug("Line Sensor Array: {}", getLineSensorArray());
         mLineSensors.forEach((str, sensor) -> {
             mLogger.debug("{} State: {}", str, sensor.get());
-        });
-    }
-
-    @Override
-    public void onTeleop() {
-        outputToConsole();
-        // mLogger.debug("Breadboard periodic message");
+        });*/
     }
 
 }

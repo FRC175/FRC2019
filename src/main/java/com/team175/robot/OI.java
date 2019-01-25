@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package com.team175.robot.util;
+package com.team175.robot;
 
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -17,6 +17,7 @@ import com.team175.robot.commands.teleop.LineAlignment;
  */
 public class OI {
 
+    /* Declarations */
     // Joysticks
     private Joystick mDriverStick;
     private Joystick mOperatorStick;
@@ -40,11 +41,14 @@ public class OI {
     }
 
     private OI() {
-        mDriverStick = new Joystick(Constants.kDriverStickPort);
-        mOperatorStick = new Joystick(Constants.kOperatorStickPort);
+        /* Instantiations */
+        mDriverStick = new Joystick(Constants.DRIVER_STICK_PORT);
+        mOperatorStick = new Joystick(Constants.OPERATOR_STICK_PORT);
 
-        mLineAlign = new JoystickButton(mDriverStick, Constants.kLineAlignButton);
+        mLineAlign = new JoystickButton(mDriverStick, Constants.LINE_ALIGN_BUTTON);
 
+        /* Command Assignment */
+        // Driver Stick
         mLineAlign.whileHeld(new LineAlignment());
     }
 

@@ -1,10 +1,13 @@
 package com.team175.robot.util;
 
 import com.ctre.phoenix.ErrorCode;
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.team175.robot.Constants;
 
+/**
+ * @author Arvind
+ */
 public class AldrinTalonSRX extends TalonSRX {
 
     public AldrinTalonSRX(int portNum) {
@@ -12,27 +15,27 @@ public class AldrinTalonSRX extends TalonSRX {
     }
             
     public ErrorCode config_kF(double value) {
-		return super.config_kF(Constants.kSlotIdx, value, Constants.kTimeoutMs);
+		return super.config_kF(Constants.SLOT_INDEX, value, Constants.TIMEOUT_MS);
 	}
 
 	public ErrorCode config_kP(double value) {
-		return super.config_kP(Constants.kSlotIdx, value, Constants.kTimeoutMs);
+		return super.config_kP(Constants.SLOT_INDEX, value, Constants.TIMEOUT_MS);
 	}
 
 	public ErrorCode config_kI(double value) {
-		return super.config_kI(Constants.kSlotIdx, value, Constants.kTimeoutMs);
+		return super.config_kI(Constants.SLOT_INDEX, value, Constants.TIMEOUT_MS);
 	}
 
 	public ErrorCode config_kD(double value) {
-		return super.config_kD(Constants.kSlotIdx, value, Constants.kTimeoutMs);
+		return super.config_kD(Constants.SLOT_INDEX, value, Constants.TIMEOUT_MS);
 	}
 
 	public ErrorCode setSelectedSensorPosition(int position) {
-		return super.setSelectedSensorPosition(position, Constants.kPIDLoopIdx, Constants.kTimeoutMs);
+		return super.setSelectedSensorPosition(position, Constants.PID_LOOP_INDEX, Constants.TIMEOUT_MS);
     }
 
 	public int getSelectedSensorPosition() {
-		return super.getSelectedSensorPosition(Constants.kPIDLoopIdx);
+		return super.getSelectedSensorPosition(Constants.PID_LOOP_INDEX);
     }
 
 	public void setBrakeMode(boolean on) {
@@ -51,7 +54,7 @@ public class AldrinTalonSRX extends TalonSRX {
         return super.getMotorOutputPercent();
     }
 
-    public int getPosition() {
+    public int positionToMove() {
         return getSelectedSensorPosition();
     }
 

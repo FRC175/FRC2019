@@ -11,11 +11,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.team175.robot.examples.ExampleCommand;
-import com.team175.robot.examples.ExampleSubsystem;
 import com.team175.robot.subsystems.AldrinSubsystem;
-import com.team175.robot.subsystems.Camera;
-import com.team175.robot.subsystems.deprecated.Breadboard;
-import com.team175.robot.util.OI;
+import com.team175.robot.subsystems.Vision;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -29,14 +26,22 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * documentation. If you change the name of this class or the package after
  * creating this project, you must also update the build.gradle file in the
  * project.
- * 
+ *
+ * TODO:
+ * - Create a periodic method in each subsystem that runs at double the normal robot refresh rate (20 ms => 10 ms)
+ * in a separate thread in order to increase robot accuracy.
+ * - Utilize csv logging in order to capture robot telemetry data such as encoder counts and graph them in a python
+ * program.
+ * - Run csv logger at double the normal refresh rate.
+ *
  * @author Arvind
  */
 public class Robot extends TimedRobot {
 
+	/* Declarations */
 	/*private ExampleSubsystem mExampleSubsystem;
 	private Breadboard mBreadboard;*/
-	private Camera mCamera;
+	private Vision mVision;
 	private OI mOI;
 
 	private Command mAutonomousCommand;
@@ -44,44 +49,28 @@ public class Robot extends TimedRobot {
 
 	private List<AldrinSubsystem> mSubsystems;
 
-	/**
-	 * This function is run when the robot is first started up and should be used
-	 * for any initialization code.
-	 */
 	@Override
 	public void robotInit() {
+		/* Instantiations */
 		/*mExampleSubsystem = ExampleSubsystem.getInstance();
 		mBreadboard = Breadboard.getInstance();*/
-		mCamera = Camera.getInstance();
+		mVision = Vision.getInstance();
 		mOI = OI.getInstance();
+		// mVision.run();
 
 		mChooser = new SendableChooser<>();
+		mSubsystems = Arrays.asList(mVision);
 		// mSubsystems = Arrays.asList(mBreadboard, mCamera);
 
-		// mCamera.run();
 		mChooser.setDefaultOption("Default Auto", new ExampleCommand());
 		// mChooser.addOption("My Auto", new MyAutoCommand());
-		SmartDashboard.putData("Auto mode", mChooser);
+		SmartDashboard.putData("Auto Mode", mChooser);
 	}
 
-	/**
-	 * This function is called every robot packet, no matter the mode. Use this for
-	 * items like diagnostics that you want ran during disabled, autonomous,
-	 * teleoperated and test.
-	 *
-	 * <p>
-	 * This runs after the mode specific periodic functions, but before LiveWindow
-	 * and SmartDashboard integrated updating.
-	 */
 	@Override
 	public void robotPeriodic() {
 	}
 
-	/**
-	 * This function is called once each time the robot enters Disabled mode. You
-	 * can use it to reset any subsystem information you want to clear when the
-	 * robot is disabled.
-	 */
 	@Override
 	public void disabledInit() {
 	}
@@ -91,18 +80,6 @@ public class Robot extends TimedRobot {
 		Scheduler.getInstance().run();
 	}
 
-	/**
-	 * This autonomous (along with the chooser code above) shows how to select
-	 * between different autonomous modes using the dashboard. The sendable chooser
-	 * code works with the Java SmartDashboard. If you prefer the LabVIEW Dashboard,
-	 * remove all of the chooser code and uncomment the getString code to get the
-	 * auto name from the text box below the Gyro
-	 *
-	 * <p>
-	 * You can add additional auto modes by adding additional commands to the
-	 * chooser code above (like the commented example) or additional comparisons to
-	 * the switch structure below with additional strings & commands.
-	 */
 	@Override
 	public void autonomousInit() {
 		mAutonomousCommand = mChooser.getSelected();
@@ -120,9 +97,6 @@ public class Robot extends TimedRobot {
 		}
 	}
 
-	/**
-	 * This function is called periodically during autonomous.
-	 */
 	@Override
 	public void autonomousPeriodic() {
 		Scheduler.getInstance().run();
@@ -139,17 +113,11 @@ public class Robot extends TimedRobot {
 		}
 	}
 
-	/**
-	 * This function is called periodically during operator control.
-	 */
 	@Override
 	public void teleopPeriodic() {
 		Scheduler.getInstance().run();
 	}
 
-	/**
-	 * This function is called periodically during test mode.
-	 */
 	@Override
 	public void testPeriodic() {
 	}
