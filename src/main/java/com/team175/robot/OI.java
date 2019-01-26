@@ -7,9 +7,12 @@
 
 package com.team175.robot;
 
+import com.team175.robot.commands.teleop.ManualElevator;
+import com.team175.robot.commands.teleop.ManualLateralDrive;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
+
 import com.team175.robot.commands.teleop.LineAlignment;
 
 /**
@@ -23,7 +26,11 @@ public class OI {
     private Joystick mOperatorStick;
 
     // Driver Stick Buttons
+    private Button mToggleLateralDrive;
     private Button mLineAlign;
+
+    // Operator Stick Buttons
+    private Button mManualElevator;
 
     // Singleton Instance
     private static OI sInstance;
@@ -42,14 +49,24 @@ public class OI {
 
     private OI() {
         /* Instantiations */
+        // Joystick
         mDriverStick = new Joystick(Constants.DRIVER_STICK_PORT);
         mOperatorStick = new Joystick(Constants.OPERATOR_STICK_PORT);
 
+        // Driver Stick Buttons
+        mToggleLateralDrive = new JoystickButton(mDriverStick, Constants.LATERAL_DRIVE_TRIGGER); // 1 is the trigger button
         mLineAlign = new JoystickButton(mDriverStick, Constants.LINE_ALIGN_BUTTON);
+
+        // Operator Stick Buttons
+        mManualElevator = new JoystickButton(mOperatorStick, Constants.MANUAL_ELEVATOR_TRIGGER);
 
         /* Command Assignment */
         // Driver Stick
-        mLineAlign.whileHeld(new LineAlignment());
+        mToggleLateralDrive.whileHeld(new ManualLateralDrive());
+        mLineAlign.whenPressed(new LineAlignment());
+
+        // Operator Stick
+        mManualElevator.whileHeld(new ManualElevator());
     }
 
     public double getDriverStickX() {
@@ -58,6 +75,10 @@ public class OI {
 
     public double getDriverStickY() {
         return mDriverStick.getY();
+    }
+
+    public double getDriverStickTwist() {
+        return mDriverStick.getTwist();
     }
 
     public double getOperatorStickX() {

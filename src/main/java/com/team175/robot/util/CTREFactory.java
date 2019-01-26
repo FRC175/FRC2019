@@ -20,9 +20,9 @@ public class CTREFactory {
         bmc.configPeakOutputForward(1, Constants.TIMEOUT_MS);
         bmc.configPeakOutputReverse(-1, Constants.TIMEOUT_MS);
 
-        bmc.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, Constants.PID_LOOP_INDEX, Constants.TIMEOUT_MS);
+        /*bmc.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, Constants.PID_LOOP_INDEX, Constants.TIMEOUT_MS);
         bmc.configAllowableClosedloopError(Constants.SLOT_INDEX, 10, Constants.TIMEOUT_MS);
-        bmc.setSelectedSensorPosition(0, Constants.PID_LOOP_INDEX, Constants.TIMEOUT_MS);
+        bmc.setSelectedSensorPosition(0, Constants.PID_LOOP_INDEX, Constants.TIMEOUT_MS);*/
 
         bmc.setNeutralMode(NeutralMode.Brake);
     }

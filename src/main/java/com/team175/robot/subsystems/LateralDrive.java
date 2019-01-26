@@ -1,9 +1,13 @@
 package com.team175.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.team175.robot.Constants;
 import com.team175.robot.positions.LineSensorPosition;
 import com.team175.robot.util.AldrinTalonSRX;
+import com.team175.robot.util.CTREFactory;
+
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.Solenoid;
 
 import java.util.Map;
 
@@ -14,6 +18,12 @@ public class LateralDrive extends AldrinSubsystem {
 
     // Talon SRX
     private AldrinTalonSRX mMaster;
+
+    // Solenoid
+    private Solenoid mDeploy;
+
+    // Integer
+    private int mWantedPosition;
 
     // Digital IO
     private Map<String, DigitalInput> mLineSensors;
@@ -30,13 +40,52 @@ public class LateralDrive extends AldrinSubsystem {
     }
 
     private LateralDrive() {
-        mLineSensors = Map.of(
+        mMaster = CTREFactory.getTalon(Constants.LATERAL_DRIVE_PORT);
+
+        mDeploy = new Solenoid(Constants.LATERAL_DRIVE_DEPLOY_CHANNEL);
+
+        mWantedPosition = 0;
+
+        /*mLineSensors = Map.of(
                 "LeftTwo", new DigitalInput(Constants.LEFT_TWO_SENSOR_PORT),
                 "LeftOne", new DigitalInput(Constants.LEFT_ONE_SENSOR_PORT),
                 "Center", new DigitalInput(Constants.CENTER_SENSOR_PORT),
-                "RightOne", new DigitalInput(Constants.RIGHT_ONE_PORT),
-                "RightTwo", new DigitalInput(Constants.RIGHT_TWO_PORT)
-        );
+                "RightOne", new DigitalInput(Constants.RIGHT_ONE_SENSOR_PORT),
+                "RightTwo", new DigitalInput(Constants.RIGHT_TWO_SENSOR_PORT)
+        );*/
+    }
+
+    public void deploy(boolean enable) {
+        mDeploy.set(enable);
+    }
+
+    public void setMotionMagicPosition(int position) {
+        mWantedPosition = position;
+        mMaster.set(ControlMode.MotionMagic, mWantedPosition);
+    }
+
+    public int getPosition() {
+        return mMaster.getSelectedSensorPosition();
+    }
+
+    public boolean isAtWantedPosition() {
+        return Math.abs(getPosition() - mWantedPosition) <= Constants.ALLOWED_POSITION_DEVIATION;
+    }
+
+    public void resetEncoder() {
+        mMaster.setSelectedSensorPosition(0);
+    }
+
+    public void setPower(double power) {
+        mMaster.set(ControlMode.PercentOutput, power);
+    }
+
+    public double getPower() {
+        return mMaster.getMotorOutputPercent();
+    }
+
+    public double getVoltage() {
+        return mMaster.getMotorOutputVoltage();
     }
 
     private String getLineSensorArray() {

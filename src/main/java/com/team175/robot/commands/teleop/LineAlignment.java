@@ -1,6 +1,7 @@
 package com.team175.robot.commands.teleop;
 
 import com.team175.robot.commands.LoggableCommand;
+import com.team175.robot.subsystems.LateralDrive;
 import com.team175.robot.subsystems.deprecated.Breadboard;
 
 /**
@@ -12,6 +13,7 @@ public class LineAlignment extends LoggableCommand {
 
     public LineAlignment() {
         // requires(Breadboard.getInstance());
+        // requires(LateralDrive.getInstance());
     }
 
     // Called just before this Command runs the first time
@@ -26,6 +28,7 @@ public class LineAlignment extends LoggableCommand {
     @Override
     protected void execute() {
         // Breadboard.getInstance().setCIMPosition(Breadboard.getInstance().getLineSensorPosition().positionToMove());
+        // LateralDrive.getInstance().setMotionMagic(mPosition);
     }
 
     // Make this return true when this Command no longer needs to run execute()

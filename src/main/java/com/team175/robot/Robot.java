@@ -11,8 +11,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import com.team175.robot.examples.ExampleCommand;
-import com.team175.robot.subsystems.AldrinSubsystem;
-import com.team175.robot.subsystems.Vision;
+import com.team175.robot.subsystems.*;
 
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
@@ -41,6 +40,11 @@ public class Robot extends TimedRobot {
 	/* Declarations */
 	/*private ExampleSubsystem mExampleSubsystem;
 	private Breadboard mBreadboard;*/
+	private Drive mDrive;
+	private Elevator mElevator;
+	private LateralDrive mLateralDrive;
+	private Lift mLift;
+	private Manipulator mManipulator;
 	private Vision mVision;
 	private OI mOI;
 
@@ -52,14 +56,17 @@ public class Robot extends TimedRobot {
 	@Override
 	public void robotInit() {
 		/* Instantiations */
-		/*mExampleSubsystem = ExampleSubsystem.getInstance();
-		mBreadboard = Breadboard.getInstance();*/
-		mVision = Vision.getInstance();
+		mDrive = Drive.getInstance();
+		mElevator = Elevator.getInstance();
+		mLateralDrive = LateralDrive.getInstance();
+		mLift = Lift.getInstance();
+		mManipulator = Manipulator.getInstance();
+		// mVision = Vision.getInstance();
 		mOI = OI.getInstance();
 		// mVision.run();
 
 		mChooser = new SendableChooser<>();
-		mSubsystems = Arrays.asList(mVision);
+		mSubsystems = Arrays.asList();
 		// mSubsystems = Arrays.asList(mBreadboard, mCamera);
 
 		mChooser.setDefaultOption("Default Auto", new ExampleCommand());
