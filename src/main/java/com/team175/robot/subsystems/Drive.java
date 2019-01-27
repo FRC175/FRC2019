@@ -2,10 +2,9 @@ package com.team175.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
-import com.ctre.phoenix.sensors.PigeonIMU;
 
 import com.team175.robot.Constants;
-import com.team175.robot.commands.teleop.ManualArcadeDrive;
+import com.team175.robot.commands.ManualArcadeDrive;
 import com.team175.robot.util.AldrinTalonSRX;
 import com.team175.robot.util.CSVLogger;
 import com.team175.robot.util.CTREFactory;
@@ -19,11 +18,12 @@ import edu.wpi.first.wpilibj.Solenoid;
  */
 public class Drive extends AldrinSubsystem implements Loggable, Diagnosable {
 
+    /* Declarations */
     // Talon SRXs
     private AldrinTalonSRX mLeftMaster, mLeftSlave, mRightMaster, mRightSlave;
 
     // Gyro
-    private PigeonIMU mPigeon;
+    // private PigeonIMU mPigeon;
 
     // Solenoid
     private Solenoid mShift;
@@ -44,19 +44,18 @@ public class Drive extends AldrinSubsystem implements Loggable, Diagnosable {
 
     private Drive() {
         /* Instantiations */
+        // CTREFactory.getMasterTalon(portNum : int)
+        // CTREFactory.getSlaveTalon(portNum : int, master : BaseMotorController)
+        mLeftMaster = CTREFactory.getMasterTalon(Constants.LEFT_MASTER_DRIVE_PORT);
+        mLeftSlave = CTREFactory.getSlaveTalon(Constants.LEFT_SLAVE_DRIVE_PORT, mLeftMaster);
+        mRightMaster = CTREFactory.getMasterTalon(Constants.RIGHT_MASTER_DRIVE_PORT);
+        mRightSlave = CTREFactory.getSlaveTalon(Constants.RIGHT_SLAVE_DRIVE_PORT, mRightMaster);
 
-        // CTREFactory.getTalon(portNum : int)
-        mLeftMaster = CTREFactory.getTalon(Constants.LEFT_MASTER_DRIVE_PORT);
-        mLeftSlave = CTREFactory.getTalon(Constants.LEFT_SLAVE_DRIVE_PORT);
-        mRightMaster = CTREFactory.getTalon(Constants.RIGHT_MASTER_DRIVE_PORT);
-        mRightSlave = CTREFactory.getTalon(Constants.RIGHT_SLAVE_DRIVE_PORT);
-
+        // PigeonIMU(portNum : int)
         // mPigeon = new PigeonIMU(Constants.PIGEON_PORT);
 
+        // Solenoid(channel : int)
         mShift = new Solenoid(Constants.SHIFT_CHANNEL);
-
-        mLeftSlave.follow(mLeftMaster);
-        mRightSlave.follow(mRightMaster);
     }
 
     public void arcadeDrive(double x, double y) {
@@ -91,9 +90,17 @@ public class Drive extends AldrinSubsystem implements Loggable, Diagnosable {
         // mPigeon.setYaw(0);
     }
 
+    public void setHighGear(boolean enable) {
+        mShift.set(enable);
+    }
+
+    public boolean isHighGear() {
+        return mShift.get();
+    }
+
     @Override
     protected void initDefaultCommand() {
-        setDefaultCommand(new ManualArcadeDrive());
+        setDefaultCommand(new ManualArcadeDrive(false));
     }
 
     @Override

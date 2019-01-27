@@ -2,6 +2,8 @@ package com.team175.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.team175.robot.Constants;
+import com.team175.robot.positions.ManipulatorArmPosition;
+import com.team175.robot.positions.ManipulatorRollerPosition;
 import com.team175.robot.util.AldrinTalonSRX;
 
 import com.team175.robot.util.CTREFactory;
@@ -12,6 +14,7 @@ import edu.wpi.first.wpilibj.Talon;
  */
 public class Manipulator extends AldrinSubsystem {
 
+    /* Declarations */
     // Talon SRX
     private AldrinTalonSRX mArm;
     
@@ -34,17 +37,24 @@ public class Manipulator extends AldrinSubsystem {
     }
 
     private Manipulator() {
-        mArm = CTREFactory.getTalon(Constants.MANIPULATOR_ARM_PORT);
+        /* Instantiations */
+        // CTREFactory.getMasterTalon(portNum : int)
+        mArm = CTREFactory.getMasterTalon(Constants.MANIPULATOR_ARM_PORT);
 
+        // Talon(portNum : int)
         mFrontRoller = new Talon(Constants.MANIPULATOR_FRONT_ROLLER);
         mRearRoller = new Talon(Constants.MANIPULATOR_REAR_ROLLER);
 
         mArmWantedPosition = 0;
     }
 
-    public void setRollerPower(double power) {
-        mFrontRoller.set(power);
-        mRearRoller.set(power);
+    public void setRollerPower(double frontPower, double rearPower) {
+        mFrontRoller.set(frontPower);
+        mRearRoller.set(rearPower);
+    }
+
+    public void setRollerPosition(ManipulatorRollerPosition position) {
+        setRollerPower(position.getFrontPower(), position.getRearPower());
     }
 
     public double getFrontRollerPower() {
@@ -53,19 +63,6 @@ public class Manipulator extends AldrinSubsystem {
 
     public double getRearRollerPower() {
         return mRearRoller.get();
-    }
-
-    public void setArmMotionMagicPosition(int position) {
-        mArmWantedPosition = position;
-        mArm.set(ControlMode.MotionMagic, mArmWantedPosition);
-    }
-
-    public int getArmPosition() {
-        return mArm.getSelectedSensorPosition();
-    }
-
-    public boolean isArmAtWantedPosition() {
-        return Math.abs(getArmPosition() - mArmWantedPosition) <= Constants.ALLOWED_POSITION_DEVIATION;
     }
 
     public void setArmPower(double power) {
@@ -78,6 +75,23 @@ public class Manipulator extends AldrinSubsystem {
 
     public double getArmVoltage() {
         return mArm.getMotorOutputVoltage();
+    }
+
+    public void setArmPosition(int position) {
+        mArmWantedPosition = position;
+        mArm.set(ControlMode.MotionMagic, mArmWantedPosition);
+    }
+
+    public void setArmPosition(ManipulatorArmPosition position) {
+        setArmPosition(position.positionToMove());
+    }
+
+    public int getArmPosition() {
+        return mArm.getSelectedSensorPosition();
+    }
+
+    public boolean isArmAtWantedPosition() {
+        return Math.abs(getArmPosition() - mArmWantedPosition) <= Constants.ALLOWED_POSITION_DEVIATION;
     }
 
     @Override

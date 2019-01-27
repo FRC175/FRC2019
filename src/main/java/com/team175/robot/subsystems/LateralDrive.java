@@ -16,17 +16,18 @@ import java.util.Map;
  */
 public class LateralDrive extends AldrinSubsystem {
 
+    /* Declarations */
     // Talon SRX
     private AldrinTalonSRX mMaster;
 
     // Solenoid
     private Solenoid mDeploy;
 
-    // Integer
-    private int mWantedPosition;
-
     // Digital IO
     private Map<String, DigitalInput> mLineSensors;
+
+    // Integer
+    private int mWantedPosition;
 
     // Singleton Instance
     private static LateralDrive sInstance;
@@ -40,12 +41,14 @@ public class LateralDrive extends AldrinSubsystem {
     }
 
     private LateralDrive() {
-        mMaster = CTREFactory.getTalon(Constants.LATERAL_DRIVE_PORT);
+        /* Instantiations */
+        // CTREFactory.getMasterTalon(portNum : int)
+        mMaster = CTREFactory.getMasterTalon(Constants.LATERAL_DRIVE_PORT);
 
+        // Solenoid(channel : int)
         mDeploy = new Solenoid(Constants.LATERAL_DRIVE_DEPLOY_CHANNEL);
 
-        mWantedPosition = 0;
-
+        // DigitalInput(portNum : int)
         /*mLineSensors = Map.of(
                 "LeftTwo", new DigitalInput(Constants.LEFT_TWO_SENSOR_PORT),
                 "LeftOne", new DigitalInput(Constants.LEFT_ONE_SENSOR_PORT),
@@ -53,27 +56,16 @@ public class LateralDrive extends AldrinSubsystem {
                 "RightOne", new DigitalInput(Constants.RIGHT_ONE_SENSOR_PORT),
                 "RightTwo", new DigitalInput(Constants.RIGHT_TWO_SENSOR_PORT)
         );*/
+
+        mWantedPosition = 0;
     }
 
     public void deploy(boolean enable) {
         mDeploy.set(enable);
     }
 
-    public void setMotionMagicPosition(int position) {
-        mWantedPosition = position;
-        mMaster.set(ControlMode.MotionMagic, mWantedPosition);
-    }
-
-    public int getPosition() {
-        return mMaster.getSelectedSensorPosition();
-    }
-
-    public boolean isAtWantedPosition() {
-        return Math.abs(getPosition() - mWantedPosition) <= Constants.ALLOWED_POSITION_DEVIATION;
-    }
-
-    public void resetEncoder() {
-        mMaster.setSelectedSensorPosition(0);
+    public boolean isDeployed() {
+        return mDeploy.get();
     }
 
     public void setPower(double power) {
@@ -86,6 +78,27 @@ public class LateralDrive extends AldrinSubsystem {
 
     public double getVoltage() {
         return mMaster.getMotorOutputVoltage();
+    }
+
+    public void setPosition(int position) {
+        mWantedPosition = position;
+        mMaster.set(ControlMode.MotionMagic, mWantedPosition);
+    }
+
+    public void setPosition(LineSensorPosition position) {
+        setPosition(position.positionToMove());
+    }
+
+    public int getPosition() {
+        return mMaster.getSelectedSensorPosition();
+    }
+
+    public boolean isAtWantedPosition() {
+        return Math.abs(getPosition() - mWantedPosition) <= Constants.ALLOWED_POSITION_DEVIATION;
+    }
+
+    public void resetEncoder() {
+        mMaster.setSelectedSensorPosition(0);
     }
 
     private String getLineSensorArray() {

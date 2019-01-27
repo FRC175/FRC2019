@@ -1,10 +1,6 @@
 package com.team175.robot.util;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import java.io.File;
-import java.time.LocalDate;
 
 /**
  * TODO: Finish object.
@@ -15,14 +11,10 @@ public class CSVLogger implements Runnable {
 
     /* Declarations */
     // String
-    private static final String FILE_PATH = "/home/lvuser/csvlog/telemetry.log";
-    private String mHeaderLine, mPeriodicLine;
+    private final String mFilePath;
 
     // File
-    private static final File FILE = new File(FILE_PATH);
-
-    // Logger
-    private Logger mLogger = LoggerFactory.getLogger(getClass());
+    private final File mFile;
 
     // Singleton Instance
     private static CSVLogger sInstance;
@@ -36,24 +28,20 @@ public class CSVLogger implements Runnable {
     }
 
     private CSVLogger() {
-        try {
-            mHeaderLine = "";
-            mPeriodicLine = "";
-        } catch (Exception e) {
-            mLogger.error("CSVLogger failed to instantiate.", e);
-        }
-
-        mLogger.info("CSVLogger instantiated successfully!");
+        /* Instantiations */
+        mFilePath = "/home/lvuser/csvlog/telemetry.log";
+        mFile = new File(mFilePath);
     }
 
-    public void addData(String... s) {
-        for (String str : s) {
-            mPeriodicLine += str + ",";
-        }
+    public void setTarget(Loggable l) {
+
+    }
+
+    public void addPeriodic() {
+
     }
 
     public void start() {
-
     }
 
     public void stop() {

@@ -5,8 +5,9 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package com.team175.robot.examples;
+package com.team175.robot.commands.deprecated;
 
+import com.team175.robot.subsystems.deprecated.ExampleSubsystem;
 import edu.wpi.first.wpilibj.command.Command;
 
 /**
@@ -15,6 +16,7 @@ import edu.wpi.first.wpilibj.command.Command;
  * @author Arvind
  * @see Command
  */
+@Deprecated
 public class ExampleCommand extends Command {
 
     public ExampleCommand() {

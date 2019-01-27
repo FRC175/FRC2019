@@ -10,7 +10,7 @@ package com.team175.robot;
 import java.util.Arrays;
 import java.util.List;
 
-import com.team175.robot.examples.ExampleCommand;
+import com.team175.robot.commands.deprecated.ExampleCommand;
 import com.team175.robot.subsystems.*;
 
 import edu.wpi.first.wpilibj.TimedRobot;

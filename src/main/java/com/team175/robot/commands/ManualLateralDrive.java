@@ -1,10 +1,12 @@
-package com.team175.robot.commands.teleop;
+package com.team175.robot.commands;
 
 import com.team175.robot.OI;
-import com.team175.robot.commands.LoggableCommand;
 import com.team175.robot.subsystems.Drive;
 import com.team175.robot.subsystems.LateralDrive;
 
+/**
+ * @author Arvind
+ */
 public class ManualLateralDrive extends LoggableCommand {
 
     public ManualLateralDrive() {

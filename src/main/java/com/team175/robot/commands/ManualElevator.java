@@ -1,9 +1,11 @@
-package com.team175.robot.commands.teleop;
+package com.team175.robot.commands;
 
 import com.team175.robot.OI;
-import com.team175.robot.commands.LoggableCommand;
 import com.team175.robot.subsystems.Elevator;
 
+/**
+ * @author Arvind
+ */
 public class ManualElevator extends LoggableCommand {
 
     public ManualElevator() {

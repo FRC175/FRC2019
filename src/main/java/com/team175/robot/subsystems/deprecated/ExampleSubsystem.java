@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package com.team175.robot.examples;
+package com.team175.robot.subsystems.deprecated;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -31,6 +31,7 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  * @author Arvind
  * @see Subsystem
  */
+@Deprecated
 public class ExampleSubsystem extends Subsystem {
 
     // Subsystem Instance (Used in Singleton Design Pattern; Optional)

@@ -18,6 +18,7 @@ import java.util.Map;
 /**
  * @author Arvind
  */
+@Deprecated
 public class Breadboard extends AldrinSubsystem {
 
     /* Declarations */

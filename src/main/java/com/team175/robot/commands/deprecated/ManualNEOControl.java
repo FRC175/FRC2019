@@ -6,6 +6,7 @@ import com.team175.robot.subsystems.deprecated.Breadboard;
 /**
  * @author Arvind
  */
+@Deprecated
 public class ManualNEOControl extends LoggableCommand {
 
     public ManualNEOControl() {

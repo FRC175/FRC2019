@@ -7,13 +7,13 @@
 
 package com.team175.robot;
 
-import com.team175.robot.commands.teleop.ManualElevator;
-import com.team175.robot.commands.teleop.ManualLateralDrive;
+import com.team175.robot.commands.ManualElevator;
+import com.team175.robot.commands.ManualLateralDrive;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
-import com.team175.robot.commands.teleop.LineAlignment;
+import com.team175.robot.commands.LineAlignment;
 
 /**
  * @author Arvind

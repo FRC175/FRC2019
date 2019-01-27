@@ -7,6 +7,7 @@ import com.team175.robot.OI;
 /**
  * @author Arvind
  */
+@Deprecated
 public class ManualCIMControl extends LoggableCommand {
 
     public ManualCIMControl() {

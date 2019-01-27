@@ -8,8 +8,11 @@ import edu.wpi.first.cameraserver.CameraServer;
  */
 public class Vision extends AldrinSubsystem {
 
+    /* Declarations */
+    // Camera
     private UsbCamera mCamera;
 
+    // Singleton Instance
     private static Vision sInstance;
 
     public static Vision getInstance() {
@@ -21,13 +24,8 @@ public class Vision extends AldrinSubsystem {
     }
 
     private Vision() {
-        try {
-            mCamera = CameraServer.getInstance().startAutomaticCapture();
-        } catch (Exception e) {
-            mLogger.error("Vision failed to instantiate.", e);
-        }
-
-        mLogger.info("Vision instantiated successfully!");
+        /* Instantiations */
+        mCamera = CameraServer.getInstance().startAutomaticCapture();
     }
 
     @Override
