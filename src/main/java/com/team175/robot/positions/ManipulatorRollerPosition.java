@@ -5,7 +5,8 @@ public enum ManipulatorRollerPosition {
     GRAB_CARGO(1, 1),
     SHOOT_CARGO(-1, 0),
     GRAB_HATCH(1, 1),
-    SHOOT_HATCH(-1, -1);
+    SHOOT_HATCH(-1, -1),
+    IDLE(0, 0);
 
     private final int mFrontPower;
     private final int mRearPower;

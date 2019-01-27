@@ -37,96 +37,96 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class Robot extends TimedRobot {
 
-	/* Declarations */
+    /* Declarations */
 	/*private ExampleSubsystem mExampleSubsystem;
 	private Breadboard mBreadboard;*/
-	private Drive mDrive;
-	private Elevator mElevator;
-	private LateralDrive mLateralDrive;
-	private Lift mLift;
-	private Manipulator mManipulator;
-	private Vision mVision;
-	private OI mOI;
+    private Drive mDrive;
+    private Elevator mElevator;
+    private LateralDrive mLateralDrive;
+    private Lift mLift;
+    private Manipulator mManipulator;
+    private Vision mVision;
+    private OI mOI;
 
-	private Command mAutonomousCommand;
-	private SendableChooser<Command> mChooser;
+    private Command mAutonomousCommand;
+    private SendableChooser<Command> mChooser;
 
-	private List<AldrinSubsystem> mSubsystems;
+    private List<AldrinSubsystem> mSubsystems;
 
-	@Override
-	public void robotInit() {
-		/* Instantiations */
-		mDrive = Drive.getInstance();
-		mElevator = Elevator.getInstance();
-		mLateralDrive = LateralDrive.getInstance();
-		mLift = Lift.getInstance();
-		mManipulator = Manipulator.getInstance();
-		// mVision = Vision.getInstance();
-		mOI = OI.getInstance();
-		// mVision.run();
+    @Override
+    public void robotInit() {
+        /* Instantiations */
+        mDrive = Drive.getInstance();
+        mElevator = Elevator.getInstance();
+        mLateralDrive = LateralDrive.getInstance();
+        mLift = Lift.getInstance();
+        mManipulator = Manipulator.getInstance();
+        // mVision = Vision.getInstance();
+        mOI = OI.getInstance();
+        // mVision.run();
 
-		mChooser = new SendableChooser<>();
-		mSubsystems = Arrays.asList();
-		// mSubsystems = Arrays.asList(mBreadboard, mCamera);
+        mChooser = new SendableChooser<>();
+        mSubsystems = Arrays.asList();
+        // mSubsystems = Arrays.asList(mBreadboard, mCamera);
 
-		mChooser.setDefaultOption("Default Auto", new ExampleCommand());
-		// mChooser.addOption("My Auto", new MyAutoCommand());
-		SmartDashboard.putData("Auto Mode", mChooser);
-	}
+        mChooser.setDefaultOption("Default Auto", new ExampleCommand());
+        // mChooser.addOption("My Auto", new MyAutoCommand());
+        SmartDashboard.putData("Auto Mode", mChooser);
+    }
 
-	@Override
-	public void robotPeriodic() {
-	}
+    @Override
+    public void robotPeriodic() {
+    }
 
-	@Override
-	public void disabledInit() {
-	}
+    @Override
+    public void disabledInit() {
+    }
 
-	@Override
-	public void disabledPeriodic() {
-		Scheduler.getInstance().run();
-	}
+    @Override
+    public void disabledPeriodic() {
+        Scheduler.getInstance().run();
+    }
 
-	@Override
-	public void autonomousInit() {
-		mAutonomousCommand = mChooser.getSelected();
+    @Override
+    public void autonomousInit() {
+        mAutonomousCommand = mChooser.getSelected();
 
-		/*
-		 * String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
-		 * switch(autoSelected) { case "My Auto": autonomousCommand = new
-		 * MyAutoCommand(); break; case "Default Auto": default: autonomousCommand = new
-		 * ExampleCommand(); break; }
-		 */
+        /*
+         * String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
+         * switch(autoSelected) { case "My Auto": autonomousCommand = new
+         * MyAutoCommand(); break; case "Default Auto": default: autonomousCommand = new
+         * ExampleCommand(); break; }
+         */
 
-		// schedule the autonomous command (example)
-		if (mAutonomousCommand != null) {
-			mAutonomousCommand.start();
-		}
-	}
+        // schedule the autonomous command (example)
+        if (mAutonomousCommand != null) {
+            mAutonomousCommand.start();
+        }
+    }
 
-	@Override
-	public void autonomousPeriodic() {
-		Scheduler.getInstance().run();
-	}
+    @Override
+    public void autonomousPeriodic() {
+        Scheduler.getInstance().run();
+    }
 
-	@Override
-	public void teleopInit() {
-		// This makes sure that the autonomous stops running when
-		// teleop starts running. If you want the autonomous to
-		// continue until interrupted by another command, remove
-		// this line or comment it out.
-		if (mAutonomousCommand != null) {
-			mAutonomousCommand.cancel();
-		}
-	}
+    @Override
+    public void teleopInit() {
+        // This makes sure that the autonomous stops running when
+        // teleop starts running. If you want the autonomous to
+        // continue until interrupted by another command, remove
+        // this line or comment it out.
+        if (mAutonomousCommand != null) {
+            mAutonomousCommand.cancel();
+        }
+    }
 
-	@Override
-	public void teleopPeriodic() {
-		Scheduler.getInstance().run();
-	}
+    @Override
+    public void teleopPeriodic() {
+        Scheduler.getInstance().run();
+    }
 
-	@Override
-	public void testPeriodic() {
-	}
-	
+    @Override
+    public void testPeriodic() {
+    }
+
 }

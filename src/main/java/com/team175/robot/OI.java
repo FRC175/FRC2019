@@ -7,13 +7,13 @@
 
 package com.team175.robot;
 
-import com.team175.robot.commands.ManualElevator;
-import com.team175.robot.commands.ManualLateralDrive;
+import com.team175.robot.commands.*;
+import com.team175.robot.positions.LiftPosition;
+import com.team175.robot.positions.ManipulatorRollerPosition;
+import com.team175.robot.util.TwoButton;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
-
-import com.team175.robot.commands.LineAlignment;
 
 /**
  * @author Arvind
@@ -27,21 +27,22 @@ public class OI {
 
     // Driver Stick Buttons
     private Button mToggleLateralDrive;
-    private Button mLineAlign;
+    // private Button mLineAlign;
+
+    private Button mLift;
 
     // Operator Stick Buttons
     private Button mManualElevator;
+
+    private Button mRollers;
+    private Button mArm;
 
     // Singleton Instance
     private static OI sInstance;
 
     public static OI getInstance() {
         if (sInstance == null) {
-            try {
-                sInstance = new OI();
-            } catch (Exception e) {
-                // DriverStation.reportError("OI failed to instantiate.\n" + e, true);
-            }
+            sInstance = new OI();
         }
 
         return sInstance;
@@ -55,18 +56,28 @@ public class OI {
 
         // Driver Stick Buttons
         mToggleLateralDrive = new JoystickButton(mDriverStick, Constants.LATERAL_DRIVE_TRIGGER); // 1 is the trigger button
-        mLineAlign = new JoystickButton(mDriverStick, Constants.LINE_ALIGN_BUTTON);
+        // mLineAlign = new JoystickButton(mDriverStick, Constants.LINE_ALIGN_BUTTON);
+
+        mLift = new TwoButton(mDriverStick, 3, 4);
 
         // Operator Stick Buttons
         mManualElevator = new JoystickButton(mOperatorStick, Constants.MANUAL_ELEVATOR_TRIGGER);
 
+        mRollers = new JoystickButton(mOperatorStick, 3);
+        mArm = new JoystickButton(mOperatorStick, 12);
+
         /* Command Assignment */
         // Driver Stick
         mToggleLateralDrive.whileHeld(new ManualLateralDrive());
-        mLineAlign.whenPressed(new LineAlignment());
+        // mLineAlign.whenPressed(new LineAlignment());
+
+        mLift.whileHeld(new PositionLift(LiftPosition.IDLE));
 
         // Operator Stick
         mManualElevator.whileHeld(new ManualElevator());
+
+        mRollers.whileHeld(new ManipulateGamePiece(ManipulatorRollerPosition.IDLE));
+        mArm.whileHeld(new ManualManipulatorArm());
     }
 
     public double getDriverStickX() {

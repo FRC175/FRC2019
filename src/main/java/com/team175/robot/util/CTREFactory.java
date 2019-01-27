@@ -1,6 +1,5 @@
 package com.team175.robot.util;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
@@ -46,7 +45,7 @@ public class CTREFactory {
 
     public static AldrinTalonSRX getSlaveTalon(int portNum, BaseMotorController master) {
         AldrinTalonSRX talon = new AldrinTalonSRX(portNum);
-        configClosedLoop(talon);
+        configOpenLoop(talon);
         talon.follow(master);
         return talon;
     }
@@ -65,7 +64,7 @@ public class CTREFactory {
 
     public static AldrinVictorSPX getSlaveVictor(int portNum, BaseMotorController master) {
         AldrinVictorSPX victor = new AldrinVictorSPX(portNum);
-        configClosedLoop(victor);
+        configOpenLoop(victor);
         victor.follow(master);
         return victor;
     }
