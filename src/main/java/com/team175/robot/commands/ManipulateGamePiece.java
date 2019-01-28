@@ -36,6 +36,8 @@ public class ManipulateGamePiece extends LoggableCommand {
 
     @Override
     protected void end() {
+        Manipulator.getInstance().setRollerPosition(ManipulatorRollerPosition.IDLE);
+
         mLogger.info("ManipulateGamePiece command ended/interrupted.");
     }
 

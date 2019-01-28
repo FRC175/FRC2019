@@ -30,7 +30,7 @@ public class PositionLift extends LoggableCommand {
     protected void execute() {
         // Lift.getInstance().setPosition(mPosition);
         Lift.getInstance().setLiftPower(OI.getInstance().getDriverStickY());
-        Lift.getInstance().setDrivePower(OI.getInstance().getDriverStickX());
+        // Lift.getInstance().setDrivePower(-1);
     }
 
     @Override
@@ -41,6 +41,7 @@ public class PositionLift extends LoggableCommand {
     @Override
     protected void end() {
         Lift.getInstance().setLiftPower(0);
+        // Lift.getInstance().setDrivePower(0);
 
         mLogger.info("PositionLift command ended/interrupted.");
     }

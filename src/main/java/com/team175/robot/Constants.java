@@ -42,8 +42,9 @@ public final class Constants {
     public static final int LIFT_REAR_LIMIT_PORT = 0;
 
     // Pneumatics
-    public static final int SHIFT_CHANNEL = 1;
-    public static final int LATERAL_DRIVE_DEPLOY_CHANNEL = 0;
+    public static final int SHIFT_CHANNEL = 0;
+    public static final int LATERAL_DRIVE_DEPLOY_FORWARD_CHANNEL = 2;
+    public static final int LATERAL_DRIVE_DEPLOY_REVERSE_CHANNEL = 1;
 
     // Joystick Ports
     public static final int DRIVER_STICK_PORT = 0;

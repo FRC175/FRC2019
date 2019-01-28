@@ -27,7 +27,7 @@ public class ManualArcadeDrive extends LoggableCommand {
 
     @Override
     protected void execute() {
-        if (LateralDrive.getInstance().isDeployed()) {
+        if (!LateralDrive.getInstance().isDeployed()) {
             double x = Mathematiques.addDeadzone(OI.getInstance().getDriverStickTwist(), 0.05);
             double y = Mathematiques.addDeadzone(OI.getInstance().getDriverStickY(), 0.05);
             Drive.getInstance().arcadeDrive(x, y);

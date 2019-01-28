@@ -7,7 +7,8 @@ import com.team175.robot.util.AldrinTalonSRX;
 import com.team175.robot.util.CTREFactory;
 
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
 import java.util.Map;
 
@@ -20,8 +21,8 @@ public class LateralDrive extends AldrinSubsystem {
     // Talon SRX
     private AldrinTalonSRX mMaster;
 
-    // Solenoid
-    private Solenoid mDeploy;
+    // DoubleSolenoid
+    private DoubleSolenoid mDeploy;
 
     // Digital IO
     private Map<String, DigitalInput> mLineSensors;
@@ -46,7 +47,7 @@ public class LateralDrive extends AldrinSubsystem {
         mMaster = CTREFactory.getMasterTalon(Constants.LATERAL_DRIVE_PORT);
 
         // Solenoid(channel : int)
-        mDeploy = new Solenoid(Constants.LATERAL_DRIVE_DEPLOY_CHANNEL);
+        // mDeploy = new DoubleSolenoid(Constants.LATERAL_DRIVE_DEPLOY_FORWARD_CHANNEL, Constants.LATERAL_DRIVE_DEPLOY_REVERSE_CHANNEL);
 
         // DigitalInput(portNum : int)
         /*mLineSensors = Map.of(
@@ -61,11 +62,12 @@ public class LateralDrive extends AldrinSubsystem {
     }
 
     public void deploy(boolean enable) {
-        mDeploy.set(enable);
+        // mDeploy.set(enable ? Value.kForward : Value.kReverse);
     }
 
     public boolean isDeployed() {
-        return mDeploy.get();
+        // return mDeploy.get() == Value.kForward;
+        return false;
     }
 
     public void setPower(double power) {

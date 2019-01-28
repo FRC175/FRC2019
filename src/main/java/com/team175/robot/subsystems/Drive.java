@@ -55,7 +55,7 @@ public class Drive extends AldrinSubsystem implements Loggable, Diagnosable {
         // mPigeon = new PigeonIMU(Constants.PIGEON_PORT);
 
         // Solenoid(channel : int)
-        mShift = new Solenoid(Constants.SHIFT_CHANNEL);
+        // mShift = new Solenoid(Constants.SHIFT_CHANNEL);
     }
 
     public void arcadeDrive(double x, double y) {
@@ -91,11 +91,12 @@ public class Drive extends AldrinSubsystem implements Loggable, Diagnosable {
     }
 
     public void setHighGear(boolean enable) {
-        mShift.set(enable);
+        // mShift.set(enable);
     }
 
     public boolean isHighGear() {
-        return mShift.get();
+        return false;
+        // return mShift.get();
     }
 
     @Override
