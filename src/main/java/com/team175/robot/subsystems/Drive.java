@@ -105,11 +105,11 @@ public class Drive extends AldrinSubsystem implements Loggable, Diagnosable {
     }
 
     @Override
-    public void outputToDashboard() {
+    public void toDashboard() {
     }
 
     @Override
-    public void outputToLog() {
+    public void toLog() {
     }
 
     @Override

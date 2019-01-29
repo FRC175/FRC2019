@@ -7,8 +7,8 @@ package com.team175.robot.util;
  */
 public interface Loggable {
 
-    void outputToDashboard();
+    void toDashboard();
 
-    void outputToLog();
+    void toLog();
 
 }

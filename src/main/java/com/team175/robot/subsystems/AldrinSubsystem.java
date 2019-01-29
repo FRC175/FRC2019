@@ -12,7 +12,7 @@ public abstract class AldrinSubsystem extends Subsystem {
 
     /* Declarations */
     // Logger
-    protected Logger mLogger = LoggerFactory.getLogger(getClass().getSimpleName());
+    protected final Logger mLogger = LoggerFactory.getLogger(getClass().getSimpleName());
 
     // Boolean
     protected boolean mSubsystemState = true;

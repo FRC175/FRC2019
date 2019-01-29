@@ -11,6 +11,6 @@ import edu.wpi.first.wpilibj.command.Command;
  */
 public abstract class LoggableCommand extends Command {
 
-    protected Logger mLogger = LoggerFactory.getLogger(getClass().getSimpleName());
+    protected final Logger mLogger = LoggerFactory.getLogger(getClass().getSimpleName());
 
 }

@@ -10,9 +10,11 @@ package com.team175.robot;
 import java.util.Arrays;
 import java.util.List;
 
+import com.team175.robot.commands.ClosedLoopTuner;
 import com.team175.robot.commands.deprecated.ExampleCommand;
 import com.team175.robot.subsystems.*;
 
+import com.team175.robot.util.ClosedLoopTunable;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -123,6 +125,37 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
+    }
+
+    @Override
+    public void testInit() {
+        SmartDashboard.putData("Test PIDTuner", new ClosedLoopTuner(new ClosedLoopTunable() {
+            int time = 0;
+            int output = 10;
+
+            @Override
+            public String toCSVHeader() {
+                return "time,output";
+            }
+
+            @Override
+            public String toCSVPeriodic() {
+                String s = time + "," + output;
+
+                time++;
+                output += 10;
+
+                return s;
+            }
+
+            @Override
+            public void updatePID() {
+            }
+        }));
+
+        /*SmartDashboard.putData("Drive PIDTuner", new PIDTuner(Drive.getInstance()));
+        SmartDashboard.putData("Elevator PIDTuner", new PIDTuner(Elevator.getInstance()));
+        SmartDashboard.putData("Lateral Drive PIDTuner", new PIDTuner(LateralDrive.getInstance()));*/
     }
 
     @Override

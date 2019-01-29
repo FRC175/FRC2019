@@ -24,7 +24,7 @@ public class Vision extends AldrinSubsystem {
     }
 
     private Vision() {
-        /* Instantiations */
+        /* Instantiation */
         mCamera = CameraServer.getInstance().startAutomaticCapture();
     }
 
