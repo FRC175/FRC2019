@@ -14,6 +14,8 @@ import com.team175.robot.util.Loggable;
 import edu.wpi.first.wpilibj.Solenoid;
 
 /**
+ * TODO: Maybe implement cheesy drive.
+ *
  * @author Arvind
  */
 public class Drive extends AldrinSubsystem implements Loggable, Diagnosable {
@@ -58,7 +60,7 @@ public class Drive extends AldrinSubsystem implements Loggable, Diagnosable {
         // mShift = new Solenoid(Constants.SHIFT_CHANNEL);
     }
 
-    public void arcadeDrive(double x, double y) {
+    public void arcadeDrive(double y, double x) {
         mLeftMaster.set(ControlMode.PercentOutput, y, DemandType.ArbitraryFeedForward, x);
         mRightMaster.set(ControlMode.PercentOutput, y, DemandType.ArbitraryFeedForward, x);
     }
