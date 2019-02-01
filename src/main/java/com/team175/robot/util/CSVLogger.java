@@ -14,20 +14,12 @@ import java.io.*;
 public class CSVLogger implements Runnable {
 
     /* Declarations */
-    // File
     private final File mFile;
-
-    // CSVLoggable
-    private CSVLoggable mTarget;
-
-    // Print Writer
-    private PrintWriter mWriter;
-
-    // Boolean
-    private boolean mIsRunning;
-
-    // Logger
     private final Logger mLogger;
+
+    private CSVLoggable mTarget;
+    private PrintWriter mWriter;
+    private boolean mIsRunning;
 
     // Singleton Instance
     private static CSVLogger sInstance;

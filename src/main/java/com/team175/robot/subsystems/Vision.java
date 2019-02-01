@@ -9,7 +9,6 @@ import edu.wpi.first.cameraserver.CameraServer;
 public class Vision extends AldrinSubsystem {
 
     /* Declarations */
-    // Camera
     private UsbCamera mCamera;
 
     // Singleton Instance

@@ -21,17 +21,9 @@ import edu.wpi.first.wpilibj.Solenoid;
 public class Drive extends AldrinSubsystem implements Loggable, Diagnosable {
 
     /* Declarations */
-    // Talon SRXs
     private AldrinTalonSRX mLeftMaster, mLeftSlave, mRightMaster, mRightSlave;
-
-    // Gyro
     // private PigeonIMU mPigeon;
-
-    // Solenoid
     private Solenoid mShift;
-
-    // Loggers
-    private CSVLogger mCSVLogger;
 
     // Singleton Instance
     private static Drive sInstance;

@@ -15,10 +15,7 @@ import edu.wpi.first.wpilibj.Talon;
 public class Lift extends AldrinSubsystem {
 
     /* Declarations */
-    // Talon SRX
     private AldrinTalonSRX mDrive;
-
-    // Talons
     private Talon mFront, mRear;
 
     // Singleton Instance

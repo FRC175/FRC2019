@@ -18,16 +18,9 @@ import java.util.Map;
 public class LateralDrive extends AldrinSubsystem {
 
     /* Declarations */
-    // Talon SRX
     private AldrinTalonSRX mMaster;
-
-    // DoubleSolenoid
     private DoubleSolenoid mDeploy;
-
-    // Digital IO
     private Map<String, DigitalInput> mLineSensors;
-
-    // Integer
     private int mWantedPosition;
 
     // Singleton Instance

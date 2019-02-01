@@ -6,6 +6,7 @@ import com.team175.robot.positions.ElevatorPosition;
 import com.team175.robot.util.AldrinTalonSRX;
 import com.team175.robot.util.CTREFactory;
 import com.team175.robot.util.Diagnosable;
+import edu.wpi.first.wpilibj.Timer;
 
 /**
  * @author Arvind
@@ -13,10 +14,7 @@ import com.team175.robot.util.Diagnosable;
 public class Elevator extends AldrinSubsystem implements Diagnosable {
 
     /* Declarations */
-    // Talon SRX
     private AldrinTalonSRX mMaster;
-
-    // Integer
     public int mWantedPosition;
 
     // Singleton Instance

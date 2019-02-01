@@ -3,7 +3,7 @@ package com.team175.robot.commands;
 import com.team175.robot.OI;
 import com.team175.robot.subsystems.Drive;
 import com.team175.robot.subsystems.LateralDrive;
-import com.team175.robot.util.Kanitham;
+import com.team175.robot.util.AldrinMath;
 
 /**
  * @author Arvind
@@ -28,8 +28,8 @@ public class ManualArcadeDrive extends LoggableCommand {
     @Override
     protected void execute() {
         if (!LateralDrive.getInstance().isDeployed()) {
-            double y = Kanitham.addDeadzone(-OI.getInstance().getDriverStickY(), 0.05);
-            double x = Kanitham.addDeadzone(OI.getInstance().getDriverStickTwist(), 0.05);
+            double y = AldrinMath.addDeadzone(-OI.getInstance().getDriverStickY(), 0.05);
+            double x = AldrinMath.addDeadzone(OI.getInstance().getDriverStickTwist(), 0.05);
             Drive.getInstance().arcadeDrive(y, x);
         }
     }

@@ -1,6 +1,6 @@
 package com.team175.robot.util;
 
-public class Kanitham {
+public class AldrinMath {
 
     /**
      * Adds n% deadzone to an input device.

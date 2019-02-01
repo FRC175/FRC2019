@@ -15,14 +15,9 @@ import edu.wpi.first.wpilibj.Talon;
 public class Manipulator extends AldrinSubsystem {
 
     /* Declarations */
-    // Talon SRX
     private AldrinTalonSRX mArm;
-    
-    // Talons
     private Talon mFrontRoller;
     private Talon mRearRoller;
-
-    // Double
     private double mArmWantedPosition;
 
     // Singleton Instance
