@@ -1,6 +1,6 @@
 package com.team175.robot.util;
 
-public class Mathematiques {
+public class AldrinMath {
 
     /**
      * Adds n% deadzone to an input device.
