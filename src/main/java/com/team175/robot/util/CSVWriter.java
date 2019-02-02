@@ -61,15 +61,21 @@ public final class CSVWriter<T> {
     }
 
     public String getHeader() {
-        boolean isFirst = true;
         String header = "";
 
-        for (Method m : mData) {
-            if (isFirst) {
-                header = m.getName();
-                isFirst = false;
-            } else {
-                header += mDelimiter + m.getName();
+        if (mType instanceof CSVLoggable) {
+            /*header = mType.getClass()
+                    .getDeclaredMethod("toCSVHeader")
+                    .invoke(mType);*/
+        } else {
+            boolean isFirst = true;
+            for (Method m : mData) {
+                if (isFirst) {
+                    header = m.getName();
+                    isFirst = false;
+                } else {
+                    header += mDelimiter + m.getName();
+                }
             }
         }
 
@@ -77,16 +83,22 @@ public final class CSVWriter<T> {
     }
 
     public String getBody() throws InvocationTargetException, IllegalAccessException {
-        boolean isFirst = true;
         String body = "";
 
-        for (Method m : mData) {
-            if (isFirst) {
-                body = invokeMethod(m);
-                isFirst = false;
-            } else {
-                String s = invokeMethod(m);
-                body += mDelimiter + invokeMethod(m);
+        if (mType instanceof CSVLoggable) {
+            /*body = mType.getClass()
+                    .getDeclaredMethod("toCSVHeader")
+                    .invoke(mType);*/
+        } else {
+            boolean isFirst = true;
+            for (Method m : mData) {
+                if (isFirst) {
+                    body = invokeMethod(m);
+                    isFirst = false;
+                } else {
+                    String s = invokeMethod(m);
+                    body += mDelimiter + invokeMethod(m);
+                }
             }
         }
 
