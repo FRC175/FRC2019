@@ -22,13 +22,13 @@ public class ClosedLoopTuner extends LoggableCommand {
     }
 
     @Override
-    protected void initialize() {
+    public void initialize() {
         mSubsystem.updatePID();
 
         CSVLogger.getInstance().setTarget(mSubsystem);
         mNotifier.startPeriodic(0.01); // 10 ms?
 
-        mLogger.info("PIDTuner command initialized.");
+        mLogger.info("ClosedLoopTuner command initialized.");
     }
 
     @Override
@@ -37,11 +37,11 @@ public class ClosedLoopTuner extends LoggableCommand {
     }
 
     @Override
-    protected void end() {
+    public void end() {
         mNotifier.stop();
         CSVLogger.getInstance().stop();
 
-        mLogger.info("PIDTuner command ended/interrupted.");
+        mLogger.info("ClosedLoopTuner command ended/interrupted.");
     }
 
     @Override

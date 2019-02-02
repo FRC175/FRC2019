@@ -6,10 +6,10 @@ import edu.wpi.first.cameraserver.CameraServer;
 /**
  * @author Arvind
  */
-public class Vision extends AldrinSubsystem {
+public class Vision extends AldrinSubsystem implements Runnable {
 
     /* Declarations */
-    private UsbCamera mCamera;
+    private CameraServer mCamera;
 
     // Singleton Instance
     private static Vision sInstance;
@@ -24,11 +24,16 @@ public class Vision extends AldrinSubsystem {
 
     private Vision() {
         /* Instantiation */
-        mCamera = CameraServer.getInstance().startAutomaticCapture();
+        mCamera = CameraServer.getInstance();
     }
 
     @Override
     protected void initDefaultCommand() {
+    }
+
+    @Override
+    public void run() {
+        mCamera.startAutomaticCapture();
     }
 
 }

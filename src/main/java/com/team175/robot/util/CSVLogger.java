@@ -33,7 +33,7 @@ public class CSVLogger implements Runnable {
     }
 
     private CSVLogger() {
-        mFile = new File("/home/lvuser/csvlog/telemetry.log");
+        mFile = new File("/home/lvuser/csvlog/telemetry.csv");
         mLogger = LoggerFactory.getLogger(getClass().getSimpleName());
         init();
     }
@@ -57,12 +57,12 @@ public class CSVLogger implements Runnable {
     }
 
     private void periodic() {
-        mWriter.write(mTarget.toCSVPeriodic());
+        mWriter.println(mTarget.toCSVPeriodic());
     }
 
     private void start() {
         init();
-        mWriter.write(mTarget.toCSVHeader());
+        mWriter.println(mTarget.toCSVHeader());
         mIsRunning = true;
     }
 

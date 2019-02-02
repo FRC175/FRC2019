@@ -51,6 +51,7 @@ public class Robot extends TimedRobot {
     private OI mOI;
 
     private Command mAutonomousCommand;
+    private ClosedLoopTuner mClosedLoopTuner;
     private SendableChooser<Command> mChooser;
 
     private List<AldrinSubsystem> mSubsystems;
@@ -58,18 +59,42 @@ public class Robot extends TimedRobot {
     @Override
     public void robotInit() {
         /* Instantiations */
-        mDrive = Drive.getInstance();
+        /*mDrive = Drive.getInstance();
         mElevator = Elevator.getInstance();
         mLateralDrive = LateralDrive.getInstance();
         mLift = Lift.getInstance();
         mManipulator = Manipulator.getInstance();
-        // mVision = Vision.getInstance();
-        mOI = OI.getInstance();
+        mVision = Vision.getInstance();
+        mOI = OI.getInstance();*/
         // mVision.run();
 
+        mClosedLoopTuner = new ClosedLoopTuner(new ClosedLoopTunable() {
+            int time = 0;
+            int pos = 10;
+            int wantedPos = 10000;
+
+            @Override
+            public String toCSVHeader() {
+                return "time,position,wantedPosition";
+            }
+
+            @Override
+            public String toCSVPeriodic() {
+                String s = time + "," + pos + "," + wantedPos;
+
+                time++;
+                pos += 10;
+
+                return s;
+            }
+
+            @Override
+            public void updatePID() {
+            }
+        });
+
         mChooser = new SendableChooser<>();
-        mSubsystems = Arrays.asList();
-        // mSubsystems = Arrays.asList(mBreadboard, mCamera);
+        // mSubsystems = List.of();
 
         mChooser.setDefaultOption("Default Auto", new ExampleCommand());
         // mChooser.addOption("My Auto", new MyAutoCommand());
@@ -104,6 +129,8 @@ public class Robot extends TimedRobot {
         if (mAutonomousCommand != null) {
             mAutonomousCommand.start();
         }
+
+        mClosedLoopTuner.end();
     }
 
     @Override
@@ -129,29 +156,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void testInit() {
-        SmartDashboard.putData("Test PIDTuner", new ClosedLoopTuner(new ClosedLoopTunable() {
-            int time = 0;
-            int output = 10;
-
-            @Override
-            public String toCSVHeader() {
-                return "time,output";
-            }
-
-            @Override
-            public String toCSVPeriodic() {
-                String s = time + "," + output;
-
-                time++;
-                output += 10;
-
-                return s;
-            }
-
-            @Override
-            public void updatePID() {
-            }
-        }));
+        mClosedLoopTuner.initialize();
 
         /*SmartDashboard.putData("Drive PIDTuner", new PIDTuner(Drive.getInstance()));
         SmartDashboard.putData("Elevator PIDTuner", new PIDTuner(Elevator.getInstance()));

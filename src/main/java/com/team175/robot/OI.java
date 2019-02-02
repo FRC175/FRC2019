@@ -26,7 +26,7 @@ public class OI {
     private Joystick mOperatorStick;
 
     // Driver Stick Buttons
-    private Button mToggleLateralDrive;
+    private Button mManualLateralDrive;
     // private Button mLineAlign;
 
     private Button mLift;
@@ -35,7 +35,7 @@ public class OI {
     private Button mManualElevator;
 
     private Button mRollers;
-    private Button mArm;
+    private Button mManualArm;
 
     // Singleton Instance
     private static OI sInstance;
@@ -55,7 +55,7 @@ public class OI {
         mOperatorStick = new Joystick(Constants.OPERATOR_STICK_PORT);
 
         // Driver Stick Buttons
-        mToggleLateralDrive = new JoystickButton(mDriverStick, Constants.LATERAL_DRIVE_TRIGGER); // 1 is the trigger button
+        mManualLateralDrive = new JoystickButton(mDriverStick, Constants.LATERAL_DRIVE_TRIGGER); // 1 is the trigger button
         // mLineAlign = new JoystickButton(mDriverStick, Constants.LINE_ALIGN_BUTTON);
 
         mLift = new TwoButton(mDriverStick, 3, 4);
@@ -64,11 +64,11 @@ public class OI {
         mManualElevator = new JoystickButton(mOperatorStick, Constants.MANUAL_ELEVATOR_TRIGGER);
 
         mRollers = new JoystickButton(mOperatorStick, 3);
-        mArm = new JoystickButton(mOperatorStick, 12);
+        mManualArm = new JoystickButton(mOperatorStick, 12);
 
         /* Command Assignment */
         // Driver Stick
-        mToggleLateralDrive.whileHeld(new ManualLateralDrive());
+        mManualLateralDrive.whileHeld(new ManualLateralDrive());
         // mLineAlign.whenPressed(new LineAlignment());
 
         mLift.whileHeld(new PositionLift(LiftPosition.IDLE));
@@ -77,7 +77,7 @@ public class OI {
         mManualElevator.whileHeld(new ManualElevator());
 
         mRollers.whileHeld(new ManipulateGamePiece(ManipulatorRollerPosition.IDLE));
-        mArm.whileHeld(new ManualManipulatorArm());
+        mManualArm.whileHeld(new ManualManipulatorArm());
     }
 
     public double getDriverStickX() {

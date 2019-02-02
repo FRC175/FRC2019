@@ -15,6 +15,7 @@ public class Elevator extends AldrinSubsystem implements Diagnosable {
 
     /* Declarations */
     private AldrinTalonSRX mMaster;
+
     public int mWantedPosition;
 
     // Singleton Instance

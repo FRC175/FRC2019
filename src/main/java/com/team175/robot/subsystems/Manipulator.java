@@ -7,7 +7,10 @@ import com.team175.robot.positions.ManipulatorRollerPosition;
 import com.team175.robot.util.AldrinTalonSRX;
 
 import com.team175.robot.util.CTREFactory;
+import edu.wpi.first.wpilibj.DoubleSolenoid;
+import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.Timer;
 
 /**
  * @author Arvind
@@ -18,6 +21,9 @@ public class Manipulator extends AldrinSubsystem {
     private AldrinTalonSRX mArm;
     private Talon mFrontRoller;
     private Talon mRearRoller;
+    private Solenoid mBopper;
+    private DoubleSolenoid mRetract;
+
     private double mArmWantedPosition;
 
     // Singleton Instance
@@ -40,6 +46,12 @@ public class Manipulator extends AldrinSubsystem {
         mFrontRoller = new Talon(Constants.MANIPULATOR_FRONT_ROLLER);
         mRearRoller = new Talon(Constants.MANIPULATOR_REAR_ROLLER);
 
+        // Solenoid(channel : int)
+        // mBopper = new Solenoid(Constants.MANIPULATOR_BOPPER_CHANNEL);
+
+        // DoubleSolenoid(forwardChannel : int, reverseChannel : int)
+        // mRetract = new DoubleSolenoid(Constants.MANIPULATOR_RETRACT_FORWARD_CHANNEL, Constants.MANIPULATOR_RETRACT_REVERSE_CHANNEL);
+
         mArmWantedPosition = 0;
     }
 
@@ -49,7 +61,23 @@ public class Manipulator extends AldrinSubsystem {
     }
 
     public void setRollerPosition(ManipulatorRollerPosition position) {
-        setRollerPower(position.getFrontPower(), position.getRearPower());
+
+        switch (position) {
+            case SHOOT_HATCH:
+                setRollerPower(position.getFrontPower(), position.getRearPower());
+                // TODO: Maybe add stop power before bopper is deployed
+                setBopper(true);
+                // TODO: Add sleep in code
+                setBopper(false);
+                break;
+            case GRAB_HATCH:
+            case SHOOT_CARGO:
+            case GRAB_CARGO:
+            case IDLE:
+            default:
+                setRollerPower(position.getFrontPower(), position.getRearPower());
+                break;
+        }
     }
 
     public double getFrontRollerPower() {
@@ -58,6 +86,10 @@ public class Manipulator extends AldrinSubsystem {
 
     public double getRearRollerPower() {
         return mRearRoller.get();
+    }
+
+    public void setBopper(boolean push) {
+        // mBopper.set(push);
     }
 
     public void setArmPower(double power) {
@@ -87,6 +119,10 @@ public class Manipulator extends AldrinSubsystem {
 
     public boolean isArmAtWantedPosition() {
         return Math.abs(getArmPosition() - mArmWantedPosition) <= Constants.ALLOWED_POSITION_DEVIATION;
+    }
+
+    public double getTimestamp() {
+        return Timer.getFPGATimestamp();
     }
 
     @Override
