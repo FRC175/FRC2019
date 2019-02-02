@@ -9,32 +9,29 @@ public final class Constants {
     private Constants() {
     }
 
-    /* Hardware Constants */
+    /* Hardware Map */
     // CAN Ports
-    public static final int LEFT_MASTER_DRIVE_PORT = 0;
+    public static final int LEFT_MASTER_DRIVE_PORT = 6;
     public static final int LEFT_SLAVE_DRIVE_PORT = 1;
     public static final int RIGHT_MASTER_DRIVE_PORT = 2;
     public static final int RIGHT_SLAVE_DRIVE_PORT = 3;
-    public static final int PIGEON_PORT = 0;
     public static final int ELEVATOR_PORT = 4;
     public static final int LATERAL_DRIVE_PORT = 8;
     public static final int MANIPULATOR_ARM_PORT = 7;
 
     // Pneumatics
-    public static final int SHIFT_CHANNEL = 0;
-    public static final int LATERAL_DRIVE_DEPLOY_CHANNEL = 1;
-    public static final int MANIPULATOR_BOPPER_CHANNEL = 3;
-    public static final int MANIPULATOR_RETRACT_FORWARD_CHANNEL = 4;
-    public static final int MANIPULATOR_RETRACT_REVERSE_CHANNEL = 5;
-    /*public static final int LATERAL_DRIVE_DEPLOY_FORWARD_CHANNEL = 2;
-    public static final int LATERAL_DRIVE_DEPLOY_REVERSE_CHANNEL = 1;*/
+    public static final int SHIFT_CHANNEL = 3;
+    public static final int LATERAL_DRIVE_DEPLOY_CHANNEL = 2;
+    public static final int MANIPULATOR_HATCH_PUSH_CHANNEL = 5;
+    public static final int MANIPULATOR_DEPLOY_FORWARD_CHANNEL = 0;
+    public static final int MANIPULATOR_DEPLOY_REVERSE_CHANNEL = 1;
 
     // PWM
     public static final int LIFT_FRONT_PORT = 3;
-    public static final int LIFT_REAR_PORT = 2;
+    public static final int LIFT_REAR_PORT = 0;
     public static final int LIFT_DRIVE_PORT = 4;
-    public static final int MANIPULATOR_FRONT_ROLLER = 1;
-    public static final int MANIPULATOR_REAR_ROLLER = 0;
+    public static final int MANIPULATOR_FRONT_ROLLER = 2;
+    public static final int MANIPULATOR_REAR_ROLLER = 1;
 
     // Digital Inputs
     public static final int LEFT_TWO_SENSOR_PORT = 5;
@@ -45,16 +42,28 @@ public final class Constants {
     public static final int LIFT_FRONT_LIMIT_PORT = 0;
     public static final int LIFT_REAR_LIMIT_PORT = 0;
 
+    /* Input Map */
     // Joystick Ports
     public static final int DRIVER_STICK_PORT = 0;
     public static final int OPERATOR_STICK_PORT = 1;
 
-    // Driver Stick Button Map
+    // Driver Stick Buttons
     public static final int LATERAL_DRIVE_TRIGGER = 1;
-    public static final int LINE_ALIGN_BUTTON = 12;
+    public static final int SHIFT_BUTTON = 2;
+    public static final int STRAIGHT_DRIVE_BUTTON = 3;
+    public static final int MANUAL_LIFT_BUTTON = 4;
+    // public static final int MANUAL_LIFT_DRIVE_BUTTON = ;
+    // public static final int LINE_ALIGN_BUTTON = 12;
 
-    // Operator Stick Button Map
+    // Operator Stick Buttons
     public static final int MANUAL_ELEVATOR_TRIGGER = 1;
+    public static final int TOGGLE_MANIPULATOR_BUTTON = 11;
+    public static final int SCORE_HATCH_BUTTON = 5;
+    public static final int GRAB_HATCH_BUTTON = 3;
+    public static final int SCORE_CARGO_BUTTON = 6;
+    public static final int GRAB_CARGO_BUTTON = 4;
+    public static final int TOGGLE_PUSH_HATCH_BUTTON = 2;
+    public static final int MANUAL_ARM_BUTTON = 12;
 
     /* Software Constants */
     // CTRE Constants

@@ -8,9 +8,7 @@
 package com.team175.robot;
 
 import com.team175.robot.commands.*;
-import com.team175.robot.positions.LiftPosition;
 import com.team175.robot.positions.ManipulatorRollerPosition;
-import com.team175.robot.util.TwoButton;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -27,15 +25,22 @@ public class OI {
 
     // Driver Stick Buttons
     private Button mManualLateralDrive;
+    private Button mShift;
+    private Button mStraightDrive;
+    private Button mManualLift;
+    // private Button mManualLiftDrive;
     // private Button mLineAlign;
 
-    private Button mLift;
-
     // Operator Stick Buttons
+    // TODO: Add automated arm and elevator positions
     private Button mManualElevator;
-
-    private Button mRollers;
-    private Button mManualArm;
+    private Button mToggleManipulator;
+    private Button mScoreHatch;
+    private Button mGrabHatch;
+    private Button mScoreCargo;
+    private Button mGrabCargo;
+    private Button mTogglePushHatch;
+    private Button mManualManipulatorArm;
 
     // Singleton Instance
     private static OI sInstance;
@@ -56,28 +61,40 @@ public class OI {
 
         // Driver Stick Buttons
         mManualLateralDrive = new JoystickButton(mDriverStick, Constants.LATERAL_DRIVE_TRIGGER); // 1 is the trigger button
+        mShift = new JoystickButton(mDriverStick, Constants.SHIFT_BUTTON);
+        mStraightDrive = new JoystickButton(mDriverStick, Constants.STRAIGHT_DRIVE_BUTTON);
+        mManualLift = new JoystickButton(mDriverStick, Constants.MANUAL_LIFT_BUTTON);
+        // mManualLiftDrive = new JoystickButton(mDriverStick, Constants.MANUAL_LIFT_DRIVE_BUTTON);
         // mLineAlign = new JoystickButton(mDriverStick, Constants.LINE_ALIGN_BUTTON);
-
-        mLift = new TwoButton(mDriverStick, 3, 4);
 
         // Operator Stick Buttons
         mManualElevator = new JoystickButton(mOperatorStick, Constants.MANUAL_ELEVATOR_TRIGGER);
-
-        mRollers = new JoystickButton(mOperatorStick, 3);
-        mManualArm = new JoystickButton(mOperatorStick, 12);
+        mToggleManipulator = new JoystickButton(mOperatorStick, Constants.TOGGLE_MANIPULATOR_BUTTON);
+        mScoreHatch = new JoystickButton(mOperatorStick, Constants.SCORE_HATCH_BUTTON);
+        mGrabHatch = new JoystickButton(mOperatorStick, Constants.GRAB_HATCH_BUTTON);
+        mScoreCargo = new JoystickButton(mOperatorStick, Constants.SCORE_CARGO_BUTTON);
+        mGrabCargo = new JoystickButton(mOperatorStick, Constants.GRAB_HATCH_BUTTON);
+        mTogglePushHatch = new JoystickButton(mOperatorStick, Constants.TOGGLE_PUSH_HATCH_BUTTON);
+        mManualManipulatorArm = new JoystickButton(mOperatorStick, Constants.MANUAL_ARM_BUTTON);
 
         /* Command Assignment */
         // Driver Stick
         mManualLateralDrive.whileHeld(new ManualLateralDrive());
+        mShift.whileHeld(new ManualArcadeDrive(true));
+        // mStraightDrive.whileHeld(new StraightDrive());
+        mManualLift.whileHeld(new ManualLift());
+        // mManualLiftDrive.whileHeld(new LiftDrive());
         // mLineAlign.whenPressed(new LineAlignment());
-
-        mLift.whileHeld(new PositionLift(LiftPosition.IDLE));
 
         // Operator Stick
         mManualElevator.whileHeld(new ManualElevator());
-
-        mRollers.whileHeld(new ManipulateGamePiece(ManipulatorRollerPosition.IDLE));
-        mManualArm.whileHeld(new ManualManipulatorArm());
+        mToggleManipulator.toggleWhenPressed(new ToggleManipulatorDeploy());
+        mScoreCargo.whileHeld(new ManipulateGamePiece(ManipulatorRollerPosition.SCORE_CARGO));
+        mGrabCargo.whileHeld(new ManipulateGamePiece(ManipulatorRollerPosition.GRAB_CARGO));
+        mScoreHatch.whileHeld(new ManipulateGamePiece(ManipulatorRollerPosition.SCORE_HATCH));
+        mGrabHatch.whileHeld(new ManipulateGamePiece(ManipulatorRollerPosition.GRAB_HATCH));
+        mTogglePushHatch.toggleWhenPressed(new TogglePushHatch());
+        mManualManipulatorArm.whileHeld(new ManualManipulatorArm());
     }
 
     public double getDriverStickX() {

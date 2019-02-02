@@ -3,12 +3,13 @@ package com.team175.robot.commands;
 import com.team175.robot.OI;
 import com.team175.robot.subsystems.Drive;
 import com.team175.robot.subsystems.LateralDrive;
+import com.team175.robot.subsystems.Lift;
 import com.team175.robot.util.AldrinMath;
 
 /**
  * @author Arvind
  */
-public class ManualArcadeDrive extends LoggableCommand {
+public class ManualArcadeDrive extends AldrinCommand {
 
     private boolean mIsHighGear;
 
@@ -17,12 +18,15 @@ public class ManualArcadeDrive extends LoggableCommand {
         requires(LateralDrive.getInstance());
 
         mIsHighGear = isHighGear;
+
+        super.instantiationLog();
     }
 
     @Override
     protected void initialize() {
         Drive.getInstance().setHighGear(mIsHighGear);
-        mLogger.info("ManualArcadeDrive command initialized.");
+
+        super.initLog();
     }
 
     @Override
@@ -43,7 +47,7 @@ public class ManualArcadeDrive extends LoggableCommand {
     protected void end() {
         Drive.getInstance().setPower(0, 0);
 
-        mLogger.info("ManualArcadeDrive command ended/interrupted.");
+        super.endLog();
     }
 
     @Override

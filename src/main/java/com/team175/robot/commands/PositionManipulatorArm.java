@@ -6,7 +6,7 @@ import com.team175.robot.subsystems.Manipulator;
 /**
  * @author Arvind
  */
-public class PositionManipulatorArm extends LoggableCommand {
+public class PositionManipulatorArm extends AldrinCommand {
 
     private ManipulatorArmPosition mPosition;
     
@@ -14,11 +14,13 @@ public class PositionManipulatorArm extends LoggableCommand {
         requires(Manipulator.getInstance());
 
         mPosition = position;
+
+        super.instantiationLog();
     }
 
     @Override
     protected void initialize() {
-        mLogger.info("PositionManipulatorArm command initialized.");
+        super.initLog();
     }
 
     @Override
@@ -33,7 +35,7 @@ public class PositionManipulatorArm extends LoggableCommand {
 
     @Override
     protected void end() {
-        mLogger.info("PositionManipulatorArm command ended/interrupted.");
+        super.endLog();
     }
 
     @Override

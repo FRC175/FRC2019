@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.Notifier;
  *
  * @author Arvind
  */
-public class ClosedLoopTuner extends LoggableCommand {
+public class ClosedLoopTuner extends AldrinCommand {
 
     private Notifier mNotifier;
     private ClosedLoopTunable mSubsystem;
@@ -19,6 +19,8 @@ public class ClosedLoopTuner extends LoggableCommand {
         // requires();
         mNotifier = new Notifier(CSVLogger.getInstance());
         mSubsystem = subsystem;
+
+        super.instantiationLog();
     }
 
     @Override
@@ -28,7 +30,7 @@ public class ClosedLoopTuner extends LoggableCommand {
         CSVLogger.getInstance().setTarget(mSubsystem);
         mNotifier.startPeriodic(0.01); // 10 ms?
 
-        mLogger.info("ClosedLoopTuner command initialized.");
+        super.initLog();
     }
 
     @Override
@@ -41,7 +43,7 @@ public class ClosedLoopTuner extends LoggableCommand {
         mNotifier.stop();
         CSVLogger.getInstance().stop();
 
-        mLogger.info("ClosedLoopTuner command ended/interrupted.");
+        super.endLog();
     }
 
     @Override

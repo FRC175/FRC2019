@@ -1,13 +1,12 @@
 package com.team175.robot.commands;
 
-import com.team175.robot.OI;
 import com.team175.robot.positions.ManipulatorRollerPosition;
 import com.team175.robot.subsystems.Manipulator;
 
 /**
  * @author Arvind
  */
-public class ManipulateGamePiece extends LoggableCommand {
+public class ManipulateGamePiece extends AldrinCommand {
 
     private ManipulatorRollerPosition mPosition;
 
@@ -15,18 +14,18 @@ public class ManipulateGamePiece extends LoggableCommand {
         requires(Manipulator.getInstance());
 
         mPosition = position;
+
+        super.instantiationLog();
     }
 
     @Override
     protected void initialize() {
-        mLogger.info("ManipulateGamePiece command initialized.");
+        super.initLog();
     }
 
     @Override
     protected void execute() {
-        // Manipulator.getInstance().setRollerPosition(mPosition);
-        double power = OI.getInstance().getOperatorStickX();
-        Manipulator.getInstance().setRollerPower(power, power);
+        Manipulator.getInstance().setRollerPosition(mPosition);
     }
 
     @Override
@@ -38,7 +37,7 @@ public class ManipulateGamePiece extends LoggableCommand {
     protected void end() {
         Manipulator.getInstance().setRollerPosition(ManipulatorRollerPosition.IDLE);
 
-        mLogger.info("ManipulateGamePiece command ended/interrupted.");
+        super.endLog();
     }
 
     @Override

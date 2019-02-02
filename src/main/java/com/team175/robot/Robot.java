@@ -40,8 +40,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 public class Robot extends TimedRobot {
 
     /* Declarations */
-	/*private ExampleSubsystem mExampleSubsystem;
-	private Breadboard mBreadboard;*/
     private Drive mDrive;
     private Elevator mElevator;
     private LateralDrive mLateralDrive;
@@ -54,21 +52,20 @@ public class Robot extends TimedRobot {
     private ClosedLoopTuner mClosedLoopTuner;
     private SendableChooser<Command> mChooser;
 
-    private List<AldrinSubsystem> mSubsystems;
+    // private List<AldrinSubsystem> mSubsystems;
 
     @Override
     public void robotInit() {
         /* Instantiations */
-        /*mDrive = Drive.getInstance();
+        mDrive = Drive.getInstance();
         mElevator = Elevator.getInstance();
         mLateralDrive = LateralDrive.getInstance();
         mLift = Lift.getInstance();
         mManipulator = Manipulator.getInstance();
         mVision = Vision.getInstance();
-        mOI = OI.getInstance();*/
-        // mVision.run();
+        mOI = OI.getInstance();
 
-        mClosedLoopTuner = new ClosedLoopTuner(new ClosedLoopTunable() {
+        /*mClosedLoopTuner = new ClosedLoopTuner(new ClosedLoopTunable() {
             int time = 0;
             int pos = 10;
             int wantedPos = 10000;
@@ -91,10 +88,9 @@ public class Robot extends TimedRobot {
             @Override
             public void updatePID() {
             }
-        });
+        });*/
 
         mChooser = new SendableChooser<>();
-        // mSubsystems = List.of();
 
         mChooser.setDefaultOption("Default Auto", new ExampleCommand());
         // mChooser.addOption("My Auto", new MyAutoCommand());
@@ -111,7 +107,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledPeriodic() {
-        Scheduler.getInstance().run();
+        // Scheduler.getInstance().run();
     }
 
     @Override

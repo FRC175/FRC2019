@@ -1,6 +1,6 @@
 package com.team175.robot.commands.deprecated;
 
-import com.team175.robot.commands.LoggableCommand;
+import com.team175.robot.commands.AldrinCommand;
 import com.team175.robot.subsystems.deprecated.Breadboard;
 import com.team175.robot.OI;
 
@@ -8,7 +8,7 @@ import com.team175.robot.OI;
  * @author Arvind
  */
 @Deprecated
-public class ManualCIMControl extends LoggableCommand {
+public class ManualCIMControl extends AldrinCommand {
 
     public ManualCIMControl() {
         requires(Breadboard.getInstance());

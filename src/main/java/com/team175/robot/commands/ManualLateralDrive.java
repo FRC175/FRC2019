@@ -7,11 +7,13 @@ import com.team175.robot.subsystems.LateralDrive;
 /**
  * @author Arvind
  */
-public class ManualLateralDrive extends LoggableCommand {
+public class ManualLateralDrive extends AldrinCommand {
 
     public ManualLateralDrive() {
         requires(LateralDrive.getInstance());
         requires(Drive.getInstance());
+
+        super.instantiationLog();
     }
 
     @Override
@@ -19,7 +21,7 @@ public class ManualLateralDrive extends LoggableCommand {
         Drive.getInstance().setPower(0, 0);
         LateralDrive.getInstance().deploy(true);
 
-        mLogger.info("ManualLateralDrive command initialized.");
+        super.initLog();
     }
 
     @Override
@@ -37,7 +39,7 @@ public class ManualLateralDrive extends LoggableCommand {
         LateralDrive.getInstance().setPower(0);
         LateralDrive.getInstance().deploy(false);
 
-        mLogger.info("ManualArcadeDrive command ended/initialized.");
+        super.endLog();
     }
 
     @Override

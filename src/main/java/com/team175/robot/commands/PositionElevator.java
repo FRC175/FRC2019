@@ -6,7 +6,7 @@ import com.team175.robot.subsystems.Elevator;
 /**
  * @author Arvind
  */
-public class PositionElevator extends LoggableCommand {
+public class PositionElevator extends AldrinCommand {
 
     private ElevatorPosition mPosition;
 
@@ -14,11 +14,13 @@ public class PositionElevator extends LoggableCommand {
         requires(Elevator.getInstance());
 
         mPosition = position;
+
+        super.instantiationLog();
     }
 
     @Override
     protected void initialize() {
-        mLogger.info("PositionElevator command initialized.");
+        super.initLog();
     }
 
     @Override
@@ -33,7 +35,7 @@ public class PositionElevator extends LoggableCommand {
 
     @Override
     protected void end() {
-        mLogger.info("PositionElevator command ended/interrupted.");
+        super.endLog();
     }
 
     @Override

@@ -6,15 +6,17 @@ import com.team175.robot.subsystems.Elevator;
 /**
  * @author Arvind
  */
-public class ManualElevator extends LoggableCommand {
+public class ManualElevator extends AldrinCommand {
 
     public ManualElevator() {
         requires(Elevator.getInstance());
+
+        super.instantiationLog();
     }
 
     @Override
     protected void initialize() {
-        mLogger.info("ManualElevator command initialized.");
+        super.initLog();
     }
 
     @Override
@@ -30,7 +32,8 @@ public class ManualElevator extends LoggableCommand {
     @Override
     protected void end() {
         Elevator.getInstance().setPower(0);
-        mLogger.info("ManualElevator command ended/interrupted.");
+
+        super.endLog();
     }
 
     @Override

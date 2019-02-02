@@ -6,15 +6,17 @@ import com.team175.robot.subsystems.Manipulator;
 /**
  * @author Arvind
  */
-public class ManualManipulatorArm extends LoggableCommand {
+public class ManualManipulatorArm extends AldrinCommand {
 
     public ManualManipulatorArm() {
         requires(Manipulator.getInstance());
+
+        super.instantiationLog();
     }
 
     @Override
     protected void initialize() {
-        mLogger.info("ManualManipulatorArm command initialized.");
+        super.initLog();
     }
 
     @Override
@@ -29,7 +31,7 @@ public class ManualManipulatorArm extends LoggableCommand {
 
     @Override
     protected void end() {
-        mLogger.info("ManualManipulatorArm command ended/interrupted.");
+        super.endLog();
     }
 
     @Override

@@ -3,7 +3,7 @@ package com.team175.robot.commands;
 /**
  * @author Arvind
  */
-public class CommandTemplate extends LoggableCommand {
+public class CommandTemplate extends AldrinCommand {
 
     public CommandTemplate() {
         // requires();
