@@ -72,13 +72,4 @@ public final class Constants {
     public static final int TIMEOUT_MS = 10;
     public static final int ALLOWED_POSITION_DEVIATION = 10;
 
-    /* Old */
-    // Breadboard
-    public static final int LEFT_TALON_PORT = 1;
-    public static final int RIGHT_VICTOR_PORT = 2;
-    public static final int CIM_TALON_PORT = 0;
-    public static final int kNEOSparkPort = 3;
-    public static final int OPTICAL_SENSOR_PORT = 0;
-    public static final int LATERAL_DEPLOY_FORWARD_CHANNEL = 2;
-    public static final int LATERAL_DEPLOY_REVERSE_CHANNEL = 1;
 }

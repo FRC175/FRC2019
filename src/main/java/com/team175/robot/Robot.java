@@ -57,10 +57,10 @@ public class Robot extends TimedRobot {
         /*mAutoModeChooser.setDefaultOption("Default Auto", new ExampleCommand());
         SmartDashboard.putData("Auto Mode", mAutoModeChooser);*/
 
-        mPIDTunerChooser = new SendableChooser<>();
+        /*mPIDTunerChooser = new SendableChooser<>();
         mAutoModeChooser.setDefaultOption("Drive PID Tuning" , new PIDTuner(mDrive));
         mAutoModeChooser.addOption("Elevator PID Tuning", new PIDTuner(mElevator));
-        mAutoModeChooser.addOption("Lateral Drive PID Tuning", new PIDTuner(mLateralDrive));
+        mAutoModeChooser.addOption("Lateral Drive PID Tuning", new PIDTuner(mLateralDrive));*/
     }
 
     @Override

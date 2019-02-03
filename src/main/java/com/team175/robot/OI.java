@@ -73,7 +73,7 @@ public class OI {
         mScoreHatch = new JoystickButton(mOperatorStick, Constants.SCORE_HATCH_BUTTON);
         mGrabHatch = new JoystickButton(mOperatorStick, Constants.GRAB_HATCH_BUTTON);
         mScoreCargo = new JoystickButton(mOperatorStick, Constants.SCORE_CARGO_BUTTON);
-        mGrabCargo = new JoystickButton(mOperatorStick, Constants.GRAB_HATCH_BUTTON);
+        mGrabCargo = new JoystickButton(mOperatorStick, Constants.GRAB_CARGO_BUTTON);
         mTogglePushHatch = new JoystickButton(mOperatorStick, Constants.TOGGLE_PUSH_HATCH_BUTTON);
         mManualManipulatorArm = new JoystickButton(mOperatorStick, Constants.MANUAL_ARM_BUTTON);
 
@@ -103,10 +103,6 @@ public class OI {
 
     public double getDriverStickY() {
         return mDriverStick.getY();
-    }
-
-    public double getDriverStickTwist() {
-        return mDriverStick.getTwist();
     }
 
     public double getOperatorStickX() {

@@ -48,16 +48,23 @@ public class Drive extends AldrinSubsystem implements PIDTunable {
         mRightMaster = CTREFactory.getMasterTalon(Constants.RIGHT_MASTER_DRIVE_PORT);
         mRightSlave = CTREFactory.getSlaveTalon(Constants.RIGHT_SLAVE_DRIVE_PORT, mRightMaster);
 
+
+        mLeftMaster.configFactoryDefault();
+        mRightMaster.configFactoryDefault();
+
         // PigeonIMU(portNum : int)
-        mPigeon = new PigeonIMU(mLeftSlave);
+        mPigeon = new PigeonIMU(mRightSlave);
 
         // Solenoid(channel : int)
         mShift = new Solenoid(Constants.SHIFT_CHANNEL);
     }
 
     public void arcadeDrive(double y, double x) {
-        mLeftMaster.set(ControlMode.PercentOutput, y, DemandType.ArbitraryFeedForward, x);
-        mRightMaster.set(ControlMode.PercentOutput, y, DemandType.ArbitraryFeedForward, x);
+        /*mLeftMaster.set(ControlMode.PercentOutput, y, DemandType.ArbitraryFeedForward, +x);
+        mRightMaster.set(ControlMode.PercentOutput, y, DemandType.ArbitraryFeedForward, -x);*/
+
+        mLeftMaster.set(ControlMode.PercentOutput, y);
+        mRightMaster.set(ControlMode.PercentOutput, y);
     }
 
     public void setPower(double leftPower, double rightPower) {
