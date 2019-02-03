@@ -4,4 +4,4 @@ clientDir="C:/Users/BUZZ-175/RoboRIOCSVLogs/telemetry.csv"
 
 scp $server:$serverDir $clientDir
 
-vi $clientDir
+python plot.py

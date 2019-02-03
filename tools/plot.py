@@ -1,20 +1,14 @@
-"""
-Ripped from the Cheesy Poofs.
-
-@author Arvind
-"""
-
 import numpy as np
 
-import matplotlib as mpl
 import matplotlib.pyplot as plt
-import matplotlib.cbook as cbook
 
-data = np.genfromtxt('telemetry.csv', delimiter=',', names=True)
+filePath = 'C:/Users/BUZZ-175/RoboRIOCSVLogs/telemetry.csv'
 
-fig = plt.figure()
+data = np.genfromtxt(filePath, delimiter=',', names=True)
 
-outputPlot = fig.add_subplot(1, 1, 1)
-outputPlot.plot(data['time'], data['position'], label='Position vs Time')
+plt.plot(data['time'], data['position'], data['wantedPosition'])
+plt.xlabel('time')
+plt.ylabel('position')
+plt.title('position vs. time')
 
 plt.show()

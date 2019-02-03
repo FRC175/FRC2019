@@ -17,7 +17,7 @@
         </encoder>
     </appender>
 
-    <appender name="DRIVER_STATION" class="com.team175.robot.util.DriverStationAppender"></appender>
+    <appender name="DRIVER_STATION" class="com.team175.robot.util.logging.DriverStationAppender" />
 
     <!-- <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
         <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">

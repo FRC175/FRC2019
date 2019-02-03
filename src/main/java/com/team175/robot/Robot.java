@@ -7,19 +7,13 @@
 
 package com.team175.robot;
 
-import java.util.Arrays;
-import java.util.List;
-
-import com.team175.robot.commands.ClosedLoopTuner;
-import com.team175.robot.commands.deprecated.ExampleCommand;
+import com.team175.robot.commands.PIDTuner;
 import com.team175.robot.subsystems.*;
 
-import com.team175.robot.util.ClosedLoopTunable;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 /**
  * The VM is configured to automatically run this class, and to call the
@@ -27,13 +21,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  * documentation. If you change the name of this class or the package after
  * creating this project, you must also update the build.gradle file in the
  * project.
- *
- * TODO:
- * - Create a periodic method in each subsystem that runs at double the normal robot refresh rate (20 ms => 10 ms)
- * in a separate thread in order to increase robot accuracy.
- * - Utilize csv logging in order to capture robot telemetry data such as encoder counts and graph them in a python
- * program.
- * - Run csv logger at double the normal refresh rate.
  *
  * @author Arvind
  */
@@ -48,9 +35,10 @@ public class Robot extends TimedRobot {
     private Vision mVision;
     private OI mOI;
 
-    private Command mAutonomousCommand;
-    private ClosedLoopTuner mClosedLoopTuner;
-    private SendableChooser<Command> mChooser;
+    private Command mAutoMode;
+    private Command mPIDTunerSubsystem;
+    private SendableChooser<Command> mAutoModeChooser;
+    private SendableChooser<Command> mPIDTunerChooser;
 
     // private List<AldrinSubsystem> mSubsystems;
 
@@ -65,36 +53,14 @@ public class Robot extends TimedRobot {
         mVision = Vision.getInstance();
         mOI = OI.getInstance();
 
-        /*mClosedLoopTuner = new ClosedLoopTuner(new ClosedLoopTunable() {
-            int time = 0;
-            int pos = 10;
-            int wantedPos = 10000;
+        mAutoModeChooser = new SendableChooser<>();
+        /*mAutoModeChooser.setDefaultOption("Default Auto", new ExampleCommand());
+        SmartDashboard.putData("Auto Mode", mAutoModeChooser);*/
 
-            @Override
-            public String toCSVHeader() {
-                return "time,position,wantedPosition";
-            }
-
-            @Override
-            public String toCSVPeriodic() {
-                String s = time + "," + pos + "," + wantedPos;
-
-                time++;
-                pos += 10;
-
-                return s;
-            }
-
-            @Override
-            public void updatePID() {
-            }
-        });*/
-
-        mChooser = new SendableChooser<>();
-
-        mChooser.setDefaultOption("Default Auto", new ExampleCommand());
-        // mChooser.addOption("My Auto", new MyAutoCommand());
-        SmartDashboard.putData("Auto Mode", mChooser);
+        mPIDTunerChooser = new SendableChooser<>();
+        mAutoModeChooser.setDefaultOption("Drive PID Tuning" , new PIDTuner(mDrive));
+        mAutoModeChooser.addOption("Elevator PID Tuning", new PIDTuner(mElevator));
+        mAutoModeChooser.addOption("Lateral Drive PID Tuning", new PIDTuner(mLateralDrive));
     }
 
     @Override
@@ -107,12 +73,12 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledPeriodic() {
-        // Scheduler.getInstance().run();
+        Scheduler.getInstance().run();
     }
 
     @Override
     public void autonomousInit() {
-        mAutonomousCommand = mChooser.getSelected();
+        mAutoMode = mAutoModeChooser.getSelected();
 
         /*
          * String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
@@ -122,11 +88,13 @@ public class Robot extends TimedRobot {
          */
 
         // schedule the autonomous command (example)
-        if (mAutonomousCommand != null) {
-            mAutonomousCommand.start();
+        if (mAutoMode != null) {
+            mAutoMode.start();
         }
 
-        mClosedLoopTuner.end();
+        if (mPIDTunerSubsystem != null) {
+            mAutoMode.cancel();
+        }
     }
 
     @Override
@@ -140,8 +108,8 @@ public class Robot extends TimedRobot {
         // teleop starts running. If you want the autonomous to
         // continue until interrupted by another command, remove
         // this line or comment it out.
-        if (mAutonomousCommand != null) {
-            mAutonomousCommand.cancel();
+        if (mAutoMode != null) {
+            mAutoMode.cancel();
         }
     }
 
@@ -152,11 +120,11 @@ public class Robot extends TimedRobot {
 
     @Override
     public void testInit() {
-        mClosedLoopTuner.initialize();
+        mPIDTunerSubsystem = mPIDTunerChooser.getSelected();
 
-        /*SmartDashboard.putData("Drive PIDTuner", new PIDTuner(Drive.getInstance()));
-        SmartDashboard.putData("Elevator PIDTuner", new PIDTuner(Elevator.getInstance()));
-        SmartDashboard.putData("Lateral Drive PIDTuner", new PIDTuner(LateralDrive.getInstance()));*/
+        if (mPIDTunerSubsystem != null) {
+            mPIDTunerSubsystem.start();
+        }
     }
 
     @Override

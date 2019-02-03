@@ -18,14 +18,14 @@ public class PositionLift extends AldrinCommand {
 
         mPosition = position;
 
-        super.instantiationLog();
+        super.logInstantiation();
     }
 
     @Override
     protected void initialize() {
         Drive.getInstance().setPower(0, 0);
 
-        super.initLog();
+        super.logInit();
     }
 
     @Override
@@ -45,7 +45,7 @@ public class PositionLift extends AldrinCommand {
         Lift.getInstance().setLiftPower(0);
         // Lift.getInstance().setDrivePower(0);
 
-        super.endLog();
+        super.logEnd();
     }
 
     @Override

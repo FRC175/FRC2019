@@ -5,7 +5,7 @@
 /* the project.                                                               */
 /*----------------------------------------------------------------------------*/
 
-package com.team175.robot.subsystems.deprecated;
+package com.team175.robot.subsystems;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
@@ -31,7 +31,6 @@ import edu.wpi.first.wpilibj.command.Subsystem;
  * @author Arvind
  * @see Subsystem
  */
-@Deprecated
 public class ExampleSubsystem extends Subsystem {
 
     // Subsystem Instance (Used in Singleton Design Pattern; Optional)
@@ -65,7 +64,7 @@ public class ExampleSubsystem extends Subsystem {
      * NOTE:
      * Constructor can be set to private if Singleton design pattern is used.
      */
-    private ExampleSubsystem() {
+    public ExampleSubsystem() {
         // Since the constructor in Subsystem.java has a constructor with no parameters, the super command is not
         // required to be called here.
 

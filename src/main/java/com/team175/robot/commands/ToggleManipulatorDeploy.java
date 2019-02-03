@@ -9,7 +9,7 @@ public class ToggleManipulatorDeploy extends AldrinInstantCommand {
     public ToggleManipulatorDeploy() {
         requires(Manipulator.getInstance());
 
-        super.instantiationLog();
+        super.logInstantiation();
     }
 
     @Override
@@ -17,7 +17,7 @@ public class ToggleManipulatorDeploy extends AldrinInstantCommand {
         Manipulator.getInstance().deploy(mDeploy);
         mDeploy = !mDeploy;
 
-        super.initLog();
+        super.logInit();
     }
 
 }

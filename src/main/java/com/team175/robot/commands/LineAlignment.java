@@ -11,13 +11,13 @@ public class LineAlignment extends AldrinCommand {
         // requires(Breadboard.getInstance());
         // requires(LateralDrive.getInstance());
 
-        super.initLog();
+        super.logInit();
     }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        super.initLog();
+        super.logInit();
     }
 
     // Called repeatedly when this Command is scheduled to run
@@ -34,7 +34,7 @@ public class LineAlignment extends AldrinCommand {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        super.endLog();
+        super.logEnd();
     }
 
     // Called when another command which requires one or more of the same

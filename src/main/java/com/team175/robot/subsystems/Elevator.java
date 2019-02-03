@@ -6,12 +6,17 @@ import com.team175.robot.positions.ElevatorPosition;
 import com.team175.robot.util.AldrinTalonSRX;
 import com.team175.robot.util.CTREFactory;
 import com.team175.robot.util.Diagnosable;
+import com.team175.robot.util.PIDTunable;
+import com.team175.robot.util.logging.CSVLoggable;
 import edu.wpi.first.wpilibj.Timer;
+
+import java.util.Map;
+import java.util.function.DoubleSupplier;
 
 /**
  * @author Arvind
  */
-public class Elevator extends AldrinSubsystem implements Diagnosable {
+public class Elevator extends AldrinSubsystem implements PIDTunable {
 
     /* Declarations */
     private AldrinTalonSRX mMaster;
@@ -75,7 +80,12 @@ public class Elevator extends AldrinSubsystem implements Diagnosable {
     }
 
     @Override
-    public boolean checkSubsystem() {
-        return false;
+    public void updatePID() {
     }
+
+    @Override
+    public Map<String, DoubleSupplier> getCSVProperties() {
+        return null;
+    }
+    
 }

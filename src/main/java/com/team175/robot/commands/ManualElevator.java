@@ -11,12 +11,12 @@ public class ManualElevator extends AldrinCommand {
     public ManualElevator() {
         requires(Elevator.getInstance());
 
-        super.instantiationLog();
+        super.logInstantiation();
     }
 
     @Override
     protected void initialize() {
-        super.initLog();
+        super.logInit();
     }
 
     @Override
@@ -33,7 +33,7 @@ public class ManualElevator extends AldrinCommand {
     protected void end() {
         Elevator.getInstance().setPower(0);
 
-        super.endLog();
+        super.logEnd();
     }
 
     @Override

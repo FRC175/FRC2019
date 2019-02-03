@@ -13,7 +13,7 @@ public class ManualLateralDrive extends AldrinCommand {
         requires(LateralDrive.getInstance());
         requires(Drive.getInstance());
 
-        super.instantiationLog();
+        super.logInstantiation();
     }
 
     @Override
@@ -21,7 +21,7 @@ public class ManualLateralDrive extends AldrinCommand {
         Drive.getInstance().setPower(0, 0);
         LateralDrive.getInstance().deploy(true);
 
-        super.initLog();
+        super.logInit();
     }
 
     @Override
@@ -39,7 +39,7 @@ public class ManualLateralDrive extends AldrinCommand {
         LateralDrive.getInstance().setPower(0);
         LateralDrive.getInstance().deploy(false);
 
-        super.endLog();
+        super.logEnd();
     }
 
     @Override

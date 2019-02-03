@@ -15,12 +15,12 @@ public class ManipulateGamePiece extends AldrinCommand {
 
         mPosition = position;
 
-        super.instantiationLog();
+        super.logInstantiation();
     }
 
     @Override
     protected void initialize() {
-        super.initLog();
+        super.logInit();
     }
 
     @Override
@@ -37,7 +37,7 @@ public class ManipulateGamePiece extends AldrinCommand {
     protected void end() {
         Manipulator.getInstance().setRollerPosition(ManipulatorRollerPosition.IDLE);
 
-        super.endLog();
+        super.logEnd();
     }
 
     @Override

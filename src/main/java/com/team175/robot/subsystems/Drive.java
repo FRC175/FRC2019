@@ -3,26 +3,29 @@ package com.team175.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.DemandType;
 
+import com.ctre.phoenix.sensors.PigeonIMU;
 import com.team175.robot.Constants;
 import com.team175.robot.commands.ManualArcadeDrive;
 import com.team175.robot.util.AldrinTalonSRX;
-import com.team175.robot.util.CSVLogger;
 import com.team175.robot.util.CTREFactory;
-import com.team175.robot.util.Diagnosable;
-import com.team175.robot.util.Loggable;
 
+import com.team175.robot.util.PIDTunable;
+import com.team175.robot.util.logging.CSVLoggable;
 import edu.wpi.first.wpilibj.Solenoid;
+
+import java.util.Map;
+import java.util.function.DoubleSupplier;
 
 /**
  * TODO: Maybe implement cheesy drive.
  *
  * @author Arvind
  */
-public class Drive extends AldrinSubsystem implements Loggable, Diagnosable {
+public class Drive extends AldrinSubsystem implements PIDTunable {
 
     /* Declarations */
     private AldrinTalonSRX mLeftMaster, mLeftSlave, mRightMaster, mRightSlave;
-    // private PigeonIMU mPigeon;
+    private PigeonIMU mPigeon;
     private Solenoid mShift;
 
     // Singleton Instance
@@ -46,10 +49,10 @@ public class Drive extends AldrinSubsystem implements Loggable, Diagnosable {
         mRightSlave = CTREFactory.getSlaveTalon(Constants.RIGHT_SLAVE_DRIVE_PORT, mRightMaster);
 
         // PigeonIMU(portNum : int)
-        // mPigeon = new PigeonIMU(Constants.PIGEON_PORT);
+        mPigeon = new PigeonIMU(mLeftSlave);
 
         // Solenoid(channel : int)
-        // mShift = new Solenoid(Constants.SHIFT_CHANNEL);
+        mShift = new Solenoid(Constants.SHIFT_CHANNEL);
     }
 
     public void arcadeDrive(double y, double x) {
@@ -81,16 +84,15 @@ public class Drive extends AldrinSubsystem implements Loggable, Diagnosable {
     public void resetEncoders() {
         mLeftMaster.setSelectedSensorPosition(0);
         mRightMaster.setSelectedSensorPosition(0);
-        // mPigeon.setYaw(0);
+        mPigeon.setYaw(0);
     }
 
     public void setHighGear(boolean enable) {
-        // mShift.set(enable);
+        mShift.set(enable);
     }
 
     public boolean isHighGear() {
-        return false;
-        // return mShift.get();
+        return mShift.get();
     }
 
     @Override
@@ -99,15 +101,12 @@ public class Drive extends AldrinSubsystem implements Loggable, Diagnosable {
     }
 
     @Override
-    public void toDashboard() {
+    public void updatePID() {
     }
 
     @Override
-    public void toLog() {
+    public Map<String, DoubleSupplier> getCSVProperties() {
+        return null;
     }
 
-    @Override
-    public boolean checkSubsystem() {
-        return false;
-    }
 }

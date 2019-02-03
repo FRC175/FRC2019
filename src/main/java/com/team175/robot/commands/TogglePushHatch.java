@@ -9,7 +9,7 @@ public class TogglePushHatch extends AldrinInstantCommand {
     public TogglePushHatch() {
         requires(Manipulator.getInstance());
 
-        super.instantiationLog();
+        super.logInstantiation();
     }
 
     @Override
@@ -17,7 +17,7 @@ public class TogglePushHatch extends AldrinInstantCommand {
         Manipulator.getInstance().pushHatch(mPush);
         mPush = !mPush;
 
-        super.initLog();
+        super.logInit();
     }
 
 }

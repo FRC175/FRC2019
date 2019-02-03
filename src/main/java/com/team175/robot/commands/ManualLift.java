@@ -10,14 +10,14 @@ public class ManualLift extends AldrinCommand {
         requires(Lift.getInstance());
         requires(Drive.getInstance());
 
-        super.instantiationLog();
+        super.logInstantiation();
     }
 
     @Override
     protected void initialize() {
         Drive.getInstance().setPower(0, 0);
 
-        super.initLog();
+        super.logInit();
     }
 
     @Override
@@ -36,7 +36,7 @@ public class ManualLift extends AldrinCommand {
         Lift.getInstance().setLiftPower(0);
         Lift.getInstance().setDrivePower(0);
 
-        super.endLog();
+        super.logEnd();
     }
 
     @Override

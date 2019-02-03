@@ -15,12 +15,12 @@ public class PositionManipulatorArm extends AldrinCommand {
 
         mPosition = position;
 
-        super.instantiationLog();
+        super.logInstantiation();
     }
 
     @Override
     protected void initialize() {
-        super.initLog();
+        super.logInit();
     }
 
     @Override
@@ -35,7 +35,7 @@ public class PositionManipulatorArm extends AldrinCommand {
 
     @Override
     protected void end() {
-        super.endLog();
+        super.logEnd();
     }
 
     @Override

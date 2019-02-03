@@ -1,4 +1,4 @@
-package com.team175.robot.util;
+package com.team175.robot.util.logging;
 
 import ch.qos.logback.classic.encoder.PatternLayoutEncoder;
 import ch.qos.logback.classic.spi.ILoggingEvent;
