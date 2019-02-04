@@ -7,11 +7,13 @@ public class CommandTemplate extends AldrinCommand {
 
     public CommandTemplate() {
         // requires();
+
+        super.logInstantiation();
     }
 
     @Override
     protected void initialize() {
-        mLogger.info("CommandTemplate command initialized.");
+        super.logInit();
     }
 
     @Override
@@ -25,7 +27,7 @@ public class CommandTemplate extends AldrinCommand {
 
     @Override
     protected void end() {
-        mLogger.info("CommandTemplate command ended/interrupted.");
+        super.logEnd();
     }
 
     @Override

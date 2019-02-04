@@ -8,15 +8,19 @@ import com.team175.robot.positions.ManipulatorRollerPosition;
 import com.team175.robot.util.AldrinTalonSRX;
 import com.team175.robot.util.CTREFactory;
 
+import com.team175.robot.util.ClosedLoopTunable;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Talon;
 
+import java.util.Map;
+import java.util.function.DoubleSupplier;
+
 /**
  * @author Arvind
  */
-public class Manipulator extends AldrinSubsystem {
+public class Manipulator extends AldrinSubsystem implements ClosedLoopTunable {
 
     /* Declarations */
     private AldrinTalonSRX mArm;
@@ -124,4 +128,15 @@ public class Manipulator extends AldrinSubsystem {
 
     }
 
+    @Override
+    public void updatePID() {
+    }
+
+    @Override
+    public Map<String, DoubleSupplier> getCSVProperties() {
+        return Map.of(
+                "position", this::getArmPosition,
+                "wanted_position", () -> mArmWantedPosition
+        );
+    }
 }

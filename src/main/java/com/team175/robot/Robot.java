@@ -7,7 +7,6 @@
 
 package com.team175.robot;
 
-import com.team175.robot.commands.PIDTuner;
 import com.team175.robot.subsystems.*;
 
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -58,9 +57,9 @@ public class Robot extends TimedRobot {
         SmartDashboard.putData("Auto Mode", mAutoModeChooser);*/
 
         /*mPIDTunerChooser = new SendableChooser<>();
-        mAutoModeChooser.setDefaultOption("Drive PID Tuning" , new PIDTuner(mDrive));
-        mAutoModeChooser.addOption("Elevator PID Tuning", new PIDTuner(mElevator));
-        mAutoModeChooser.addOption("Lateral Drive PID Tuning", new PIDTuner(mLateralDrive));*/
+        mAutoModeChooser.setDefaultOption("Drive PID Tuning" , new ClosedLoopTuner(mDrive));
+        mAutoModeChooser.addOption("Elevator PID Tuning", new ClosedLoopTuner(mElevator));
+        mAutoModeChooser.addOption("Lateral Drive PID Tuning", new ClosedLoopTuner(mLateralDrive));*/
     }
 
     @Override

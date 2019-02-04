@@ -1,7 +1,6 @@
 package com.team175.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.DemandType;
 
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.team175.robot.Constants;
@@ -9,8 +8,7 @@ import com.team175.robot.commands.ManualArcadeDrive;
 import com.team175.robot.util.AldrinTalonSRX;
 import com.team175.robot.util.CTREFactory;
 
-import com.team175.robot.util.PIDTunable;
-import com.team175.robot.util.logging.CSVLoggable;
+import com.team175.robot.util.ClosedLoopTunable;
 import edu.wpi.first.wpilibj.Solenoid;
 
 import java.util.Map;
@@ -21,12 +19,14 @@ import java.util.function.DoubleSupplier;
  *
  * @author Arvind
  */
-public class Drive extends AldrinSubsystem implements PIDTunable {
+public class Drive extends AldrinSubsystem implements ClosedLoopTunable {
 
     /* Declarations */
     private AldrinTalonSRX mLeftMaster, mLeftSlave, mRightMaster, mRightSlave;
     private PigeonIMU mPigeon;
     private Solenoid mShift;
+
+    private int mWantedPosition;
 
     // Singleton Instance
     private static Drive sInstance;
@@ -48,15 +48,16 @@ public class Drive extends AldrinSubsystem implements PIDTunable {
         mRightMaster = CTREFactory.getMasterTalon(Constants.RIGHT_MASTER_DRIVE_PORT);
         mRightSlave = CTREFactory.getSlaveTalon(Constants.RIGHT_SLAVE_DRIVE_PORT, mRightMaster);
 
-
-        mLeftMaster.configFactoryDefault();
-        mRightMaster.configFactoryDefault();
-
-        // PigeonIMU(portNum : int)
+        // PigeonIMU(talonSRX : TalonSRX)
         mPigeon = new PigeonIMU(mRightSlave);
 
         // Solenoid(channel : int)
         mShift = new Solenoid(Constants.SHIFT_CHANNEL);
+
+        mWantedPosition = 0;
+
+        /*mLeftMaster.configFactoryDefault();
+        mRightMaster.configFactoryDefault();*/
     }
 
     public void arcadeDrive(double y, double x) {
@@ -94,11 +95,11 @@ public class Drive extends AldrinSubsystem implements PIDTunable {
         mPigeon.setYaw(0);
     }
 
-    public void setHighGear(boolean enable) {
+    public void setLowGear(boolean enable) {
         mShift.set(enable);
     }
 
-    public boolean isHighGear() {
+    public boolean isLowGear() {
         return mShift.get();
     }
 
@@ -113,7 +114,11 @@ public class Drive extends AldrinSubsystem implements PIDTunable {
 
     @Override
     public Map<String, DoubleSupplier> getCSVProperties() {
-        return null;
+        return Map.of(
+                "left_position", this::getRightPosition,
+                "right_position", this::getRightPosition,
+                "wanted_position", () -> mWantedPosition
+        );
     }
 
 }

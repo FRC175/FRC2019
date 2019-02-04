@@ -16,7 +16,7 @@ import java.util.stream.Stream;
  * @author Arvind
  */
 @Deprecated
-final class GenericCSVWriter<T> {
+public final class GenericCSVWriter<T> {
 
     private final T mType;
     private final Class mClass;
@@ -133,7 +133,7 @@ final class GenericCSVWriter<T> {
     }
 
     public void close() throws IOException {
-        mWriter.flush();
+        flush();
         mWriter.close();
     }
 

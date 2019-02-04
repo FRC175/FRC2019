@@ -34,7 +34,7 @@ public class AldrinInstantCommand extends InstantCommand implements LoggableComm
 
     @Override
     protected void interrupted() {
-        logEnd();
+        end();
     }
 
 }

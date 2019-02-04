@@ -5,7 +5,7 @@ import com.team175.robot.util.logging.CSVLoggable;
 /**
  * @author Arvind
  */
-public interface PIDTunable extends CSVLoggable {
+public interface ClosedLoopTunable extends CSVLoggable {
 
     void updatePID();
 

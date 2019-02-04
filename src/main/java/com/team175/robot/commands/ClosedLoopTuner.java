@@ -2,20 +2,20 @@ package com.team175.robot.commands;
 
 import com.team175.robot.Robot;
 import com.team175.robot.util.logging.CSVLogger;
-import com.team175.robot.util.PIDTunable;
+import com.team175.robot.util.ClosedLoopTunable;
 
 import edu.wpi.first.wpilibj.Notifier;
 
 /**
  * @author Arvind
  */
-public class PIDTuner extends AldrinCommand {
+public class ClosedLoopTuner extends AldrinCommand {
 
-    private PIDTunable mSubsystem;
+    private ClosedLoopTunable mSubsystem;
     private CSVLogger mWriter;
     private Notifier mNotifier;
 
-    public PIDTuner(PIDTunable subsystem) {
+    public ClosedLoopTuner(ClosedLoopTunable subsystem) {
         mSubsystem = subsystem;
         mWriter = new CSVLogger(mSubsystem);
         mNotifier = new Notifier(mWriter);

@@ -7,8 +7,7 @@ import com.team175.robot.positions.LineSensorPosition;
 import com.team175.robot.util.AldrinTalonSRX;
 import com.team175.robot.util.CTREFactory;
 
-import com.team175.robot.util.PIDTunable;
-import com.team175.robot.util.logging.CSVLoggable;
+import com.team175.robot.util.ClosedLoopTunable;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 
@@ -18,7 +17,7 @@ import java.util.function.DoubleSupplier;
 /**
  * @author Arvind
  */
-public class LateralDrive extends AldrinSubsystem implements PIDTunable {
+public class LateralDrive extends AldrinSubsystem implements ClosedLoopTunable {
 
     /* Declarations */
     private AldrinTalonSRX mMaster;
@@ -145,7 +144,10 @@ public class LateralDrive extends AldrinSubsystem implements PIDTunable {
 
     @Override
     public Map<String, DoubleSupplier> getCSVProperties() {
-        return null;
+        return Map.of(
+                "position", this::getPosition,
+                "wanted_position", () -> mWantedPosition
+        );
     }
 
 }

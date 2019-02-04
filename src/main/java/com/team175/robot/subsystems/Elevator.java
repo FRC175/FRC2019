@@ -5,10 +5,7 @@ import com.team175.robot.Constants;
 import com.team175.robot.positions.ElevatorPosition;
 import com.team175.robot.util.AldrinTalonSRX;
 import com.team175.robot.util.CTREFactory;
-import com.team175.robot.util.Diagnosable;
-import com.team175.robot.util.PIDTunable;
-import com.team175.robot.util.logging.CSVLoggable;
-import edu.wpi.first.wpilibj.Timer;
+import com.team175.robot.util.ClosedLoopTunable;
 
 import java.util.Map;
 import java.util.function.DoubleSupplier;
@@ -16,7 +13,7 @@ import java.util.function.DoubleSupplier;
 /**
  * @author Arvind
  */
-public class Elevator extends AldrinSubsystem implements PIDTunable {
+public class Elevator extends AldrinSubsystem implements ClosedLoopTunable {
 
     /* Declarations */
     private AldrinTalonSRX mMaster;
@@ -85,7 +82,10 @@ public class Elevator extends AldrinSubsystem implements PIDTunable {
 
     @Override
     public Map<String, DoubleSupplier> getCSVProperties() {
-        return null;
+        return Map.of(
+                "position", this::getPosition,
+                "wanted_position", () -> mWantedPosition
+        );
     }
     
 }

@@ -1,6 +1,6 @@
 package com.team175.robot.commands;
 
-interface LoggableCommand {
+public interface LoggableCommand {
 
     void logInstantiation();
 

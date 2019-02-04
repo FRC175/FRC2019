@@ -7,7 +7,7 @@ import java.util.function.DoubleSupplier;
 /**
  * @author Arvind
  */
-final class CSVWriter {
+public final class CSVWriter {
 
     private final Map<String, DoubleSupplier> mData;
     private final String mDelimiter;
@@ -73,7 +73,7 @@ final class CSVWriter {
     }
 
     public void close() throws IOException {
-        mWriter.flush();
+        flush();
         mWriter.close();
     }
 
