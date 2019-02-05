@@ -7,6 +7,8 @@ import com.team175.robot.util.logging.CSVLoggable;
  */
 public interface ClosedLoopTunable extends CSVLoggable {
 
-    void updatePID();
+    void updatePIDF();
+
+    void updateWantedPosition();
 
 }

@@ -102,7 +102,7 @@ public class OI {
     }
 
     public double getDriverStickY() {
-        return mDriverStick.getY();
+        return -mDriverStick.getY();
     }
 
     public double getOperatorStickX() {
@@ -110,7 +110,7 @@ public class OI {
     }
 
     public double getOperatorStickY() {
-        return mOperatorStick.getY();
+        return -mOperatorStick.getY();
     }
 
 }

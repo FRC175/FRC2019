@@ -33,7 +33,7 @@ public class ManualArcadeDrive extends AldrinCommand {
             /*double y = AldrinMath.addDeadzone(-OI.getInstance().getDriverStickY(), 0.05);
             double x = AldrinMath.addDeadzone(OI.getInstance().getDriverStickTwist(), 0.05);*/
 
-            double forward = -1 * OI.getInstance().getDriverStickY();
+            double forward = OI.getInstance().getDriverStickY();
             double turn = OI.getInstance().getDriverStickX();
             forward = Deadband(forward);
             turn = Deadband(turn);

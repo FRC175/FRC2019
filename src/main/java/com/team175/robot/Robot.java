@@ -7,6 +7,7 @@
 
 package com.team175.robot;
 
+import com.team175.robot.commands.ClosedLoopTuner;
 import com.team175.robot.subsystems.*;
 
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -35,9 +36,9 @@ public class Robot extends TimedRobot {
     private OI mOI;
 
     private Command mAutoMode;
-    private Command mPIDTunerSubsystem;
+    private ClosedLoopTuner mClosedLoopTunable;
     private SendableChooser<Command> mAutoModeChooser;
-    private SendableChooser<Command> mPIDTunerChooser;
+    private SendableChooser<Command> mClosedLoopTuner;
 
     // private List<AldrinSubsystem> mSubsystems;
 
@@ -56,10 +57,11 @@ public class Robot extends TimedRobot {
         /*mAutoModeChooser.setDefaultOption("Default Auto", new ExampleCommand());
         SmartDashboard.putData("Auto Mode", mAutoModeChooser);*/
 
-        /*mPIDTunerChooser = new SendableChooser<>();
-        mAutoModeChooser.setDefaultOption("Drive PID Tuning" , new ClosedLoopTuner(mDrive));
-        mAutoModeChooser.addOption("Elevator PID Tuning", new ClosedLoopTuner(mElevator));
-        mAutoModeChooser.addOption("Lateral Drive PID Tuning", new ClosedLoopTuner(mLateralDrive));*/
+        mClosedLoopTuner = new SendableChooser<>();
+        mClosedLoopTuner.addOption("Drive PIDF Tuning" , new ClosedLoopTuner(mDrive));
+        mClosedLoopTuner.addOption("Elevator PIDF Tuning", new ClosedLoopTuner(mElevator));
+        mClosedLoopTuner.addOption("LateralDrive PIDF Tuning", new ClosedLoopTuner(mLateralDrive));
+        mClosedLoopTuner.addOption("ManipulatorArm PIDF Tuning", new ClosedLoopTuner(mManipulator));
     }
 
     @Override
@@ -68,11 +70,18 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledInit() {
+        if (mClosedLoopTunable != null) {
+            mClosedLoopTunable.end();
+        }
     }
 
     @Override
     public void disabledPeriodic() {
         Scheduler.getInstance().run();
+        mDrive.sendToDashboard();
+        mLateralDrive.sendToDashboard();
+        mElevator.sendToDashboard();
+        mManipulator.sendToDashboard();
     }
 
     @Override
@@ -89,10 +98,6 @@ public class Robot extends TimedRobot {
         // schedule the autonomous command (example)
         if (mAutoMode != null) {
             mAutoMode.start();
-        }
-
-        if (mPIDTunerSubsystem != null) {
-            mAutoMode.cancel();
         }
     }
 
@@ -115,14 +120,19 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
+
+        mDrive.sendToDashboard();
+        mLateralDrive.sendToDashboard();
+        mElevator.sendToDashboard();
+        mManipulator.sendToDashboard();
     }
 
     @Override
     public void testInit() {
-        mPIDTunerSubsystem = mPIDTunerChooser.getSelected();
+        mClosedLoopTunable = new ClosedLoopTuner(mElevator);
 
-        if (mPIDTunerSubsystem != null) {
-            mPIDTunerSubsystem.start();
+        if (mClosedLoopTunable != null) {
+            mClosedLoopTunable.initialize();
         }
     }
 

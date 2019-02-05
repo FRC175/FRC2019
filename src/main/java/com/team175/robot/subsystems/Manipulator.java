@@ -9,11 +9,14 @@ import com.team175.robot.util.AldrinTalonSRX;
 import com.team175.robot.util.CTREFactory;
 
 import com.team175.robot.util.ClosedLoopTunable;
+import com.team175.robot.util.PIDFGains;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.DoubleSupplier;
 
@@ -123,20 +126,42 @@ public class Manipulator extends AldrinSubsystem implements ClosedLoopTunable {
         return Math.abs(getArmPosition() - mArmWantedPosition) <= Constants.ALLOWED_POSITION_DEVIATION;
     }
 
+    public void sendToDashboard() {
+        SmartDashboard.putNumber("ManipulatorArm kP", 0);
+        SmartDashboard.putNumber("ManipulatorArm kD", 0);
+        SmartDashboard.putNumber("ManipulatorArm kF", 0);
+    }
+
+    public void setArmPIDF(PIDFGains gains) {
+        mArm.config_kP(gains.getKp());
+        mArm.config_kI(gains.getKi());
+        mArm.config_kD(gains.getKd());
+        mArm.config_kF(gains.getKf());
+    }
+
+    @Override
+    public void updatePIDF() {
+        setArmPIDF(new PIDFGains(SmartDashboard.getNumber("ManipulatorArm kP", 0), 0,
+                SmartDashboard.getNumber("ManipulatorArm kD", 0),
+                SmartDashboard.getNumber("ManipulatorArm kF", 0)));
+    }
+
+    @Override
+    public void updateWantedPosition() {
+        setArmPosition((int) SmartDashboard.getNumber("ManipulatorArm Position", 0));
+    }
+
     @Override
     protected void initDefaultCommand() {
 
     }
 
     @Override
-    public void updatePID() {
+    public LinkedHashMap<String, DoubleSupplier> getCSVProperties() {
+        LinkedHashMap<String, DoubleSupplier> m = new LinkedHashMap<>();
+        m.put("position", this::getArmPosition);
+        m.put("wanted_position", () -> mArmWantedPosition);
+        return m;
     }
 
-    @Override
-    public Map<String, DoubleSupplier> getCSVProperties() {
-        return Map.of(
-                "position", this::getArmPosition,
-                "wanted_position", () -> mArmWantedPosition
-        );
-    }
 }

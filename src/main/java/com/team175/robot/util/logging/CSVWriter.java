@@ -1,7 +1,7 @@
 package com.team175.robot.util.logging;
 
 import java.io.*;
-import java.util.Map;
+import java.util.LinkedHashMap;
 import java.util.function.DoubleSupplier;
 
 /**
@@ -9,17 +9,17 @@ import java.util.function.DoubleSupplier;
  */
 public final class CSVWriter {
 
-    private final Map<String, DoubleSupplier> mData;
+    private final LinkedHashMap<String, DoubleSupplier> mData;
     private final String mDelimiter;
-    private final BufferedWriter mWriter;
+    private final PrintWriter mWriter;
 
     private boolean mIsHeaderWritten;
 
-    public CSVWriter(Map<String, DoubleSupplier> data, String filePath, String delimiter)
+    public CSVWriter(LinkedHashMap<String, DoubleSupplier> data, String filePath, String delimiter)
         throws FileNotFoundException {
         mData = data;
         mDelimiter = delimiter;
-        mWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(filePath, false)));
+        mWriter = new PrintWriter(new OutputStreamWriter(new FileOutputStream(filePath, false)));
 
         mIsHeaderWritten = false;
     }
@@ -60,12 +60,11 @@ public final class CSVWriter {
 
     public void write() throws IOException {
         if (!mIsHeaderWritten) {
-            mWriter.write(getHeader());
+            mWriter.println(getHeader());
             mIsHeaderWritten = true;
         }
 
-        mWriter.newLine();
-        mWriter.write(getProperties());
+        mWriter.println(getProperties());
     }
 
     public void flush() throws IOException {

@@ -25,15 +25,22 @@ public class ClosedLoopTuner extends AldrinCommand {
 
     @Override
     public void initialize() {
-        mSubsystem.updatePID();
-        double refreshRate = 0.01; // 10 ms?
+        mSubsystem.updatePIDF();
+        double refreshRate; // 10 ms
         try {
             refreshRate = Double.parseDouble(Robot.class.getSuperclass().getField("kDefaultPeriod").get(null).toString())
                     / 2.0;
         } catch (IllegalAccessException | NoSuchFieldException | NumberFormatException e) {
             mLogger.error("Failed to parse refresh rate!", e);
+            refreshRate = 0.01;
         }
-        mNotifier.startPeriodic(refreshRate);
+
+        try {
+            mNotifier.startPeriodic(refreshRate);
+            mSubsystem.updateWantedPosition();
+        } catch (Exception e) {
+            mLogger.error("Failed to start CSVLogger thread!", e);
+        }
 
         super.logInit();
     }

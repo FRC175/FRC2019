@@ -9,8 +9,11 @@ import com.team175.robot.util.AldrinTalonSRX;
 import com.team175.robot.util.CTREFactory;
 
 import com.team175.robot.util.ClosedLoopTunable;
+import com.team175.robot.util.PIDFGains;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.DoubleSupplier;
 
@@ -73,6 +76,12 @@ public class Drive extends AldrinSubsystem implements ClosedLoopTunable {
         mRightMaster.set(ControlMode.PercentOutput, rightPower);
     }
 
+    public void setPosition(int position) {
+        mWantedPosition = position;
+        mLeftMaster.set(ControlMode.MotionMagic, mWantedPosition);
+        mRightMaster.set(ControlMode.MotionMagic, mWantedPosition);
+    }
+
     public double getLeftPower() {
         return mLeftMaster.getMotorOutputPercent();
     }
@@ -103,22 +112,58 @@ public class Drive extends AldrinSubsystem implements ClosedLoopTunable {
         return mShift.get();
     }
 
+    public void setLeftPIDF(PIDFGains gains) {
+        mLeftMaster.config_kP(gains.getKp());
+        mLeftMaster.config_kI(gains.getKi());
+        mLeftMaster.config_kD(gains.getKd());
+        mLeftMaster.config_kF(gains.getKf());
+    }
+
+    public void setRightPIDF(PIDFGains gains) {
+        mRightMaster.config_kP(gains.getKp());
+        mRightMaster.config_kI(gains.getKi());
+        mRightMaster.config_kD(gains.getKd());
+        mRightMaster.config_kF(gains.getKf());
+    }
+
+    public void sendToDashboard() {
+        SmartDashboard.putNumber("Drive Left kP", 0);
+        SmartDashboard.putNumber("Drive Left kD", 0);
+        SmartDashboard.putNumber("Drive Left kF", 0);
+
+        SmartDashboard.putNumber("Drive Right kP", 0);
+        SmartDashboard.putNumber("Drive Right kD", 0);
+        SmartDashboard.putNumber("Drive Right kF", 0);
+    }
+
     @Override
     protected void initDefaultCommand() {
         setDefaultCommand(new ManualArcadeDrive(false));
     }
 
     @Override
-    public void updatePID() {
+    public void updatePIDF() {
+        setLeftPIDF(new PIDFGains(SmartDashboard.getNumber("Drive Left kP", 0), 0,
+                SmartDashboard.getNumber("Drive Left kD", 0),
+                SmartDashboard.getNumber("Drive Left kF", 0)));
+
+        setRightPIDF(new PIDFGains(SmartDashboard.getNumber("Drive Right kP", 0), 0,
+                SmartDashboard.getNumber("Drive Right kD", 0),
+                SmartDashboard.getNumber("Drive Right kF", 0)));
     }
 
     @Override
-    public Map<String, DoubleSupplier> getCSVProperties() {
-        return Map.of(
-                "left_position", this::getRightPosition,
-                "right_position", this::getRightPosition,
-                "wanted_position", () -> mWantedPosition
-        );
+    public void updateWantedPosition() {
+        setPosition((int) SmartDashboard.getNumber("Drive Position", 0));
+    }
+
+    @Override
+    public LinkedHashMap<String, DoubleSupplier> getCSVProperties() {
+        LinkedHashMap<String, DoubleSupplier> m = new LinkedHashMap<>();
+        m.put("left_position", this::getLeftPosition);
+        m.put("right_position", this::getRightPosition);
+        m.put("wanted_position", () -> mWantedPosition);
+        return m;
     }
 
 }

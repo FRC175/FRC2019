@@ -6,7 +6,10 @@ import com.team175.robot.positions.ElevatorPosition;
 import com.team175.robot.util.AldrinTalonSRX;
 import com.team175.robot.util.CTREFactory;
 import com.team175.robot.util.ClosedLoopTunable;
+import com.team175.robot.util.PIDFGains;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.DoubleSupplier;
 
@@ -76,16 +79,44 @@ public class Elevator extends AldrinSubsystem implements ClosedLoopTunable {
     protected void initDefaultCommand() {
     }
 
-    @Override
-    public void updatePID() {
+    public void sendToDashboardTeleop() {
+        SmartDashboard.putNumber("Elevator kP", 0);
+        SmartDashboard.putNumber("Elevator kD", 0);
+        SmartDashboard.putNumber("Elevator kF", 0);
+        SmartDashboard.putNumber("Elevator Position", getPosition());
+    }
+
+    public void sendToDashboard() {
+        updatePIDF();
+        mWantedPosition = (int) SmartDashboard.getNumber("Elevator Position", 0);
+    }
+
+    public void setPIDF(PIDFGains gains) {
+        mMaster.config_kP(gains.getKp());
+        mMaster.config_kI(gains.getKi());
+        mMaster.config_kD(gains.getKd());
+        mMaster.config_kF(gains.getKf());
     }
 
     @Override
-    public Map<String, DoubleSupplier> getCSVProperties() {
-        return Map.of(
-                "position", this::getPosition,
-                "wanted_position", () -> mWantedPosition
-        );
+    public void updatePIDF() {
+        setPIDF(new PIDFGains(SmartDashboard.getNumber("Elevator kP", 0), 0,
+                SmartDashboard.getNumber("Elevator kD", 0),
+                SmartDashboard.getNumber("Elevator kF", 0)));
+    }
+
+    @Override
+    public void updateWantedPosition() {
+        resetEncoder();
+        setPosition(1000);
+    }
+
+    @Override
+    public LinkedHashMap<String, DoubleSupplier> getCSVProperties() {
+        LinkedHashMap<String, DoubleSupplier> m = new LinkedHashMap<>();
+        m.put("position", this::getPosition);
+        m.put("wanted_position", () -> mWantedPosition);
+        return m;
     }
     
 }

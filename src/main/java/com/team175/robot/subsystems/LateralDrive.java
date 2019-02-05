@@ -8,9 +8,12 @@ import com.team175.robot.util.AldrinTalonSRX;
 import com.team175.robot.util.CTREFactory;
 
 import com.team175.robot.util.ClosedLoopTunable;
+import com.team175.robot.util.PIDFGains;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.DoubleSupplier;
 
@@ -134,20 +137,41 @@ public class LateralDrive extends AldrinSubsystem implements ClosedLoopTunable {
         }
     }
 
+    public void sendToDashboard() {
+        SmartDashboard.putNumber("LateralDrive kP", 0);
+        SmartDashboard.putNumber("LateralDrive kD", 0);
+        SmartDashboard.putNumber("LateralDrive kF", 0);
+    }
+
+    public void setPIDF(PIDFGains gains) {
+        mMaster.config_kP(gains.getKp());
+        mMaster.config_kI(gains.getKi());
+        mMaster.config_kD(gains.getKd());
+        mMaster.config_kF(gains.getKf());
+    }
+
+    @Override
+    public void updatePIDF() {
+        setPIDF(new PIDFGains(SmartDashboard.getNumber("LateralDrive kP", 0), 0,
+                SmartDashboard.getNumber("LateralDrive kD", 0),
+                SmartDashboard.getNumber("LateralDrive kF", 0)));
+    }
+
+    @Override
+    public void updateWantedPosition() {
+        setPosition((int) SmartDashboard.getNumber("LateralDrive Position", 0));
+    }
+
     @Override
     protected void initDefaultCommand() {
     }
 
     @Override
-    public void updatePID() {
-    }
-
-    @Override
-    public Map<String, DoubleSupplier> getCSVProperties() {
-        return Map.of(
-                "position", this::getPosition,
-                "wanted_position", () -> mWantedPosition
-        );
+    public LinkedHashMap<String, DoubleSupplier> getCSVProperties() {
+        LinkedHashMap<String, DoubleSupplier> m = new LinkedHashMap<>();
+        m.put("position", this::getPosition);
+        m.put("wanted_position", () -> mWantedPosition);
+        return m;
     }
 
 }

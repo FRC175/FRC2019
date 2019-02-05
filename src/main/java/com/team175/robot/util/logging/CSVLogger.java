@@ -6,6 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.*;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.DoubleSupplier;
 
@@ -21,11 +22,11 @@ public class CSVLogger implements Runnable {
     // private boolean mIsRunning;
 
     public CSVLogger(CSVLoggable target) {
-        Map<String, DoubleSupplier> m = target.getCSVProperties();
+        LinkedHashMap<String, DoubleSupplier> m = target.getCSVProperties();
         m.put("time", Timer::getFPGATimestamp);
 
         try {
-            mWriter = new CSVWriter(m, "test.csv", ",");
+            mWriter = new CSVWriter(m, "/home/lvuser/csvlog/telemetry.csv", ",");
         } catch (FileNotFoundException e) {
             mLogger.error("{} failed to instantiate!", getClass().getSimpleName(), e);
         }
