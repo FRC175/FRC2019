@@ -2,7 +2,7 @@ package com.team175.robot.commands;
 
 import com.team175.robot.subsystems.Manipulator;
 
-public class TogglePushHatch extends AldrinInstantCommand {
+public class TogglePushHatch extends AldrinToggleCommand {
 
     private boolean mPush;
 

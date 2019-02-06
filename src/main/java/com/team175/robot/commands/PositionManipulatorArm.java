@@ -35,6 +35,9 @@ public class PositionManipulatorArm extends AldrinCommand {
 
     @Override
     protected void end() {
+        // TODO: Check if necessary
+        // Manipulator.getInstance().stopArm();
+
         super.logEnd();
     }
 

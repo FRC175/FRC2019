@@ -22,7 +22,7 @@ public class ManualLift extends AldrinCommand {
 
     @Override
     protected void execute() {
-        Lift.getInstance().setLiftPower(OI.getInstance().getDriverStickY());
+        Lift.getInstance().setPower(OI.getInstance().getDriverStickY());
         Lift.getInstance().setDrivePower(OI.getInstance().getDriverStickX());
     }
 
@@ -33,8 +33,7 @@ public class ManualLift extends AldrinCommand {
 
     @Override
     protected void end() {
-        Lift.getInstance().setLiftPower(0);
-        Lift.getInstance().setDrivePower(0);
+        Lift.getInstance().stop();
 
         super.logEnd();
     }

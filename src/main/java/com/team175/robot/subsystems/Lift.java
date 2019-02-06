@@ -1,12 +1,10 @@
 package com.team175.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.team175.robot.Constants;
 
 import com.team175.robot.util.AldrinTalonSRX;
 import com.team175.robot.util.CTREFactory;
-import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Talon;
 
 /**
@@ -39,7 +37,7 @@ public class Lift extends AldrinSubsystem {
         mRear = new Talon(Constants.LIFT_REAR_PORT);
     }
 
-    public void setLiftPower(double power) {
+    public void setPower(double power) {
         mFront.set(power);
         mRear.set(power);
     }
@@ -62,7 +60,12 @@ public class Lift extends AldrinSubsystem {
 
     @Override
     protected void initDefaultCommand() {
+    }
 
+    @Override
+    public void stop() {
+        setPower(0);
+        setDrivePower(0);
     }
 
 }

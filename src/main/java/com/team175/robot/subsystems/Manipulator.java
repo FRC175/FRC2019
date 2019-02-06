@@ -9,7 +9,7 @@ import com.team175.robot.util.AldrinTalonSRX;
 import com.team175.robot.util.CTREFactory;
 
 import com.team175.robot.util.ClosedLoopTunable;
-import com.team175.robot.util.PIDFGains;
+import com.team175.robot.util.ClosedLoopGains;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -19,6 +19,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.DoubleSupplier;
+
+import static java.util.Map.entry;
 
 /**
  * @author Arvind
@@ -32,7 +34,8 @@ public class Manipulator extends AldrinSubsystem implements ClosedLoopTunable {
     private Solenoid mHatchPush;
     private DoubleSolenoid mDeploy;
 
-    private double mArmWantedPosition;
+    private int mArmWantedPosition;
+    private ClosedLoopGains mArmGains;
 
     // Singleton Instance
     private static Manipulator sInstance;
@@ -62,6 +65,7 @@ public class Manipulator extends AldrinSubsystem implements ClosedLoopTunable {
                 Constants.MANIPULATOR_DEPLOY_REVERSE_CHANNEL);
 
         mArmWantedPosition = 0;
+        mArmGains = Constants.MAINPULATOR_ARM_GAINS;
     }
 
     public void deploy(boolean enable) {
@@ -126,38 +130,76 @@ public class Manipulator extends AldrinSubsystem implements ClosedLoopTunable {
         return Math.abs(getArmPosition() - mArmWantedPosition) <= Constants.ALLOWED_POSITION_DEVIATION;
     }
 
-    public void sendToDashboard() {
-        SmartDashboard.putNumber("ManipulatorArm kP", 0);
-        SmartDashboard.putNumber("ManipulatorArm kD", 0);
-        SmartDashboard.putNumber("ManipulatorArm kF", 0);
+    public void stopArm() {
+        setArmPower(0);
     }
 
-    public void setArmPIDF(PIDFGains gains) {
-        mArm.config_kP(gains.getKp());
-        mArm.config_kI(gains.getKi());
-        mArm.config_kD(gains.getKd());
-        mArm.config_kF(gains.getKf());
+    public void stopRollers() {
+        setRollerPower(0, 0);
     }
 
-    @Override
-    public void updatePIDF() {
-        setArmPIDF(new PIDFGains(SmartDashboard.getNumber("ManipulatorArm kP", 0), 0,
-                SmartDashboard.getNumber("ManipulatorArm kD", 0),
-                SmartDashboard.getNumber("ManipulatorArm kF", 0)));
-    }
-
-    @Override
-    public void updateWantedPosition() {
-        setArmPosition((int) SmartDashboard.getNumber("ManipulatorArm Position", 0));
+    public void setArmGains(ClosedLoopGains gains) {
+        mArmGains = gains;
+        mArm.config_kP(mArmGains.getKp());
+        mArm.config_kI(mArmGains.getKi());
+        mArm.config_kD(mArmGains.getKd());
+        mArm.config_kF(mArmGains.getKf());
+        mArm.configMotionAcceleration(mArmGains.getAcceleration());
+        mArm.configMotionCruiseVelocity(mArmGains.getCruiseVelocity());
     }
 
     @Override
     protected void initDefaultCommand() {
-
     }
 
     @Override
-    public LinkedHashMap<String, DoubleSupplier> getCSVProperties() {
+    public void stop() {
+        stopArm();
+        stopRollers();
+    }
+
+    public Map<String, Object> getTelemetry() {
+        return Map.ofEntries(
+                entry("ManipArmfKp", mArmGains.getKp()),
+                entry("ManipArmKd", mArmGains.getKd()),
+                entry("ManipArmKf", mArmGains.getKf()),
+                entry("ManipArmAccel", mArmGains.getAcceleration()),
+                entry("ManipArmCruiseVel", mArmGains.getCruiseVelocity()),
+                entry("ManipArmWantedPos", mArmWantedPosition),
+                entry("ManipArmPos", getArmPosition()),
+                entry("ManipArmPower", getArmPower()),
+                entry("ManipulatorArmVolt", getArmVoltage())
+        );
+    }
+
+    public void outputToDashboard() {
+        getTelemetry().forEach((k, v) -> {
+            if (v instanceof Double || v instanceof Integer) {
+                SmartDashboard.putNumber(k, (double) v);
+            } else if (v instanceof Boolean) {
+                SmartDashboard.putBoolean(k, (boolean) v);
+            } else {
+                SmartDashboard.putString(k, v.toString());
+            }
+        });
+    }
+
+    public void updateFromDashboard() {
+        setArmGains(new ClosedLoopGains(SmartDashboard.getNumber("ManipArmKp", 0), 0,
+                SmartDashboard.getNumber("ManipArmKd", 0),
+                SmartDashboard.getNumber("ManipArmKf", 0),
+                (int) SmartDashboard.getNumber("ManipArmAccel", 0),
+                (int) SmartDashboard.getNumber("ManipArmCruiseVel", 0)));
+        setArmPosition((int) SmartDashboard.getNumber("ManipArmWantedPos", 0));
+    }
+
+    public void updateGains() {
+        outputToDashboard();
+        updateFromDashboard();
+    }
+
+    @Override
+    public Map<String, DoubleSupplier> getCSVTelemetry() {
         LinkedHashMap<String, DoubleSupplier> m = new LinkedHashMap<>();
         m.put("position", this::getArmPosition);
         m.put("wanted_position", () -> mArmWantedPosition);

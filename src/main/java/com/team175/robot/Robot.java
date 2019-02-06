@@ -10,17 +10,15 @@ package com.team175.robot;
 import com.team175.robot.commands.ClosedLoopTuner;
 import com.team175.robot.subsystems.*;
 
+import com.team175.robot.util.ClosedLoopTunable;
+import com.team175.robot.util.FastTimedRobot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 /**
- * The VM is configured to automatically run this class, and to call the
- * functions corresponding to each mode, as described in the TimedRobot
- * documentation. If you change the name of this class or the package after
- * creating this project, you must also update the build.gradle file in the
- * project.
+ * TODO: Consider using FastTimedRobot.
  *
  * @author Arvind
  */
@@ -33,14 +31,14 @@ public class Robot extends TimedRobot {
     private Lift mLift;
     private Manipulator mManipulator;
     private Vision mVision;
+
     private OI mOI;
 
-    private Command mAutoMode;
-    private ClosedLoopTuner mClosedLoopTunable;
     private SendableChooser<Command> mAutoModeChooser;
     private SendableChooser<Command> mClosedLoopTuner;
 
-    // private List<AldrinSubsystem> mSubsystems;
+    private Command mAutoMode;
+    private ClosedLoopTunable mClosedLoopTunable;
 
     @Override
     public void robotInit() {
@@ -51,17 +49,18 @@ public class Robot extends TimedRobot {
         mLift = Lift.getInstance();
         mManipulator = Manipulator.getInstance();
         mVision = Vision.getInstance();
+
         mOI = OI.getInstance();
 
         mAutoModeChooser = new SendableChooser<>();
+        mClosedLoopTuner = new SendableChooser<>();
+
         /*mAutoModeChooser.setDefaultOption("Default Auto", new ExampleCommand());
         SmartDashboard.putData("Auto Mode", mAutoModeChooser);*/
-
-        mClosedLoopTuner = new SendableChooser<>();
-        mClosedLoopTuner.addOption("Drive PIDF Tuning" , new ClosedLoopTuner(mDrive));
+        /*mClosedLoopTuner.addOption("Drive PIDF Tuning" , new ClosedLoopTuner(mDrive));
         mClosedLoopTuner.addOption("Elevator PIDF Tuning", new ClosedLoopTuner(mElevator));
         mClosedLoopTuner.addOption("LateralDrive PIDF Tuning", new ClosedLoopTuner(mLateralDrive));
-        mClosedLoopTuner.addOption("ManipulatorArm PIDF Tuning", new ClosedLoopTuner(mManipulator));
+        mClosedLoopTuner.addOption("ManipulatorArm PIDF Tuning", new ClosedLoopTuner(mManipulator));*/
     }
 
     @Override
@@ -70,18 +69,14 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledInit() {
-        if (mClosedLoopTunable != null) {
+        /*if (mClosedLoopTunable != null) {
             mClosedLoopTunable.end();
-        }
+        }*/
     }
 
     @Override
     public void disabledPeriodic() {
         Scheduler.getInstance().run();
-        mDrive.sendToDashboard();
-        mLateralDrive.sendToDashboard();
-        mElevator.sendToDashboard();
-        mManipulator.sendToDashboard();
     }
 
     @Override
@@ -121,19 +116,19 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
 
-        mDrive.sendToDashboard();
+        /*mDrive.sendToDashboard();
         mLateralDrive.sendToDashboard();
         mElevator.sendToDashboard();
-        mManipulator.sendToDashboard();
+        mManipulator.sendToDashboard();*/
     }
 
     @Override
     public void testInit() {
-        mClosedLoopTunable = new ClosedLoopTuner(mElevator);
+        /*mClosedLoopTunable = new ClosedLoopTuner(mElevator);
 
         if (mClosedLoopTunable != null) {
             mClosedLoopTunable.initialize();
-        }
+        }*/
     }
 
     @Override

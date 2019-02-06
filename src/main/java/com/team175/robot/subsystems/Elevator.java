@@ -6,12 +6,14 @@ import com.team175.robot.positions.ElevatorPosition;
 import com.team175.robot.util.AldrinTalonSRX;
 import com.team175.robot.util.CTREFactory;
 import com.team175.robot.util.ClosedLoopTunable;
-import com.team175.robot.util.PIDFGains;
+import com.team175.robot.util.ClosedLoopGains;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.DoubleSupplier;
+
+import static java.util.Map.entry;
 
 /**
  * @author Arvind
@@ -21,7 +23,8 @@ public class Elevator extends AldrinSubsystem implements ClosedLoopTunable {
     /* Declarations */
     private AldrinTalonSRX mMaster;
 
-    public int mWantedPosition;
+    private int mWantedPosition;
+    private ClosedLoopGains mGains;
 
     // Singleton Instance
     private static Elevator sInstance;
@@ -40,6 +43,7 @@ public class Elevator extends AldrinSubsystem implements ClosedLoopTunable {
         mMaster = CTREFactory.getMasterTalon(Constants.ELEVATOR_PORT);
 
         mWantedPosition = 0;
+        mGains = Constants.ELEVATOR_GAINS;
     }
 
     public void setPower(double power) {
@@ -75,11 +79,84 @@ public class Elevator extends AldrinSubsystem implements ClosedLoopTunable {
         mMaster.setSelectedSensorPosition(0);
     }
 
+    public void setGains(ClosedLoopGains gains) {
+        mGains = gains;
+        mMaster.config_kP(mGains.getKp());
+        mMaster.config_kI(mGains.getKi());
+        mMaster.config_kD(mGains.getKd());
+        mMaster.config_kF(mGains.getKf());
+        mMaster.configMotionAcceleration(mGains.getAcceleration());
+        mMaster.configMotionCruiseVelocity(mGains.getCruiseVelocity());
+    }
+
     @Override
     protected void initDefaultCommand() {
     }
 
-    public void sendToDashboardTeleop() {
+    @Override
+    public void stop() {
+        setPower(0);
+    }
+
+    public Map<String, Object> getTelemetry() {
+        return Map.ofEntries(
+                entry("ElevatorKp", mGains.getKp()),
+                entry("ElevatorKd", mGains.getKd()),
+                entry("ElevatorKf", mGains.getKf()),
+                entry("ElevatorAccel", mGains.getAcceleration()),
+                entry("ElevatorCruiseVel", mGains.getCruiseVelocity()),
+                entry("ElevatorWantedPos", mWantedPosition),
+                entry("ElevatorPos", getPosition()),
+                entry("ElevatorPower", getPower()),
+                entry("ElevatorVolt", getVoltage())
+        );
+    }
+
+    public void outputToDashboard() {
+        getTelemetry().forEach((k, v) -> {
+            if (v instanceof Double || v instanceof Integer) {
+                SmartDashboard.putNumber(k, (double) v);
+            } else if (v instanceof Boolean) {
+                SmartDashboard.putBoolean(k, (boolean) v);
+            } else {
+                SmartDashboard.putString(k, v.toString());
+            }
+        });
+    }
+
+    public void updateFromDashboard() {
+        setGains(new ClosedLoopGains(SmartDashboard.getNumber("ElevatorKp", 0), 0,
+                SmartDashboard.getNumber("ElevatorKd", 0),
+                SmartDashboard.getNumber("ElevatorKf", 0),
+                (int) SmartDashboard.getNumber("ElevatorAccel", 0),
+                (int) SmartDashboard.getNumber("ElevatorCruiseVel", 0)));
+        setPosition((int) SmartDashboard.getNumber("ElevatorWantedPos", 0));
+    }
+
+    @Override
+    public void updateGains() {
+        outputToDashboard();
+        updateFromDashboard();
+    }
+
+    @Override
+    public Map<String, DoubleSupplier> getCSVTelemetry() {
+        LinkedHashMap<String, DoubleSupplier> m = new LinkedHashMap<>();
+        m.put("position", this::getPosition);
+        m.put("wanted_position", () -> mWantedPosition);
+        return m;
+    }
+
+
+
+
+
+
+
+
+
+
+    /*public void sendToDashboardTeleop() {
         SmartDashboard.putNumber("Elevator kP", 0);
         SmartDashboard.putNumber("Elevator kD", 0);
         SmartDashboard.putNumber("Elevator kF", 0);
@@ -87,11 +164,11 @@ public class Elevator extends AldrinSubsystem implements ClosedLoopTunable {
     }
 
     public void sendToDashboard() {
-        updatePIDF();
+        updateGains();
         mWantedPosition = (int) SmartDashboard.getNumber("Elevator Position", 0);
     }
 
-    public void setPIDF(PIDFGains gains) {
+    public void setPIDF(ClosedLoopGains gains) {
         mMaster.config_kP(gains.getKp());
         mMaster.config_kI(gains.getKi());
         mMaster.config_kD(gains.getKd());
@@ -99,8 +176,8 @@ public class Elevator extends AldrinSubsystem implements ClosedLoopTunable {
     }
 
     @Override
-    public void updatePIDF() {
-        setPIDF(new PIDFGains(SmartDashboard.getNumber("Elevator kP", 0), 0,
+    public void updateGains() {
+        setPIDF(new ClosedLoopGains(SmartDashboard.getNumber("Elevator kP", 0), 0,
                 SmartDashboard.getNumber("Elevator kD", 0),
                 SmartDashboard.getNumber("Elevator kF", 0)));
     }
@@ -112,11 +189,11 @@ public class Elevator extends AldrinSubsystem implements ClosedLoopTunable {
     }
 
     @Override
-    public LinkedHashMap<String, DoubleSupplier> getCSVProperties() {
+    public LinkedHashMap<String, DoubleSupplier> getCSVTelemetry() {
         LinkedHashMap<String, DoubleSupplier> m = new LinkedHashMap<>();
         m.put("position", this::getPosition);
         m.put("wanted_position", () -> mWantedPosition);
         return m;
-    }
+    }*/
     
 }

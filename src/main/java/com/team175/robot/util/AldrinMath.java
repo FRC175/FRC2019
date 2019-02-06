@@ -1,5 +1,8 @@
 package com.team175.robot.util;
 
+/**
+ * @author Arvind
+ */
 public class AldrinMath {
 
     /**
@@ -9,7 +12,7 @@ public class AldrinMath {
      * @param value    The inputted value as a decimal
      * @param deadzone The wanted deadzone as a decimal
      */
-    public static double addDeadzone(double value, double deadzone) {
+    public static double addDeadZone(double value, double deadzone) {
         if (Math.abs(value) > deadzone) {
             value = Math.signum(value) * (Math.abs(value) - deadzone) / (1.0 - deadzone);
         } else {
@@ -17,6 +20,28 @@ public class AldrinMath {
         }
 
         return (Math.abs(value) > deadzone) ? value : 0.0;
+    }
+
+    /**
+     * Calculates theoretical velocity in counts per 100 ms.
+     *
+     * @param velocity In RPM
+     * @param countsPerRevolution In Talon SRX encoder counts
+     * @param gearRatio As a ratio
+     * @return Theoretical velocity
+     */
+    public static int calculateEmpiricalVelocity(int velocity, int countsPerRevolution, double gearRatio) {
+        return (int) ((((double) velocity) / 600.0) * (((double) countsPerRevolution) / gearRatio));
+    }
+
+    /**
+     * Calculates theoretical Kf gain.
+     *
+     * @param maxVelocity In counts per 100 ms
+     * @return theoretical kF gain
+     */
+    public static double calculateKf(int maxVelocity) {
+        return 1023.0 / ((double) maxVelocity);
     }
 
 }

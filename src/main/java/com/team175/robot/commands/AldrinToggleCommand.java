@@ -4,27 +4,27 @@ import edu.wpi.first.wpilibj.command.InstantCommand;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class AldrinInstantCommand extends InstantCommand implements LoggableCommand {
+public class AldrinToggleCommand extends InstantCommand implements LoggableCommand {
 
     protected final Logger mLogger = LoggerFactory.getLogger(getClass().getSimpleName());
 
-    public AldrinInstantCommand() {
+    public AldrinToggleCommand() {
         super.setName(getClass().getSimpleName());
     }
 
     @Override
     public void logInstantiation() {
-        mLogger.info("{} command instantiated.", super.getName());
+        mLogger.info("Command instantiated.");
     }
 
     @Override
     public void logInit() {
-        mLogger.info("{} command initialized.", super.getName());
+        mLogger.info("Command initialized.");
     }
 
     @Override
     public void logEnd() {
-        mLogger.info("{} command ended/interrupted.", super.getName());
+        mLogger.info("Command ended/interrupted.");
     }
 
     @Override

@@ -17,17 +17,17 @@ public abstract class AldrinCommand extends Command implements LoggableCommand {
 
     @Override
     public void logInstantiation() {
-        mLogger.info("{} command instantiated.", super.getName());
+        mLogger.info("Command instantiated.");
     }
 
     @Override
     public void logInit() {
-        mLogger.info("{} command initialized.", super.getName());
+        mLogger.info("Command initialized.");
     }
 
     @Override
     public void logEnd() {
-        mLogger.info("{} command ended/interrupted.", super.getName());
+        mLogger.info("Command ended/interrupted.");
     }
 
 }

@@ -31,7 +31,7 @@ public class PositionLift extends AldrinCommand {
     @Override
     protected void execute() {
         // Lift.getInstance().setPosition(mPosition);
-        Lift.getInstance().setLiftPower(OI.getInstance().getDriverStickY());
+        Lift.getInstance().setPower(OI.getInstance().getDriverStickY());
         // Lift.getInstance().setDrivePower(-1);
     }
 
@@ -42,7 +42,7 @@ public class PositionLift extends AldrinCommand {
 
     @Override
     protected void end() {
-        Lift.getInstance().setLiftPower(0);
+        Lift.getInstance().setPower(0);
         // Lift.getInstance().setDrivePower(0);
 
         super.logEnd();

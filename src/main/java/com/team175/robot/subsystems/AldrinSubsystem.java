@@ -11,32 +11,23 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 public abstract class AldrinSubsystem extends Subsystem {
 
     /* Declarations */
-    // Logger
     protected final Logger mLogger = LoggerFactory.getLogger(getClass().getSimpleName());
-
-    // Boolean
-    protected boolean mSubsystemState = true;
+    // protected boolean mSubsystemState = true;
 
     // Optional design patterns
-    // To be used if multithreaded periodic calls do not work
-    public void onInit() {
-
+    /*public void onInit() {
     }
 
     public void onPeriodic() {
-
     }
 
     public void onDisabled() {
-
     }
 
     public void setSubsystemState(boolean enable) {
         mSubsystemState = enable;
-    }
+    }*/
 
-    /*public abstract void onAuto();
-    public abstract void onDisabled();
-    public abstract void onTeleop();*/
+    public abstract void stop();
 
 }

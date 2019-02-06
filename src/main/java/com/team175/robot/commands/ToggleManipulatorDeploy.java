@@ -2,7 +2,7 @@ package com.team175.robot.commands;
 
 import com.team175.robot.subsystems.Manipulator;
 
-public class ToggleManipulatorDeploy extends AldrinInstantCommand {
+public class ToggleManipulatorDeploy extends AldrinToggleCommand {
 
     private boolean mDeploy;
 

@@ -8,7 +8,7 @@ import com.team175.robot.util.AldrinTalonSRX;
 import com.team175.robot.util.CTREFactory;
 
 import com.team175.robot.util.ClosedLoopTunable;
-import com.team175.robot.util.PIDFGains;
+import com.team175.robot.util.ClosedLoopGains;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -16,6 +16,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.DoubleSupplier;
+
+import static java.util.Map.entry;
 
 /**
  * @author Arvind
@@ -26,7 +28,9 @@ public class LateralDrive extends AldrinSubsystem implements ClosedLoopTunable {
     private AldrinTalonSRX mMaster;
     private Solenoid mDeploy;
     private Map<String, DigitalInput> mLineSensors;
+
     private int mWantedPosition;
+    private ClosedLoopGains mGains;
 
     // Singleton Instance
     private static LateralDrive sInstance;
@@ -57,6 +61,7 @@ public class LateralDrive extends AldrinSubsystem implements ClosedLoopTunable {
         );*/
 
         mWantedPosition = 0;
+        mGains = Constants.LATERAL_DRIVE_GAINS;
     }
 
     public void deploy(boolean enable) {
@@ -75,9 +80,9 @@ public class LateralDrive extends AldrinSubsystem implements ClosedLoopTunable {
         return mMaster.getMotorOutputPercent();
     }
 
-    public double getVoltage() {
+    /*public double getVoltage() {
         return mMaster.getMotorOutputVoltage();
-    }
+    }*/
 
     public void setPosition(int position) {
         mWantedPosition = position;
@@ -137,29 +142,14 @@ public class LateralDrive extends AldrinSubsystem implements ClosedLoopTunable {
         }
     }
 
-    public void sendToDashboard() {
-        SmartDashboard.putNumber("LateralDrive kP", 0);
-        SmartDashboard.putNumber("LateralDrive kD", 0);
-        SmartDashboard.putNumber("LateralDrive kF", 0);
-    }
-
-    public void setPIDF(PIDFGains gains) {
-        mMaster.config_kP(gains.getKp());
-        mMaster.config_kI(gains.getKi());
-        mMaster.config_kD(gains.getKd());
-        mMaster.config_kF(gains.getKf());
-    }
-
-    @Override
-    public void updatePIDF() {
-        setPIDF(new PIDFGains(SmartDashboard.getNumber("LateralDrive kP", 0), 0,
-                SmartDashboard.getNumber("LateralDrive kD", 0),
-                SmartDashboard.getNumber("LateralDrive kF", 0)));
-    }
-
-    @Override
-    public void updateWantedPosition() {
-        setPosition((int) SmartDashboard.getNumber("LateralDrive Position", 0));
+    public void setGains(ClosedLoopGains gains) {
+        mGains = gains;
+        mMaster.config_kP(mGains.getKp());
+        mMaster.config_kI(mGains.getKi());
+        mMaster.config_kD(mGains.getKd());
+        mMaster.config_kF(mGains.getKf());
+        mMaster.configMotionAcceleration(mGains.getAcceleration());
+        mMaster.configMotionCruiseVelocity(mGains.getCruiseVelocity());
     }
 
     @Override
@@ -167,7 +157,52 @@ public class LateralDrive extends AldrinSubsystem implements ClosedLoopTunable {
     }
 
     @Override
-    public LinkedHashMap<String, DoubleSupplier> getCSVProperties() {
+    public void stop() {
+        setPower(0);
+    }
+
+    public Map<String, Object> getTelemetry() {
+        return Map.ofEntries(
+                entry("LateralKp", mGains.getKp()),
+                entry("LateralKd", mGains.getKd()),
+                entry("LateralKf", mGains.getKf()),
+                entry("LateralAccel", mGains.getAcceleration()),
+                entry("LateralCruiseVel", mGains.getCruiseVelocity()),
+                entry("LateralWantedPos", mWantedPosition),
+                entry("LateralPos", getPosition()),
+                entry("LateralPower", getPower())
+        );
+    }
+
+    public void outputToDashboard() {
+        getTelemetry().forEach((k, v) -> {
+            if (v instanceof Double || v instanceof Integer) {
+                SmartDashboard.putNumber(k, (double) v);
+            } else if (v instanceof Boolean) {
+                SmartDashboard.putBoolean(k, (boolean) v);
+            } else {
+                SmartDashboard.putString(k, v.toString());
+            }
+        });
+    }
+
+    public void updateFromDashboard() {
+        setGains(new ClosedLoopGains(SmartDashboard.getNumber("LateralKp", 0), 0,
+                SmartDashboard.getNumber("LateralKd", 0),
+                SmartDashboard.getNumber("LateralKf", 0),
+                (int) SmartDashboard.getNumber("LateralAccel", 0),
+                (int) SmartDashboard.getNumber("LateralCruiseVel", 0)));
+        setPosition((int) SmartDashboard.getNumber("LateralWantedPos", 0));
+    }
+
+    @Override
+    public void updateGains() {
+        outputToDashboard();
+        updateFromDashboard();
+    }
+
+    @Override
+    public Map<String, DoubleSupplier> getCSVTelemetry() {
         LinkedHashMap<String, DoubleSupplier> m = new LinkedHashMap<>();
         m.put("position", this::getPosition);
         m.put("wanted_position", () -> mWantedPosition);

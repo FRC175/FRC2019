@@ -3,6 +3,7 @@ package com.team175.robot.commands;
 import com.team175.robot.OI;
 import com.team175.robot.subsystems.Drive;
 import com.team175.robot.subsystems.LateralDrive;
+import com.team175.robot.util.AldrinMath;
 
 /**
  * @author Arvind
@@ -30,18 +31,18 @@ public class ManualArcadeDrive extends AldrinCommand {
     @Override
     protected void execute() {
         if (!LateralDrive.getInstance().isDeployed()) {
-            /*double y = AldrinMath.addDeadzone(-OI.getInstance().getDriverStickY(), 0.05);
-            double x = AldrinMath.addDeadzone(OI.getInstance().getDriverStickTwist(), 0.05);*/
+            double y = AldrinMath.addDeadZone(-OI.getInstance().getDriverStickY(), 0.05);
+            double x = AldrinMath.addDeadZone(OI.getInstance().getDriverStickX(), 0.05);
 
-            double forward = OI.getInstance().getDriverStickY();
+            mLogger.debug("Y: {}", y);
+            mLogger.debug("X: {}", x);
+
+            /*double forward = OI.getInstance().getDriverStickY();
             double turn = OI.getInstance().getDriverStickX();
             forward = Deadband(forward);
-            turn = Deadband(turn);
+            turn = Deadband(turn);*/
 
-            mLogger.info("Forward: {}", forward);
-            mLogger.info("Turn: {}", turn);
-
-            Drive.getInstance().arcadeDrive(forward, turn);
+            Drive.getInstance().arcadeDrive(y, x);
         }
     }
 
@@ -52,7 +53,7 @@ public class ManualArcadeDrive extends AldrinCommand {
 
     @Override
     protected void end() {
-        Drive.getInstance().setPower(0, 0);
+        Drive.getInstance().stop();
 
         super.logEnd();
     }
@@ -62,18 +63,14 @@ public class ManualArcadeDrive extends AldrinCommand {
         end();
     }
 
-    /** Deadband 5 percent, used on the gamepad */
-    double Deadband(double value) {
-        /* Upper deadband */
+    /*double Deadband(double value) {
         if (value >= +0.05)
             return value;
 
-        /* Lower deadband */
         if (value <= -0.05)
             return value;
 
-        /* Outside deadband */
         return 0;
-    }
+    }*/
 
 }

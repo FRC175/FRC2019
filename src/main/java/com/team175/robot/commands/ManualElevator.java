@@ -31,7 +31,7 @@ public class ManualElevator extends AldrinCommand {
 
     @Override
     protected void end() {
-        Elevator.getInstance().setPower(0);
+        Elevator.getInstance().stop();
 
         super.logEnd();
     }

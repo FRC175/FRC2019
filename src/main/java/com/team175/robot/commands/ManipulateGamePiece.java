@@ -35,7 +35,7 @@ public class ManipulateGamePiece extends AldrinCommand {
 
     @Override
     protected void end() {
-        Manipulator.getInstance().setRollerPosition(ManipulatorRollerPosition.IDLE);
+        Manipulator.getInstance().stopRollers();
 
         super.logEnd();
     }

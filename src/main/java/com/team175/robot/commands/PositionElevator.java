@@ -35,6 +35,9 @@ public class PositionElevator extends AldrinCommand {
 
     @Override
     protected void end() {
+        // TODO: Check if necessary
+        // Elevator.getInstance().stop();
+
         super.logEnd();
     }
 
