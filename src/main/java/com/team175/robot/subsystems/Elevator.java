@@ -115,9 +115,13 @@ public class Elevator extends AldrinSubsystem implements ClosedLoopTunable {
     public void outputToDashboard() {
         getTelemetry().forEach((k, v) -> {
             if (v instanceof Double || v instanceof Integer) {
-                SmartDashboard.putNumber(k, (double) v);
+                try {
+                    SmartDashboard.putNumber(k, Double.parseDouble(v.toString()));
+                } catch (NumberFormatException e) {
+                    mLogger.error("Failed to parse number to SmartDashboard!", e);
+                }
             } else if (v instanceof Boolean) {
-                SmartDashboard.putBoolean(k, (boolean) v);
+                SmartDashboard.putBoolean(k, Boolean.parseBoolean(v.toString()));
             } else {
                 SmartDashboard.putString(k, v.toString());
             }
@@ -135,8 +139,15 @@ public class Elevator extends AldrinSubsystem implements ClosedLoopTunable {
 
     @Override
     public void updateGains() {
-        outputToDashboard();
+        // outputToDashboard();
         updateFromDashboard();
+        mLogger.debug("Wanted Position: {}", mWantedPosition);
+        mLogger.debug("Current Pos: {}", getPosition());
+    }
+
+    @Override
+    public void reset() {
+        resetEncoder();
     }
 
     @Override
@@ -195,5 +206,5 @@ public class Elevator extends AldrinSubsystem implements ClosedLoopTunable {
         m.put("wanted_position", () -> mWantedPosition);
         return m;
     }*/
-    
+
 }

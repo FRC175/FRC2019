@@ -44,4 +44,8 @@ public class AldrinMath {
         return 1023.0 / ((double) maxVelocity);
     }
 
+    public static double calculateAltKf(int maxVelocity) {
+        return 128.0 / ((double) maxVelocity);
+    }
+
 }

@@ -38,7 +38,7 @@ public class Drive extends AldrinSubsystem implements ClosedLoopTunable {
 
     private int mWantedPosition;
     private double mWantedYaw;
-    private ClosedLoopGains mLeftGains, mRightGains;
+    private ClosedLoopGains mLeftGains, mRightGains, mPigeonGains;
 
     // Singleton Instance
     private static Drive sInstance;
@@ -73,6 +73,8 @@ public class Drive extends AldrinSubsystem implements ClosedLoopTunable {
 
         setLeftGains(mLeftGains);
         setRightGains(mRightGains);
+
+        mLeftMaster.setSensorPhase(true);
     }
 
     public void arcadeDrive(double y, double x) {
@@ -141,6 +143,10 @@ public class Drive extends AldrinSubsystem implements ClosedLoopTunable {
         mRightMaster.configMotionCruiseVelocity(mRightGains.getCruiseVelocity());
     }
 
+    public void setPigeonGains(ClosedLoopGains gains) {
+
+    }
+
     @Override
     protected void initDefaultCommand() {
         setDefaultCommand(new ManualArcadeDrive(false));
@@ -187,9 +193,13 @@ public class Drive extends AldrinSubsystem implements ClosedLoopTunable {
     public void outputToDashboard() {
         getTelemetry().forEach((k, v) -> {
             if (v instanceof Double || v instanceof Integer) {
-                SmartDashboard.putNumber(k, (double) v);
+                try {
+                    SmartDashboard.putNumber(k, Double.parseDouble(v.toString()));
+                } catch (NumberFormatException e) {
+                    mLogger.error("Failed to parse number to SmartDashboard!", e);
+                }
             } else if (v instanceof Boolean) {
-                SmartDashboard.putBoolean(k, (boolean) v);
+                SmartDashboard.putBoolean(k, Boolean.parseBoolean(v.toString()));
             } else {
                 SmartDashboard.putString(k, v.toString());
             }
@@ -212,8 +222,16 @@ public class Drive extends AldrinSubsystem implements ClosedLoopTunable {
 
     @Override
     public void updateGains() {
-        outputToDashboard();
+        // outputToDashboard();
         updateFromDashboard();
+        mLogger.debug("Wanted Position: {}", mWantedPosition);
+        mLogger.debug("Current Left Pos: {}", getLeftPosition());
+        mLogger.debug("Current Right Pos: {}", getRightPosition());
+    }
+
+    @Override
+    public void reset() {
+        resetEncoders();
     }
 
 }

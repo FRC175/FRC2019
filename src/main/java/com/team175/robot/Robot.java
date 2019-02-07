@@ -38,7 +38,7 @@ public class Robot extends TimedRobot {
     private SendableChooser<Command> mClosedLoopTuner;
 
     private Command mAutoMode;
-    private ClosedLoopTunable mClosedLoopTunable;
+    private ClosedLoopTuner mClosedLoopTunable;
 
     @Override
     public void robotInit() {
@@ -61,6 +61,9 @@ public class Robot extends TimedRobot {
         mClosedLoopTuner.addOption("Elevator PIDF Tuning", new ClosedLoopTuner(mElevator));
         mClosedLoopTuner.addOption("LateralDrive PIDF Tuning", new ClosedLoopTuner(mLateralDrive));
         mClosedLoopTuner.addOption("ManipulatorArm PIDF Tuning", new ClosedLoopTuner(mManipulator));*/
+
+        System.out.println("DEBUG - Drive Max RPM: " + Constants.DRIVE_MAX_RPM);
+        System.out.println("DEBUG - Drive Max Velocity: " + Constants.DRIVE_MAX_VELOCITY);
     }
 
     @Override
@@ -69,9 +72,10 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledInit() {
-        /*if (mClosedLoopTunable != null) {
+        if (mClosedLoopTunable != null) {
             mClosedLoopTunable.end();
-        }*/
+            mClosedLoopTunable = null;
+        }
     }
 
     @Override
@@ -116,6 +120,11 @@ public class Robot extends TimedRobot {
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
 
+        mDrive.outputToDashboard();
+        mDrive.updateFromDashboard();
+        /*mElevator.outputToDashboard();
+        mElevator.updateFromDashboard();*/
+
         /*mDrive.sendToDashboard();
         mLateralDrive.sendToDashboard();
         mElevator.sendToDashboard();
@@ -124,11 +133,11 @@ public class Robot extends TimedRobot {
 
     @Override
     public void testInit() {
-        /*mClosedLoopTunable = new ClosedLoopTuner(mElevator);
+        mClosedLoopTunable = new ClosedLoopTuner(mDrive);
 
         if (mClosedLoopTunable != null) {
             mClosedLoopTunable.initialize();
-        }*/
+        }
     }
 
     @Override

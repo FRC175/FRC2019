@@ -31,7 +31,7 @@ public class ManualArcadeDrive extends AldrinCommand {
     @Override
     protected void execute() {
         if (!LateralDrive.getInstance().isDeployed()) {
-            double y = AldrinMath.addDeadZone(-OI.getInstance().getDriverStickY(), 0.05);
+            double y = AldrinMath.addDeadZone(OI.getInstance().getDriverStickY(), 0.05);
             double x = AldrinMath.addDeadZone(OI.getInstance().getDriverStickX(), 0.05);
 
             mLogger.debug("Y: {}", y);

@@ -70,49 +70,50 @@ public final class Constants {
 
     /* Physical Constants */
     // TODO: Verify max speed of motors
-    private static final int DRIVE_MAX_RPM = 5330;
-    private static final int ELEVATOR_MAX_RPM = 5840; // May be 18730 if 775 is used
-    private static final int LATERAL_DRIVE_MAX_RPM = 18730; // Assuming this is 775
-    private static final int MANIPULATOR_ARM_MAX_RPM = 18730; // Assuming this is 775
+    public static final int DRIVE_MAX_RPM = 5330;
+    public static final int ELEVATOR_MAX_RPM = 154; // May be 18730 if 775 is used
+    public static final int LATERAL_DRIVE_MAX_RPM = 19300; // Assuming this is 775
+    public static final int MANIPULATOR_ARM_MAX_RPM = 18730; // Assuming this is 775
 
     // TODO: Determine gear ratio of each motor
-    private static final double DRIVE_GEAR_RATIO = 1;
-    private static final double ELEVATOR_GEAR_RATIO = 1;
-    private static final double LATERAL_DRIVE_GEAR_RATIO = 1;
-    private static final double MANIPULATOR_ARM_GEAR_RATIO = 1;
+    public static final double DRIVE_GEAR_RATIO = 3.66 / 1.0;
+    public static final double ELEVATOR_GEAR_RATIO = 1;
+    public static final double LATERAL_DRIVE_GEAR_RATIO = 1;
+    public static final double MANIPULATOR_ARM_GEAR_RATIO = 1;
 
     // TODO: Verify manipulator arm encoder counts per revolution
     // talonSRXCounts = counts * 4
     private static final int DRIVE_COUNTS_PER_REVOLUTION = 4096;
-    private static final int ELEVATOR_COUNTS_PER_REVOLUTION = 4096;
+    private static final int ELEVATOR_COUNTS_PER_REVOLUTION = 512;
     private static final int LATERAL_DRIVE_COUNTS_PER_REVOLUTION = 512;
     private static final int MANIPULATOR_ARM_COUNTS_PER_REVOLUTION = 4096;
 
     // TODO: Perhaps measure using Phoenix Tuner
-    private static final int DRIVE_MAX_VELOCITY = AldrinMath.calculateEmpiricalVelocity(DRIVE_MAX_RPM,
-            DRIVE_COUNTS_PER_REVOLUTION, DRIVE_GEAR_RATIO);
-    private static final int ELEVATOR_MAX_VELOCITY = AldrinMath.calculateEmpiricalVelocity(ELEVATOR_MAX_RPM,
+    /*public static final int DRIVE_MAX_VELOCITY = AldrinMath.calculateEmpiricalVelocity(DRIVE_MAX_RPM,
+            DRIVE_COUNTS_PER_REVOLUTION, DRIVE_GEAR_RATIO);*/
+    public static final int DRIVE_MAX_VELOCITY = 3000;
+    public static final int ELEVATOR_MAX_VELOCITY = AldrinMath.calculateEmpiricalVelocity(ELEVATOR_MAX_RPM,
             ELEVATOR_COUNTS_PER_REVOLUTION, ELEVATOR_GEAR_RATIO);
-    private static final int LATERAL_DRIVE_MAX_VELOCITY = AldrinMath.calculateEmpiricalVelocity(LATERAL_DRIVE_MAX_RPM,
+    public static final int LATERAL_DRIVE_MAX_VELOCITY = AldrinMath.calculateEmpiricalVelocity(LATERAL_DRIVE_MAX_RPM,
             LATERAL_DRIVE_COUNTS_PER_REVOLUTION, LATERAL_DRIVE_GEAR_RATIO);
-    private static final int MANIPULATOR_ARM_MAX_VELOCITY = AldrinMath.calculateEmpiricalVelocity(MANIPULATOR_ARM_MAX_RPM,
+    public static final int MANIPULATOR_ARM_MAX_VELOCITY = AldrinMath.calculateEmpiricalVelocity(MANIPULATOR_ARM_MAX_RPM,
             MANIPULATOR_ARM_COUNTS_PER_REVOLUTION, MANIPULATOR_ARM_GEAR_RATIO);
 
     /* Software Constants */
     // Closed Loop Gains
-    public static final ClosedLoopGains LEFT_DRIVE_GAINS = new ClosedLoopGains(0.1, 0, 0,
+    public static final ClosedLoopGains LEFT_DRIVE_GAINS = new ClosedLoopGains(1.25, 0, 1,
             AldrinMath.calculateKf(DRIVE_MAX_VELOCITY), DRIVE_MAX_VELOCITY / 2,
             DRIVE_MAX_VELOCITY / 2);
-    public static final ClosedLoopGains RIGHT_DRIVE_GAINS = new ClosedLoopGains(0.1, 0, 0,
+    public static final ClosedLoopGains RIGHT_DRIVE_GAINS = new ClosedLoopGains(5.9, 0, 11.8,
             AldrinMath.calculateKf(DRIVE_MAX_VELOCITY), DRIVE_MAX_VELOCITY / 2,
             DRIVE_MAX_VELOCITY / 2);
     public static final ClosedLoopGains ELEVATOR_GAINS = new ClosedLoopGains(0.1, 0, 0,
-            AldrinMath.calculateKf(ELEVATOR_MAX_VELOCITY), ELEVATOR_MAX_VELOCITY / 2,
+            AldrinMath.calculateAltKf(ELEVATOR_MAX_VELOCITY), ELEVATOR_MAX_VELOCITY / 2,
             ELEVATOR_MAX_VELOCITY / 2);
     public static final ClosedLoopGains LATERAL_DRIVE_GAINS = new ClosedLoopGains(0.1, 0, 0,
-            AldrinMath.calculateKf(LATERAL_DRIVE_MAX_VELOCITY), LATERAL_DRIVE_MAX_VELOCITY /2,
+            AldrinMath.calculateKf(LATERAL_DRIVE_MAX_VELOCITY), LATERAL_DRIVE_MAX_VELOCITY / 2,
             LATERAL_DRIVE_MAX_VELOCITY / 2);
-    public static final ClosedLoopGains MAINPULATOR_ARM_GAINS = new ClosedLoopGains(0.1, 0, 0,
+    public static final ClosedLoopGains MANIPULATOR_ARM_GAINS = new ClosedLoopGains(0.1, 0, 0,
             AldrinMath.calculateKf(MANIPULATOR_ARM_MAX_VELOCITY), MANIPULATOR_ARM_MAX_VELOCITY / 2,
             MANIPULATOR_ARM_MAX_VELOCITY / 2);
 

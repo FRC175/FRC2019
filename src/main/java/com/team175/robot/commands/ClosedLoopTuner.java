@@ -25,6 +25,7 @@ public class ClosedLoopTuner extends AldrinCommand {
 
     @Override
     public void initialize() {
+        mSubsystem.reset();
         double refreshRate; // 10 ms
         try {
             refreshRate = Double.parseDouble(Robot.class.getSuperclass().getField("kDefaultPeriod").get(null).toString())

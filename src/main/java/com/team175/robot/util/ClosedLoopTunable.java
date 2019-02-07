@@ -9,4 +9,6 @@ public interface ClosedLoopTunable extends CSVLoggable {
 
     void updateGains();
 
+    void reset();
+
 }

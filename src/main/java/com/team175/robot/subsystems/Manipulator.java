@@ -65,7 +65,7 @@ public class Manipulator extends AldrinSubsystem implements ClosedLoopTunable {
                 Constants.MANIPULATOR_DEPLOY_REVERSE_CHANNEL);
 
         mArmWantedPosition = 0;
-        mArmGains = Constants.MAINPULATOR_ARM_GAINS;
+        mArmGains = Constants.MANIPULATOR_ARM_GAINS;
     }
 
     public void deploy(boolean enable) {
@@ -175,9 +175,13 @@ public class Manipulator extends AldrinSubsystem implements ClosedLoopTunable {
     public void outputToDashboard() {
         getTelemetry().forEach((k, v) -> {
             if (v instanceof Double || v instanceof Integer) {
-                SmartDashboard.putNumber(k, (double) v);
+                try {
+                    SmartDashboard.putNumber(k, Double.parseDouble(v.toString()));
+                } catch (NumberFormatException e) {
+                    mLogger.error("Failed to parse number to SmartDashboard!", e);
+                }
             } else if (v instanceof Boolean) {
-                SmartDashboard.putBoolean(k, (boolean) v);
+                SmartDashboard.putBoolean(k, Boolean.parseBoolean(v.toString()));
             } else {
                 SmartDashboard.putString(k, v.toString());
             }
@@ -193,9 +197,14 @@ public class Manipulator extends AldrinSubsystem implements ClosedLoopTunable {
         setArmPosition((int) SmartDashboard.getNumber("ManipArmWantedPos", 0));
     }
 
+    @Override
     public void updateGains() {
         outputToDashboard();
         updateFromDashboard();
+    }
+
+    @Override
+    public void reset() {
     }
 
     @Override

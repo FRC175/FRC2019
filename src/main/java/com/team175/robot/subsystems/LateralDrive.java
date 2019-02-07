@@ -177,9 +177,13 @@ public class LateralDrive extends AldrinSubsystem implements ClosedLoopTunable {
     public void outputToDashboard() {
         getTelemetry().forEach((k, v) -> {
             if (v instanceof Double || v instanceof Integer) {
-                SmartDashboard.putNumber(k, (double) v);
+                try {
+                    SmartDashboard.putNumber(k, Double.parseDouble(v.toString()));
+                } catch (NumberFormatException e) {
+                    mLogger.error("Failed to parse number to SmartDashboard!", e);
+                }
             } else if (v instanceof Boolean) {
-                SmartDashboard.putBoolean(k, (boolean) v);
+                SmartDashboard.putBoolean(k, Boolean.parseBoolean(v.toString()));
             } else {
                 SmartDashboard.putString(k, v.toString());
             }
@@ -199,6 +203,11 @@ public class LateralDrive extends AldrinSubsystem implements ClosedLoopTunable {
     public void updateGains() {
         outputToDashboard();
         updateFromDashboard();
+    }
+
+    @Override
+    public void reset() {
+        resetEncoder();
     }
 
     @Override
