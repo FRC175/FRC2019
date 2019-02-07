@@ -1,4 +1,4 @@
-package com.team175.robot.util;
+package com.team175.robot.util.drivers;
 
 import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
@@ -14,10 +14,6 @@ public class AldrinVictorSPX extends VictorSPX {
         super(portNum);
     }
 
-    public ErrorCode config_kF(double value) {
-        return super.config_kF(Constants.SLOT_INDEX, value, Constants.TIMEOUT_MS);
-    }
-
     public ErrorCode config_kP(double value) {
         return super.config_kP(Constants.SLOT_INDEX, value, Constants.TIMEOUT_MS);
     }
@@ -28,6 +24,26 @@ public class AldrinVictorSPX extends VictorSPX {
 
     public ErrorCode config_kD(double value) {
         return super.config_kD(Constants.SLOT_INDEX, value, Constants.TIMEOUT_MS);
+    }
+
+    public ErrorCode config_kF(double value) {
+        return super.config_kF(Constants.SLOT_INDEX, value, Constants.TIMEOUT_MS);
+    }
+
+    public ErrorCode config_aux_kP(double value) {
+        return super.config_kP(Constants.AUX_SLOT_INDEX, value, Constants.TIMEOUT_MS);
+    }
+
+    public ErrorCode config_aux_kI(double value) {
+        return super.config_kI(Constants.AUX_SLOT_INDEX, value, Constants.TIMEOUT_MS);
+    }
+
+    public ErrorCode config_aux_kD(double value) {
+        return super.config_kD(Constants.AUX_SLOT_INDEX, value, Constants.TIMEOUT_MS);
+    }
+
+    public ErrorCode config_aux_kF(double value) {
+        return super.config_kF(Constants.AUX_SLOT_INDEX, value, Constants.TIMEOUT_MS);
     }
 
     public ErrorCode setSelectedSensorPosition(int position) {

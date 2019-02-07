@@ -2,11 +2,11 @@ package com.team175.robot.commands;
 
 import com.team175.robot.subsystems.Manipulator;
 
-public class TogglePushHatch extends AldrinToggleCommand {
+public class TogglePunchHatch extends AldrinToggleCommand {
 
     private boolean mPush;
 
-    public TogglePushHatch() {
+    public TogglePunchHatch() {
         requires(Manipulator.getInstance());
 
         super.logInstantiation();
@@ -14,7 +14,7 @@ public class TogglePushHatch extends AldrinToggleCommand {
 
     @Override
     protected void initialize() {
-        Manipulator.getInstance().pushHatch(mPush);
+        Manipulator.getInstance().punchHatch(mPush);
         mPush = !mPush;
 
         super.logInit();

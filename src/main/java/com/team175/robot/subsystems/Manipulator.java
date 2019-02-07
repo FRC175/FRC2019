@@ -5,11 +5,11 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.team175.robot.Constants;
 import com.team175.robot.positions.ManipulatorArmPosition;
 import com.team175.robot.positions.ManipulatorRollerPosition;
-import com.team175.robot.util.AldrinTalonSRX;
-import com.team175.robot.util.CTREFactory;
+import com.team175.robot.util.drivers.AldrinTalonSRX;
+import com.team175.robot.util.drivers.CTREFactory;
 
-import com.team175.robot.util.ClosedLoopTunable;
-import com.team175.robot.util.ClosedLoopGains;
+import com.team175.robot.util.tuning.ClosedLoopTunable;
+import com.team175.robot.util.tuning.ClosedLoopGains;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -20,19 +20,17 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.DoubleSupplier;
 
-import static java.util.Map.entry;
-
 /**
  * @author Arvind
  */
-public class Manipulator extends AldrinSubsystem implements ClosedLoopTunable {
+public final class Manipulator extends AldrinSubsystem implements ClosedLoopTunable {
 
     /* Declarations */
-    private AldrinTalonSRX mArm;
-    private Talon mFrontRoller;
-    private Talon mRearRoller;
-    private Solenoid mHatchPush;
-    private DoubleSolenoid mDeploy;
+    private final AldrinTalonSRX mArm;
+    private final Talon mFrontRoller;
+    private final Talon mRearRoller;
+    private final Solenoid mHatchPunch;
+    private final DoubleSolenoid mDeploy;
 
     private int mArmWantedPosition;
     private ClosedLoopGains mArmGains;
@@ -58,7 +56,7 @@ public class Manipulator extends AldrinSubsystem implements ClosedLoopTunable {
         mRearRoller = new Talon(Constants.MANIPULATOR_REAR_ROLLER);
 
         // Solenoid(channel : int)
-        mHatchPush = new Solenoid(Constants.MANIPULATOR_HATCH_PUSH_CHANNEL);
+        mHatchPunch = new Solenoid(Constants.MANIPULATOR_HATCH_PUNCH_CHANNEL);
 
         // DoubleSolenoid(forwardChannel : int, reverseChannel : int)
         mDeploy = new DoubleSolenoid(Constants.MANIPULATOR_DEPLOY_FORWARD_CHANNEL,
@@ -81,8 +79,12 @@ public class Manipulator extends AldrinSubsystem implements ClosedLoopTunable {
         mRearRoller.set(rearPower);
     }
 
-    public void setRollerPosition(ManipulatorRollerPosition position) {
-        setRollerPower(position.getFrontPower(), position.getRearPower());
+    public void setRollerPosition(ManipulatorRollerPosition rp) {
+        setRollerPower(rp.getFrontPower(), rp.getRearPower());
+    }
+
+    public void stopRollers() {
+        setRollerPower(0, 0);
     }
 
     public double getFrontRollerPower() {
@@ -93,16 +95,20 @@ public class Manipulator extends AldrinSubsystem implements ClosedLoopTunable {
         return mRearRoller.get();
     }
 
-    public void pushHatch(boolean enable) {
-        mHatchPush.set(enable);
+    public void punchHatch(boolean enable) {
+        mHatchPunch.set(enable);
     }
 
-    public boolean isHatchPushed() {
-        return mHatchPush.get();
+    public boolean isHatchPunched() {
+        return mHatchPunch.get();
     }
 
     public void setArmPower(double power) {
         mArm.set(ControlMode.PercentOutput, power);
+    }
+
+    public void stopArm() {
+        setArmPower(0);
     }
 
     public double getArmPower() {
@@ -118,24 +124,20 @@ public class Manipulator extends AldrinSubsystem implements ClosedLoopTunable {
         mArm.set(ControlMode.MotionMagic, mArmWantedPosition);
     }
 
-    public void setArmPosition(ManipulatorArmPosition position) {
-        setArmPosition(position.positionToMove());
+    public void setArmPosition(ManipulatorArmPosition ap) {
+        setArmPosition(ap.positionToMove());
     }
 
     public int getArmPosition() {
         return mArm.getSelectedSensorPosition();
     }
 
+    public int getArmVelocity() {
+        return mArm.getSelectedSensorVelocity();
+    }
+
     public boolean isArmAtWantedPosition() {
         return Math.abs(getArmPosition() - mArmWantedPosition) <= Constants.ALLOWED_POSITION_DEVIATION;
-    }
-
-    public void stopArm() {
-        setArmPower(0);
-    }
-
-    public void stopRollers() {
-        setRollerPower(0, 0);
     }
 
     public void setArmGains(ClosedLoopGains gains) {
@@ -148,6 +150,10 @@ public class Manipulator extends AldrinSubsystem implements ClosedLoopTunable {
         mArm.configMotionCruiseVelocity(mArmGains.getCruiseVelocity());
     }
 
+    public void resetArmEncoder() {
+        mArm.setSelectedSensorPosition(0);
+    }
+
     @Override
     protected void initDefaultCommand() {
     }
@@ -158,36 +164,22 @@ public class Manipulator extends AldrinSubsystem implements ClosedLoopTunable {
         stopRollers();
     }
 
+    @Override
     public Map<String, Object> getTelemetry() {
-        return Map.ofEntries(
-                entry("ManipArmfKp", mArmGains.getKp()),
-                entry("ManipArmKd", mArmGains.getKd()),
-                entry("ManipArmKf", mArmGains.getKf()),
-                entry("ManipArmAccel", mArmGains.getAcceleration()),
-                entry("ManipArmCruiseVel", mArmGains.getCruiseVelocity()),
-                entry("ManipArmWantedPos", mArmWantedPosition),
-                entry("ManipArmPos", getArmPosition()),
-                entry("ManipArmPower", getArmPower()),
-                entry("ManipulatorArmVolt", getArmVoltage())
-        );
+        LinkedHashMap<String, Object> m = new LinkedHashMap<>();
+        m.put("ManipArmKp", mArmGains.getKp());
+        m.put("ManipArmKd", mArmGains.getKd());
+        m.put("ManipArmKf", mArmGains.getKf());
+        m.put("ManipArmAccel", mArmGains.getAcceleration());
+        m.put("ManipArmCruiseVel", mArmGains.getCruiseVelocity());
+        m.put("ManipArmWantedPos", mArmWantedPosition);
+        m.put("ManipArmPos", getArmPosition());
+        m.put("ManipArmPower", getArmPower());
+        m.put("ManipulatorArmVolt", getArmVoltage());
+        return m;
     }
 
-    public void outputToDashboard() {
-        getTelemetry().forEach((k, v) -> {
-            if (v instanceof Double || v instanceof Integer) {
-                try {
-                    SmartDashboard.putNumber(k, Double.parseDouble(v.toString()));
-                } catch (NumberFormatException e) {
-                    mLogger.error("Failed to parse number to SmartDashboard!", e);
-                }
-            } else if (v instanceof Boolean) {
-                SmartDashboard.putBoolean(k, Boolean.parseBoolean(v.toString()));
-            } else {
-                SmartDashboard.putString(k, v.toString());
-            }
-        });
-    }
-
+    @Override
     public void updateFromDashboard() {
         setArmGains(new ClosedLoopGains(SmartDashboard.getNumber("ManipArmKp", 0), 0,
                 SmartDashboard.getNumber("ManipArmKd", 0),
@@ -199,8 +191,9 @@ public class Manipulator extends AldrinSubsystem implements ClosedLoopTunable {
 
     @Override
     public void updateGains() {
-        outputToDashboard();
         updateFromDashboard();
+        mLogger.debug("Wanted Position: {}", mArmWantedPosition);
+        mLogger.debug("Current Position: {}", getArmPosition());
     }
 
     @Override

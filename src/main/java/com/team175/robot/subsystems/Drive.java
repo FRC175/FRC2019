@@ -6,11 +6,11 @@ import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.team175.robot.Constants;
 import com.team175.robot.commands.ManualArcadeDrive;
-import com.team175.robot.util.AldrinTalonSRX;
-import com.team175.robot.util.CTREFactory;
+import com.team175.robot.util.drivers.AldrinTalonSRX;
+import com.team175.robot.util.drivers.CTREFactory;
 
-import com.team175.robot.util.ClosedLoopTunable;
-import com.team175.robot.util.ClosedLoopGains;
+import com.team175.robot.util.tuning.ClosedLoopTunable;
+import com.team175.robot.util.tuning.ClosedLoopGains;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -18,23 +18,19 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.DoubleSupplier;
 
-import static java.util.Map.entry;
-
 /**
  * TODO: Maybe implement cheesy drive.
  * TODO: Add gyro PID tuning.
  * TODO: Add motion profiling config.
- * TODO: Consider removing outputToDashboard() from updateGains().
- * TODO: Consider implementing Diagnosable.
  *
  * @author Arvind
  */
-public class Drive extends AldrinSubsystem implements ClosedLoopTunable {
+public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
 
     /* Declarations */
-    private AldrinTalonSRX mLeftMaster, mLeftSlave, mRightMaster, mRightSlave;
-    private PigeonIMU mPigeon;
-    private Solenoid mShift;
+    private final AldrinTalonSRX mLeftMaster, mLeftSlave, mRightMaster, mRightSlave;
+    private final PigeonIMU mPigeon;
+    private final Solenoid mShift;
 
     private int mWantedPosition;
     private double mWantedYaw;
@@ -95,6 +91,19 @@ public class Drive extends AldrinSubsystem implements ClosedLoopTunable {
         return mRightMaster.getMotorOutputPercent();
     }
 
+    public void setLowGear(boolean enable) {
+        mShift.set(enable);
+    }
+
+    public boolean isLowGear() {
+        return mShift.get();
+    }
+
+    public void setBrakeMode(boolean enable) {
+        mLeftMaster.setBrakeMode(enable);
+        mRightMaster.setBrakeMode(enable);
+    }
+
     public void setPosition(int position) {
         mWantedPosition = position;
         mLeftMaster.set(ControlMode.MotionMagic, mWantedPosition);
@@ -105,22 +114,17 @@ public class Drive extends AldrinSubsystem implements ClosedLoopTunable {
         return mLeftMaster.getSelectedSensorPosition();
     }
 
+
+    public int getLeftVelocity() {
+        return mLeftMaster.getSelectedSensorVelocity();
+    }
+
     public int getRightPosition() {
         return mRightMaster.getSelectedSensorPosition();
     }
 
-    public void resetEncoders() {
-        mLeftMaster.setSelectedSensorPosition(0);
-        mRightMaster.setSelectedSensorPosition(0);
-        mPigeon.setYaw(0);
-    }
-
-    public void setLowGear(boolean enable) {
-        mShift.set(enable);
-    }
-
-    public boolean isLowGear() {
-        return mShift.get();
+    public int getRightVelocity() {
+        return mRightMaster.getSelectedSensorVelocity();
     }
 
     public void setLeftGains(ClosedLoopGains gains) {
@@ -144,7 +148,12 @@ public class Drive extends AldrinSubsystem implements ClosedLoopTunable {
     }
 
     public void setPigeonGains(ClosedLoopGains gains) {
+    }
 
+    public void resetEncoders() {
+        mLeftMaster.setSelectedSensorPosition(0);
+        mRightMaster.setSelectedSensorPosition(0);
+        mPigeon.setYaw(0);
     }
 
     @Override
@@ -158,54 +167,29 @@ public class Drive extends AldrinSubsystem implements ClosedLoopTunable {
     }
 
     @Override
-    public Map<String, DoubleSupplier> getCSVTelemetry() {
-        LinkedHashMap<String, DoubleSupplier> m = new LinkedHashMap<>();
-        m.put("left_position", this::getLeftPosition);
-        m.put("right_position", this::getRightPosition);
-        m.put("wanted_position", () -> mWantedPosition);
+    public Map<String, Object> getTelemetry() {
+        LinkedHashMap<String, Object> m = new LinkedHashMap<>();
+        m.put("LDriveKp", mLeftGains.getKp());
+        m.put("LDriveKd", mLeftGains.getKd());
+        m.put("LDriveKf", mLeftGains.getKf());
+        m.put("LDriveAccel", mLeftGains.getAcceleration());
+        m.put("LDriveCruiseVel", mLeftGains.getCruiseVelocity());
+        m.put("LDrivePos", getLeftPosition());
+        m.put("LDrivePower", getLeftPower());
+        m.put("RDriveKp", mRightGains.getKp());
+        m.put("RDriveKd", mRightGains.getKd());
+        m.put("RDriveKf", mRightGains.getKf());
+        m.put("RDriveAccel", mRightGains.getAcceleration());
+        m.put("RDriveCruiseVel", mRightGains.getCruiseVelocity());
+        m.put("RDrivePos", getRightPosition());
+        m.put("RDrivePower", getRightPower());
+        m.put("DriveWantedPos", mWantedPosition);
+        m.put("DriveWantedYaw", mWantedYaw);
+        m.put("DriveIsLowGear", isLowGear());
         return m;
     }
 
-    public Map<String, Object> getTelemetry() {
-        return Map.ofEntries(
-                entry("LDriveKp", mLeftGains.getKp()),
-                entry("LDriveKd", mLeftGains.getKd()),
-                entry("LDriveKf", mLeftGains.getKf()),
-                entry("LDriveAccel", mLeftGains.getAcceleration()),
-                entry("LDriveCruiseVel", mLeftGains.getCruiseVelocity()),
-                entry("LDrivePos", getLeftPosition()),
-                entry("LDrivePower", getLeftPower()),
-
-                entry("RDriveKp", mRightGains.getKp()),
-                entry("RDriveKd", mRightGains.getKd()),
-                entry("RDriveKf", mRightGains.getKf()),
-                entry("RDriveAccel", mRightGains.getAcceleration()),
-                entry("RDriveCruiseVel", mRightGains.getCruiseVelocity()),
-                entry("RDrivePos", getRightPosition()),
-                entry("RDrivePower", getRightPower()),
-
-                entry("DriveWantedPos", mWantedPosition),
-                entry("DriveWantedYaw", mWantedYaw),
-                entry("DriveIsLowGear", isLowGear())
-        );
-    }
-
-    public void outputToDashboard() {
-        getTelemetry().forEach((k, v) -> {
-            if (v instanceof Double || v instanceof Integer) {
-                try {
-                    SmartDashboard.putNumber(k, Double.parseDouble(v.toString()));
-                } catch (NumberFormatException e) {
-                    mLogger.error("Failed to parse number to SmartDashboard!", e);
-                }
-            } else if (v instanceof Boolean) {
-                SmartDashboard.putBoolean(k, Boolean.parseBoolean(v.toString()));
-            } else {
-                SmartDashboard.putString(k, v.toString());
-            }
-        });
-    }
-
+    @Override
     public void updateFromDashboard() {
         setLeftGains(new ClosedLoopGains(SmartDashboard.getNumber("LDriveKp", 0), 0,
                 SmartDashboard.getNumber("LDriveKd", 0),
@@ -222,16 +206,24 @@ public class Drive extends AldrinSubsystem implements ClosedLoopTunable {
 
     @Override
     public void updateGains() {
-        // outputToDashboard();
         updateFromDashboard();
         mLogger.debug("Wanted Position: {}", mWantedPosition);
-        mLogger.debug("Current Left Pos: {}", getLeftPosition());
-        mLogger.debug("Current Right Pos: {}", getRightPosition());
+        mLogger.debug("Current Left Position: {}", getLeftPosition());
+        mLogger.debug("Current Right Position: {}", getRightPosition());
     }
 
     @Override
     public void reset() {
         resetEncoders();
+    }
+
+    @Override
+    public Map<String, DoubleSupplier> getCSVTelemetry() {
+        LinkedHashMap<String, DoubleSupplier> m = new LinkedHashMap<>();
+        m.put("left_position", this::getLeftPosition);
+        m.put("right_position", this::getRightPosition);
+        m.put("wanted_position", () -> mWantedPosition);
+        return m;
     }
 
 }

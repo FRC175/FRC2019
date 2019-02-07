@@ -3,18 +3,21 @@ package com.team175.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.team175.robot.Constants;
 
-import com.team175.robot.util.AldrinTalonSRX;
-import com.team175.robot.util.CTREFactory;
+import com.team175.robot.util.drivers.AldrinTalonSRX;
+import com.team175.robot.util.drivers.CTREFactory;
 import edu.wpi.first.wpilibj.Talon;
+
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * @author Arvind
  */
-public class Lift extends AldrinSubsystem {
+public final class Lift extends AldrinSubsystem {
 
     /* Declarations */
-    private AldrinTalonSRX mDrive;
-    private Talon mFront, mRear;
+    private final AldrinTalonSRX mDrive;
+    private final Talon mFront, mRear;
 
     // Singleton Instance
     private static Lift sInstance;
@@ -66,6 +69,18 @@ public class Lift extends AldrinSubsystem {
     public void stop() {
         setPower(0);
         setDrivePower(0);
+    }
+
+    public Map<String, Object> getTelemetry() {
+        LinkedHashMap<String, Object> m = new LinkedHashMap<>();
+        m.put("FLiftPower", getFrontPower());
+        m.put("RLiftPower", getRearPower());
+        m.put("LiftDrivePower", getDrivePower());
+        return m;
+    }
+
+    @Override
+    public void updateFromDashboard() {
     }
 
 }

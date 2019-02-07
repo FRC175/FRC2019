@@ -1,8 +1,8 @@
 package com.team175.robot.commands;
 
 import com.team175.robot.Robot;
-import com.team175.robot.util.logging.CSVLogger;
-import com.team175.robot.util.ClosedLoopTunable;
+import com.team175.robot.util.tuning.CSVLogger;
+import com.team175.robot.util.tuning.ClosedLoopTunable;
 
 import edu.wpi.first.wpilibj.Notifier;
 
@@ -26,12 +26,13 @@ public class ClosedLoopTuner extends AldrinCommand {
     @Override
     public void initialize() {
         mSubsystem.reset();
+
         double refreshRate; // 10 ms
         try {
             refreshRate = Double.parseDouble(Robot.class.getSuperclass().getField("kDefaultPeriod").get(null).toString())
                     / 2.0;
         } catch (IllegalAccessException | NoSuchFieldException | NumberFormatException e) {
-            mLogger.error("Failed to parse refresh rate! Using default of 10 ms instead...", e);
+            mLogger.warn("Failed to parse refresh rate! Using default of 10 ms instead...", e);
             refreshRate = 0.01;
         }
         mLogger.debug("Refresh Rate: {}", refreshRate);

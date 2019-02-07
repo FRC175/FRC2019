@@ -1,4 +1,4 @@
-package com.team175.robot.util;
+package com.team175.robot.util.drivers;
 
 import edu.wpi.first.wpilibj.GenericHID;
 import edu.wpi.first.wpilibj.buttons.Button;
@@ -18,9 +18,12 @@ public class TwoButton extends Button {
     /**
      * Constructs a two joystick buttons into one object.
      *
-     * @param joystick           The Joystick the buttons are a part of
-     * @param firstButtonNumber  The number of the first button on the joystick
-     * @param secondButtonNumber The number of the second button on the joystick
+     * @param joystick
+     *         The Joystick the buttons are a part of
+     * @param firstButtonNumber
+     *         The number of the first button on the joystick
+     * @param secondButtonNumber
+     *         The number of the second button on the joystick
      */
     public TwoButton(GenericHID joystick, int firstButtonNumber, int secondButtonNumber) {
         mJoystick = joystick;

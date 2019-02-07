@@ -16,31 +16,31 @@ import edu.wpi.first.wpilibj.buttons.JoystickButton;
 /**
  * @author Arvind
  */
-public class OI {
+public final class OI {
 
     /* Declarations */
     // Joysticks
-    private Joystick mDriverStick;
-    private Joystick mOperatorStick;
+    private final Joystick mDriverStick;
+    private final Joystick mOperatorStick;
 
     // Driver Stick Buttons
-    private Button mManualLateralDrive;
-    private Button mShift;
-    private Button mStraightDrive;
-    private Button mManualLift;
-    // private Button mManualLiftDrive;
-    // private Button mLineAlign;
+    private final Button mManualLateralDrive;
+    private final Button mShift;
+    private final Button mStraightDrive;
+    private final Button mManualLift;
+    // private final Button mManualLiftDrive;
+    // private final Button mLineAlign;
 
     // Operator Stick Buttons
     // TODO: Add automated arm and elevator positions
-    private Button mManualElevator;
-    private Button mToggleManipulator;
-    private Button mScoreHatch;
-    private Button mGrabHatch;
-    private Button mScoreCargo;
-    private Button mGrabCargo;
-    private Button mTogglePushHatch;
-    private Button mManualManipulatorArm;
+    private final Button mManualElevator;
+    private final Button mToggleManipulator;
+    private final Button mScoreHatch;
+    private final Button mGrabHatch;
+    private final Button mScoreCargo;
+    private final Button mGrabCargo;
+    private final Button mTogglePunchHatch;
+    private final Button mManualManipulatorArm;
 
     // Singleton Instance
     private static OI sInstance;
@@ -74,7 +74,7 @@ public class OI {
         mGrabHatch = new JoystickButton(mOperatorStick, Constants.GRAB_HATCH_BUTTON);
         mScoreCargo = new JoystickButton(mOperatorStick, Constants.SCORE_CARGO_BUTTON);
         mGrabCargo = new JoystickButton(mOperatorStick, Constants.GRAB_CARGO_BUTTON);
-        mTogglePushHatch = new JoystickButton(mOperatorStick, Constants.TOGGLE_PUSH_HATCH_BUTTON);
+        mTogglePunchHatch = new JoystickButton(mOperatorStick, Constants.TOGGLE_PUNCH_HATCH_BUTTON);
         mManualManipulatorArm = new JoystickButton(mOperatorStick, Constants.MANUAL_ARM_BUTTON);
 
         /* Command Assignment */
@@ -93,7 +93,7 @@ public class OI {
         mGrabCargo.whileHeld(new ManipulateGamePiece(ManipulatorRollerPosition.GRAB_CARGO));
         mScoreHatch.whileHeld(new ManipulateGamePiece(ManipulatorRollerPosition.SCORE_HATCH));
         mGrabHatch.whileHeld(new ManipulateGamePiece(ManipulatorRollerPosition.GRAB_HATCH));
-        mTogglePushHatch.toggleWhenPressed(new TogglePushHatch());
+        mTogglePunchHatch.toggleWhenPressed(new TogglePunchHatch());
         mManualManipulatorArm.whileHeld(new ManualManipulatorArm());
     }
 

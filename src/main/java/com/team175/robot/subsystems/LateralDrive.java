@@ -4,12 +4,11 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import com.team175.robot.Constants;
 import com.team175.robot.positions.LineSensorPosition;
-import com.team175.robot.util.AldrinTalonSRX;
-import com.team175.robot.util.CTREFactory;
+import com.team175.robot.util.drivers.AldrinTalonSRX;
+import com.team175.robot.util.drivers.CTREFactory;
 
-import com.team175.robot.util.ClosedLoopTunable;
-import com.team175.robot.util.ClosedLoopGains;
-import edu.wpi.first.wpilibj.DigitalInput;
+import com.team175.robot.util.tuning.ClosedLoopTunable;
+import com.team175.robot.util.tuning.ClosedLoopGains;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
@@ -17,17 +16,15 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.DoubleSupplier;
 
-import static java.util.Map.entry;
-
 /**
  * @author Arvind
  */
-public class LateralDrive extends AldrinSubsystem implements ClosedLoopTunable {
+public final class LateralDrive extends AldrinSubsystem implements ClosedLoopTunable {
 
     /* Declarations */
-    private AldrinTalonSRX mMaster;
-    private Solenoid mDeploy;
-    private Map<String, DigitalInput> mLineSensors;
+    private final AldrinTalonSRX mMaster;
+    private final Solenoid mDeploy;
+    // private final Map<String, DigitalInput> mLineSensors;
 
     private int mWantedPosition;
     private ClosedLoopGains mGains;
@@ -97,15 +94,29 @@ public class LateralDrive extends AldrinSubsystem implements ClosedLoopTunable {
         return mMaster.getSelectedSensorPosition();
     }
 
+    public int getVelocity() {
+        return mMaster.getSelectedSensorVelocity();
+    }
+
     public boolean isAtWantedPosition() {
         return Math.abs(getPosition() - mWantedPosition) <= Constants.ALLOWED_POSITION_DEVIATION;
+    }
+
+    public void setGains(ClosedLoopGains gains) {
+        mGains = gains;
+        mMaster.config_kP(mGains.getKp());
+        mMaster.config_kI(mGains.getKi());
+        mMaster.config_kD(mGains.getKd());
+        mMaster.config_kF(mGains.getKf());
+        mMaster.configMotionAcceleration(mGains.getAcceleration());
+        mMaster.configMotionCruiseVelocity(mGains.getCruiseVelocity());
     }
 
     public void resetEncoder() {
         mMaster.setSelectedSensorPosition(0);
     }
 
-    private String getLineSensorArray() {
+    /*private String getLineSensorArray() {
         String binarySensorArray = "";
         binarySensorArray += mLineSensors.get("LeftTwo").get() ? "1" : "0";
         binarySensorArray += mLineSensors.get("LeftOne").get() ? "1" : "0";
@@ -140,17 +151,7 @@ public class LateralDrive extends AldrinSubsystem implements ClosedLoopTunable {
                 // Robot orientation wrong
                 return LineSensorPosition.ERROR;
         }
-    }
-
-    public void setGains(ClosedLoopGains gains) {
-        mGains = gains;
-        mMaster.config_kP(mGains.getKp());
-        mMaster.config_kI(mGains.getKi());
-        mMaster.config_kD(mGains.getKd());
-        mMaster.config_kF(mGains.getKf());
-        mMaster.configMotionAcceleration(mGains.getAcceleration());
-        mMaster.configMotionCruiseVelocity(mGains.getCruiseVelocity());
-    }
+    }*/
 
     @Override
     protected void initDefaultCommand() {
@@ -161,35 +162,21 @@ public class LateralDrive extends AldrinSubsystem implements ClosedLoopTunable {
         setPower(0);
     }
 
+    @Override
     public Map<String, Object> getTelemetry() {
-        return Map.ofEntries(
-                entry("LateralKp", mGains.getKp()),
-                entry("LateralKd", mGains.getKd()),
-                entry("LateralKf", mGains.getKf()),
-                entry("LateralAccel", mGains.getAcceleration()),
-                entry("LateralCruiseVel", mGains.getCruiseVelocity()),
-                entry("LateralWantedPos", mWantedPosition),
-                entry("LateralPos", getPosition()),
-                entry("LateralPower", getPower())
-        );
+        LinkedHashMap<String, Object> m = new LinkedHashMap<>();
+        m.put("LateralKp", mGains.getKp());
+        m.put("LateralKd", mGains.getKd());
+        m.put("LateralKf", mGains.getKf());
+        m.put("LateralAccel", mGains.getAcceleration());
+        m.put("LateralCruiseVel", mGains.getCruiseVelocity());
+        m.put("LateralWantedPos", mWantedPosition);
+        m.put("LateralPos", getPosition());
+        m.put("LateralPower", getPower());
+        return m;
     }
 
-    public void outputToDashboard() {
-        getTelemetry().forEach((k, v) -> {
-            if (v instanceof Double || v instanceof Integer) {
-                try {
-                    SmartDashboard.putNumber(k, Double.parseDouble(v.toString()));
-                } catch (NumberFormatException e) {
-                    mLogger.error("Failed to parse number to SmartDashboard!", e);
-                }
-            } else if (v instanceof Boolean) {
-                SmartDashboard.putBoolean(k, Boolean.parseBoolean(v.toString()));
-            } else {
-                SmartDashboard.putString(k, v.toString());
-            }
-        });
-    }
-
+    @Override
     public void updateFromDashboard() {
         setGains(new ClosedLoopGains(SmartDashboard.getNumber("LateralKp", 0), 0,
                 SmartDashboard.getNumber("LateralKd", 0),
@@ -201,8 +188,9 @@ public class LateralDrive extends AldrinSubsystem implements ClosedLoopTunable {
 
     @Override
     public void updateGains() {
-        outputToDashboard();
         updateFromDashboard();
+        mLogger.debug("Wanted Position: {}", mWantedPosition);
+        mLogger.debug("Current Position: {}", getPosition());
     }
 
     @Override

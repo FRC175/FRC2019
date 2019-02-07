@@ -10,8 +10,6 @@ package com.team175.robot;
 import com.team175.robot.commands.ClosedLoopTuner;
 import com.team175.robot.subsystems.*;
 
-import com.team175.robot.util.ClosedLoopTunable;
-import com.team175.robot.util.FastTimedRobot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -61,9 +59,6 @@ public class Robot extends TimedRobot {
         mClosedLoopTuner.addOption("Elevator PIDF Tuning", new ClosedLoopTuner(mElevator));
         mClosedLoopTuner.addOption("LateralDrive PIDF Tuning", new ClosedLoopTuner(mLateralDrive));
         mClosedLoopTuner.addOption("ManipulatorArm PIDF Tuning", new ClosedLoopTuner(mManipulator));*/
-
-        System.out.println("DEBUG - Drive Max RPM: " + Constants.DRIVE_MAX_RPM);
-        System.out.println("DEBUG - Drive Max Velocity: " + Constants.DRIVE_MAX_VELOCITY);
     }
 
     @Override

@@ -5,6 +5,7 @@ package com.team175.robot.util;
  *
  * @author Arvind
  */
+@Deprecated
 public interface Loggable {
 
     void toDashboard();

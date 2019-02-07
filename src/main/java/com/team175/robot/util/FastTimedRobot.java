@@ -8,8 +8,7 @@ import edu.wpi.first.wpilibj.IterativeRobotBase;
 import edu.wpi.first.wpilibj.RobotController;
 
 /**
- * FastTimedRobot is the same as TimedRobot except the default refresh rate
- * of 20 ms is changed to 10 ms.
+ * An altered version of TimedRobot that uses a faster refresh rate of 10 ms (100 hz) instead of 20 ms (50 hz).
  *
  * @author Arvind
  */

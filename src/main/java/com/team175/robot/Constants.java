@@ -1,7 +1,7 @@
 package com.team175.robot;
 
 import com.team175.robot.util.AldrinMath;
-import com.team175.robot.util.ClosedLoopGains;
+import com.team175.robot.util.tuning.ClosedLoopGains;
 
 /**
  * @author Arvind
@@ -25,7 +25,7 @@ public final class Constants {
     // Pneumatics
     public static final int SHIFT_CHANNEL = 3;
     public static final int LATERAL_DRIVE_DEPLOY_CHANNEL = 2;
-    public static final int MANIPULATOR_HATCH_PUSH_CHANNEL = 5;
+    public static final int MANIPULATOR_HATCH_PUNCH_CHANNEL = 5;
     public static final int MANIPULATOR_DEPLOY_FORWARD_CHANNEL = 0;
     public static final int MANIPULATOR_DEPLOY_REVERSE_CHANNEL = 1;
 
@@ -65,21 +65,24 @@ public final class Constants {
     public static final int GRAB_HATCH_BUTTON = 3;
     public static final int SCORE_CARGO_BUTTON = 6;
     public static final int GRAB_CARGO_BUTTON = 4;
-    public static final int TOGGLE_PUSH_HATCH_BUTTON = 2;
+    public static final int TOGGLE_PUNCH_HATCH_BUTTON = 2;
     public static final int MANUAL_ARM_BUTTON = 12;
 
     /* Physical Constants */
+
+    // TODO: Consider replacing empirical with actual velocity
+
     // TODO: Verify max speed of motors
-    public static final int DRIVE_MAX_RPM = 5330;
-    public static final int ELEVATOR_MAX_RPM = 154; // May be 18730 if 775 is used
-    public static final int LATERAL_DRIVE_MAX_RPM = 19300; // Assuming this is 775
-    public static final int MANIPULATOR_ARM_MAX_RPM = 18730; // Assuming this is 775
+    private static final int DRIVE_MAX_RPM = 5330;
+    private static final int ELEVATOR_MAX_RPM = 154; // May be 18730 if 775 is used
+    private static final int LATERAL_DRIVE_MAX_RPM = 19300; // Assuming this is 775
+    private static final int MANIPULATOR_ARM_MAX_RPM = 18730; // Assuming this is 775
 
     // TODO: Determine gear ratio of each motor
-    public static final double DRIVE_GEAR_RATIO = 3.66 / 1.0;
-    public static final double ELEVATOR_GEAR_RATIO = 1;
-    public static final double LATERAL_DRIVE_GEAR_RATIO = 1;
-    public static final double MANIPULATOR_ARM_GEAR_RATIO = 1;
+    private static final double DRIVE_GEAR_RATIO = 3.66 / 1.0;
+    private static final double ELEVATOR_GEAR_RATIO = 1;
+    private static final double LATERAL_DRIVE_GEAR_RATIO = 1;
+    private static final double MANIPULATOR_ARM_GEAR_RATIO = 1;
 
     // TODO: Verify manipulator arm encoder counts per revolution
     // talonSRXCounts = counts * 4
@@ -119,6 +122,7 @@ public final class Constants {
 
     // CTRE Constants
     public static final int SLOT_INDEX = 0;
+    public static final int AUX_SLOT_INDEX = 1;
     public static final int PID_LOOP_INDEX = 0;
     public static final int TIMEOUT_MS = 10;
     public static final int ALLOWED_POSITION_DEVIATION = 10;

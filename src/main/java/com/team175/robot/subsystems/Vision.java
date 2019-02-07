@@ -1,15 +1,16 @@
 package com.team175.robot.subsystems;
 
-import edu.wpi.cscore.UsbCamera;
 import edu.wpi.first.cameraserver.CameraServer;
+
+import java.util.Map;
 
 /**
  * @author Arvind
  */
-public class Vision extends AldrinSubsystem implements Runnable {
+public final class Vision extends AldrinSubsystem implements Runnable {
 
     /* Declarations */
-    private CameraServer mCamera;
+    private final CameraServer mCamera;
 
     // Singleton Instance
     private static Vision sInstance;
@@ -38,7 +39,15 @@ public class Vision extends AldrinSubsystem implements Runnable {
 
     @Override
     public void stop() {
-        mCamera = null;
+    }
+
+    @Override
+    public Map<String, Object> getTelemetry() {
+        return null;
+    }
+
+    @Override
+    public void updateFromDashboard() {
     }
 
 }

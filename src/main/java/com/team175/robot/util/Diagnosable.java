@@ -1,16 +1,15 @@
 package com.team175.robot.util;
 
 import java.util.Map;
-import java.util.function.DoubleSupplier;
 
 /**
  * @author Arvind
  */
 public interface Diagnosable {
 
-    boolean checkSubystem();
+    boolean check();
 
-    Map<String, DoubleSupplier> getTelemetry();
+    Map<String, Object> getTelemetry();
 
     void outputToDashboard();
 

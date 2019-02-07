@@ -1,4 +1,4 @@
-package com.team175.robot.util.logging;
+package com.team175.robot.util.tuning;
 
 import edu.wpi.first.wpilibj.Timer;
 

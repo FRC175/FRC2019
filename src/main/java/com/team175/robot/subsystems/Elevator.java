@@ -3,25 +3,23 @@ package com.team175.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.team175.robot.Constants;
 import com.team175.robot.positions.ElevatorPosition;
-import com.team175.robot.util.AldrinTalonSRX;
-import com.team175.robot.util.CTREFactory;
-import com.team175.robot.util.ClosedLoopTunable;
-import com.team175.robot.util.ClosedLoopGains;
+import com.team175.robot.util.drivers.AldrinTalonSRX;
+import com.team175.robot.util.drivers.CTREFactory;
+import com.team175.robot.util.tuning.ClosedLoopTunable;
+import com.team175.robot.util.tuning.ClosedLoopGains;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.DoubleSupplier;
 
-import static java.util.Map.entry;
-
 /**
  * @author Arvind
  */
-public class Elevator extends AldrinSubsystem implements ClosedLoopTunable {
+public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable {
 
     /* Declarations */
-    private AldrinTalonSRX mMaster;
+    private final AldrinTalonSRX mMaster;
 
     private int mWantedPosition;
     private ClosedLoopGains mGains;
@@ -71,12 +69,12 @@ public class Elevator extends AldrinSubsystem implements ClosedLoopTunable {
         return mMaster.getSelectedSensorPosition();
     }
 
-    public boolean isAtWantedPosition() {
-        return Math.abs(getPosition() - mWantedPosition) <= Constants.ALLOWED_POSITION_DEVIATION;
+    public int getVelocity() {
+        return mMaster.getSelectedSensorVelocity();
     }
 
-    public void resetEncoder() {
-        mMaster.setSelectedSensorPosition(0);
+    public boolean isAtWantedPosition() {
+        return Math.abs(getPosition() - mWantedPosition) <= Constants.ALLOWED_POSITION_DEVIATION;
     }
 
     public void setGains(ClosedLoopGains gains) {
@@ -89,6 +87,10 @@ public class Elevator extends AldrinSubsystem implements ClosedLoopTunable {
         mMaster.configMotionCruiseVelocity(mGains.getCruiseVelocity());
     }
 
+    public void resetEncoder() {
+        mMaster.setSelectedSensorPosition(0);
+    }
+
     @Override
     protected void initDefaultCommand() {
     }
@@ -98,36 +100,22 @@ public class Elevator extends AldrinSubsystem implements ClosedLoopTunable {
         setPower(0);
     }
 
+    @Override
     public Map<String, Object> getTelemetry() {
-        return Map.ofEntries(
-                entry("ElevatorKp", mGains.getKp()),
-                entry("ElevatorKd", mGains.getKd()),
-                entry("ElevatorKf", mGains.getKf()),
-                entry("ElevatorAccel", mGains.getAcceleration()),
-                entry("ElevatorCruiseVel", mGains.getCruiseVelocity()),
-                entry("ElevatorWantedPos", mWantedPosition),
-                entry("ElevatorPos", getPosition()),
-                entry("ElevatorPower", getPower()),
-                entry("ElevatorVolt", getVoltage())
-        );
+        LinkedHashMap<String, Object> m = new LinkedHashMap<>();
+        m.put("ElevatorKp", mGains.getKp());
+        m.put("ElevatorKd", mGains.getKd());
+        m.put("ElevatorKf", mGains.getKf());
+        m.put("ElevatorAccel", mGains.getAcceleration());
+        m.put("ElevatorCruiseVel", mGains.getCruiseVelocity());
+        m.put("ElevatorWantedPos", mWantedPosition);
+        m.put("ElevatorPos", getPosition());
+        m.put("ElevatorPower", getPower());
+        m.put("ElevatorVolt", getVoltage());
+        return m;
     }
 
-    public void outputToDashboard() {
-        getTelemetry().forEach((k, v) -> {
-            if (v instanceof Double || v instanceof Integer) {
-                try {
-                    SmartDashboard.putNumber(k, Double.parseDouble(v.toString()));
-                } catch (NumberFormatException e) {
-                    mLogger.error("Failed to parse number to SmartDashboard!", e);
-                }
-            } else if (v instanceof Boolean) {
-                SmartDashboard.putBoolean(k, Boolean.parseBoolean(v.toString()));
-            } else {
-                SmartDashboard.putString(k, v.toString());
-            }
-        });
-    }
-
+    @Override
     public void updateFromDashboard() {
         setGains(new ClosedLoopGains(SmartDashboard.getNumber("ElevatorKp", 0), 0,
                 SmartDashboard.getNumber("ElevatorKd", 0),
@@ -139,10 +127,9 @@ public class Elevator extends AldrinSubsystem implements ClosedLoopTunable {
 
     @Override
     public void updateGains() {
-        // outputToDashboard();
         updateFromDashboard();
         mLogger.debug("Wanted Position: {}", mWantedPosition);
-        mLogger.debug("Current Pos: {}", getPosition());
+        mLogger.debug("Current Position: {}", getPosition());
     }
 
     @Override
@@ -157,54 +144,5 @@ public class Elevator extends AldrinSubsystem implements ClosedLoopTunable {
         m.put("wanted_position", () -> mWantedPosition);
         return m;
     }
-
-
-
-
-
-
-
-
-
-
-    /*public void sendToDashboardTeleop() {
-        SmartDashboard.putNumber("Elevator kP", 0);
-        SmartDashboard.putNumber("Elevator kD", 0);
-        SmartDashboard.putNumber("Elevator kF", 0);
-        SmartDashboard.putNumber("Elevator Position", getPosition());
-    }
-
-    public void sendToDashboard() {
-        updateGains();
-        mWantedPosition = (int) SmartDashboard.getNumber("Elevator Position", 0);
-    }
-
-    public void setPIDF(ClosedLoopGains gains) {
-        mMaster.config_kP(gains.getKp());
-        mMaster.config_kI(gains.getKi());
-        mMaster.config_kD(gains.getKd());
-        mMaster.config_kF(gains.getKf());
-    }
-
-    @Override
-    public void updateGains() {
-        setPIDF(new ClosedLoopGains(SmartDashboard.getNumber("Elevator kP", 0), 0,
-                SmartDashboard.getNumber("Elevator kD", 0),
-                SmartDashboard.getNumber("Elevator kF", 0)));
-    }
-
-    @Override
-    public void updateWantedPosition() {
-        resetEncoder();
-        setPosition(1000);
-    }
-
-    @Override
-    public LinkedHashMap<String, DoubleSupplier> getCSVTelemetry() {
-        LinkedHashMap<String, DoubleSupplier> m = new LinkedHashMap<>();
-        m.put("position", this::getPosition);
-        m.put("wanted_position", () -> mWantedPosition);
-        return m;
-    }*/
 
 }
