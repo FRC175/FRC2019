@@ -20,12 +20,12 @@ public class LineAlignment extends AldrinCommand {
         super.logInit();
     }
 
-    // Called repeatedly when this Command is scheduled to run
+    // Called repeatedly when this Command is scheduled to start
     @Override
     protected void execute() {
     }
 
-    // Make this return true when this Command no longer needs to run execute()
+    // Make this return true when this Command no longer needs to start execute()
     @Override
     protected boolean isFinished() {
         return false;
@@ -38,7 +38,7 @@ public class LineAlignment extends AldrinCommand {
     }
 
     // Called when another command which requires one or more of the same
-    // subsystems is scheduled to run
+    // subsystems is scheduled to start
     @Override
     protected void interrupted() {
         end();

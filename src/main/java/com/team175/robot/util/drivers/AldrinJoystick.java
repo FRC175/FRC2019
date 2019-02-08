@@ -1,13 +1,18 @@
 package com.team175.robot.util.drivers;
 
-import com.team175.robot.util.AldrinMath;
 import edu.wpi.first.wpilibj.Joystick;
 
 /**
+ * A modified version of Joystick that allows for the addition of a software dead zone.
+ *
  * @author Arvind
+ * @see Joystick
  */
 public class AldrinJoystick extends Joystick {
 
+    /**
+     * The possible dead zone to add.
+     */
     private double mDeadZone;
 
     /**
@@ -55,7 +60,15 @@ public class AldrinJoystick extends Joystick {
      */
     @Override
     public double getRawAxis(int axis) {
-        return AldrinMath.addDeadZone(super.getRawAxis(axis), mDeadZone);
+        double value = super.getRawAxis(axis);
+
+        if (Math.abs(value) > mDeadZone) {
+            value = Math.signum(value) * (Math.abs(value) - mDeadZone) / (1.0 - mDeadZone);
+        } else {
+            value = 0.0;
+        }
+
+        return (Math.abs(value) > mDeadZone) ? value : 0.0;
     }
 
 }

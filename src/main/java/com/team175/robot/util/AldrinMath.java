@@ -14,12 +14,14 @@ public final class AldrinMath {
     /**
      * Adds n% deadzone to an input device.
      * Created to prevent usage of WPILib DifferentialDrive and thus WPI_TalonSRXs.
+     * Deprecated because it's not longer used.
      *
      * @param value
      *         The inputted value as a decimal
      * @param deadzone
      *         The wanted deadzone as a decimal
      */
+    @Deprecated
     public static double addDeadZone(double value, double deadzone) {
         if (Math.abs(value) > deadzone) {
             value = Math.signum(value) * (Math.abs(value) - deadzone) / (1.0 - deadzone);
@@ -57,7 +59,7 @@ public final class AldrinMath {
     }
 
     public static double calculateAltKf(int maxVelocity) {
-        return 128.0 / ((double) maxVelocity);
+        return 127.0 / ((double) maxVelocity);
     }
 
 }

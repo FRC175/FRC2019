@@ -7,13 +7,12 @@
 
 package com.team175.robot;
 
-import com.team175.robot.commands.ClosedLoopTuner;
 import com.team175.robot.subsystems.*;
+import com.team175.robot.util.choosers.AutoModeChooser;
+import com.team175.robot.util.choosers.TunerChooser;
 
 import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 
 /**
  * TODO: Consider using FastTimedRobot.
@@ -32,11 +31,8 @@ public class Robot extends TimedRobot {
 
     private OI mOI;
 
-    private SendableChooser<Command> mAutoModeChooser;
-    private SendableChooser<Command> mClosedLoopTuner;
-
-    private Command mAutoMode;
-    private ClosedLoopTuner mClosedLoopTunable;
+    private AutoModeChooser mAutoModeChooser;
+    private TunerChooser mTunerChooser;
 
     @Override
     public void robotInit() {
@@ -50,15 +46,8 @@ public class Robot extends TimedRobot {
 
         mOI = OI.getInstance();
 
-        mAutoModeChooser = new SendableChooser<>();
-        mClosedLoopTuner = new SendableChooser<>();
-
-        /*mAutoModeChooser.setDefaultOption("Default Auto", new ExampleCommand());
-        SmartDashboard.putData("Auto Mode", mAutoModeChooser);*/
-        /*mClosedLoopTuner.addOption("Drive PIDF Tuning" , new ClosedLoopTuner(mDrive));
-        mClosedLoopTuner.addOption("Elevator PIDF Tuning", new ClosedLoopTuner(mElevator));
-        mClosedLoopTuner.addOption("LateralDrive PIDF Tuning", new ClosedLoopTuner(mLateralDrive));
-        mClosedLoopTuner.addOption("ManipulatorArm PIDF Tuning", new ClosedLoopTuner(mManipulator));*/
+        mAutoModeChooser = new AutoModeChooser();
+        mTunerChooser = new TunerChooser();
     }
 
     @Override
@@ -67,10 +56,11 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledInit() {
-        if (mClosedLoopTunable != null) {
-            mClosedLoopTunable.end();
-            mClosedLoopTunable = null;
-        }
+        /*if (mTunable != null) {
+            mTunable.end();
+            mTunable = null;
+        }*/
+        mTunerChooser.stop();
     }
 
     @Override
@@ -80,19 +70,8 @@ public class Robot extends TimedRobot {
 
     @Override
     public void autonomousInit() {
-        mAutoMode = mAutoModeChooser.getSelected();
-
-        /*
-         * String autoSelected = SmartDashboard.getString("Auto Selector", "Default");
-         * switch(autoSelected) { case "My Auto": autonomousCommand = new
-         * MyAutoCommand(); break; case "Default Auto": default: autonomousCommand = new
-         * ExampleCommand(); break; }
-         */
-
-        // schedule the autonomous command (example)
-        if (mAutoMode != null) {
-            mAutoMode.start();
-        }
+        mAutoModeChooser.updateFromDashboard();
+        mAutoModeChooser.start();
     }
 
     @Override
@@ -102,41 +81,28 @@ public class Robot extends TimedRobot {
 
     @Override
     public void teleopInit() {
-        // This makes sure that the autonomous stops running when
-        // teleop starts running. If you want the autonomous to
-        // continue until interrupted by another command, remove
-        // this line or comment it out.
-        if (mAutoMode != null) {
-            mAutoMode.cancel();
-        }
+        mAutoModeChooser.stop();
     }
 
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-
-        mDrive.outputToDashboard();
-        mDrive.updateFromDashboard();
-        /*mElevator.outputToDashboard();
-        mElevator.updateFromDashboard();*/
-
-        /*mDrive.sendToDashboard();
-        mLateralDrive.sendToDashboard();
-        mElevator.sendToDashboard();
-        mManipulator.sendToDashboard();*/
     }
 
     @Override
     public void testInit() {
-        mClosedLoopTunable = new ClosedLoopTuner(mDrive);
+        /*mTunable = new ClosedLoopTuner(mDrive);
 
-        if (mClosedLoopTunable != null) {
-            mClosedLoopTunable.initialize();
-        }
+        if (mTunable != null) {
+            mTunable.initialize();
+        }*/
+        mTunerChooser.updateFromDashboard();
+        mTunerChooser.start();
     }
 
     @Override
     public void testPeriodic() {
+        Scheduler.getInstance().run();
     }
 
 }

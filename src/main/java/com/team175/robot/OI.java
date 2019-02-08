@@ -9,6 +9,7 @@ package com.team175.robot;
 
 import com.team175.robot.commands.*;
 import com.team175.robot.positions.ManipulatorRollerPosition;
+import com.team175.robot.util.drivers.AldrinJoystick;
 import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
@@ -20,8 +21,8 @@ public final class OI {
 
     /* Declarations */
     // Joysticks
-    private final Joystick mDriverStick;
-    private final Joystick mOperatorStick;
+    private final AldrinJoystick mDriverStick;
+    private final AldrinJoystick mOperatorStick;
 
     // Driver Stick Buttons
     private final Button mManualLateralDrive;
@@ -56,8 +57,8 @@ public final class OI {
     private OI() {
         /* Instantiations */
         // Joystick
-        mDriverStick = new Joystick(Constants.DRIVER_STICK_PORT);
-        mOperatorStick = new Joystick(Constants.OPERATOR_STICK_PORT);
+        mDriverStick = new AldrinJoystick(Constants.DRIVER_STICK_PORT, Constants.DRIVER_STICK_DEAD_ZONE);
+        mOperatorStick = new AldrinJoystick(Constants.OPERATOR_STICK_PORT, Constants.OPERATOR_STICK_DEAD_ZONE);
 
         // Driver Stick Buttons
         mManualLateralDrive = new JoystickButton(mDriverStick, Constants.LATERAL_DRIVE_TRIGGER); // 1 is the trigger button
@@ -98,19 +99,19 @@ public final class OI {
     }
 
     public double getDriverStickX() {
-        return mDriverStick.getX();
+        return mDriverStick.getRawAxis(0);
     }
 
     public double getDriverStickY() {
-        return -mDriverStick.getY();
+        return -mDriverStick.getRawAxis(1);
     }
 
     public double getOperatorStickX() {
-        return mOperatorStick.getX();
+        return mOperatorStick.getRawAxis(0);
     }
 
     public double getOperatorStickY() {
-        return -mOperatorStick.getY();
+        return -mOperatorStick.getRawAxis(1);
     }
 
 }

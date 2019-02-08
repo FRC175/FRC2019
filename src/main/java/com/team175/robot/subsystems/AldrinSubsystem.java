@@ -1,16 +1,18 @@
 package com.team175.robot.subsystems;
 
-import com.team175.robot.util.Diagnosable;
+import com.team175.robot.util.Loggable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import edu.wpi.first.wpilibj.command.Subsystem;
 
+import java.util.Map;
+
 /**
  * @author Arvind
  */
-public abstract class AldrinSubsystem extends Subsystem implements Diagnosable {
+public abstract class AldrinSubsystem extends Subsystem implements Loggable {
 
     /* Declarations */
     /**
@@ -19,9 +21,16 @@ public abstract class AldrinSubsystem extends Subsystem implements Diagnosable {
     protected final Logger mLogger = LoggerFactory.getLogger(getClass().getSimpleName());
 
     /**
-     * A simple method to call in order to stop all movement of a subsystem.
+     * Called in order to stop all movement of a subsystem.
      */
     public abstract void stop();
+
+    /**
+     * Returns a map with telemetry data of a subsystem.
+     *
+     * @return Map with telemetry data of subsystem
+     */
+    public abstract Map<String, Object> getTelemetry();
 
     /**
      * Filters the different types of data from the getTelemetry() Map and sends it to the SmartDashboard.
@@ -47,18 +56,17 @@ public abstract class AldrinSubsystem extends Subsystem implements Diagnosable {
 
     /**
      * An optional design pattern
-     * @return Whether the subsystem is good
+     *
+     * @return Whether the subsystem is in good shape
      */
-    @Override
-    public boolean check() {
+    public boolean checkSubsystem() {
         return true;
     }
 
     /**
-     * A method called periodically by the Scheduler.
+     * Performs actions periodically.
      */
-    @Override
-    public void periodic() {
+    public void onPeriodic() {
         outputToDashboard();
     }
 

@@ -5,12 +5,8 @@ package com.team175.robot.util.tuning;
  */
 public final class ClosedLoopGains {
 
-    private final double mKp;
-    private final double mKi;
-    private final double mKd;
-    private final double mKf;
-    private final int mAcceleration;
-    private final int mCruiseVelocity;
+    private final double mKp, mKi, mKd, mKf;
+    private final int mAcceleration, mCruiseVelocity;
 
     public ClosedLoopGains(double kP, double kI, double kD, double kF, int acceleration, int cruiseVelocity) {
         mKp = kP;

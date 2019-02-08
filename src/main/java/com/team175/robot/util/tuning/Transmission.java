@@ -3,15 +3,16 @@ package com.team175.robot.util.tuning;
 import com.team175.robot.util.AldrinMath;
 
 /**
+ * A programmatic representation of a transmission used for CTRE Motion Magic Control.
+ * Deprecated due to general uselessness.
+ *
  * @author Arvind
  */
+@Deprecated
 public class Transmission {
 
-    private final int mMaxMotorRPMVelocity;
-    private final int mMaxMotorSensorVelocity;
-    private final int mCountsPerRevolution;
-    private final double mGearRatio;
-    private final double mKf;
+    private final int mMaxMotorRPMVelocity, mMaxMotorSensorVelocity, mCountsPerRevolution;
+    private final double mGearRatio, mKf;
 
     public Transmission(int maxMotorRPMVelocity, int countsPerRevolution, double gearRatio) {
         mMaxMotorRPMVelocity = maxMotorRPMVelocity;

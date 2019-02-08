@@ -31,7 +31,7 @@ public final class CTREFactory {
         configOpenLoop(bmc);
 
         bmc.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, Constants.PID_LOOP_INDEX, Constants.TIMEOUT_MS);
-        bmc.configAllowableClosedloopError(Constants.SLOT_INDEX, 10, Constants.TIMEOUT_MS);
+        bmc.configAllowableClosedloopError(Constants.SLOT_INDEX, Constants.ALLOWED_POSITION_DEVIATION, Constants.TIMEOUT_MS);
         bmc.setSelectedSensorPosition(0, Constants.PID_LOOP_INDEX, Constants.TIMEOUT_MS);
     }
 

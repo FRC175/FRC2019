@@ -48,7 +48,9 @@ public final class Constants {
     /* Input Map */
     // Joystick Ports
     public static final int DRIVER_STICK_PORT = 0;
+    public static final double DRIVER_STICK_DEAD_ZONE = 0.05;
     public static final int OPERATOR_STICK_PORT = 1;
+    public static final double OPERATOR_STICK_DEAD_ZONE = 0.05;
 
     // Driver Stick Buttons
     public static final int LATERAL_DRIVE_TRIGGER = 1;
