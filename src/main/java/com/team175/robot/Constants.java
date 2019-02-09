@@ -106,10 +106,10 @@ public final class Constants {
 
     /* Software Constants */
     // Closed Loop Gains
-    public static final ClosedLoopGains LEFT_DRIVE_GAINS = new ClosedLoopGains(1.25, 0, 1,
+    public static final ClosedLoopGains LEFT_DRIVE_GAINS = new ClosedLoopGains(0.1, 0, 0.2,
             AldrinMath.calculateKf(DRIVE_MAX_VELOCITY), DRIVE_MAX_VELOCITY / 2,
             DRIVE_MAX_VELOCITY / 2);
-    public static final ClosedLoopGains RIGHT_DRIVE_GAINS = new ClosedLoopGains(5.9, 0, 11.8,
+    public static final ClosedLoopGains RIGHT_DRIVE_GAINS = new ClosedLoopGains(0.25, 0, 0.5,
             AldrinMath.calculateKf(DRIVE_MAX_VELOCITY), DRIVE_MAX_VELOCITY / 2,
             DRIVE_MAX_VELOCITY / 2);
     public static final ClosedLoopGains ELEVATOR_GAINS = new ClosedLoopGains(0.1, 0, 0,
