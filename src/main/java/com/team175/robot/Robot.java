@@ -54,6 +54,7 @@ public class Robot extends TimedRobot {
         mTunerChooser = new TunerChooser();
 
         mSubsystems = List.of(mDrive, mElevator, mLateralDrive, mLift, mManipulator);
+        mSubsystems.forEach(AldrinSubsystem::outputToDashboard);
     }
 
     @Override
@@ -62,10 +63,6 @@ public class Robot extends TimedRobot {
 
     @Override
     public void disabledInit() {
-        /*if (mTunable != null) {
-            mTunable.end();
-            mTunable = null;
-        }*/
         mTunerChooser.stop();
     }
 
@@ -73,8 +70,7 @@ public class Robot extends TimedRobot {
     public void disabledPeriodic() {
         Scheduler.getInstance().run();
 
-        // mSubsystems.forEach(AldrinSubsystem::outputToDashboard);
-        // mSubsystems.forEach(AldrinSubsystem::updateFromDashboard);
+        mSubsystems.forEach(AldrinSubsystem::updateFromDashboard);
     }
 
     @Override
@@ -102,11 +98,6 @@ public class Robot extends TimedRobot {
 
     @Override
     public void testInit() {
-        /*mTunable = new ClosedLoopTuner(mDrive);
-
-        if (mTunable != null) {
-            mTunable.initialize();
-        }*/
         mTunerChooser.updateFromDashboard();
         mTunerChooser.start();
     }

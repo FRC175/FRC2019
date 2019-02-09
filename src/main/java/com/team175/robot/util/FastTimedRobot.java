@@ -13,6 +13,7 @@ import edu.wpi.first.wpilibj.RobotController;
  * @author Arvind
  */
 public class FastTimedRobot extends IterativeRobotBase {
+
     // The refresh rate
     public static final double kDefaultPeriod = 0.01;
 
@@ -91,5 +92,6 @@ public class FastTimedRobot extends IterativeRobotBase {
     private void updateAlarm() {
         NotifierJNI.updateNotifierAlarm(m_notifier, (long) (m_expirationTime * 1e6));
     }
+
 }
 
