@@ -14,6 +14,8 @@ import com.team175.robot.util.choosers.TunerChooser;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 
+import java.util.List;
+
 /**
  * TODO: Consider using FastTimedRobot.
  *
@@ -34,6 +36,8 @@ public class Robot extends TimedRobot {
     private AutoModeChooser mAutoModeChooser;
     private TunerChooser mTunerChooser;
 
+    private List<AldrinSubsystem> mSubsystems;
+
     @Override
     public void robotInit() {
         /* Instantiations */
@@ -48,6 +52,8 @@ public class Robot extends TimedRobot {
 
         mAutoModeChooser = new AutoModeChooser();
         mTunerChooser = new TunerChooser();
+
+        mSubsystems = List.of(mDrive, mElevator, mLateralDrive, mLift, mManipulator);
     }
 
     @Override
@@ -66,6 +72,9 @@ public class Robot extends TimedRobot {
     @Override
     public void disabledPeriodic() {
         Scheduler.getInstance().run();
+
+        // mSubsystems.forEach(AldrinSubsystem::outputToDashboard);
+        // mSubsystems.forEach(AldrinSubsystem::updateFromDashboard);
     }
 
     @Override
@@ -87,6 +96,8 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
+
+        mSubsystems.forEach(AldrinSubsystem::outputToDashboard);
     }
 
     @Override

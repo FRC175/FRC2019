@@ -96,7 +96,7 @@ public final class Constants {
     // TODO: Perhaps measure using Phoenix Tuner
     /*public static final int DRIVE_MAX_VELOCITY = AldrinMath.calculateEmpiricalVelocity(DRIVE_MAX_RPM,
             DRIVE_COUNTS_PER_REVOLUTION, DRIVE_GEAR_RATIO);*/
-    public static final int DRIVE_MAX_VELOCITY = 3000;
+    public static final int DRIVE_MAX_VELOCITY = 3200;
     public static final int ELEVATOR_MAX_VELOCITY = AldrinMath.calculateEmpiricalVelocity(ELEVATOR_MAX_RPM,
             ELEVATOR_COUNTS_PER_REVOLUTION, ELEVATOR_GEAR_RATIO);
     public static final int LATERAL_DRIVE_MAX_VELOCITY = AldrinMath.calculateEmpiricalVelocity(LATERAL_DRIVE_MAX_RPM,

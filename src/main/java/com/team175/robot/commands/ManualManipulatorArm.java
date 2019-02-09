@@ -26,11 +26,13 @@ public class ManualManipulatorArm extends AldrinCommand {
 
     @Override
     protected boolean isFinished() {
-        return Manipulator.getInstance().isArmAtWantedPosition();
+        return false;
     }
 
     @Override
     protected void end() {
+        Manipulator.getInstance().stopArm();
+
         super.logEnd();
     }
 
