@@ -2,6 +2,8 @@ package com.team175.robot.util.drivers;
 
 import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
+import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
+import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.team175.robot.Constants;
 
@@ -50,6 +52,25 @@ public class AldrinTalonSRX extends TalonSRX {
 		super.setNeutralMode(on ? NeutralMode.Brake : NeutralMode.Coast);
     }
 
+    @Override
+	public ErrorCode setSelectedSensorPosition(int sensorPos) {
+		return super.setSelectedSensorPosition(sensorPos, Constants.PID_LOOP_INDEX, Constants.TIMEOUT_MS);
+	}
+
+	public void configPIDF(double kP, double kI, double kD, double kF) {
+		config_kP(kP);
+		config_kI(kI);
+		config_kD(kD);
+		config_kF(kF);
+	}
+
+	public void configAuxPIDF(double kP, double kI, double kD, double kF) {
+		config_aux_kP(kP);
+		config_aux_kI(kI);
+		config_aux_kD(kD);
+		config_aux_kF(kF);
+	}
+
     /*public void setPosition(int position) {
         super.set(ControlMode.Position, position);
     }
@@ -64,13 +85,6 @@ public class AldrinTalonSRX extends TalonSRX {
 
     public int positionToMove() {
         return getSelectedSensorPosition();
-    }
-
-    public void setPIDF(double kF, double kP, double kI, double kD) {
-        config_kF(kF);
-        config_kP(kP);
-        config_kI(kI);
-        config_kD(kD);
     }*/
 
 }

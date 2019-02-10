@@ -1,10 +1,11 @@
 package com.team175.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.*;
 
-import com.ctre.phoenix.motorcontrol.DemandType;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.team175.robot.Constants;
+import com.team175.robot.auto.Trajectory;
+import com.team175.robot.auto.TrajectoryFollower;
 import com.team175.robot.commands.ManualArcadeDrive;
 import com.team175.robot.util.drivers.AldrinTalonSRX;
 import com.team175.robot.util.drivers.CTREFactory;
@@ -31,6 +32,7 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
     private final AldrinTalonSRX mLeftMaster, mLeftSlave, mRightMaster, mRightSlave;
     private final PigeonIMU mPigeon;
     private final Solenoid mShift;
+    private final TrajectoryFollower mTrajectoryFollower;
 
     private int mWantedPosition;
     private double mWantedYaw;
@@ -62,6 +64,8 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
         // Solenoid(channel : int)
         mShift = new Solenoid(Constants.SHIFT_CHANNEL);
 
+        mTrajectoryFollower = new TrajectoryFollower(mRightMaster, mLeftMaster, mPigeon);
+
         mWantedPosition = 0;
         mWantedYaw = 0.0;
         mLeftGains = Constants.LEFT_DRIVE_GAINS;
@@ -70,7 +74,22 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
         setLeftGains(mLeftGains);
         setRightGains(mRightGains);
 
+        /*// Configure left polling rate at 5 ms
+        mLeftMaster.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 5, Constants.TIMEOUT_MS);
         mLeftMaster.setSensorPhase(true);
+
+        // Config right sensor to be average of left and right
+        mRightMaster.configRemoteFeedbackFilter(mLeftMaster.getDeviceID(), RemoteSensorSource.TalonSRX_SelectedSensor,
+                Constants.SLOT_INDEX, Constants.TIMEOUT_MS);
+        mRightMaster.configSensorTerm(SensorTerm.Sum0, FeedbackDevice.RemoteSensor0, Constants.TIMEOUT_MS);
+        mRightMaster.configSensorTerm(SensorTerm.Sum1, FeedbackDevice.QuadEncoder, Constants.TIMEOUT_MS);
+        mRightMaster.configSelectedFeedbackSensor(FeedbackDevice.SensorSum, Constants.SLOT_INDEX, Constants.TIMEOUT_MS);
+        mRightMaster.configSelectedFeedbackCoefficient(0.5, Constants.SLOT_INDEX, Constants.TIMEOUT_MS);
+
+        // Config right secondary sensor to be pigeon
+        mRightMaster.configRemoteFeedbackFilter(mPigeon.getDeviceID(), RemoteSensorSource.Pigeon_Yaw,
+                Constants.AUX_SLOT_INDEX, Constants.TIMEOUT_MS);
+        mRightMaster.configSelectedFeedbackCoefficient((3600.0 / 8192.0), Constants.AUX_SLOT_INDEX, Constants.TIMEOUT_MS);*/
     }
 
     public void arcadeDrive(double y, double x) {
@@ -114,9 +133,12 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
         return mLeftMaster.getSelectedSensorPosition();
     }
 
-
     public int getLeftVelocity() {
         return mLeftMaster.getSelectedSensorVelocity();
+    }
+
+    public int getLeftClosedLoopError() {
+        return mLeftMaster.getClosedLoopError();
     }
 
     public int getRightPosition() {
@@ -127,22 +149,33 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
         return mRightMaster.getSelectedSensorVelocity();
     }
 
+    public int getRightClosedLoopError() {
+        return mLeftMaster.getClosedLoopError();
+    }
+
+    public void setTrajectory(Trajectory trajectory) {
+        mTrajectoryFollower.init();
+        mTrajectoryFollower.follow(trajectory);
+    }
+
+    public void stopTrajectory() {
+        mTrajectoryFollower.reset();
+    }
+
+    public boolean isTrajectoryFinished() {
+        return mTrajectoryFollower.isFinished();
+    }
+
     public void setLeftGains(ClosedLoopGains gains) {
         mLeftGains = gains;
-        mLeftMaster.config_kP(mLeftGains.getKp());
-        mLeftMaster.config_kI(mLeftGains.getKi());
-        mLeftMaster.config_kD(mLeftGains.getKd());
-        mLeftMaster.config_kF(mLeftGains.getKf());
+        mLeftMaster.configPIDF(mLeftGains.getKp(), mLeftGains.getKi(), mLeftGains.getKd(), mLeftGains.getKf());
         mLeftMaster.configMotionAcceleration(mLeftGains.getAcceleration());
         mLeftMaster.configMotionCruiseVelocity(mLeftGains.getCruiseVelocity());
     }
 
     public void setRightGains(ClosedLoopGains gains) {
         mRightGains = gains;
-        mRightMaster.config_kP(mRightGains.getKp());
-        mRightMaster.config_kI(mRightGains.getKi());
-        mRightMaster.config_kD(mRightGains.getKd());
-        mRightMaster.config_kF(mRightGains.getKf());
+        mRightMaster.configPIDF(mRightGains.getKp(), mRightGains.getKi(), mRightGains.getKd(), mRightGains.getKf());
         mRightMaster.configMotionAcceleration(mRightGains.getAcceleration());
         mRightMaster.configMotionCruiseVelocity(mRightGains.getCruiseVelocity());
     }
