@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.DriverStation;
 
 /**
  * A logback appender to send error messages to the FRC DriverStation.
- * Deprecated due to the fact that the Driver Station can read console log messages without creating a seperate
+ * Deprecated due to the fact that the Driver Station can read console log messages without creating a separate
  * appender.
  *
  * @author Arvind

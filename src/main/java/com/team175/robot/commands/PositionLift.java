@@ -23,7 +23,7 @@ public class PositionLift extends AldrinCommand {
 
     @Override
     protected void initialize() {
-        Drive.getInstance().setPower(0, 0);
+        Drive.getInstance().stop();
 
         super.logInit();
     }

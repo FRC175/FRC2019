@@ -7,6 +7,7 @@ import com.team175.robot.positions.LineSensorPosition;
 import com.team175.robot.util.drivers.AldrinTalonSRX;
 import com.team175.robot.util.drivers.CTREFactory;
 
+import com.team175.robot.util.drivers.Pixy;
 import com.team175.robot.util.tuning.ClosedLoopTunable;
 import com.team175.robot.util.tuning.ClosedLoopGains;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -58,7 +59,9 @@ public final class LateralDrive extends AldrinSubsystem implements ClosedLoopTun
         );*/
 
         mWantedPosition = 0;
+        
         mGains = Constants.LATERAL_DRIVE_GAINS;
+        resetSensors();
     }
 
     public void deploy(boolean enable) {
@@ -104,15 +107,13 @@ public final class LateralDrive extends AldrinSubsystem implements ClosedLoopTun
 
     public void setGains(ClosedLoopGains gains) {
         mGains = gains;
-        mMaster.config_kP(mGains.getKp());
-        mMaster.config_kI(mGains.getKi());
-        mMaster.config_kD(mGains.getKd());
-        mMaster.config_kF(mGains.getKf());
+        mMaster.configPIDF(mGains.getKp(), mGains.getKi(), mGains.getKd(), mGains.getKf());
         mMaster.configMotionAcceleration(mGains.getAcceleration());
         mMaster.configMotionCruiseVelocity(mGains.getCruiseVelocity());
     }
 
-    public void resetEncoder() {
+    @Override
+    public void resetSensors() {
         mMaster.setSelectedSensorPosition(0);
     }
 
@@ -154,10 +155,6 @@ public final class LateralDrive extends AldrinSubsystem implements ClosedLoopTun
     }*/
 
     @Override
-    protected void initDefaultCommand() {
-    }
-
-    @Override
     public void stop() {
         setPower(0);
     }
@@ -195,7 +192,7 @@ public final class LateralDrive extends AldrinSubsystem implements ClosedLoopTun
 
     @Override
     public void reset() {
-        resetEncoder();
+        resetSensors();
     }
 
     @Override

@@ -62,10 +62,6 @@ public final class Lift extends AldrinSubsystem {
     }
 
     @Override
-    protected void initDefaultCommand() {
-    }
-
-    @Override
     public void stop() {
         setPower(0);
         setDrivePower(0);

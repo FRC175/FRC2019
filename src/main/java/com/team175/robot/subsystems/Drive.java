@@ -4,8 +4,9 @@ import com.ctre.phoenix.motorcontrol.*;
 
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.team175.robot.Constants;
-import com.team175.robot.auto.Trajectory;
-import com.team175.robot.auto.TrajectoryFollower;
+import com.team175.robot.paths.Path;
+import com.team175.robot.util.CheesyDriveHelper;
+import com.team175.robot.util.PathHelper;
 import com.team175.robot.commands.ManualArcadeDrive;
 import com.team175.robot.util.drivers.AldrinTalonSRX;
 import com.team175.robot.util.drivers.CTREFactory;
@@ -20,9 +21,8 @@ import java.util.Map;
 import java.util.function.DoubleSupplier;
 
 /**
- * TODO: Maybe implement cheesy drive.
  * TODO: Add gyro PID tuning.
- * TODO: Add motion profiling config.
+ * TODO: Consider ramp rate.
  *
  * @author Arvind
  */
@@ -32,7 +32,8 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
     private final AldrinTalonSRX mLeftMaster, mLeftSlave, mRightMaster, mRightSlave;
     private final PigeonIMU mPigeon;
     private final Solenoid mShift;
-    private final TrajectoryFollower mTrajectoryFollower;
+    private final PathHelper mPathHelper;
+    private final CheesyDriveHelper mCheesyDriveHelper;
 
     private int mWantedPosition;
     private double mWantedYaw;
@@ -64,15 +65,20 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
         // Solenoid(channel : int)
         mShift = new Solenoid(Constants.SHIFT_CHANNEL);
 
-        mTrajectoryFollower = new TrajectoryFollower(mRightMaster, mLeftMaster, mPigeon);
+        mPathHelper = new PathHelper(mRightMaster, mLeftMaster, mPigeon);
+
+        mCheesyDriveHelper = new CheesyDriveHelper();
 
         mWantedPosition = 0;
         mWantedYaw = 0.0;
         mLeftGains = Constants.LEFT_DRIVE_GAINS;
         mRightGains = Constants.RIGHT_DRIVE_GAINS;
 
+        // Configure Talons
         setLeftGains(mLeftGains);
         setRightGains(mRightGains);
+        mPathHelper.configTalons();
+        resetSensors();
 
         /*// Configure left polling rate at 5 ms
         mLeftMaster.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 5, Constants.TIMEOUT_MS);
@@ -97,9 +103,61 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
         mRightMaster.set(ControlMode.PercentOutput, y, DemandType.ArbitraryFeedForward, x);
     }
 
-    public void setPower(double leftPower, double rightPower) {
-        mLeftMaster.set(ControlMode.PercentOutput, leftPower);
-        mRightMaster.set(ControlMode.PercentOutput, rightPower);
+    // Copied from WPILib DifferentialDrive
+    public void altArcadeDrive(double y, double x) {
+        // Square the inputs (while preserving the sign) to increase fine control
+        // while permitting full power.
+        y = Math.copySign(y * y, y);
+        x = Math.copySign(x * x, x);
+
+        double leftMotorOutput;
+        double rightMotorOutput;
+        double maxInput = Math.copySign(Math.max(Math.abs(y), Math.abs(x)), y);
+
+        if (y >= 0.0) {
+            // First quadrant, else second quadrant
+            if (x >= 0.0) {
+                leftMotorOutput = maxInput;
+                rightMotorOutput = y - x;
+            } else {
+                leftMotorOutput = y + x;
+                rightMotorOutput = maxInput;
+            }
+        } else {
+            // Third quadrant, else fourth quadrant
+            if (x >= 0.0) {
+                leftMotorOutput = y + x;
+                rightMotorOutput = maxInput;
+            } else {
+                leftMotorOutput = maxInput;
+                rightMotorOutput = y - x;
+            }
+        }
+
+        mLeftMaster.set(ControlMode.PercentOutput, Math.min(1, Math.max(-1, leftMotorOutput)));
+        mRightMaster.set(ControlMode.PercentOutput, Math.min(1, Math.max(-1, rightMotorOutput)));
+    }
+
+    public void cheesyDrive(double y, double x, boolean isQuickTurn) {
+        mCheesyDriveHelper.cheesyDrive(y, x, isQuickTurn, !isLowGear());
+    }
+
+    public void straightDrive(double y) {
+        mRightMaster.set(ControlMode.PercentOutput, y, DemandType.AuxPID, 0); // 0 degrees => straight
+        mLeftMaster.follow(mRightMaster, FollowerType.AuxOutput1);
+    }
+
+    public void setLeftPower(double power) {
+        mLeftMaster.set(ControlMode.PercentOutput, power);
+    }
+
+    public void setRightPower(double power) {
+        mRightMaster.set(ControlMode.PercentOutput, power);
+    }
+
+    public void setPower(double power) {
+        setLeftPower(power);
+        setRightPower(power);
     }
 
     public double getLeftPower() {
@@ -123,10 +181,18 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
         mRightMaster.setBrakeMode(enable);
     }
 
+    public void setLeftPosition(int position) {
+        mRightMaster.set(ControlMode.MotionMagic, position);
+    }
+
+    public void setRightPosition(int position) {
+        mLeftMaster.set(ControlMode.MotionMagic, position);
+    }
+
     public void setPosition(int position) {
         mWantedPosition = position;
-        mLeftMaster.set(ControlMode.MotionMagic, mWantedPosition);
-        mRightMaster.set(ControlMode.MotionMagic, mWantedPosition);
+        setLeftPosition(mWantedPosition);
+        setRightPosition(mWantedPosition);
     }
 
     public int getLeftPosition() {
@@ -153,17 +219,17 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
         return mLeftMaster.getClosedLoopError();
     }
 
-    public void setTrajectory(Trajectory trajectory) {
-        mTrajectoryFollower.init();
-        mTrajectoryFollower.follow(trajectory);
+    public void setPath(Path path) {
+        mPathHelper.init();
+        mPathHelper.follow(path);
     }
 
-    public void stopTrajectory() {
-        mTrajectoryFollower.reset();
+    public void resetPathFollowing() {
+        mPathHelper.reset();
     }
 
-    public boolean isTrajectoryFinished() {
-        return mTrajectoryFollower.isFinished();
+    public boolean isPathFinished() {
+        return mPathHelper.isFinished();
     }
 
     public void setLeftGains(ClosedLoopGains gains) {
@@ -181,12 +247,15 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
     }
 
     public void setPigeonGains(ClosedLoopGains gains) {
+        mPigeonGains = gains;
+        mRightMaster.configAuxPIDF(mPigeonGains.getKp(), mPigeonGains.getKi(), mPigeonGains.getKd(), mPigeonGains.getKf());
     }
 
-    public void resetEncoders() {
+    @Override
+    public void resetSensors() {
         mLeftMaster.setSelectedSensorPosition(0);
         mRightMaster.setSelectedSensorPosition(0);
-        mPigeon.setYaw(0);
+        mPigeon.setYaw(0, Constants.TIMEOUT_MS);
     }
 
     @Override
@@ -196,7 +265,7 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
 
     @Override
     public void stop() {
-        setPower(0, 0);
+        setPower(0);
     }
 
     @Override
@@ -247,7 +316,7 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
 
     @Override
     public void reset() {
-        resetEncoders();
+        resetSensors();
     }
 
     @Override

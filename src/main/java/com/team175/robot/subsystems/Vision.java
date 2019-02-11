@@ -29,10 +29,6 @@ public final class Vision extends AldrinSubsystem implements Runnable {
     }
 
     @Override
-    protected void initDefaultCommand() {
-    }
-
-    @Override
     public void run() {
         mCamera.startAutomaticCapture();
     }

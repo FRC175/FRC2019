@@ -54,8 +54,10 @@ public abstract class AldrinSubsystem extends Subsystem implements Loggable {
         }
     }
 
+    /* Optional Design Patterns */
+
     /**
-     * An optional design pattern
+     * Checks whether subsystem is good to go.
      *
      * @return Whether the subsystem is in good shape
      */
@@ -68,6 +70,19 @@ public abstract class AldrinSubsystem extends Subsystem implements Loggable {
      */
     public void onPeriodic() {
         outputToDashboard();
+    }
+
+    /**
+     * A simple method to zero sensor values. For use in subsystems with closed loop control.
+     */
+    public void resetSensors() {
+    }
+
+    /**
+     * Makes initDefaultCommand() optional.
+     */
+    @Override
+    protected void initDefaultCommand() {
     }
 
 }

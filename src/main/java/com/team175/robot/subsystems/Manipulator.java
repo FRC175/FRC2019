@@ -142,20 +142,14 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
 
     public void setArmGains(ClosedLoopGains gains) {
         mArmGains = gains;
-        mArm.config_kP(mArmGains.getKp());
-        mArm.config_kI(mArmGains.getKi());
-        mArm.config_kD(mArmGains.getKd());
-        mArm.config_kF(mArmGains.getKf());
+        mArm.configPIDF(mArmGains.getKp(), mArmGains.getKi(), mArmGains.getKd(), mArmGains.getKf());
         mArm.configMotionAcceleration(mArmGains.getAcceleration());
         mArm.configMotionCruiseVelocity(mArmGains.getCruiseVelocity());
     }
 
-    public void resetArmEncoder() {
-        mArm.setSelectedSensorPosition(0);
-    }
-
     @Override
-    protected void initDefaultCommand() {
+    public void resetSensors() {
+        mArm.setSelectedSensorPosition(0);
     }
 
     @Override

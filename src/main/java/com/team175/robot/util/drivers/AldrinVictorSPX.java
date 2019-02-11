@@ -46,16 +46,27 @@ public class AldrinVictorSPX extends VictorSPX {
         return super.config_kF(Constants.AUX_SLOT_INDEX, value, Constants.TIMEOUT_MS);
     }
 
-    public ErrorCode setSelectedSensorPosition(int position) {
-        return super.setSelectedSensorPosition(position, Constants.PID_LOOP_INDEX, Constants.TIMEOUT_MS);
-    }
-
-    public int getSelectedSensorPosition() {
-        return super.getSelectedSensorPosition(Constants.PID_LOOP_INDEX);
-    }
-
     public void setBrakeMode(boolean on) {
         super.setNeutralMode(on ? NeutralMode.Brake : NeutralMode.Coast);
+    }
+
+    @Override
+    public ErrorCode setSelectedSensorPosition(int sensorPos) {
+        return super.setSelectedSensorPosition(sensorPos, Constants.SLOT_INDEX, Constants.TIMEOUT_MS);
+    }
+
+    public void configPIDF(double kP, double kI, double kD, double kF) {
+        config_kP(kP);
+        config_kI(kI);
+        config_kD(kD);
+        config_kF(kF);
+    }
+
+    public void configAuxPIDF(double kP, double kI, double kD, double kF) {
+        config_aux_kP(kP);
+        config_aux_kI(kI);
+        config_aux_kD(kD);
+        config_aux_kF(kF);
     }
 
     /*public void setPosition(int position) {

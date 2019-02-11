@@ -16,7 +16,7 @@ public class AldrinJoystick extends Joystick {
     private double mDeadZone;
 
     /**
-     * Construct an instance of a joystick. The joystick index is the USB port on the drivers
+     * Constructs an instance of a joystick. The joystick index is the USB port on the drivers
      * station.
      *
      * @param port
@@ -28,7 +28,7 @@ public class AldrinJoystick extends Joystick {
     }
 
     /**
-     * Construct an instance of a joystick with a specified dead zone. The joystick index is the USB port on the drivers
+     * Constructs an instance of a joystick with a specified dead zone. The joystick index is the USB port on the drivers
      * station.
      *
      * @param port

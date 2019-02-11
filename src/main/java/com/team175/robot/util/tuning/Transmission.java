@@ -3,12 +3,10 @@ package com.team175.robot.util.tuning;
 import com.team175.robot.util.AldrinMath;
 
 /**
- * A programmatic representation of a transmission used for CTRE Motion Magic Control.
- * Deprecated due to general uselessness.
+ * A programmatic representation of a transmission used for CTRE motion control.
  *
  * @author Arvind
  */
-@Deprecated
 public class Transmission {
 
     private final int mMaxMotorRPMVelocity, mMaxMotorSensorVelocity, mCountsPerRevolution;
@@ -18,17 +16,30 @@ public class Transmission {
         mMaxMotorRPMVelocity = maxMotorRPMVelocity;
         mCountsPerRevolution = countsPerRevolution;
         mGearRatio = gearRatio;
-        mMaxMotorSensorVelocity = AldrinMath.calculateEmpiricalVelocity(mMaxMotorRPMVelocity, mCountsPerRevolution,
-                mGearRatio);
-        mKf = AldrinMath.calculateKf(mMaxMotorSensorVelocity);
+        mMaxMotorSensorVelocity = calculateTalonVelocity();
+        mKf = calculateKf();
     }
 
-    public Transmission(int maxMotorSensorVelocity) {
-        mMaxMotorRPMVelocity = 0;
-        mCountsPerRevolution = 0;
-        mGearRatio = 0;
+    public Transmission(int maxMotorSensorVelocity, int countsPerRevolution) {
         mMaxMotorSensorVelocity = maxMotorSensorVelocity;
-        mKf = AldrinMath.calculateKf(mMaxMotorSensorVelocity);
+        mCountsPerRevolution = countsPerRevolution;
+        mMaxMotorRPMVelocity = 0;
+        mGearRatio = 0;
+        mKf = calculateKf();
+    }
+
+    private int calculateTalonVelocity() {
+        return (int) ((((double) mMaxMotorRPMVelocity) / 600.0) * (((double) mCountsPerRevolution) / mGearRatio));
+    }
+
+    private double calculateKf() {
+        if (mCountsPerRevolution == 4096) { // CTRE encoder
+            return 1023.0 / ((double) mMaxMotorSensorVelocity);
+        } else if (mCountsPerRevolution == 512) { // Alternate encoder
+            return 127.0 / ((double) mMaxMotorSensorVelocity);
+        } else {
+            return 0;
+        }
     }
 
     public int getVelocity() {

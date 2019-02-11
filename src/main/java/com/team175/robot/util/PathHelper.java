@@ -1,4 +1,4 @@
-package com.team175.robot.auto;
+package com.team175.robot.util;
 
 import com.ctre.phoenix.motion.BufferedTrajectoryPointStream;
 import com.ctre.phoenix.motion.TrajectoryPoint;
@@ -6,20 +6,40 @@ import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.team175.robot.Constants;
+import com.team175.robot.paths.Path;
 
-public class TrajectoryFollower {
+/**
+ * A helper class to easily configure and follow paths using the Talon SRX MotionProfileArc mode. Code is heavily based
+ * off of Team 319's BobTrajectory library.
+ *
+ * @author Arvind
+ */
+public class PathHelper {
 
-    private TalonSRX mMaster;
-    private TalonSRX mFollower;
+    /**
+     * The Talon SRXs
+     */
+    private TalonSRX mMaster, mFollower;
+    /**
+     * The Pigeon IMU
+     */
     private PigeonIMU mPigeon;
-
+    /**
+     * The buffered writer to write path points into the Talon SRXs
+     */
     private BufferedTrajectoryPointStream mBuffer;
 
-    public TrajectoryFollower(TalonSRX master, TalonSRX follower, PigeonIMU pigeon) {
+    public PathHelper(TalonSRX master, TalonSRX follower, PigeonIMU pigeon) {
         mMaster = master;
         mFollower = follower;
         mPigeon = pigeon;
+        mBuffer = new BufferedTrajectoryPointStream();
+    }
 
+    /**
+     * Configures Talon SRXs for Motion Profiling.
+     */
+    public void configTalons() {
         // Configure follower polling rate at 5 ms
         mFollower.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 5, Constants.TIMEOUT_MS);
         mFollower.setSensorPhase(true);
@@ -38,6 +58,9 @@ public class TrajectoryFollower {
         mMaster.configSelectedFeedbackCoefficient((3600.0 / 8192.0), Constants.AUX_SLOT_INDEX, Constants.TIMEOUT_MS);
     }
 
+    /**
+     * Prepares Talon SRXs for path following.
+     */
     public void init() {
         mMaster.clearMotionProfileTrajectories();
         mMaster.changeMotionControlFramePeriod(5);
@@ -48,45 +71,67 @@ public class TrajectoryFollower {
         mFollower.clearMotionProfileHasUnderrun(Constants.TIMEOUT_MS);
     }
 
-    public void follow(Trajectory trajectory) {
-        loadBuffer(trajectory);
-
-        mFollower.follow(mMaster, FollowerType.AuxOutput1);
-        mFollower.startMotionProfile(mBuffer, 10, ControlMode.MotionProfileArc);
-    }
-
-    private void loadBuffer(Trajectory trajectory) {
+    /**
+     * Buffers path into the Talon SRX.
+     *
+     * @param path The path to buffer into the Talon SRX
+     */
+    private void bufferPath(Path path) {
         TrajectoryPoint point = new TrajectoryPoint();
 
-        double[][] path = trajectory.getPath();
-        int direction = trajectory.isReversed() ? -1 : 1;
+        double[][] points = path.getPoints();
+        int direction = path.isReversed() ? -1 : 1;
+        int startPosition = mMaster.getSelectedSensorPosition();
 
-        for (int i = 0; i < path.length; i++) {
-            point.position = direction * path[i][0];
-            point.velocity = direction * path[i][1];
+        // Clear buffer in case it was used elsewhere
+        mBuffer.Clear();
 
-            point.timeDur = (int) path[i][2];
+        for (int i = 0; i < points.length; i++) {
+            // Position and velocity
+            point.position = (direction * points[i][0]) + startPosition;
+            point.velocity = direction * points[i][1];
 
-            // Angle
-            // Pigeon's max angle is 3600
-            point.auxiliaryPos = 10.0 * path[i][3];
+            // dt
+            point.timeDur = (int) points[i][2];
+
+            // Pigeon is the auxiliary sensor
+            point.auxiliaryPos = 10.0 * points[i][3]; // Pigeon multiples 10 to angle
             point.auxiliaryVel = 0.0;
             point.auxiliaryArbFeedFwd = 0.0;
 
+            // Other configuration
             point.profileSlotSelect0 = Constants.SLOT_INDEX;
             point.profileSlotSelect1 = Constants.AUX_SLOT_INDEX;
             point.zeroPos = false;
-            point.isLastPoint = (i + 1) == path.length;
+            point.isLastPoint = (i + 1) == points.length;
             point.useAuxPID = true;
 
             mBuffer.Write(point);
         }
     }
 
+    /**
+     * Starts path following on Talon SRXs.
+     * @param path The path to follow
+     */
+    public void follow(Path path) {
+        bufferPath(path);
+
+        mFollower.follow(mMaster, FollowerType.AuxOutput1);
+        mFollower.startMotionProfile(mBuffer, 10, ControlMode.MotionProfileArc);
+    }
+
+    /**
+     * Checks if path has been completed.
+     * @return If path is complete
+     */
     public boolean isFinished() {
         return mMaster.isMotionProfileFinished();
     }
 
+    /**
+     * Exits path following mode and resets Talon SRXs to normal.
+     */
     public void reset() {
         mMaster.clearMotionProfileTrajectories();
         mMaster.clearMotionProfileHasUnderrun(Constants.TIMEOUT_MS);

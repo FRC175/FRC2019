@@ -54,7 +54,7 @@ public class AldrinTalonSRX extends TalonSRX {
 
     @Override
 	public ErrorCode setSelectedSensorPosition(int sensorPos) {
-		return super.setSelectedSensorPosition(sensorPos, Constants.PID_LOOP_INDEX, Constants.TIMEOUT_MS);
+		return super.setSelectedSensorPosition(sensorPos, Constants.SLOT_INDEX, Constants.TIMEOUT_MS);
 	}
 
 	public void configPIDF(double kP, double kI, double kD, double kF) {

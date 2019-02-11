@@ -4,8 +4,6 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
 import com.team175.robot.Constants;
-import com.team175.robot.util.drivers.AldrinTalonSRX;
-import com.team175.robot.util.drivers.AldrinVictorSPX;
 
 /**
  * A static factory class containing different builders for the Talon SRX and Victor SPX.
@@ -30,9 +28,8 @@ public final class CTREFactory {
     private static void configClosedLoop(BaseMotorController bmc) {
         configOpenLoop(bmc);
 
-        bmc.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, Constants.PID_LOOP_INDEX, Constants.TIMEOUT_MS);
+        bmc.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, Constants.SLOT_INDEX, Constants.TIMEOUT_MS);
         bmc.configAllowableClosedloopError(Constants.SLOT_INDEX, Constants.ALLOWED_POSITION_DEVIATION, Constants.TIMEOUT_MS);
-        bmc.setSelectedSensorPosition(0, Constants.PID_LOOP_INDEX, Constants.TIMEOUT_MS);
     }
 
     public static AldrinTalonSRX getTalon(int portNum) {

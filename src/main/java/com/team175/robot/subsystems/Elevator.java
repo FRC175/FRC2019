@@ -79,20 +79,14 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
 
     public void setGains(ClosedLoopGains gains) {
         mGains = gains;
-        mMaster.config_kP(mGains.getKp());
-        mMaster.config_kI(mGains.getKi());
-        mMaster.config_kD(mGains.getKd());
-        mMaster.config_kF(mGains.getKf());
+        mMaster.configPIDF(mGains.getKp(), mGains.getKi(), mGains.getKd(), mGains.getKf());
         mMaster.configMotionAcceleration(mGains.getAcceleration());
         mMaster.configMotionCruiseVelocity(mGains.getCruiseVelocity());
     }
 
-    public void resetEncoder() {
-        mMaster.setSelectedSensorPosition(0);
-    }
-
     @Override
-    protected void initDefaultCommand() {
+    public void resetSensors() {
+        mMaster.setSelectedSensorPosition(0);
     }
 
     @Override
@@ -134,7 +128,7 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
 
     @Override
     public void reset() {
-        resetEncoder();
+        resetSensors();
     }
 
     @Override

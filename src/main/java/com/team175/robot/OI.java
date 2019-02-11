@@ -10,7 +10,6 @@ package com.team175.robot;
 import com.team175.robot.commands.*;
 import com.team175.robot.positions.ManipulatorRollerPosition;
 import com.team175.robot.util.drivers.AldrinJoystick;
-import edu.wpi.first.wpilibj.Joystick;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
@@ -29,6 +28,7 @@ public final class OI {
     private final Button mShift;
     private final Button mStraightDrive;
     private final Button mManualLift;
+    private final Button mCheesyDrive;
     // private final Button mManualLiftDrive;
     // private final Button mLineAlign;
 
@@ -61,10 +61,11 @@ public final class OI {
         mOperatorStick = new AldrinJoystick(Constants.OPERATOR_STICK_PORT, Constants.OPERATOR_STICK_DEAD_ZONE);
 
         // Driver Stick Buttons
-        mManualLateralDrive = new JoystickButton(mDriverStick, Constants.LATERAL_DRIVE_TRIGGER); // 1 is the trigger button
+        mManualLateralDrive = new JoystickButton(mDriverStick, Constants.LATERAL_DRIVE_TRIGGER);
         mShift = new JoystickButton(mDriverStick, Constants.SHIFT_BUTTON);
         mStraightDrive = new JoystickButton(mDriverStick, Constants.STRAIGHT_DRIVE_BUTTON);
         mManualLift = new JoystickButton(mDriverStick, Constants.MANUAL_LIFT_BUTTON);
+        mCheesyDrive = new JoystickButton(mDriverStick, Constants.CHEESY_DRIVE_BUTTON);
         // mManualLiftDrive = new JoystickButton(mDriverStick, Constants.MANUAL_LIFT_DRIVE_BUTTON);
         // mLineAlign = new JoystickButton(mDriverStick, Constants.LINE_ALIGN_BUTTON);
 
@@ -84,6 +85,7 @@ public final class OI {
         mShift.whileHeld(new ManualArcadeDrive(true));
         // mStraightDrive.whileHeld(new StraightDrive());
         mManualLift.whileHeld(new ManualLift());
+        // mCheesyDrive.whileHeld(new ManualCheesyDrive());
         // mManualLiftDrive.whileHeld(new LiftDrive());
         // mLineAlign.whenPressed(new LineAlignment());
 
