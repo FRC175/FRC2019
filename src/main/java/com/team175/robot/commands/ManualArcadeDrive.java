@@ -12,8 +12,7 @@ public class ManualArcadeDrive extends AldrinCommand {
     private boolean mIsLowGear;
 
     public ManualArcadeDrive(boolean isLowGear) {
-        requires(Drive.getInstance());
-        requires(LateralDrive.getInstance());
+        requires(Drive.getInstance(), LateralDrive.getInstance());
 
         mIsLowGear = isLowGear;
 

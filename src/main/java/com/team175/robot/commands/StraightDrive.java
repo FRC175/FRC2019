@@ -10,8 +10,7 @@ import com.team175.robot.subsystems.LateralDrive;
 public class StraightDrive extends AldrinCommand {
 
     public StraightDrive() {
-        requires(Drive.getInstance());
-        requires(LateralDrive.getInstance());
+        requires(Drive.getInstance(), LateralDrive.getInstance());
 
         super.logInstantiation();
     }

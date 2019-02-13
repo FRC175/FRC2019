@@ -130,7 +130,7 @@ public class PathHelper {
         bufferPath(path);
 
         mFollower.follow(mMaster, FollowerType.AuxOutput1);
-        mFollower.startMotionProfile(mBuffer, 10, ControlMode.MotionProfileArc);
+        mMaster.startMotionProfile(mBuffer, 10, ControlMode.MotionProfileArc);
     }
 
     /**

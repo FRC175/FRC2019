@@ -10,8 +10,7 @@ import com.team175.robot.subsystems.LateralDrive;
 public class ManualLateralDrive extends AldrinCommand {
 
     public ManualLateralDrive() {
-        requires(LateralDrive.getInstance());
-        requires(Drive.getInstance());
+        requires(LateralDrive.getInstance(), Drive.getInstance());
 
         super.logInstantiation();
     }

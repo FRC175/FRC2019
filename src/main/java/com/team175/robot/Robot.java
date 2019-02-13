@@ -100,7 +100,6 @@ public class Robot extends TimedRobot {
         Scheduler.getInstance().run();
 
         // Comment out in production robot
-        mDrive.onPeriodic();
         // mSubsystems.forEach(AldrinSubsystem::onPeriodic);
     }
 

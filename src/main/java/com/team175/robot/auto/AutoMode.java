@@ -18,13 +18,13 @@ public class AutoMode extends CommandGroup {
     // It could be addParallel() and then addSequential()
     public void addParallel(Command... commands) {
         for (Command c : commands) {
-            addParallel(c);
+            super.addParallel(c);
         }
     }
 
     public void addParallel(double timeout, Command... commands) {
         for (Command c : commands) {
-            addParallel(c, timeout);
+            super.addParallel(c, timeout);
         }
     }
 

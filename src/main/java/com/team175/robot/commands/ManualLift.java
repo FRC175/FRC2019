@@ -7,8 +7,7 @@ import com.team175.robot.subsystems.Lift;
 public class ManualLift extends AldrinCommand {
 
     public ManualLift() {
-        requires(Lift.getInstance());
-        requires(Drive.getInstance());
+        requires(Lift.getInstance(), Drive.getInstance());
 
         super.logInstantiation();
     }

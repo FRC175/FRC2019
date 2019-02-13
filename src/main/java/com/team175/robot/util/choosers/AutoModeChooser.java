@@ -22,7 +22,6 @@ public class AutoModeChooser implements Chooser {
     @Override
     public void outputToDashboard() {
         SmartDashboard.putData("Auto Mode Chooser", mChooser);
-
     }
 
     @Override

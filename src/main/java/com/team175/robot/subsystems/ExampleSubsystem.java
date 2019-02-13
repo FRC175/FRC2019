@@ -10,16 +10,15 @@ package com.team175.robot.subsystems;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 /**
- * The following java class contains example code that can help you understand
- * how to create a subsystem.
+ * The following java class contains example code that can help you understand how to create a subsystem.
  * 
  * ROBOT CODE CONVENTIONS:
  * - When dealing with private instance variables, there must be a prefix of m.
  *      EX: private int mInteger;
  * - When dealing with private static variables, there must be a prefix of s.
  *      EX: private static int sInteger;
- * - When dealing with all static final variables, there must be a prefix of k.
- *      EX: private final int kInteger;
+ * - When dealing with all static final variables, letters must be uppercase and words separated by underscores.
+ *      EX: private static final int INTEGER;
  * - When dealing with all other variables, there is nothing special.
  *      EX: public int integer;
  * 

@@ -13,8 +13,7 @@ public class PositionLift extends AldrinCommand {
     private LiftPosition mPosition;
 
     public PositionLift(LiftPosition position) {
-        requires(Lift.getInstance());
-        requires(Drive.getInstance());
+        requires(Lift.getInstance(), Drive.getInstance());
 
         mPosition = position;
 

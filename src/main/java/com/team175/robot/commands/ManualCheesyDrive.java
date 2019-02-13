@@ -13,8 +13,7 @@ import com.team175.robot.subsystems.LateralDrive;
 public class ManualCheesyDrive extends AldrinCommand {
 
     public ManualCheesyDrive() {
-        requires(Drive.getInstance());
-        requires(LateralDrive.getInstance());
+        requires(Drive.getInstance(), LateralDrive.getInstance());
     }
 
     @Override
