@@ -10,7 +10,7 @@ import com.team175.robot.paths.Path;
 
 /**
  * A helper class to easily configure and follow paths using the Talon SRX MotionProfileArc mode. Code is heavily based
- * off of Team 319's BobTrajectory library.
+ * off of Team319's BobTrajectory library.
  *
  * @author Arvind
  */
@@ -29,6 +29,16 @@ public class PathHelper {
      */
     private BufferedTrajectoryPointStream mBuffer;
 
+    /**
+     * Constructs a new PathHelper.
+     *
+     * @param master
+     *         The master Talon SRX to follow the path
+     * @param follower
+     *         The follower Talon SRX to mirror the master
+     * @param pigeon
+     *         The Pigeon IMU for heading correction
+     */
     public PathHelper(TalonSRX master, TalonSRX follower, PigeonIMU pigeon) {
         mMaster = master;
         mFollower = follower;
@@ -42,7 +52,6 @@ public class PathHelper {
     public void configTalons() {
         // Configure follower polling rate at 5 ms
         mFollower.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 5, Constants.TIMEOUT_MS);
-        mFollower.setSensorPhase(true);
 
         // Config master primary sensor to be average of master and follower
         mMaster.configRemoteFeedbackFilter(mMaster.getDeviceID(), RemoteSensorSource.TalonSRX_SelectedSensor,
@@ -74,7 +83,8 @@ public class PathHelper {
     /**
      * Buffers path into the Talon SRX.
      *
-     * @param path The path to buffer into the Talon SRX
+     * @param path
+     *         The path to buffer into the Talon SRX
      */
     private void bufferPath(Path path) {
         TrajectoryPoint point = new TrajectoryPoint();
@@ -112,7 +122,9 @@ public class PathHelper {
 
     /**
      * Starts path following on Talon SRXs.
-     * @param path The path to follow
+     *
+     * @param path
+     *         The path to follow
      */
     public void follow(Path path) {
         bufferPath(path);
@@ -123,6 +135,7 @@ public class PathHelper {
 
     /**
      * Checks if path has been completed.
+     *
      * @return If path is complete
      */
     public boolean isFinished() {

@@ -5,6 +5,11 @@ import edu.wpi.first.wpilibj.command.CommandGroup;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * TODO: Determine if this subclass is needed.
+ *
+ * @author Arvind
+ */
 public class AutoMode extends CommandGroup {
 
     protected final Logger mLogger = LoggerFactory.getLogger(getClass().getSimpleName());

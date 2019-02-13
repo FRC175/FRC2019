@@ -54,6 +54,7 @@ public class Robot extends TimedRobot {
         mTunerChooser = new TunerChooser();
 
         mSubsystems = List.of(mDrive, mElevator, mLateralDrive, mLift, mManipulator);
+        // Comment out in production robot
         mSubsystems.forEach(AldrinSubsystem::outputToDashboard);
     }
 
@@ -70,6 +71,7 @@ public class Robot extends TimedRobot {
     public void disabledPeriodic() {
         Scheduler.getInstance().run();
 
+        // Comment out in production robot
         mSubsystems.forEach(AldrinSubsystem::updateFromDashboard);
     }
 
@@ -87,13 +89,19 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
         mAutoModeChooser.stop();
+
+        // Comment out in production robot
+        mTunerChooser.updateFromDashboard();
+        mTunerChooser.start();
     }
 
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
 
-        mSubsystems.forEach(AldrinSubsystem::outputToDashboard);
+        // Comment out in production robot
+        mDrive.onPeriodic();
+        // mSubsystems.forEach(AldrinSubsystem::onPeriodic);
     }
 
     @Override

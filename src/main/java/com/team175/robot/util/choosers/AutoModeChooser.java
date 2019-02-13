@@ -5,6 +5,9 @@ import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+/**
+ * @author Arvind
+ */
 public class AutoModeChooser implements Chooser {
 
     private final SendableChooser<Command> mChooser;

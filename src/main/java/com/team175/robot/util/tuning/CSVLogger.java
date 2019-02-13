@@ -10,8 +10,6 @@ import java.util.Map;
 import java.util.function.DoubleSupplier;
 
 /**
- * TODO: Test.
- *
  * @author Arvind
  */
 public class CSVLogger implements Runnable {

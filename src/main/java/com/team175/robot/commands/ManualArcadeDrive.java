@@ -5,8 +5,6 @@ import com.team175.robot.subsystems.Drive;
 import com.team175.robot.subsystems.LateralDrive;
 
 /**
- * TODO: Investigate Talon SRX arcade drive. If bad, copy WPI arcade drive.
- *
  * @author Arvind
  */
 public class ManualArcadeDrive extends AldrinCommand {
@@ -38,7 +36,7 @@ public class ManualArcadeDrive extends AldrinCommand {
             mLogger.debug("Y: {}", y);
             mLogger.debug("X: {}", x);
 
-            *//*double forward = OI.getInstance().getDriverStickY();
+            double forward = OI.getInstance().getDriverStickY();
             double turn = OI.getInstance().getDriverStickX();
             forward = Deadband(forward);
             turn = Deadband(turn);*/

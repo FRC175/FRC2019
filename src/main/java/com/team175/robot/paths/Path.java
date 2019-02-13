@@ -1,5 +1,10 @@
 package com.team175.robot.paths;
 
+/**
+ * Based heavily off of Team319's Arc class.
+ *
+ * @author Arvind
+ */
 public class Path {
 
     // mPath = { pos, vel, dt (in ms), angle (in degrees) }

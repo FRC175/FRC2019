@@ -2,9 +2,11 @@ package com.team175.robot.util;
 
 /**
  * A static utility class containing commonly used mathematical operations.
+ * Deprecated due to functions being integrated into objects.
  *
  * @author Arvind
  */
+@Deprecated
 public final class AldrinMath {
 
     // Prevent AldrinMath from being instantiated
@@ -21,7 +23,6 @@ public final class AldrinMath {
      * @param deadzone
      *         The wanted deadzone as a decimal
      */
-    @Deprecated
     public static double addDeadZone(double value, double deadzone) {
         if (Math.abs(value) > deadzone) {
             value = Math.signum(value) * (Math.abs(value) - deadzone) / (1.0 - deadzone);
@@ -58,6 +59,13 @@ public final class AldrinMath {
         return 1023.0 / ((double) maxVelocity);
     }
 
+    /**
+     * Calculates theoretical Kf gain with alternate encoder.
+     *
+     * @param maxVelocity
+     *         In counts per 100 ms
+     * @return theoretical kF gain
+     */
     public static double calculateAltKf(int maxVelocity) {
         return 127.0 / ((double) maxVelocity);
     }

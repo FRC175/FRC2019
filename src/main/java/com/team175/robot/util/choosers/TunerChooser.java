@@ -8,6 +8,9 @@ import com.team175.robot.subsystems.Manipulator;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
+/**
+ * @author Arvind
+ */
 public class TunerChooser implements Chooser {
 
     private final SendableChooser<SubsystemToTune> mChooser;
