@@ -63,6 +63,7 @@ def main():
 
 # Convert value from counts/100 ms to in/s
 def convertUnits(value):
+    # Replace 25 with colson diameter
     return (25 * m.pi * value) / 4096 # 25 = 10 ms (to convert into seconds) * 2.5 in (for cim motor)
 
 if __name__ == '__main__':
