@@ -1,7 +1,7 @@
 package com.team175.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.*;
-
+import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.team175.robot.Constants;
 import com.team175.robot.paths.Path;
@@ -9,13 +9,12 @@ import com.team175.robot.util.DriveHelper;
 import com.team175.robot.util.PathHelper;
 import com.team175.robot.commands.ManualArcadeDrive;
 import com.team175.robot.util.drivers.AldrinTalonSRX;
+import com.team175.robot.util.drivers.CTREDiagnostics;
 import com.team175.robot.util.drivers.CTREFactory;
-
 import com.team175.robot.util.tuning.ClosedLoopTunable;
 import com.team175.robot.util.tuning.ClosedLoopGains;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.DoubleSupplier;
@@ -36,7 +35,7 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
     private final DriveHelper mDriveHelper;
 
     private int mWantedPosition;
-    private double mWantedYaw;
+    private double mWantedAngle;
     private ClosedLoopGains mLeftGains, mRightGains, mPigeonGains;
 
     // Singleton Instance
@@ -71,7 +70,7 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
         mDriveHelper = new DriveHelper(mLeftMaster, mRightMaster);
 
         mWantedPosition = 0;
-        mWantedYaw = 0.0;
+        mWantedAngle = 0.0;
         mLeftGains = Constants.LEFT_DRIVE_GAINS;
         mRightGains = Constants.RIGHT_DRIVE_GAINS;
 
@@ -79,6 +78,12 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
         setLeftGains(mLeftGains);
         setRightGains(mRightGains);
         mLeftMaster.setSensorPhase(true);
+        mRightMaster.setSensorPhase(false);
+
+        mLeftMaster.setInverted(true);
+        mLeftSlave.setInverted(true);
+        mRightMaster.setInverted(true);
+        mRightSlave.setInverted(true);
 
         mPathHelper.configTalons();
         resetSensors();
@@ -239,7 +244,7 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
         m.put("RDrivePos", getRightPosition());
         m.put("RDrivePower", getRightPower());
         m.put("DriveWantedPos", mWantedPosition);
-        m.put("DriveWantedYaw", mWantedYaw);
+        m.put("DriveWantedAngle", mWantedAngle);
         m.put("DriveIsLowGear", isLowGear());
         return m;
     }
@@ -257,6 +262,17 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
                 (int) SmartDashboard.getNumber("RDriveAccel", 0),
                 (int) SmartDashboard.getNumber("RDriveCruiseVel", 0)));
         setPosition((int) SmartDashboard.getNumber("DriveWantedPos", 0));
+    }
+
+    @Override
+    public boolean checkSubsystem() {
+        boolean isGood = false;
+        Map<String, TalonSRX> talons = Map.of(
+                "LeftMaster", mLeftMaster,
+                "RightMaster", mRightMaster
+        );
+        talons.forEach((k, v) -> isGood &= new CTREDiagnostics(v, k).checkMotor());
+        return isGood;
     }
 
     @Override

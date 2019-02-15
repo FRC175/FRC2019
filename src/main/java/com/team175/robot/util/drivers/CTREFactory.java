@@ -17,6 +17,8 @@ public final class CTREFactory {
     }
 
     private static void configOpenLoop(BaseMotorController bmc) {
+        bmc.configFactoryDefault(Constants.TIMEOUT_MS);
+
         bmc.configNominalOutputForward(0, Constants.TIMEOUT_MS);
         bmc.configNominalOutputReverse(0, Constants.TIMEOUT_MS);
         bmc.configPeakOutputForward(1, Constants.TIMEOUT_MS);

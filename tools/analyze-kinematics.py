@@ -10,8 +10,8 @@ import math as m
 # Main function
 def main():
     # File Path
-    # filePath = 'C:/Users/BUZZ-175/RoboRIOCSVLogs/telemetry.csv'
-    filePath = 'D:/Inbox/telemetry.csv'
+    filePath = 'C:/Users/BUZZ-175/RoboRIOCSVLogs/telemetry.csv'
+    # filePath = 'D:/Inbox/telemetry.csv'
     # Import data from CSV
     data = np.genfromtxt(filePath, delimiter=',', names=True)
 
@@ -63,7 +63,7 @@ def main():
 
 # Convert value from counts/100 ms to in/s
 def convertUnits(value):
-    return (25 * m.pi * (value / 4096)) # 25 = 10 ms (to convert into seconds) * 2.5 in (for cim motor)
+    return (25 * m.pi * value) / 4096 # 25 = 10 ms (to convert into seconds) * 2.5 in (for cim motor)
 
 if __name__ == '__main__':
     main()

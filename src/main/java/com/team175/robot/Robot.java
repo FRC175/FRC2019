@@ -28,7 +28,7 @@ public class Robot extends TimedRobot {
     private Elevator mElevator;
     private LateralDrive mLateralDrive;
     private Lift mLift;
-    private Manipulator mManipulator;
+    // private Manipulator mManipulator;
     private Vision mVision;
 
     private OI mOI;
@@ -45,7 +45,7 @@ public class Robot extends TimedRobot {
         mElevator = Elevator.getInstance();
         mLateralDrive = LateralDrive.getInstance();
         mLift = Lift.getInstance();
-        mManipulator = Manipulator.getInstance();
+        // mManipulator = Manipulator.getInstance();
         mVision = Vision.getInstance();
 
         mOI = OI.getInstance();
@@ -53,7 +53,7 @@ public class Robot extends TimedRobot {
         mAutoModeChooser = new AutoModeChooser();
         mTunerChooser = new TunerChooser();
 
-        mSubsystems = List.of(mDrive, mElevator, mLateralDrive, mLift, mManipulator);
+        mSubsystems = List.of(mDrive, mElevator, mLateralDrive, mLift); // mManipulator
         // Comment out in production robot
         mSubsystems.forEach(AldrinSubsystem::outputToDashboard);
     }
@@ -65,6 +65,7 @@ public class Robot extends TimedRobot {
     @Override
     public void disabledInit() {
         mTunerChooser.stop();
+        mSubsystems.forEach(AldrinSubsystem::outputToDashboard);
     }
 
     @Override
@@ -91,8 +92,8 @@ public class Robot extends TimedRobot {
         mAutoModeChooser.stop();
 
         // Comment out in production robot
-        mTunerChooser.updateFromDashboard();
-        mTunerChooser.start();
+        // mTunerChooser.updateFromDashboard();
+        // mTunerChooser.start();
     }
 
     @Override
@@ -100,7 +101,7 @@ public class Robot extends TimedRobot {
         Scheduler.getInstance().run();
 
         // Comment out in production robot
-        // mSubsystems.forEach(AldrinSubsystem::onPeriodic);
+        mSubsystems.forEach(AldrinSubsystem::onPeriodic);
     }
 
     @Override
