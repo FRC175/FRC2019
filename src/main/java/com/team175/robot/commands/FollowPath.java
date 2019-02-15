@@ -32,7 +32,7 @@ public class FollowPath extends AldrinCommand {
 
     @Override
     protected void end() {
-        Drive.getInstance().resetPathFollowing();
+        Drive.getInstance().stopPathFollowing();
 
         super.logEnd();
     }

@@ -1,7 +1,5 @@
 package com.team175.robot.util.tuning;
 
-import com.team175.robot.util.AldrinMath;
-
 /**
  * A programmatic representation of a transmission used for CTRE motion control.
  *

@@ -1,6 +1,7 @@
 package com.team175.robot.util.drivers;
 
 import com.ctre.phoenix.ErrorCode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
 import com.ctre.phoenix.motorcontrol.StatusFrame;
@@ -48,43 +49,57 @@ public class AldrinTalonSRX extends TalonSRX {
         return super.config_kF(Constants.AUX_SLOT_INDEX, value, Constants.TIMEOUT_MS);
     }
 
-    public void setBrakeMode(boolean on) {
-        super.setNeutralMode(on ? NeutralMode.Brake : NeutralMode.Coast);
+    public ErrorCode configSelectedFeedbackSensor(FeedbackDevice feedbackDevice, int pidIdx) {
+        return super.configSelectedFeedbackSensor(feedbackDevice, pidIdx, Constants.TIMEOUT_MS);
+    }
+
+    public ErrorCode setSelectedSensorPosition(int sensorPos, int pidIdx) {
+        return super.setSelectedSensorPosition(sensorPos, pidIdx, Constants.TIMEOUT_MS);
     }
 
     @Override
     public ErrorCode setSelectedSensorPosition(int sensorPos) {
-        return super.setSelectedSensorPosition(sensorPos, Constants.SLOT_INDEX, Constants.TIMEOUT_MS);
+        return setSelectedSensorPosition(sensorPos, Constants.SLOT_INDEX);
     }
 
-    public void configPIDF(double kP, double kI, double kD, double kF) {
-        config_kP(kP);
-        config_kI(kI);
-        config_kD(kD);
-        config_kF(kF);
+    @Override
+    public ErrorCode configSelectedFeedbackSensor(FeedbackDevice feedbackDevice) {
+        return configSelectedFeedbackSensor(feedbackDevice, Constants.SLOT_INDEX);
     }
 
-    public void configAuxPIDF(double kP, double kI, double kD, double kF) {
-        config_aux_kP(kP);
-        config_aux_kI(kI);
-        config_aux_kD(kD);
-        config_aux_kF(kF);
+    public void setBrakeMode(boolean on) {
+        super.setNeutralMode(on ? NeutralMode.Brake : NeutralMode.Coast);
     }
 
-    /*public void setPosition(int position) {
-        super.set(ControlMode.Position, position);
-    }
-    
-    public void setPower(double power) {
-        super.set(ControlMode.PercentOutput, power);
-    }
-
-    public double getPower() {
-        return super.getMotorOutputPercent();
+    public ErrorCode configPIDF(double kP, double kI, double kD, double kF) {
+        ErrorCode[] ec = new ErrorCode[4];
+        ec[0] = config_kP(kP);
+        ec[1] = config_kI(kI);
+        ec[2] = config_kD(kD);
+        ec[3] = config_kF(kF);
+        return getFinalError(ec);
     }
 
-    public int positionToMove() {
-        return getSelectedSensorPosition();
-    }*/
+    public ErrorCode configAuxPIDF(double kP, double kI, double kD, double kF) {
+        ErrorCode[] ec = new ErrorCode[4];
+        ec[0] = config_aux_kP(kP);
+        ec[1] = config_aux_kI(kI);
+        ec[2] = config_aux_kD(kD);
+        ec[3] = config_aux_kF(kF);
+        return getFinalError(ec);
+    }
+
+    /**
+     * Checks if all errors in array are okay and if not return first error that's not okay
+     */
+    private ErrorCode getFinalError(ErrorCode[] codes) {
+        for (ErrorCode code : codes) {
+            if (code != ErrorCode.OK) {
+                return code;
+            }
+        }
+
+        return ErrorCode.OK;
+    }
 
 }

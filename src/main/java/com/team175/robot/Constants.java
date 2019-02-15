@@ -1,6 +1,5 @@
 package com.team175.robot;
 
-import com.team175.robot.util.AldrinMath;
 import com.team175.robot.util.tuning.ClosedLoopGains;
 import com.team175.robot.util.tuning.Transmission;
 
@@ -29,6 +28,9 @@ public final class Constants {
     public static final int MANIPULATOR_HATCH_PUNCH_CHANNEL = 5;
     public static final int MANIPULATOR_DEPLOY_FORWARD_CHANNEL = 0;
     public static final int MANIPULATOR_DEPLOY_REVERSE_CHANNEL = 1;
+    public static final int MANIPULATOR_BRAKE_CHANNEL = 4;
+    public static final int LIFT_FRONT_BRAKE_CHANNEL = 6;
+    public static final int LIFT_REAR_BRAKE_CHANNEL = 7;
 
     // PWM
     public static final int LIFT_FRONT_PORT = 3;
@@ -43,8 +45,8 @@ public final class Constants {
     public static final int CENTER_SENSOR_PORT = 3;
     public static final int RIGHT_ONE_SENSOR_PORT = 2;
     public static final int RIGHT_TWO_SENSOR_PORT = 1;
-    public static final int LIFT_FRONT_LIMIT_PORT = 0;
-    public static final int LIFT_REAR_LIMIT_PORT = 0;
+    public static final int LIFT_FRONT_LIMIT_PORT = 6;
+    public static final int LIFT_REAR_LIMIT_PORT = 7;
 
     /* Input Map */
     // Joystick Ports
@@ -59,7 +61,6 @@ public final class Constants {
     public static final int STRAIGHT_DRIVE_BUTTON = 3;
     public static final int MANUAL_LIFT_BUTTON = 4;
     public static final int CHEESY_DRIVE_BUTTON = 5;
-    // public static final int MANUAL_LIFT_DRIVE_BUTTON = ;
     // public static final int LINE_ALIGN_BUTTON = 12;
 
     // Operator Stick Buttons

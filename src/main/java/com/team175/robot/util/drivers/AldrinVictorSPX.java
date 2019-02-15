@@ -55,41 +55,35 @@ public class AldrinVictorSPX extends VictorSPX {
         return super.setSelectedSensorPosition(sensorPos, Constants.SLOT_INDEX, Constants.TIMEOUT_MS);
     }
 
-    public void configPIDF(double kP, double kI, double kD, double kF) {
-        config_kP(kP);
-        config_kI(kI);
-        config_kD(kD);
-        config_kF(kF);
+    public ErrorCode configPIDF(double kP, double kI, double kD, double kF) {
+        ErrorCode[] ec = new ErrorCode[4];
+        ec[0] = config_kP(kP);
+        ec[1] = config_kI(kI);
+        ec[2] = config_kD(kD);
+        ec[3] = config_kF(kF);
+        return getFinalError(ec);
     }
 
-    public void configAuxPIDF(double kP, double kI, double kD, double kF) {
-        config_aux_kP(kP);
-        config_aux_kI(kI);
-        config_aux_kD(kD);
-        config_aux_kF(kF);
+    public ErrorCode configAuxPIDF(double kP, double kI, double kD, double kF) {
+        ErrorCode[] ec = new ErrorCode[4];
+        ec[0] = config_aux_kP(kP);
+        ec[1] = config_aux_kI(kI);
+        ec[2] = config_aux_kD(kD);
+        ec[3] = config_aux_kF(kF);
+        return getFinalError(ec);
     }
 
-    /*public void setPosition(int position) {
-        super.set(ControlMode.Position, position);
-    }
+    /**
+     * Checks if all errors in array are okay and if not return first error that's not okay
+     */
+    private ErrorCode getFinalError(ErrorCode[] codes) {
+        for (ErrorCode code : codes) {
+            if (code != ErrorCode.OK) {
+                return code;
+            }
+        }
 
-    public void setPower(double power) {
-        super.set(ControlMode.PercentOutput, power);
+        return ErrorCode.OK;
     }
-
-    public double getPower() {
-        return super.getMotorOutputPercent();
-    }
-
-    public int positionToMove() {
-        return getSelectedSensorPosition();
-    }
-
-    public void setPIDF(double kF, double kP, double kI, double kD) {
-        config_kF(kF);
-        config_kP(kP);
-        config_kI(kI);
-        config_kD(kD);
-    }*/
 
 }

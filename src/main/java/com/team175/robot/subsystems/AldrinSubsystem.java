@@ -66,7 +66,7 @@ public abstract class AldrinSubsystem extends Subsystem implements Loggable {
     }
 
     /**
-     * Performs actions periodically.
+     * Called to perform actions periodically.
      */
     public void onPeriodic() {
         outputToDashboard();

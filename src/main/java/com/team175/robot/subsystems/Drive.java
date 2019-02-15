@@ -74,17 +74,19 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
         mLeftGains = Constants.LEFT_DRIVE_GAINS;
         mRightGains = Constants.RIGHT_DRIVE_GAINS;
 
-        // Configure Talons
+        /* Configuration */
+        CTREDiagnostics.checkCommand(mLeftMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative),
+                "Failed to config LeftMaster encoder!");
+        CTREDiagnostics.checkCommand(mRightMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative),
+                "Failed to config RightMaster encoder!");
         setLeftGains(mLeftGains);
         setRightGains(mRightGains);
         mLeftMaster.setSensorPhase(true);
         mRightMaster.setSensorPhase(false);
-
         mLeftMaster.setInverted(true);
         mLeftSlave.setInverted(true);
         mRightMaster.setInverted(true);
         mRightSlave.setInverted(true);
-
         mPathHelper.configTalons();
         resetSensors();
     }
@@ -176,12 +178,12 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
     }
 
     public void setPath(Path path) {
-        mPathHelper.init();
+        mPathHelper.reset();
         mPathHelper.follow(path);
     }
 
-    public void resetPathFollowing() {
-        mPathHelper.reset();
+    public void stopPathFollowing() {
+        mPathHelper.stop();
     }
 
     public boolean isPathFinished() {
@@ -190,16 +192,22 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
 
     public void setLeftGains(ClosedLoopGains gains) {
         mLeftGains = gains;
-        mLeftMaster.configPIDF(mLeftGains.getKp(), mLeftGains.getKi(), mLeftGains.getKd(), mLeftGains.getKf());
-        mLeftMaster.configMotionAcceleration(mLeftGains.getAcceleration());
-        mLeftMaster.configMotionCruiseVelocity(mLeftGains.getCruiseVelocity());
+        CTREDiagnostics.checkCommand(mLeftMaster.configPIDF(mLeftGains.getKp(), mLeftGains.getKi(), mLeftGains.getKd(),
+                mLeftGains.getKf()), "Failed to config LeftMaster PID gains!");
+        CTREDiagnostics.checkCommand(mLeftMaster.configMotionAcceleration(mLeftGains.getAcceleration()),
+                "Failed to config LeftMaster acceleration!");
+        CTREDiagnostics.checkCommand(mLeftMaster.configMotionCruiseVelocity(mLeftGains.getCruiseVelocity()),
+                "Failed to config LeftMaster cruise velocity!");
     }
 
     public void setRightGains(ClosedLoopGains gains) {
         mRightGains = gains;
-        mRightMaster.configPIDF(mRightGains.getKp(), mRightGains.getKi(), mRightGains.getKd(), mRightGains.getKf());
-        mRightMaster.configMotionAcceleration(mRightGains.getAcceleration());
-        mRightMaster.configMotionCruiseVelocity(mRightGains.getCruiseVelocity());
+        CTREDiagnostics.checkCommand(mRightMaster.configPIDF(mRightGains.getKp(), mRightGains.getKi(), mRightGains.getKd(),
+                mRightGains.getKf()), "Failed to config RightMaster PID gains!");
+        CTREDiagnostics.checkCommand(mRightMaster.configMotionAcceleration(mRightGains.getAcceleration()),
+                "Failed to config RightMaster acceleration!");
+        CTREDiagnostics.checkCommand(mRightMaster.configMotionCruiseVelocity(mRightGains.getCruiseVelocity()),
+                "Failed to config RightMaster cruise velocity!");
     }
 
     public void setPigeonGains(ClosedLoopGains gains) {
@@ -209,9 +217,9 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
 
     @Override
     public void resetSensors() {
-        mLeftMaster.setSelectedSensorPosition(0);
-        mRightMaster.setSelectedSensorPosition(0);
-        mPigeon.setYaw(0, Constants.TIMEOUT_MS);
+        CTREDiagnostics.checkCommand(mLeftMaster.setSelectedSensorPosition(0), "Failed to zero LeftMaster encoder!");
+        CTREDiagnostics.checkCommand(mRightMaster.setSelectedSensorPosition(0), "Failed to zero RightMaster encoder!");
+        CTREDiagnostics.checkCommand(mPigeon.setYaw(0, Constants.TIMEOUT_MS), "Failed to zero Pigeon yaw!");
     }
 
     @Override
@@ -266,12 +274,17 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
 
     @Override
     public boolean checkSubsystem() {
-        boolean isGood = false;
+        boolean isGood = true;
         Map<String, TalonSRX> talons = Map.of(
                 "LeftMaster", mLeftMaster,
                 "RightMaster", mRightMaster
         );
-        talons.forEach((k, v) -> isGood &= new CTREDiagnostics(v, k).checkMotor());
+
+        for (String k : talons.keySet()) {
+            CTREDiagnostics cd = new CTREDiagnostics(talons.get(k), k);
+            isGood &= cd.checkMotorController();
+        }
+
         return isGood;
     }
 

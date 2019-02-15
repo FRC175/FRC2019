@@ -2,10 +2,12 @@ package com.team175.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.team175.robot.Constants;
 import com.team175.robot.positions.ManipulatorArmPosition;
 import com.team175.robot.positions.ManipulatorRollerPosition;
 import com.team175.robot.util.drivers.AldrinTalonSRX;
+import com.team175.robot.util.drivers.CTREDiagnostics;
 import com.team175.robot.util.drivers.CTREFactory;
 
 import com.team175.robot.util.tuning.ClosedLoopTunable;
@@ -27,9 +29,8 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
 
     /* Declarations */
     private final AldrinTalonSRX mArm;
-    private final Talon mFrontRoller;
-    private final Talon mRearRoller;
-    private final Solenoid mHatchPunch;
+    private final Talon mFrontRoller, mRearRoller;
+    private final Solenoid mHatchPunch, mBrake;
     private final DoubleSolenoid mDeploy;
 
     private int mArmWantedPosition;
@@ -57,12 +58,17 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
 
         // Solenoid(channel : int)
         mHatchPunch = new Solenoid(Constants.MANIPULATOR_HATCH_PUNCH_CHANNEL);
+        mBrake = new Solenoid(Constants.MANIPULATOR_BRAKE_CHANNEL);
 
         // DoubleSolenoid(forwardChannel : int, reverseChannel : int)
         mDeploy = new DoubleSolenoid(Constants.MANIPULATOR_DEPLOY_FORWARD_CHANNEL,
                 Constants.MANIPULATOR_DEPLOY_REVERSE_CHANNEL);
 
         mArmWantedPosition = 0;
+
+        /* Configuration */
+        CTREDiagnostics.checkCommand(mArm.configSelectedFeedbackSensor(FeedbackDevice.Analog),
+                "Failed to config ManipulatorArm encoder!");
         mArmGains = Constants.MANIPULATOR_ARM_GAINS;
     }
 
@@ -142,14 +148,17 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
 
     public void setArmGains(ClosedLoopGains gains) {
         mArmGains = gains;
-        mArm.configPIDF(mArmGains.getKp(), mArmGains.getKi(), mArmGains.getKd(), mArmGains.getKf());
-        mArm.configMotionAcceleration(mArmGains.getAcceleration());
-        mArm.configMotionCruiseVelocity(mArmGains.getCruiseVelocity());
+        CTREDiagnostics.checkCommand(mArm.configPIDF(mArmGains.getKp(), mArmGains.getKi(), mArmGains.getKd(), mArmGains.getKf()),
+                "Failed to config Arm PID gains!");
+        CTREDiagnostics.checkCommand(mArm.configMotionAcceleration(mArmGains.getAcceleration()),
+                "Failed to config Arm acceleration!");
+        CTREDiagnostics.checkCommand(mArm.configMotionCruiseVelocity(mArmGains.getCruiseVelocity()),
+                "Failed to config Arm cruise velocity!");
     }
 
     @Override
     public void resetSensors() {
-        mArm.setSelectedSensorPosition(0);
+        CTREDiagnostics.checkCommand(mArm.setSelectedSensorPosition(0), "Failed to zero arm encoder!");
     }
 
     @Override
@@ -184,6 +193,11 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
     }
 
     @Override
+    public boolean checkSubsystem() {
+        return new CTREDiagnostics(mArm, "ManipulatorArm").checkMotorController();
+    }
+
+    @Override
     public void updateGains() {
         updateFromDashboard();
         mLogger.debug("Wanted Position: {}", mArmWantedPosition);
@@ -192,6 +206,7 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
 
     @Override
     public void reset() {
+        resetSensors();
     }
 
     @Override

@@ -2,12 +2,13 @@ package com.team175.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.team175.robot.Constants;
 import com.team175.robot.positions.LineSensorPosition;
 import com.team175.robot.util.drivers.AldrinTalonSRX;
+import com.team175.robot.util.drivers.CTREDiagnostics;
 import com.team175.robot.util.drivers.CTREFactory;
 
-import com.team175.robot.util.drivers.Pixy;
 import com.team175.robot.util.tuning.ClosedLoopTunable;
 import com.team175.robot.util.tuning.ClosedLoopGains;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -59,7 +60,10 @@ public final class LateralDrive extends AldrinSubsystem implements ClosedLoopTun
         );*/
 
         mWantedPosition = 0;
-        
+
+        /* Configuration */
+        CTREDiagnostics.checkCommand(mMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative),
+                "Failed to config LateralDrive encoder!");
         mGains = Constants.LATERAL_DRIVE_GAINS;
         resetSensors();
     }
@@ -107,14 +111,17 @@ public final class LateralDrive extends AldrinSubsystem implements ClosedLoopTun
 
     public void setGains(ClosedLoopGains gains) {
         mGains = gains;
-        mMaster.configPIDF(mGains.getKp(), mGains.getKi(), mGains.getKd(), mGains.getKf());
-        mMaster.configMotionAcceleration(mGains.getAcceleration());
-        mMaster.configMotionCruiseVelocity(mGains.getCruiseVelocity());
+        CTREDiagnostics.checkCommand(mMaster.configPIDF(mGains.getKp(), mGains.getKi(), mGains.getKd(), mGains.getKf()),
+                "Failed to config LateralDrive PID gains!");
+        CTREDiagnostics.checkCommand(mMaster.configMotionAcceleration(mGains.getAcceleration()),
+                "Failed to config LateralDrive acceleration!");
+        CTREDiagnostics.checkCommand(mMaster.configMotionCruiseVelocity(mGains.getCruiseVelocity()),
+                "Failed to config LateralDrive cruise velocity!");
     }
 
     @Override
     public void resetSensors() {
-        mMaster.setSelectedSensorPosition(0);
+        CTREDiagnostics.checkCommand(mMaster.setSelectedSensorPosition(0), "Failed to zero LateralDrive encoder!");
     }
 
     /*private String getLineSensorArray() {
@@ -171,6 +178,11 @@ public final class LateralDrive extends AldrinSubsystem implements ClosedLoopTun
         m.put("LateralPos", getPosition());
         m.put("LateralPower", getPower());
         return m;
+    }
+
+    @Override
+    public boolean checkSubsystem() {
+        return new CTREDiagnostics(mMaster, "LateralDrive").checkMotorController();
     }
 
     @Override

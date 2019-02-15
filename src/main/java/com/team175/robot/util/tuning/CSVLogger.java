@@ -14,16 +14,19 @@ import java.util.function.DoubleSupplier;
  */
 public class CSVLogger implements Runnable {
 
-    private Logger mLogger = LoggerFactory.getLogger(getClass().getSimpleName());
+    private final Logger mLogger = LoggerFactory.getLogger(getClass().getSimpleName());
+
+    private static final String FILE_PATH = "/home/lvuser/csvlog/telemetry.csv";
+    private static final String DELIMITER = ",";
+
     private CSVWriter mWriter;
-    // private boolean mIsRunning;
 
     public CSVLogger(CSVLoggable target) {
         Map<String, DoubleSupplier> m = target.getCSVTelemetry();
         m.put("time", Timer::getFPGATimestamp);
 
         try {
-            mWriter = new CSVWriter(m, "/home/lvuser/csvlog/telemetry.csv", ",");
+            mWriter = new CSVWriter(m, FILE_PATH, DELIMITER);
         } catch (FileNotFoundException e) {
             mLogger.error("Failed to instantiate!", getClass().getSimpleName());
         }

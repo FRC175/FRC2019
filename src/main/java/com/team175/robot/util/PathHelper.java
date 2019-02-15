@@ -7,6 +7,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.team175.robot.Constants;
 import com.team175.robot.paths.Path;
+import com.team175.robot.util.drivers.CTREDiagnostics;
 
 /**
  * A helper class to easily configure and follow paths using the Talon SRX MotionProfileArc mode. Code is heavily based
@@ -51,33 +52,45 @@ public class PathHelper {
      */
     public void configTalons() {
         // Configure follower polling rate at 5 ms
-        mFollower.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 5, Constants.TIMEOUT_MS);
+        CTREDiagnostics.checkCommand(mFollower.setStatusFramePeriod(StatusFrame.Status_2_Feedback0, 5, Constants.TIMEOUT_MS),
+                "Failed to set LeftMaster polling rate at 5 ms!");
 
         // Config master primary sensor to be average of master and follower
-        mMaster.configRemoteFeedbackFilter(mMaster.getDeviceID(), RemoteSensorSource.TalonSRX_SelectedSensor,
-                Constants.SLOT_INDEX, Constants.TIMEOUT_MS);
-        mMaster.configSensorTerm(SensorTerm.Sum0, FeedbackDevice.RemoteSensor0, Constants.TIMEOUT_MS);
-        mMaster.configSensorTerm(SensorTerm.Sum1, FeedbackDevice.QuadEncoder, Constants.TIMEOUT_MS);
-        mMaster.configSelectedFeedbackSensor(FeedbackDevice.SensorSum, Constants.SLOT_INDEX, Constants.TIMEOUT_MS);
-        mMaster.configSelectedFeedbackCoefficient(0.5, Constants.SLOT_INDEX, Constants.TIMEOUT_MS);
+        CTREDiagnostics.checkCommand(mMaster.configRemoteFeedbackFilter(mFollower.getDeviceID(), RemoteSensorSource.TalonSRX_SelectedSensor,
+                Constants.SLOT_INDEX, Constants.TIMEOUT_MS), "Failed to add LeftMaster encoder as a remote sensor for RightMaster!");
+        CTREDiagnostics.checkCommand(mMaster.configSensorTerm(SensorTerm.Sum0, FeedbackDevice.RemoteSensor0, Constants.TIMEOUT_MS),
+                "Failed to config RightMaster sensor term 0!");
+        CTREDiagnostics.checkCommand(mMaster.configSensorTerm(SensorTerm.Sum1, FeedbackDevice.QuadEncoder, Constants.TIMEOUT_MS),
+                "Failed to config RightMaster sensor term 1!");
+        CTREDiagnostics.checkCommand(mMaster.configSelectedFeedbackSensor(FeedbackDevice.SensorSum, Constants.SLOT_INDEX,
+                Constants.TIMEOUT_MS), "Failed to set RightMaster feedback sensor as sum of both left and right!");
+        CTREDiagnostics.checkCommand(mMaster.configSelectedFeedbackCoefficient(0.5, Constants.SLOT_INDEX, Constants.TIMEOUT_MS),
+                "Failed to set RightMaster encoder sum feedback coefficient at 0.5!");
 
         // Config master secondary sensor to be pigeon
-        mMaster.configRemoteFeedbackFilter(mPigeon.getDeviceID(), RemoteSensorSource.Pigeon_Yaw,
-                Constants.AUX_SLOT_INDEX, Constants.TIMEOUT_MS);
-        mMaster.configSelectedFeedbackCoefficient((3600.0 / 8192.0), Constants.AUX_SLOT_INDEX, Constants.TIMEOUT_MS);
+        CTREDiagnostics.checkCommand(mMaster.configRemoteFeedbackFilter(mPigeon.getDeviceID(), RemoteSensorSource.Pigeon_Yaw,
+                Constants.AUX_SLOT_INDEX, Constants.TIMEOUT_MS), "Failed to config Pigeon as remote sensor for RightMaster!");
+        CTREDiagnostics.checkCommand(mMaster.configSelectedFeedbackCoefficient((3600.0 / 8192.0), Constants.AUX_SLOT_INDEX,
+                Constants.TIMEOUT_MS), "Failed to config RightMaster pigeon feedback coefficient at 3600.0 / 8192.0.");
     }
 
     /**
      * Prepares Talon SRXs for path following.
      */
-    public void init() {
-        mMaster.clearMotionProfileTrajectories();
-        mMaster.changeMotionControlFramePeriod(5);
-        mMaster.clearMotionProfileHasUnderrun(Constants.TIMEOUT_MS);
+    public void reset() {
+        CTREDiagnostics.checkCommand(mMaster.clearMotionProfileTrajectories(),
+                "Failed to clear RightMaster MP trajectories!");
+        CTREDiagnostics.checkCommand(mMaster.changeMotionControlFramePeriod(5),
+                "Failed to set RightMaster motion control frame period to 5 ms!");
+        CTREDiagnostics.checkCommand(mMaster.clearMotionProfileHasUnderrun(Constants.TIMEOUT_MS),
+                "Failed to clear RightMaster motion profile!");
 
-        mFollower.clearMotionProfileTrajectories();
-        mFollower.changeMotionControlFramePeriod(5);
-        mFollower.clearMotionProfileHasUnderrun(Constants.TIMEOUT_MS);
+        CTREDiagnostics.checkCommand(mFollower.clearMotionProfileTrajectories(),
+                "Failed to clear LeftMaster MP trajectories!");
+        CTREDiagnostics.checkCommand(mFollower.changeMotionControlFramePeriod(5),
+                "Failed to set LeftMaster motion control frame period to 5 ms!");
+        CTREDiagnostics.checkCommand(mFollower.clearMotionProfileHasUnderrun(Constants.TIMEOUT_MS),
+                "Failed to clear LeftMaster motion profile!");
     }
 
     /**
@@ -94,7 +107,7 @@ public class PathHelper {
         int startPosition = mMaster.getSelectedSensorPosition();
 
         // Clear buffer in case it was used elsewhere
-        mBuffer.Clear();
+        CTREDiagnostics.checkCommand(mBuffer.Clear(), "Failed to clear buffer!");
 
         for (int i = 0; i < points.length; i++) {
             // Position and velocity
@@ -116,7 +129,7 @@ public class PathHelper {
             point.isLastPoint = (i + 1) == points.length;
             point.useAuxPID = true;
 
-            mBuffer.Write(point);
+            CTREDiagnostics.checkCommand(mBuffer.Write(point), "Failed to write path point #" + i + "to the buffer!");
         }
     }
 
@@ -130,7 +143,8 @@ public class PathHelper {
         bufferPath(path);
 
         mFollower.follow(mMaster, FollowerType.AuxOutput1);
-        mMaster.startMotionProfile(mBuffer, 10, ControlMode.MotionProfileArc);
+        CTREDiagnostics.checkCommand(mMaster.startMotionProfile(mBuffer, 10, ControlMode.MotionProfileArc),
+                "Failed to start motion profile");
     }
 
     /**
@@ -145,15 +159,10 @@ public class PathHelper {
     /**
      * Exits path following mode and resets Talon SRXs to normal.
      */
-    public void reset() {
-        mMaster.clearMotionProfileTrajectories();
-        mMaster.clearMotionProfileHasUnderrun(Constants.TIMEOUT_MS);
-        mMaster.changeMotionControlFramePeriod(10);
-        mMaster.set(ControlMode.PercentOutput, 0);
+    public void stop() {
+        reset();
 
-        mFollower.clearMotionProfileTrajectories();
-        mFollower.clearMotionProfileHasUnderrun(Constants.TIMEOUT_MS);
-        mFollower.changeMotionControlFramePeriod(Constants.TIMEOUT_MS);
+        mMaster.set(ControlMode.PercentOutput, 0);
         mFollower.set(ControlMode.PercentOutput, 0);
     }
 

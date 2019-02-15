@@ -1,9 +1,11 @@
 package com.team175.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.team175.robot.Constants;
 import com.team175.robot.positions.ElevatorPosition;
 import com.team175.robot.util.drivers.AldrinTalonSRX;
+import com.team175.robot.util.drivers.CTREDiagnostics;
 import com.team175.robot.util.drivers.CTREFactory;
 import com.team175.robot.util.tuning.ClosedLoopTunable;
 import com.team175.robot.util.tuning.ClosedLoopGains;
@@ -41,6 +43,10 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
         mMaster = CTREFactory.getMasterTalon(Constants.ELEVATOR_PORT);
 
         mWantedPosition = 0;
+
+        /* Configuration */
+        CTREDiagnostics.checkCommand(mMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative),
+                "Failed to config Elevator encoder!");
         mGains = Constants.ELEVATOR_GAINS;
     }
 
@@ -79,14 +85,17 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
 
     public void setGains(ClosedLoopGains gains) {
         mGains = gains;
-        mMaster.configPIDF(mGains.getKp(), mGains.getKi(), mGains.getKd(), mGains.getKf());
-        mMaster.configMotionAcceleration(mGains.getAcceleration());
-        mMaster.configMotionCruiseVelocity(mGains.getCruiseVelocity());
+        CTREDiagnostics.checkCommand(mMaster.configPIDF(mGains.getKp(), mGains.getKi(), mGains.getKd(), mGains.getKf()),
+                "Failed to config Elevator PID gains!");
+        CTREDiagnostics.checkCommand(mMaster.configMotionAcceleration(mGains.getAcceleration()),
+                "Failed to config Elevator acceleration!");
+        CTREDiagnostics.checkCommand(mMaster.configMotionCruiseVelocity(mGains.getCruiseVelocity()),
+                "Failed to config Elevator cruise velocity!");
     }
 
     @Override
     public void resetSensors() {
-        mMaster.setSelectedSensorPosition(0);
+        CTREDiagnostics.checkCommand(mMaster.setSelectedSensorPosition(0), "Failed to zero Elevator encoder!");
     }
 
     @Override
@@ -117,6 +126,11 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
                 (int) SmartDashboard.getNumber("ElevatorAccel", 0),
                 (int) SmartDashboard.getNumber("ElevatorCruiseVel", 0)));
         setPosition((int) SmartDashboard.getNumber("ElevatorWantedPos", 0));
+    }
+
+    @Override
+    public boolean checkSubsystem() {
+        return new CTREDiagnostics(mMaster, "Elevator").checkMotorController();
     }
 
     @Override
