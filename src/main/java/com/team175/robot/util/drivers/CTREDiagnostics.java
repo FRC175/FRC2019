@@ -31,6 +31,7 @@ public class CTREDiagnostics {
     public CTREDiagnostics(BaseMotorController bmc, String name) {
         mBMC = bmc;
         mName = name;
+
         mPostPos = 0;
         mIsInverted = false;
         mDoesEncoderExist = false;

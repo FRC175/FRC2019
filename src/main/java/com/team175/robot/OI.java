@@ -10,6 +10,8 @@ package com.team175.robot;
 import com.team175.robot.commands.*;
 import com.team175.robot.positions.ManipulatorRollerPosition;
 import com.team175.robot.util.drivers.AldrinJoystick;
+import com.team175.robot.util.drivers.Nub;
+import com.team175.robot.util.drivers.TwoButton;
 import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
@@ -42,6 +44,7 @@ public final class OI {
     private final Button mGrabCargo;
     private final Button mTogglePunchHatch;
     private final Button mManualManipulatorArm;
+    private final Nub mOperatorToggle;
 
     // Singleton Instance
     private static OI sInstance;
@@ -78,6 +81,7 @@ public final class OI {
         mGrabCargo = new JoystickButton(mOperatorStick, Constants.GRAB_CARGO_BUTTON);
         mTogglePunchHatch = new JoystickButton(mOperatorStick, Constants.TOGGLE_PUNCH_HATCH_BUTTON);
         mManualManipulatorArm = new JoystickButton(mOperatorStick, Constants.MANUAL_ARM_BUTTON);
+        mOperatorToggle = new Nub(mOperatorStick);
 
         /* Command Assignment */
         // Driver Stick
