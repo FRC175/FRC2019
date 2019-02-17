@@ -72,6 +72,14 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
         mArmGains = Constants.MANIPULATOR_ARM_GAINS;
     }
 
+    public void setBrake(boolean enable) {
+        mBrake.set(enable);
+    }
+
+    public boolean isBraked() {
+        return mBrake.get();
+    }
+
     public void deploy(boolean enable) {
         mDeploy.set(enable ? Value.kForward : Value.kReverse);
     }
@@ -87,10 +95,15 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
 
     public void setRollerPosition(ManipulatorRollerPosition rp) {
         setRollerPower(rp.getFrontPower(), rp.getRearPower());
+
+        if (rp != ManipulatorRollerPosition.SCORE_HATCH) {
+            punchHatch(true);
+        }
     }
 
     public void stopRollers() {
         setRollerPower(0, 0);
+        punchHatch(false);
     }
 
     public double getFrontRollerPower() {
@@ -114,7 +127,9 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
     }
 
     public void stopArm() {
-        setArmPower(0);
+        setArmPosition(mArmWantedPosition);
+        setBrake(true);
+        // setArmPower(0);
     }
 
     public double getArmPower() {
@@ -126,6 +141,7 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
     }
 
     public void setArmPosition(int position) {
+        setBrake(false);
         mArmWantedPosition = position;
         mArm.set(ControlMode.MotionMagic, mArmWantedPosition);
     }
@@ -194,7 +210,17 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
 
     @Override
     public boolean checkSubsystem() {
-        return new CTREDiagnostics(mArm, "ManipulatorArm").checkMotorController();
+        CTREDiagnostics diag = new CTREDiagnostics(mArm, "ManipulatorArm");
+
+        mLogger.info("Beginning diagnostics test for ManipulatorArm!");
+        boolean isGood = diag.checkMotorController();
+        mLogger.info(diag.toString());
+
+        if (!isGood) {
+            mLogger.error("ManipulatorArm failed diagnostics test!");
+        }
+
+        return isGood;
     }
 
     @Override

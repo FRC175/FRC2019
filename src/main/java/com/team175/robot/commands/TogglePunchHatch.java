@@ -8,6 +8,7 @@ public class TogglePunchHatch extends AldrinToggleCommand {
 
     public TogglePunchHatch() {
         requires(Manipulator.getInstance());
+        mPush = true;
 
         super.logInstantiation();
     }

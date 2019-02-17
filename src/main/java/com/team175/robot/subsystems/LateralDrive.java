@@ -182,7 +182,17 @@ public final class LateralDrive extends AldrinSubsystem implements ClosedLoopTun
 
     @Override
     public boolean checkSubsystem() {
-        return new CTREDiagnostics(mMaster, "LateralDrive").checkMotorController();
+        CTREDiagnostics diag = new CTREDiagnostics(mMaster, "LateralDrive");
+
+        mLogger.info("Beginning diagnostics test for LateralDrive subsystem.");
+        boolean isGood = diag.checkMotorController();
+        mLogger.info(diag.toString());
+
+        if (!isGood) {
+            mLogger.error("LateralDrive subsystem failed diagnostics test!");
+        }
+
+        return isGood;
     }
 
     @Override

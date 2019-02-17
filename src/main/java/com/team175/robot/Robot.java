@@ -50,7 +50,7 @@ public class Robot extends TimedRobot {
 
         mOI = OI.getInstance();
 
-        mAutoModeChooser = new AutoModeChooser();
+        mAutoModeChooser = AutoModeChooser.getInstance();
         mTunerChooser = new TunerChooser();
 
         mSubsystems = List.of(mDrive, mElevator, mLateralDrive, mLift); // mManipulator

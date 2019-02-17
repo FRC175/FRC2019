@@ -15,7 +15,10 @@ import com.team175.robot.util.tuning.ClosedLoopTunable;
 import com.team175.robot.util.tuning.ClosedLoopGains;
 import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.function.DoubleSupplier;
 
@@ -274,15 +277,23 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
 
     @Override
     public boolean checkSubsystem() {
-        boolean isGood = true;
-        Map<String, TalonSRX> talons = Map.of(
-                "LeftMaster", mLeftMaster,
-                "RightMaster", mRightMaster
-        );
+        LinkedHashMap<String, TalonSRX> talons = new LinkedHashMap<>(2);
+        talons.put("LeftMaster", mLeftMaster);
+        talons.put("RightMaster", mLeftMaster);
 
-        for (String k : talons.keySet()) {
-            CTREDiagnostics cd = new CTREDiagnostics(talons.get(k), k);
+        List<CTREDiagnostics> diags = new ArrayList<>(2);
+        talons.forEach((k, v) -> diags.add(new CTREDiagnostics(v, k)));
+
+        mLogger.info("Beginning diagnostics test for Drive subsystem.");
+
+        boolean isGood = true;
+        for (CTREDiagnostics cd : diags) {
             isGood &= cd.checkMotorController();
+            mLogger.info(cd.toString());
+        }
+
+        if (!isGood) {
+            mLogger.error("Drive subsystem failed diagnostics test!");
         }
 
         return isGood;

@@ -14,7 +14,17 @@ public class AutoModeChooser implements Chooser {
 
     private Command mMode;
 
-    public AutoModeChooser() {
+    private static AutoModeChooser sInstance;
+
+    public static AutoModeChooser getInstance() {
+        if (sInstance == null) {
+            sInstance = new AutoModeChooser();
+        }
+
+        return sInstance;
+    }
+
+    private AutoModeChooser() {
         mChooser = new SendableChooser<>();
         mChooser.setDefaultOption("Default Auto", new ExampleCommand());
     }

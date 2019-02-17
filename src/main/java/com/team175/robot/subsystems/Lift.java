@@ -3,6 +3,7 @@ package com.team175.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.team175.robot.Constants;
 
+import com.team175.robot.positions.LiftPosition;
 import com.team175.robot.util.drivers.AldrinTalonSRX;
 import com.team175.robot.util.drivers.CTREFactory;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -21,7 +22,7 @@ public final class Lift extends AldrinSubsystem {
     private final AldrinTalonSRX mDrive;
     private final Talon mFront, mRear;
     private final Solenoid mFrontBrake, mRearBrake;
-    private final DigitalInput mFrontLimit, mRearLimit;
+    private final DigitalInput mFrontLimit, mRearLimit, mFrontHabSensor, mRearHabSensor;
 
     // Singleton Instance
     private static Lift sInstance;
@@ -50,11 +51,33 @@ public final class Lift extends AldrinSubsystem {
         // DigitalInput(portNum : int)
         mFrontLimit = new DigitalInput(Constants.LIFT_FRONT_LIMIT_PORT);
         mRearLimit = new DigitalInput(Constants.LIFT_REAR_LIMIT_PORT);
+        mFrontHabSensor = new DigitalInput(Constants.LIFT_FRONT_HAB_SENSOR_PORT);
+        mRearHabSensor = new DigitalInput(Constants.LIFT_REAR_HAB_SENSOR_PORT);
     }
 
-    public void setPower(double power) {
+    /*public void setPower(double power) {
         mFront.set(power);
         mRear.set(power);
+    }*/
+
+    public void setFrontPower(double power) {
+        if (!isFrontLimitHit()) {
+            mFront.set(power);
+        }
+    }
+
+    public void setRearPower(double power) {
+        if (!isRearLimitHit()) {
+            mRear.set(power);
+        }
+    }
+
+    public void setFrontPosition(LiftPosition lp) {
+        setFrontPower(lp.getPower());
+    }
+
+    public void setRearPosition(LiftPosition lp) {
+        setRearPower(lp.getPower());
     }
 
     public void setDrivePower(double power) {
@@ -73,10 +96,37 @@ public final class Lift extends AldrinSubsystem {
         return mDrive.getMotorOutputPercent();
     }
 
+    public void setFrontBrake(boolean enable) {
+        mFrontBrake.set(enable);
+    }
+
+    public void setRearBrake(boolean enable) {
+        mRearBrake.set(enable);
+    }
+
+    public boolean isFrontLimitHit() {
+        return mFrontLimit.get();
+    }
+
+    public boolean isRearLimitHit() {
+        return mRearLimit.get();
+    }
+
+    public boolean isFrontOnHab() {
+        return mFrontHabSensor.get();
+    }
+
+    public boolean isRearOnHab() {
+        return mRearHabSensor.get();
+    }
+
     @Override
     public void stop() {
-        setPower(0);
+        setFrontPower(0);
+        setRearPower(0);
         setDrivePower(0);
+        setFrontBrake(true);
+        setRearBrake(true);
     }
 
     public Map<String, Object> getTelemetry() {

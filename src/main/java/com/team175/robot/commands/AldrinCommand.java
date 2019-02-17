@@ -39,4 +39,14 @@ public abstract class AldrinCommand extends Command implements LoggableCommand {
         mLogger.info("Command ended/interrupted.");
     }
 
+    @Override
+    protected void end() {
+        logEnd();
+    }
+
+    @Override
+    protected void interrupted() {
+        end();
+    }
+
 }

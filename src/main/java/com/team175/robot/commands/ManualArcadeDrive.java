@@ -29,17 +29,6 @@ public class ManualArcadeDrive extends AldrinCommand {
     @Override
     protected void execute() {
         if (!LateralDrive.getInstance().isDeployed()) {
-            /*double y = AldrinMath.addDeadZone(OI.getInstance().getDriverStickY(), 0.05);
-            double x = AldrinMath.addDeadZone(OI.getInstance().getDriverStickX(), 0.05);
-
-            mLogger.debug("Y: {}", y);
-            mLogger.debug("X: {}", x);
-
-            double forward = OI.getInstance().getDriverStickY();
-            double turn = OI.getInstance().getDriverStickX();
-            forward = Deadband(forward);
-            turn = Deadband(turn);*/
-
             Drive.getInstance().arcadeDrive(OI.getInstance().getDriverStickY(), OI.getInstance().getDriverStickX());
             // Drive.getInstance().altArcadeDrive(OI.getInstance().getDriverStickY(), OI.getInstance().getDriverStickX());
         }
@@ -61,15 +50,5 @@ public class ManualArcadeDrive extends AldrinCommand {
     protected void interrupted() {
         end();
     }
-
-    /*double Deadband(double value) {
-        if (value >= +0.05)
-            return value;
-
-        if (value <= -0.05)
-            return value;
-
-        return 0;
-    }*/
 
 }

@@ -6,18 +6,24 @@ import com.team175.robot.subsystems.Drive;
 import com.team175.robot.subsystems.LateralDrive;
 
 /**
- * TODO: Make sure arcade drive and cheesy drive don't conflict.
- *
  * @author Arvind
  */
 public class ManualCheesyDrive extends AldrinCommand {
 
-    public ManualCheesyDrive() {
+    private boolean mIsLowGear;
+
+    public ManualCheesyDrive(boolean isLowGear) {
         requires(Drive.getInstance(), LateralDrive.getInstance());
+
+        mIsLowGear = isLowGear;
+
+        super.logInstantiation();
     }
 
     @Override
     protected void initialize() {
+        Drive.getInstance().setLowGear(mIsLowGear);
+
         super.logInit();
     }
 

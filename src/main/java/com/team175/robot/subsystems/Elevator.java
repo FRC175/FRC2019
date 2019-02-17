@@ -130,7 +130,17 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
 
     @Override
     public boolean checkSubsystem() {
-        return new CTREDiagnostics(mMaster, "Elevator").checkMotorController();
+        CTREDiagnostics diag = new CTREDiagnostics(mMaster, "Elevator");
+
+        mLogger.info("Beginning diagnostics test for Elevator subsystem.");
+        boolean isGood = diag.checkMotorController();
+        mLogger.info(diag.toString());
+
+        if (!isGood) {
+            mLogger.error("Elevator subsystem failed diagnostics test!");
+        }
+
+        return isGood;
     }
 
     @Override

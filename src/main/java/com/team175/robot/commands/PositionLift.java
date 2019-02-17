@@ -10,12 +10,14 @@ import com.team175.robot.subsystems.Lift;
  */
 public class PositionLift extends AldrinCommand {
 
-    private LiftPosition mPosition;
+    private LiftPosition mFrontPosition;
+    private LiftPosition mRearPosition;
 
-    public PositionLift(LiftPosition position) {
+    public PositionLift(LiftPosition frontPosition, LiftPosition rearPosition) {
         requires(Lift.getInstance(), Drive.getInstance());
 
-        mPosition = position;
+        mFrontPosition = frontPosition;
+        mRearPosition = rearPosition;
 
         super.logInstantiation();
     }
@@ -29,20 +31,18 @@ public class PositionLift extends AldrinCommand {
 
     @Override
     protected void execute() {
-        // Lift.getInstance().setPosition(mPosition);
-        Lift.getInstance().setPower(OI.getInstance().getDriverStickY());
-        // Lift.getInstance().setDrivePower(-1);
+        Lift.getInstance().setFrontPosition(mFrontPosition);
+        Lift.getInstance().setRearPosition(mRearPosition);
     }
 
     @Override
     protected boolean isFinished() {
-        return false;
+        return Lift.getInstance().isFrontLimitHit() && Lift.getInstance().isRearLimitHit();
     }
 
     @Override
     protected void end() {
-        Lift.getInstance().setPower(0);
-        // Lift.getInstance().setDrivePower(0);
+        Lift.getInstance().stop();
 
         super.logEnd();
     }

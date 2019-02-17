@@ -40,13 +40,15 @@ public final class Constants {
     public static final int MANIPULATOR_REAR_ROLLER = 1;
 
     // Digital Inputs
-    public static final int LEFT_TWO_SENSOR_PORT = 5;
+    public static final int LIFT_FRONT_LIMIT_PORT = 0;
+    public static final int LIFT_REAR_LIMIT_PORT = 1;
+    public static final int LIFT_FRONT_HAB_SENSOR_PORT = 2;
+    public static final int LIFT_REAR_HAB_SENSOR_PORT = 3;
+    /*public static final int LEFT_TWO_SENSOR_PORT = 5;
     public static final int LEFT_ONE_SENSOR_PORT = 4;
     public static final int CENTER_SENSOR_PORT = 3;
     public static final int RIGHT_ONE_SENSOR_PORT = 2;
-    public static final int RIGHT_TWO_SENSOR_PORT = 1;
-    public static final int LIFT_FRONT_LIMIT_PORT = 6;
-    public static final int LIFT_REAR_LIMIT_PORT = 7;
+    public static final int RIGHT_TWO_SENSOR_PORT = 1;*/
 
     /* Input Map */
     // Joystick Ports
@@ -59,19 +61,26 @@ public final class Constants {
     public static final int LATERAL_DRIVE_TRIGGER = 1; // 1 is the trigger button
     public static final int SHIFT_BUTTON = 2;
     public static final int STRAIGHT_DRIVE_BUTTON = 3;
-    public static final int MANUAL_LIFT_BUTTON = 4;
-    public static final int CHEESY_DRIVE_BUTTON = 5;
+    public static final int LEVEL_THREE_CLIMB_BUTTON = 12;
+    public static final int CANCEL_AUTO_BUTTON = 6;
     // public static final int LINE_ALIGN_BUTTON = 12;
 
     // Operator Stick Buttons
     public static final int MANUAL_ELEVATOR_TRIGGER = 1;
-    public static final int TOGGLE_MANIPULATOR_BUTTON = 11;
+    public static final int TOGGLE_MANIPULATOR_BUTTON = 2;
     public static final int SCORE_HATCH_BUTTON = 5;
     public static final int GRAB_HATCH_BUTTON = 3;
     public static final int SCORE_CARGO_BUTTON = 6;
     public static final int GRAB_CARGO_BUTTON = 4;
-    public static final int TOGGLE_PUNCH_HATCH_BUTTON = 2;
-    public static final int MANUAL_ARM_BUTTON = 12;
+    public static final int ELEVATOR_POSITION_ONE_BUTTON = 7;
+    public static final int ELEVATOR_POSITION_TWO_BUTTON = 9;
+    public static final int ELEVATOR_POSITION_THREE_BUTTON = 11;
+    public static final int ELEVATOR_POSITION_FOUR_BUTTON = 8;
+    public static final int ELEVATOR_POSITION_FIVE_BUTTON = 10;
+    public static final int ELEVATOR_POSITION_SIX_BUTTON = 12;
+    public static final int MANIPULATOR_ARM_SCORE_POSITION_BUTTON = 8;
+    public static final int MANIPULATOR_ARM_BALL_PICKUP_POSITION_BUTTON = 10;
+    public static final int MANIPULATOR_ARM_GROUND_POSITION_BUTTON = 12;
 
     /* Physical Constants */
     // TODO: Clean up!

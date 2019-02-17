@@ -21,7 +21,7 @@ public class ManualLift extends AldrinCommand {
 
     @Override
     protected void execute() {
-        Lift.getInstance().setPower(OI.getInstance().getDriverStickY());
+        // Lift.getInstance().setPower(OI.getInstance().getDriverStickY());
         Lift.getInstance().setDrivePower(OI.getInstance().getDriverStickX());
     }
 
