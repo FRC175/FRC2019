@@ -7,11 +7,11 @@ import com.team175.robot.subsystems.LateralDrive;
 /**
  * @author Arvind
  */
-public class ManualArcadeDrive extends AldrinCommand {
+public class ArcadeDrive extends AldrinCommand {
 
     private boolean mIsLowGear;
 
-    public ManualArcadeDrive(boolean isLowGear) {
+    public ArcadeDrive(boolean isLowGear) {
         requires(Drive.getInstance(), LateralDrive.getInstance());
 
         mIsLowGear = isLowGear;

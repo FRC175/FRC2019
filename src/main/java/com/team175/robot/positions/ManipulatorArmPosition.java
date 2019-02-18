@@ -8,7 +8,7 @@ public enum ManipulatorArmPosition implements Position {
     GROUND(0),
     BALL_PICKUP(0),
     SCORE(0),
-    STOW(0);
+    HOME(0);
 
     private final int mPosition;
 

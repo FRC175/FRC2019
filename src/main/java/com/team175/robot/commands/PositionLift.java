@@ -1,6 +1,5 @@
 package com.team175.robot.commands;
 
-import com.team175.robot.OI;
 import com.team175.robot.positions.LiftPosition;
 import com.team175.robot.subsystems.Drive;
 import com.team175.robot.subsystems.Lift;
@@ -37,7 +36,21 @@ public class PositionLift extends AldrinCommand {
 
     @Override
     protected boolean isFinished() {
-        return Lift.getInstance().isFrontLimitHit() && Lift.getInstance().isRearLimitHit();
+        boolean isFinished = true;
+
+        if (mFrontPosition == LiftPosition.EXTEND) {
+            isFinished &= Lift.getInstance().isFrontForwardLimitHit();
+        } else if (mFrontPosition == LiftPosition.RETRACT) {
+            isFinished &= Lift.getInstance().isFrontReverseLimitHit();
+        }
+
+        if (mRearPosition == LiftPosition.EXTEND) {
+            isFinished &= Lift.getInstance().isRearForwardLimitHit();
+        } else if (mRearPosition == LiftPosition.RETRACT) {
+            isFinished &= Lift.getInstance().isRearReverseLimitHit();
+        }
+
+        return isFinished;
     }
 
     @Override

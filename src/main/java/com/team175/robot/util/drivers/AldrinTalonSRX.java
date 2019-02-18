@@ -3,8 +3,6 @@ package com.team175.robot.util.drivers;
 import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
-import com.ctre.phoenix.motorcontrol.RemoteSensorSource;
-import com.ctre.phoenix.motorcontrol.StatusFrame;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.team175.robot.Constants;
 

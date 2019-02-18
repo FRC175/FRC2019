@@ -7,6 +7,7 @@
     <SOURCES>
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.github.Team319/BobTrajectory/v1.0.1/fce9432307d7b28dbe077aded0e9f9cb83237cbe/BobTrajectory-v1.0.1-sources.jar!/" />
       <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/edu.wpi.first.wpilibj/wpilibj-java/2019.1.1/db163458e3b3460c8b0aa2949e66f6fe87a66d4c/wpilibj-java-2019.1.1-sources.jar!/" />
+      <root url="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/openrio.mirror.third.ctre/CTRE-phoenix-java/5.3.1.0/6bc591da3912ee9c34d1b82203e04eb16099225a/CTRE-phoenix-java-5.3.1.0-sources.jar!/" />
     </SOURCES>
   </library>
 </component>

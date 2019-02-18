@@ -9,6 +9,7 @@ import com.team175.robot.util.drivers.AldrinTalonSRX;
 import com.team175.robot.util.drivers.CTREDiagnostics;
 import com.team175.robot.util.drivers.CTREFactory;
 
+import com.team175.robot.util.drivers.Pixy;
 import com.team175.robot.util.tuning.ClosedLoopTunable;
 import com.team175.robot.util.tuning.ClosedLoopGains;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -27,6 +28,7 @@ public final class LateralDrive extends AldrinSubsystem implements ClosedLoopTun
     private final AldrinTalonSRX mMaster;
     private final Solenoid mDeploy;
     // private final Map<String, DigitalInput> mLineSensors;
+    // private final Pixy mPixy;
 
     private int mWantedPosition;
     private ClosedLoopGains mGains;
@@ -62,10 +64,11 @@ public final class LateralDrive extends AldrinSubsystem implements ClosedLoopTun
         mWantedPosition = 0;
 
         /* Configuration */
-        CTREDiagnostics.checkCommand(mMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative),
+        CTREDiagnostics.checkCommand(mMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder),
                 "Failed to config LateralDrive encoder!");
         mGains = Constants.LATERAL_DRIVE_GAINS;
         resetSensors();
+        stop();
     }
 
     public void deploy(boolean enable) {
@@ -164,6 +167,7 @@ public final class LateralDrive extends AldrinSubsystem implements ClosedLoopTun
     @Override
     public void stop() {
         setPower(0);
+        deploy(false);
     }
 
     @Override
@@ -190,6 +194,8 @@ public final class LateralDrive extends AldrinSubsystem implements ClosedLoopTun
 
         if (!isGood) {
             mLogger.error("LateralDrive subsystem failed diagnostics test!");
+        } else {
+            mLogger.info("LateralDrive subsystem passed diagnostics test!");
         }
 
         return isGood;

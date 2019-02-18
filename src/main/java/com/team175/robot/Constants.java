@@ -40,10 +40,12 @@ public final class Constants {
     public static final int MANIPULATOR_REAR_ROLLER = 1;
 
     // Digital Inputs
-    public static final int LIFT_FRONT_LIMIT_PORT = 0;
-    public static final int LIFT_REAR_LIMIT_PORT = 1;
-    public static final int LIFT_FRONT_HAB_SENSOR_PORT = 2;
-    public static final int LIFT_REAR_HAB_SENSOR_PORT = 3;
+    public static final int LIFT_FRONT_FORWARD_LIMIT_PORT = 0;
+    public static final int LIFT_REAR_FORWARD_LIMIT_PORT = 1;
+    public static final int LIFT_FRONT_REVERSE_LIMIT_PORT = 2;
+    public static final int LIFT_REAR_REVERSE_LIMIT_PORT = 3;
+    public static final int LIFT_FRONT_HAB_SENSOR_PORT = 4;
+    public static final int LIFT_REAR_HAB_SENSOR_PORT = 5;
     /*public static final int LEFT_TWO_SENSOR_PORT = 5;
     public static final int LEFT_ONE_SENSOR_PORT = 4;
     public static final int CENTER_SENSOR_PORT = 3;
@@ -87,10 +89,10 @@ public final class Constants {
     // TODO: Consider replacing empirical with actual velocity
 
     // TODO: Verify max speed of motors
-    // private static final int DRIVE_MAX_RPM = 5330;
-    private static final int ELEVATOR_MAX_RPM = 154; // May be 18730 if 775 is used
-    private static final int LATERAL_DRIVE_MAX_RPM = 19300; // Assuming this is 775
-    private static final int MANIPULATOR_ARM_MAX_RPM = 18730; // Assuming this is 775
+    private static final int DRIVE_MAX_RPM = 5330;
+    private static final int ELEVATOR_MAX_RPM = 5840;
+    private static final int LATERAL_DRIVE_MAX_RPM = 19300; // Assuming this is 655
+    private static final int MANIPULATOR_ARM_MAX_RPM = 90; // Find speed of window motors
 
     // TODO: Determine gear ratio of each motor
     // private static final double DRIVE_GEAR_RATIO = 3.66 / 1.0;
@@ -101,20 +103,15 @@ public final class Constants {
     // TODO: Verify manipulator arm encoder counts per revolution
     // talonSRXCounts = counts * 4
     private static final int DRIVE_COUNTS_PER_REVOLUTION = 4096;
-    private static final int ELEVATOR_COUNTS_PER_REVOLUTION = 512;
+    private static final int ELEVATOR_COUNTS_PER_REVOLUTION = 4096;
     private static final int LATERAL_DRIVE_COUNTS_PER_REVOLUTION = 512;
     private static final int MANIPULATOR_ARM_COUNTS_PER_REVOLUTION = 4096;
 
     // TODO: Perhaps measure using Phoenix Tuner
     public static final int DRIVE_MAX_VELOCITY = 3200;
-    /*public static final int DRIVE_MAX_VELOCITY = AldrinMath.calculateEmpiricalVelocity(DRIVE_MAX_RPM,
-            DRIVE_COUNTS_PER_REVOLUTION, DRIVE_GEAR_RATIO);
-    public static final int ELEVATOR_MAX_VELOCITY = AldrinMath.calculateEmpiricalVelocity(ELEVATOR_MAX_RPM,
-            ELEVATOR_COUNTS_PER_REVOLUTION, ELEVATOR_GEAR_RATIO);
-    public static final int LATERAL_DRIVE_MAX_VELOCITY = AldrinMath.calculateEmpiricalVelocity(LATERAL_DRIVE_MAX_RPM,
-            LATERAL_DRIVE_COUNTS_PER_REVOLUTION, LATERAL_DRIVE_GEAR_RATIO);
-    public static final int MANIPULATOR_ARM_MAX_VELOCITY = AldrinMath.calculateEmpiricalVelocity(MANIPULATOR_ARM_MAX_RPM,
-            MANIPULATOR_ARM_COUNTS_PER_REVOLUTION, MANIPULATOR_ARM_GEAR_RATIO);*/
+    public static final int ELEVATOR_MAX_VELOCITY = 0;
+    public static final int LATERAL_DRIVE_MAX_VELOCITY = 0;
+    public static final int MANIPULATOR_ARM_MAX_VELOCITY = 0;
 
     private static final Transmission DRIVE_TRANSMISSION = new Transmission(DRIVE_MAX_VELOCITY,
             DRIVE_COUNTS_PER_REVOLUTION);
@@ -127,10 +124,10 @@ public final class Constants {
 
     /* Software Constants */
     // Closed Loop Gains
-    public static final ClosedLoopGains LEFT_DRIVE_GAINS = new ClosedLoopGains(0.1, 0, 0.2,
+    public static final ClosedLoopGains LEFT_DRIVE_GAINS = new ClosedLoopGains(0.1, 0, 0,
             DRIVE_TRANSMISSION.getKf(), DRIVE_TRANSMISSION.getVelocity() / 2,
             DRIVE_TRANSMISSION.getVelocity() / 2);
-    public static final ClosedLoopGains RIGHT_DRIVE_GAINS = new ClosedLoopGains(0.25, 0, 0.5,
+    public static final ClosedLoopGains RIGHT_DRIVE_GAINS = new ClosedLoopGains(0.1, 0, 0,
             DRIVE_TRANSMISSION.getKf(), DRIVE_TRANSMISSION.getVelocity() / 2,
             DRIVE_TRANSMISSION.getVelocity() / 2);
     public static final ClosedLoopGains ELEVATOR_GAINS = new ClosedLoopGains(0.1, 0, 0,
@@ -149,5 +146,6 @@ public final class Constants {
     public static final int TIMEOUT_MS = 10;
     public static final int ALLOWED_POSITION_DEVIATION = 10;
     public static final double QUICK_TURN_THRESHOLD = 0.2; // Used for Cheesy Drive
+    public static final double RAMP_TIME = 0;
 
 }

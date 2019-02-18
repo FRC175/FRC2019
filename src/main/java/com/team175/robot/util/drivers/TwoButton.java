@@ -11,8 +11,7 @@ import edu.wpi.first.wpilibj.buttons.Button;
 public class TwoButton extends Button {
 
     private GenericHID mJoystick;
-    private int mFirstButtonNumber;
-    private int mSecondButtonNumber;
+    private int mFirstButtonNumber, mSecondButtonNumber;
 
     /**
      * Constructs a two joystick buttons into one object.

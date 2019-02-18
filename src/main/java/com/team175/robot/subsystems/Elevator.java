@@ -100,7 +100,8 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
 
     @Override
     public void stop() {
-        setPower(0);
+        setPosition(mWantedPosition);
+        // setPower(0);
     }
 
     @Override
@@ -138,6 +139,8 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
 
         if (!isGood) {
             mLogger.error("Elevator subsystem failed diagnostics test!");
+        } else {
+            mLogger.info("Elevator subsystem passed diagnostics test!");
         }
 
         return isGood;

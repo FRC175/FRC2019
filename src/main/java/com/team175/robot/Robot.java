@@ -10,9 +10,10 @@ package com.team175.robot;
 import com.team175.robot.subsystems.*;
 import com.team175.robot.util.choosers.AutoModeChooser;
 import com.team175.robot.util.choosers.TunerChooser;
-
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 import java.util.List;
 
@@ -28,14 +29,12 @@ public class Robot extends TimedRobot {
     private Elevator mElevator;
     private LateralDrive mLateralDrive;
     private Lift mLift;
-    // private Manipulator mManipulator;
+    private Manipulator mManipulator;
     private Vision mVision;
-
     private OI mOI;
-
     private AutoModeChooser mAutoModeChooser;
     private TunerChooser mTunerChooser;
-
+    private Logger mLogger;
     private List<AldrinSubsystem> mSubsystems;
 
     @Override
@@ -45,15 +44,17 @@ public class Robot extends TimedRobot {
         mElevator = Elevator.getInstance();
         mLateralDrive = LateralDrive.getInstance();
         mLift = Lift.getInstance();
-        // mManipulator = Manipulator.getInstance();
+        mManipulator = Manipulator.getInstance();
         mVision = Vision.getInstance();
-
         mOI = OI.getInstance();
-
         mAutoModeChooser = AutoModeChooser.getInstance();
-        mTunerChooser = new TunerChooser();
+        mTunerChooser = TunerChooser.getInstance();
+        mLogger = LoggerFactory.getLogger(getClass().getSimpleName());
+        mSubsystems = List.of(mDrive, mElevator, mLateralDrive, mLift, mManipulator);
 
-        mSubsystems = List.of(mDrive, mElevator, mLateralDrive, mLift); // mManipulator
+        /* Configuration */
+        // Runs camera stream on separate thread
+        new Thread(mVision).start();
         // Comment out in production robot
         mSubsystems.forEach(AldrinSubsystem::outputToDashboard);
     }
@@ -106,8 +107,21 @@ public class Robot extends TimedRobot {
 
     @Override
     public void testInit() {
-        mTunerChooser.updateFromDashboard();
-        mTunerChooser.start();
+        mLogger.info("Beginning robot diagnostics test.");
+
+        boolean isGood = true;
+        for (AldrinSubsystem as : mSubsystems) {
+            isGood &= as.checkSubsystem();
+        }
+
+        if (!isGood) {
+            mLogger.error("Robot failed diagnostics test!");
+        } else {
+            mLogger.info("Robot passed diagnostics test!");
+        }
+
+        // mTunerChooser.updateFromDashboard();
+        // mTunerChooser.start();
     }
 
     @Override

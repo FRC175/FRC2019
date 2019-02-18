@@ -70,6 +70,7 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
         CTREDiagnostics.checkCommand(mArm.configSelectedFeedbackSensor(FeedbackDevice.Analog),
                 "Failed to config ManipulatorArm encoder!");
         mArmGains = Constants.MANIPULATOR_ARM_GAINS;
+        stopRollers(); // Maybe change to stop() if encoder works correctly
     }
 
     public void setBrake(boolean enable) {
@@ -96,7 +97,7 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
     public void setRollerPosition(ManipulatorRollerPosition rp) {
         setRollerPower(rp.getFrontPower(), rp.getRearPower());
 
-        if (rp != ManipulatorRollerPosition.SCORE_HATCH) {
+        if (rp == ManipulatorRollerPosition.SCORE_HATCH) {
             punchHatch(true);
         }
     }
@@ -218,6 +219,8 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
 
         if (!isGood) {
             mLogger.error("ManipulatorArm failed diagnostics test!");
+        } else {
+            mLogger.info("ManipulatorArm passed diagnostics test!");
         }
 
         return isGood;

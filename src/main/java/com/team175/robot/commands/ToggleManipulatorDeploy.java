@@ -3,12 +3,16 @@ package com.team175.robot.commands;
 import com.team175.robot.positions.ManipulatorArmPosition;
 import com.team175.robot.subsystems.Manipulator;
 
+/**
+ * @author Arvind
+ */
 public class ToggleManipulatorDeploy extends AldrinToggleCommand {
 
     private boolean mDeploy;
 
     public ToggleManipulatorDeploy() {
         requires(Manipulator.getInstance());
+
         mDeploy = true;
 
         super.logInstantiation();
@@ -16,7 +20,7 @@ public class ToggleManipulatorDeploy extends AldrinToggleCommand {
 
     @Override
     protected void initialize() {
-        Manipulator.getInstance().setArmPosition(ManipulatorArmPosition.STOW);
+        Manipulator.getInstance().setArmPosition(ManipulatorArmPosition.HOME);
         Manipulator.getInstance().deploy(mDeploy);
         mDeploy = !mDeploy;
 

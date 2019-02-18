@@ -22,7 +22,8 @@ public final class Lift extends AldrinSubsystem {
     private final AldrinTalonSRX mDrive;
     private final Talon mFront, mRear;
     private final Solenoid mFrontBrake, mRearBrake;
-    private final DigitalInput mFrontLimit, mRearLimit, mFrontHabSensor, mRearHabSensor;
+    private final DigitalInput mFrontForwardLimit, mRearForwardLimit, mFrontReverseLimit, mRearReverseLimit,
+            mFrontHabSensor, mRearHabSensor;
 
     // Singleton Instance
     private static Lift sInstance;
@@ -49,10 +50,15 @@ public final class Lift extends AldrinSubsystem {
         mRearBrake = new Solenoid(Constants.LIFT_REAR_BRAKE_CHANNEL);
 
         // DigitalInput(portNum : int)
-        mFrontLimit = new DigitalInput(Constants.LIFT_FRONT_LIMIT_PORT);
-        mRearLimit = new DigitalInput(Constants.LIFT_REAR_LIMIT_PORT);
+        mFrontForwardLimit = new DigitalInput(Constants.LIFT_FRONT_FORWARD_LIMIT_PORT);
+        mRearForwardLimit = new DigitalInput(Constants.LIFT_REAR_FORWARD_LIMIT_PORT);
+        mFrontReverseLimit = new DigitalInput(Constants.LIFT_FRONT_REVERSE_LIMIT_PORT);
+        mRearReverseLimit = new DigitalInput(Constants.LIFT_REAR_REVERSE_LIMIT_PORT);
         mFrontHabSensor = new DigitalInput(Constants.LIFT_FRONT_HAB_SENSOR_PORT);
         mRearHabSensor = new DigitalInput(Constants.LIFT_REAR_HAB_SENSOR_PORT);
+
+        /* Configuration */
+        stop();
     }
 
     /*public void setPower(double power) {
@@ -61,13 +67,13 @@ public final class Lift extends AldrinSubsystem {
     }*/
 
     public void setFrontPower(double power) {
-        if (!isFrontLimitHit()) {
+        if (!isFrontForwardLimitHit() || !isFrontReverseLimitHit()) {
             mFront.set(power);
         }
     }
 
     public void setRearPower(double power) {
-        if (!isRearLimitHit()) {
+        if (!isRearForwardLimitHit() || !isRearReverseLimitHit()) {
             mRear.set(power);
         }
     }
@@ -104,12 +110,20 @@ public final class Lift extends AldrinSubsystem {
         mRearBrake.set(enable);
     }
 
-    public boolean isFrontLimitHit() {
-        return mFrontLimit.get();
+    public boolean isFrontForwardLimitHit() {
+        return mFrontForwardLimit.get();
     }
 
-    public boolean isRearLimitHit() {
-        return mRearLimit.get();
+    public boolean isRearForwardLimitHit() {
+        return mRearForwardLimit.get();
+    }
+
+    public boolean isFrontReverseLimitHit() {
+        return mFrontReverseLimit.get();
+    }
+
+    public boolean isRearReverseLimitHit() {
+        return mRearReverseLimit.get();
     }
 
     public boolean isFrontOnHab() {

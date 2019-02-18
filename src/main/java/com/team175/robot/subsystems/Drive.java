@@ -7,7 +7,7 @@ import com.team175.robot.Constants;
 import com.team175.robot.paths.Path;
 import com.team175.robot.util.DriveHelper;
 import com.team175.robot.util.PathHelper;
-import com.team175.robot.commands.ManualArcadeDrive;
+import com.team175.robot.commands.ArcadeDrive;
 import com.team175.robot.util.drivers.AldrinTalonSRX;
 import com.team175.robot.util.drivers.CTREDiagnostics;
 import com.team175.robot.util.drivers.CTREFactory;
@@ -78,20 +78,25 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
         mRightGains = Constants.RIGHT_DRIVE_GAINS;
 
         /* Configuration */
+        CTREDiagnostics.checkCommand(mLeftMaster.configOpenloopRamp(Constants.RAMP_TIME, Constants.TIMEOUT_MS),
+                "Failed to config LeftMaster ramp!");
+        CTREDiagnostics.checkCommand(mRightMaster.configOpenloopRamp(Constants.RAMP_TIME, Constants.TIMEOUT_MS),
+                "Failed to config RightMaster ramp!");
         CTREDiagnostics.checkCommand(mLeftMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative),
                 "Failed to config LeftMaster encoder!");
         CTREDiagnostics.checkCommand(mRightMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative),
                 "Failed to config RightMaster encoder!");
-        setLeftGains(mLeftGains);
-        setRightGains(mRightGains);
-        mLeftMaster.setSensorPhase(true);
-        mRightMaster.setSensorPhase(false);
-        mLeftMaster.setInverted(true);
+        /*mLeftMaster.setInverted(true);
         mLeftSlave.setInverted(true);
         mRightMaster.setInverted(true);
         mRightSlave.setInverted(true);
+        mLeftMaster.setSensorPhase(true);
+        mRightMaster.setSensorPhase(false);*/
+        setLeftGains(mLeftGains);
+        setRightGains(mRightGains);
         mPathHelper.configTalons();
         resetSensors();
+        stop();
     }
 
     public void arcadeDrive(double throttle, double turn) {
@@ -227,7 +232,7 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
 
     @Override
     protected void initDefaultCommand() {
-        setDefaultCommand(new ManualArcadeDrive(false));
+        setDefaultCommand(new ArcadeDrive(false));
     }
 
     @Override
@@ -294,6 +299,8 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
 
         if (!isGood) {
             mLogger.error("Drive subsystem failed diagnostics test!");
+        } else {
+            mLogger.info("Drive subsystem passed diagnostics test!");
         }
 
         return isGood;

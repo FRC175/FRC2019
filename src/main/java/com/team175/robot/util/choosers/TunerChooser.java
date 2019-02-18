@@ -17,6 +17,8 @@ public class TunerChooser implements Chooser {
 
     private ClosedLoopTuner mTuner;
 
+    private static TunerChooser sInstance;
+
     private enum SubsystemToTune {
         DRIVE,
         ELEVATOR,
@@ -24,13 +26,26 @@ public class TunerChooser implements Chooser {
         MANIPULATOR_ARM;
     }
 
-    public TunerChooser() {
+    public static TunerChooser getInstance() {
+        if (sInstance == null) {
+            sInstance = new TunerChooser();
+        }
+
+        return sInstance;
+    }
+
+    private TunerChooser() {
         mChooser = new SendableChooser<>();
         mChooser.addOption("Drive", SubsystemToTune.DRIVE);
         mChooser.addOption("Elevator", SubsystemToTune.ELEVATOR);
         mChooser.addOption("Lateral Drive", SubsystemToTune.LATERAL_DRIVE);
         mChooser.addOption("Manipulator Arm", SubsystemToTune.MANIPULATOR_ARM);
         outputToDashboard();
+    }
+
+    @Override
+    public void outputToDashboard() {
+        SmartDashboard.putData("Tuner Chooser", mChooser);
     }
 
     @Override
@@ -49,12 +64,10 @@ public class TunerChooser implements Chooser {
             case MANIPULATOR_ARM:
                 mTuner = new ClosedLoopTuner(Manipulator.getInstance());
                 break;
+            default:
+                mTuner = null;
+                break;
         }
-    }
-
-    @Override
-    public void outputToDashboard() {
-        SmartDashboard.putData("Tuner Chooser", mChooser);
     }
 
     @Override

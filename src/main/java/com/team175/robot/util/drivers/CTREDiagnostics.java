@@ -4,13 +4,12 @@ import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
+import com.team175.robot.Constants;
 import edu.wpi.first.wpilibj.Timer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * TODO: Vet code.
- *
  * @author Arvind
  */
 public class CTREDiagnostics {
@@ -22,10 +21,7 @@ public class CTREDiagnostics {
     private static final double TEST_RETRY_COUNT = 4;
     private static final double DELAY_TIME = 2; // In seconds
 
-    private boolean mIsOutputGood;
-    private boolean mDoesEncoderExist;
-    private boolean mIsSensorInPhase;
-    private boolean mIsReset;
+    private boolean mIsOutputGood, mDoesEncoderExist, mIsSensorInPhase, mIsFaulted;
 
     public CTREDiagnostics(BaseMotorController bmc, String name) {
         mBMC = bmc;
@@ -34,7 +30,7 @@ public class CTREDiagnostics {
         mIsOutputGood = false;
         mDoesEncoderExist = false;
         mIsSensorInPhase = false;
-        mIsReset = false;
+        mIsFaulted = false;
     }
 
     private boolean checkOutputDirection() {
@@ -83,8 +79,16 @@ public class CTREDiagnostics {
         }
     }
 
-    private boolean checkReset() {
-        return !mBMC.hasResetOccurred(); // Invert in order to see motor is good
+    private boolean checkFaults() {
+        if (mBMC.hasResetOccurred()) {
+            if (mBMC.clearStickyFaults(Constants.TIMEOUT_MS) != ErrorCode.OK) {
+                sLogger.warn("{} failed to clear faults!", mName);
+                return false;
+            }
+        }
+
+        sLogger.info("{} passed faults test!", mName);
+        return true;
     }
 
     public boolean checkMotorController() {
@@ -98,13 +102,13 @@ public class CTREDiagnostics {
             mIsOutputGood = checkOutputDirection();
             mDoesEncoderExist = checkEncoderExists();
             mIsSensorInPhase = mDoesEncoderExist ? checkSensorPhase() : false;
-            mIsReset = !checkReset(); // Invert to see if motor is reset
+            mIsFaulted = !checkFaults(); // Invert to see if motor is faulted
 
             isGood = true;
             isGood &= mIsOutputGood;
             isGood &= mDoesEncoderExist;
             isGood &= mIsSensorInPhase;
-            isGood &= !mIsReset; // Invert again to see motor is good
+            isGood &= !mIsFaulted; // Invert again to see if motor is good
         } while (!isGood && i++ < TEST_RETRY_COUNT);
 
         if (!isGood && i >= TEST_RETRY_COUNT) {
@@ -128,7 +132,7 @@ public class CTREDiagnostics {
         sb.append("Output Direction: ").append(mIsOutputGood).append("\n");
         sb.append("Encoder Existence: ").append(mDoesEncoderExist).append("\n");
         sb.append("Sensor Phase: ").append(mIsSensorInPhase).append("\n");
-        sb.append("Motor Reset?: ").append(mIsReset);
+        sb.append("Motor Reset?: ").append(mIsFaulted);
         return sb.toString();
     }
 

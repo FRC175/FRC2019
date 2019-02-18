@@ -2,12 +2,16 @@ package com.team175.robot.commands;
 
 import com.team175.robot.subsystems.Lift;
 
+/**
+ * @author Arvind
+ */
 public class ToggleRearLiftBrake extends AldrinToggleCommand {
 
     private boolean mBrake;
 
     public ToggleRearLiftBrake() {
         requires(Lift.getInstance());
+
         mBrake = true;
 
         super.logInstantiation();

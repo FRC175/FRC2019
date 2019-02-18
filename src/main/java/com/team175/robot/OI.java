@@ -18,8 +18,6 @@ import edu.wpi.first.wpilibj.buttons.Button;
 import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 /**
- * TODO: Investigate Puncher
- *
  * @author Arvind
  */
 public final class OI {
@@ -101,7 +99,7 @@ public final class OI {
         /* Command Assignment */
         // Driver Stick
         mManualLateralDrive.whileHeld(new ManualLateralDrive());
-        mShift.whileHeld(new ManualArcadeDrive(true));
+        mShift.whileHeld(new ArcadeDrive(true));
         mStraightDrive.whileHeld(new StraightDrive());
         mLevelThreeClimb.whenPressed(new LevelThreeClimb());
         mCancelAuto.whenPressed(new CancelAuto());

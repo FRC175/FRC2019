@@ -1,6 +1,5 @@
 package com.team175.robot.util.drivers;
 
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
 import com.team175.robot.Constants;

@@ -8,6 +8,7 @@ import edu.wpi.first.wpilibj.buttons.Button;
  * reuse buttons on the Joystick. Thanks mechanical for making the robot too complicated!
  *
  * @author Arvind
+ * @see Button
  */
 public class NubButton extends Button {
 

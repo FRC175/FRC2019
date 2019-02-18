@@ -36,7 +36,6 @@ public class ManualLateralDrive extends AldrinCommand {
     @Override
     protected void end() {
         LateralDrive.getInstance().stop();
-        LateralDrive.getInstance().deploy(false);
 
         super.logEnd();
     }
