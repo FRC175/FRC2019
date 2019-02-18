@@ -7,7 +7,7 @@ import com.team175.robot.Constants;
 import com.team175.robot.positions.ManipulatorArmPosition;
 import com.team175.robot.positions.ManipulatorRollerPosition;
 import com.team175.robot.util.drivers.AldrinTalonSRX;
-import com.team175.robot.util.drivers.CTREDiagnostics;
+import com.team175.robot.util.CTREDiagnostics;
 import com.team175.robot.util.drivers.CTREFactory;
 
 import com.team175.robot.util.tuning.ClosedLoopTunable;
@@ -65,11 +65,12 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
                 Constants.MANIPULATOR_DEPLOY_REVERSE_CHANNEL);
 
         mArmWantedPosition = 0;
+        mArmGains = Constants.MANIPULATOR_ARM_GAINS;
 
         /* Configuration */
         CTREDiagnostics.checkCommand(mArm.configSelectedFeedbackSensor(FeedbackDevice.Analog),
                 "Failed to config ManipulatorArm encoder!");
-        mArmGains = Constants.MANIPULATOR_ARM_GAINS;
+        setArmGains(mArmGains);
         stopRollers(); // Maybe change to stop() if encoder works correctly
     }
 

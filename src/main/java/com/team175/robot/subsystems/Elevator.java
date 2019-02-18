@@ -2,10 +2,12 @@ package com.team175.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
+import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
+import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.team175.robot.Constants;
 import com.team175.robot.positions.ElevatorPosition;
 import com.team175.robot.util.drivers.AldrinTalonSRX;
-import com.team175.robot.util.drivers.CTREDiagnostics;
+import com.team175.robot.util.CTREDiagnostics;
 import com.team175.robot.util.drivers.CTREFactory;
 import com.team175.robot.util.tuning.ClosedLoopTunable;
 import com.team175.robot.util.tuning.ClosedLoopGains;
@@ -43,11 +45,12 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
         mMaster = CTREFactory.getMasterTalon(Constants.ELEVATOR_PORT);
 
         mWantedPosition = 0;
+        mGains = Constants.LATERAL_DRIVE_GAINS;
 
         /* Configuration */
         CTREDiagnostics.checkCommand(mMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative),
                 "Failed to config Elevator encoder!");
-        mGains = Constants.ELEVATOR_GAINS;
+        setGains(mGains);
     }
 
     public void setPower(double power) {

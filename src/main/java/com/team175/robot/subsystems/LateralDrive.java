@@ -6,10 +6,9 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.team175.robot.Constants;
 import com.team175.robot.positions.LineSensorPosition;
 import com.team175.robot.util.drivers.AldrinTalonSRX;
-import com.team175.robot.util.drivers.CTREDiagnostics;
+import com.team175.robot.util.CTREDiagnostics;
 import com.team175.robot.util.drivers.CTREFactory;
 
-import com.team175.robot.util.drivers.Pixy;
 import com.team175.robot.util.tuning.ClosedLoopTunable;
 import com.team175.robot.util.tuning.ClosedLoopGains;
 import edu.wpi.first.wpilibj.Solenoid;
@@ -62,11 +61,12 @@ public final class LateralDrive extends AldrinSubsystem implements ClosedLoopTun
         );*/
 
         mWantedPosition = 0;
+        mGains = Constants.LATERAL_DRIVE_GAINS;
 
         /* Configuration */
         CTREDiagnostics.checkCommand(mMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder),
                 "Failed to config LateralDrive encoder!");
-        mGains = Constants.LATERAL_DRIVE_GAINS;
+        setGains(mGains);
         resetSensors();
         stop();
     }

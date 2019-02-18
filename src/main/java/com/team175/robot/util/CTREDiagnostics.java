@@ -1,4 +1,4 @@
-package com.team175.robot.util.drivers;
+package com.team175.robot.util;
 
 import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.ControlMode;
@@ -38,7 +38,7 @@ public class CTREDiagnostics {
         mBMC.set(ControlMode.PercentOutput, 0.75);
         Timer.delay(DELAY_TIME);
 
-        if (!(mBMC.getMotorOutputPercent() > prevPower)) {
+        if (mBMC.getMotorOutputPercent() <= prevPower) {
             sLogger.warn("{} must be inverted!", mName);
             // return false;
             return false;

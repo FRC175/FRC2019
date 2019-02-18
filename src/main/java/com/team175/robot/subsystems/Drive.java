@@ -9,7 +9,7 @@ import com.team175.robot.util.DriveHelper;
 import com.team175.robot.util.PathHelper;
 import com.team175.robot.commands.ArcadeDrive;
 import com.team175.robot.util.drivers.AldrinTalonSRX;
-import com.team175.robot.util.drivers.CTREDiagnostics;
+import com.team175.robot.util.CTREDiagnostics;
 import com.team175.robot.util.drivers.CTREFactory;
 import com.team175.robot.util.tuning.ClosedLoopTunable;
 import com.team175.robot.util.tuning.ClosedLoopGains;
@@ -24,7 +24,6 @@ import java.util.function.DoubleSupplier;
 
 /**
  * TODO: Add gyro PID tuning.
- * TODO: Consider ramp rate.
  *
  * @author Arvind
  */

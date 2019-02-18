@@ -7,7 +7,6 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.team175.robot.Constants;
 import com.team175.robot.paths.Path;
-import com.team175.robot.util.drivers.CTREDiagnostics;
 
 /**
  * A helper class to easily configure and follow paths using the Talon SRX MotionProfileArc mode. Code is heavily based
