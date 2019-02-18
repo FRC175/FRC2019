@@ -14,13 +14,14 @@ public final class Constants {
 
     /* Hardware Map */
     // CAN Ports
-    public static final int LEFT_MASTER_DRIVE_PORT = 6;
-    public static final int LEFT_SLAVE_DRIVE_PORT = 1;
-    public static final int RIGHT_MASTER_DRIVE_PORT = 2;
-    public static final int RIGHT_SLAVE_DRIVE_PORT = 3;
-    public static final int ELEVATOR_PORT = 4;
-    public static final int LATERAL_DRIVE_PORT = 8;
-    public static final int MANIPULATOR_ARM_PORT = 7;
+    public static final int LEFT_MASTER_DRIVE_PORT = 4;
+    public static final int LEFT_SLAVE_DRIVE_PORT = 3;
+    public static final int RIGHT_MASTER_DRIVE_PORT = 5;
+    public static final int RIGHT_SLAVE_DRIVE_PORT = 6;
+    public static final int ELEVATOR_PORT = 8;
+    public static final int LATERAL_DRIVE_PORT = 7;
+    public static final int MANIPULATOR_ARM_MASTER_PORT = 10;
+    public static final int MANIPULATOR_ARM_SLAVE_PORT = 9;
 
     // Pneumatics
     public static final int SHIFT_CHANNEL = 3;
@@ -147,5 +148,6 @@ public final class Constants {
     public static final int ALLOWED_POSITION_DEVIATION = 10;
     public static final double QUICK_TURN_THRESHOLD = 0.2; // Used for Cheesy Drive
     public static final double RAMP_TIME = 0;
+    public static final int S_CURVE_STRENGTH = 4; // Half smoothing (0-8)
 
 }

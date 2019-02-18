@@ -50,7 +50,7 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
     private Manipulator() {
         /* Instantiations */
         // CTREFactory.getMasterTalon(portNum : int)
-        mArm = CTREFactory.getMasterTalon(Constants.MANIPULATOR_ARM_PORT);
+        mArm = CTREFactory.getMasterTalon(Constants.MANIPULATOR_ARM_MASTER_PORT);
 
         // Talon(portNum : int)
         mFrontRoller = new Talon(Constants.MANIPULATOR_FRONT_ROLLER);
