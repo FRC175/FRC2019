@@ -6,8 +6,8 @@ import com.team175.robot.Constants;
 import com.team175.robot.positions.LiftPosition;
 import com.team175.robot.util.drivers.AldrinTalonSRX;
 import com.team175.robot.util.drivers.CTREFactory;
+import com.team175.robot.util.drivers.SimpleDoubleSolenoid;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.Talon;
 
 import java.util.LinkedHashMap;
@@ -21,7 +21,7 @@ public final class Lift extends AldrinSubsystem {
     /* Declarations */
     private final AldrinTalonSRX mDrive;
     private final Talon mFront, mRear;
-    private final Solenoid mFrontBrake, mRearBrake;
+    private final SimpleDoubleSolenoid mFrontBrake, mRearBrake;
     private final DigitalInput mFrontForwardLimit, mRearForwardLimit, mFrontReverseLimit, mRearReverseLimit,
             mFrontHabSensor, mRearHabSensor;
 
@@ -45,9 +45,11 @@ public final class Lift extends AldrinSubsystem {
         mFront = new Talon(Constants.LIFT_FRONT_PORT);
         mRear = new Talon(Constants.LIFT_REAR_PORT);
 
-        // Solenoid(channel : int)
-        mFrontBrake = new Solenoid(Constants.LIFT_FRONT_BRAKE_CHANNEL);
-        mRearBrake = new Solenoid(Constants.LIFT_REAR_BRAKE_CHANNEL);
+        // SimpleDoubleSolenoid(forwardChannel : int, reverseChannel : int, pcmID : int)
+        mFrontBrake = new SimpleDoubleSolenoid(Constants.LIFT_FRONT_BRAKE_FORWARD_CHANNEL, Constants.LIFT_FRONT_BRAKE_REVERSE_CHANNEL,
+                Constants.PCM_NUMBER_TWO_ID);
+        mRearBrake = new SimpleDoubleSolenoid(Constants.LIFT_REAR_BRAKE_FORWARD_CHANNEL, Constants.LIFT_REAR_BRAKE_REVERSE_CHANNEL,
+                Constants.PCM_NUMBER_TWO_ID);
 
         // DigitalInput(portNum : int)
         mFrontForwardLimit = new DigitalInput(Constants.LIFT_FRONT_FORWARD_LIMIT_PORT);
@@ -67,15 +69,15 @@ public final class Lift extends AldrinSubsystem {
     }*/
 
     public void setFrontPower(double power) {
-        if (!isFrontForwardLimitHit() || !isFrontReverseLimitHit()) {
+        // if (!isFrontForwardLimitHit() || !isFrontReverseLimitHit()) {
             mFront.set(power);
-        }
+        // }
     }
 
     public void setRearPower(double power) {
-        if (!isRearForwardLimitHit() || !isRearReverseLimitHit()) {
+        // if (!isRearForwardLimitHit() || !isRearReverseLimitHit()) {
             mRear.set(power);
-        }
+        // }
     }
 
     public void setFrontPosition(LiftPosition lp) {

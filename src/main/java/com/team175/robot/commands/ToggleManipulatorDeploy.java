@@ -20,8 +20,9 @@ public class ToggleManipulatorDeploy extends AldrinToggleCommand {
 
     @Override
     protected void initialize() {
-        Manipulator.getInstance().setArmPosition(ManipulatorArmPosition.HOME);
+        // Manipulator.getInstance().setArmPosition(ManipulatorArmPosition.HOME);
         Manipulator.getInstance().deploy(mDeploy);
+        Manipulator.getInstance().stopArm();
         mDeploy = !mDeploy;
 
         super.logInit();

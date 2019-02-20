@@ -4,9 +4,9 @@ import com.team175.robot.OI;
 import com.team175.robot.subsystems.Drive;
 import com.team175.robot.subsystems.Lift;
 
-public class ManualLift extends AldrinCommand {
+public class ManualRearLift extends AldrinCommand {
 
-    public ManualLift() {
+    public ManualRearLift() {
         requires(Lift.getInstance(), Drive.getInstance());
 
         super.logInstantiation();
@@ -21,8 +21,7 @@ public class ManualLift extends AldrinCommand {
 
     @Override
     protected void execute() {
-        // Lift.getInstance().setPower(OI.getInstance().getDriverStickY());
-        // Lift.getInstance().setDrivePower(OI.getInstance().getDriverStickX());
+        Lift.getInstance().setRearPower(OI.getInstance().getDriverStickY());
     }
 
     @Override

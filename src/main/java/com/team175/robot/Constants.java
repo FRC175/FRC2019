@@ -14,31 +14,40 @@ public final class Constants {
 
     /* Hardware Map */
     // CAN Ports
-    public static final int LEFT_MASTER_DRIVE_PORT = 4;
-    public static final int LEFT_SLAVE_DRIVE_PORT = 3;
-    public static final int RIGHT_MASTER_DRIVE_PORT = 5;
-    public static final int RIGHT_SLAVE_DRIVE_PORT = 6;
+    public static final int LEFT_MASTER_DRIVE_PORT = 5;
+    public static final int LEFT_SLAVE_DRIVE_PORT = 6;
+    public static final int RIGHT_MASTER_DRIVE_PORT = 4;
+    public static final int RIGHT_SLAVE_DRIVE_PORT = 3;
     public static final int ELEVATOR_PORT = 8;
     public static final int LATERAL_DRIVE_PORT = 7;
     public static final int MANIPULATOR_ARM_MASTER_PORT = 10;
     public static final int MANIPULATOR_ARM_SLAVE_PORT = 9;
 
     // Pneumatics
-    public static final int SHIFT_CHANNEL = 3;
-    public static final int LATERAL_DRIVE_DEPLOY_CHANNEL = 2;
-    public static final int MANIPULATOR_HATCH_PUNCH_CHANNEL = 5;
-    public static final int MANIPULATOR_DEPLOY_FORWARD_CHANNEL = 0;
-    public static final int MANIPULATOR_DEPLOY_REVERSE_CHANNEL = 1;
-    public static final int MANIPULATOR_BRAKE_CHANNEL = 4;
-    public static final int LIFT_FRONT_BRAKE_CHANNEL = 6;
-    public static final int LIFT_REAR_BRAKE_CHANNEL = 7;
+    public static final int SHIFT_FORWARD_CHANNEL = 4;
+    public static final int SHIFT_REVERSE_CHANNEL = 5;
+    public static final int LATERAL_DRIVE_DEPLOY_FORWARD_CHANNEL = 6; // PCM 1
+    public static final int LATERAL_DRIVE_DEPLOY_REVERSE_CHANNEL = 7;
+    public static final int MANIPULATOR_HATCH_PUNCH_FORWARD_CHANNEL = 0;
+    public static final int MANIPULATOR_HATCH_PUNCH_REVERSE_CHANNEL = 1;
+    public static final int MANIPULATOR_DEPLOY_FORWARD_CHANNEL = 2;
+    public static final int MANIPULATOR_DEPLOY_REVERSE_CHANNEL = 3;
+    public static final int MANIPULATOR_BRAKE_FORWARD_CHANNEL = 6;
+    public static final int MANIPULATOR_BRAKE_REVERSE_CHANNEL = 7;
+    public static final int LIFT_FRONT_BRAKE_FORWARD_CHANNEL = 4; // PCM 1
+    public static final int LIFT_FRONT_BRAKE_REVERSE_CHANNEL = 5;
+    public static final int LIFT_REAR_BRAKE_FORWARD_CHANNEL = 2; // PCM 1
+    public static final int LIFT_REAR_BRAKE_REVERSE_CHANNEL = 3;
+    public static final int PCM_NUMBER_ONE_ID = 0;
+    public static final int PCM_NUMBER_TWO_ID = 1;
+    public static final int COMPRESSOR_PCM_ID = 1;
 
     // PWM
-    public static final int LIFT_FRONT_PORT = 3;
-    public static final int LIFT_REAR_PORT = 0;
-    public static final int LIFT_DRIVE_PORT = 4;
-    public static final int MANIPULATOR_FRONT_ROLLER = 2;
-    public static final int MANIPULATOR_REAR_ROLLER = 1;
+    public static final int LIFT_FRONT_PORT = 8;
+    public static final int LIFT_REAR_PORT = 5;
+    public static final int LIFT_DRIVE_PORT = 9;
+    public static final int MANIPULATOR_FRONT_ROLLER = 7;
+    public static final int MANIPULATOR_REAR_ROLLER = 6;
 
     // Digital Inputs
     public static final int LIFT_FRONT_FORWARD_LIMIT_PORT = 0;
@@ -99,7 +108,7 @@ public final class Constants {
     // private static final double DRIVE_GEAR_RATIO = 3.66 / 1.0;
     private static final double ELEVATOR_GEAR_RATIO = 1;
     private static final double LATERAL_DRIVE_GEAR_RATIO = 1;
-    private static final double MANIPULATOR_ARM_GEAR_RATIO = 1;
+    private static final double MANIPULATOR_ARM_GEAR_RATIO = 1 / 1;
 
     // TODO: Verify manipulator arm encoder counts per revolution
     // talonSRXCounts = counts * 4

@@ -9,9 +9,9 @@ import com.team175.robot.util.drivers.AldrinTalonSRX;
 import com.team175.robot.util.CTREDiagnostics;
 import com.team175.robot.util.drivers.CTREFactory;
 
+import com.team175.robot.util.drivers.SimpleDoubleSolenoid;
 import com.team175.robot.util.tuning.ClosedLoopTunable;
 import com.team175.robot.util.tuning.ClosedLoopGains;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.util.LinkedHashMap;
@@ -25,7 +25,7 @@ public final class LateralDrive extends AldrinSubsystem implements ClosedLoopTun
 
     /* Declarations */
     private final AldrinTalonSRX mMaster;
-    private final Solenoid mDeploy;
+    private final SimpleDoubleSolenoid mDeploy;
     // private final Map<String, DigitalInput> mLineSensors;
     // private final Pixy mPixy;
 
@@ -48,8 +48,9 @@ public final class LateralDrive extends AldrinSubsystem implements ClosedLoopTun
         // CTREFactory.getMasterTalon(portNum : int)
         mMaster = CTREFactory.getMasterTalon(Constants.LATERAL_DRIVE_PORT);
 
-        // Solenoid(channel : int)
-        mDeploy = new Solenoid(Constants.LATERAL_DRIVE_DEPLOY_CHANNEL);
+        // SimpleDoubleSolenoid(forwardChannel : int, reverseChannel : int, pcmID : int)
+        mDeploy = new SimpleDoubleSolenoid(Constants.LATERAL_DRIVE_DEPLOY_FORWARD_CHANNEL, Constants.LATERAL_DRIVE_DEPLOY_REVERSE_CHANNEL,
+                Constants.PCM_NUMBER_TWO_ID);
 
         // DigitalInput(portNum : int)
         /*mLineSensors = Map.of(
@@ -188,6 +189,7 @@ public final class LateralDrive extends AldrinSubsystem implements ClosedLoopTun
     public boolean checkSubsystem() {
         CTREDiagnostics diag = new CTREDiagnostics(mMaster, "LateralDrive");
 
+        deploy(true);
         mLogger.info("Beginning diagnostics test for LateralDrive subsystem.");
         boolean isGood = diag.checkMotorController();
         mLogger.info(diag.toString());

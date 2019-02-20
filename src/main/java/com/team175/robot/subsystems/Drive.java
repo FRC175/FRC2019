@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.team175.robot.Constants;
+import com.team175.robot.commands.CheesyDrive;
 import com.team175.robot.paths.Path;
 import com.team175.robot.util.DriveHelper;
 import com.team175.robot.util.PathHelper;
@@ -11,9 +12,9 @@ import com.team175.robot.commands.ArcadeDrive;
 import com.team175.robot.util.drivers.AldrinTalonSRX;
 import com.team175.robot.util.CTREDiagnostics;
 import com.team175.robot.util.drivers.CTREFactory;
+import com.team175.robot.util.drivers.SimpleDoubleSolenoid;
 import com.team175.robot.util.tuning.ClosedLoopTunable;
 import com.team175.robot.util.tuning.ClosedLoopGains;
-import edu.wpi.first.wpilibj.Solenoid;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.util.ArrayList;
@@ -32,7 +33,7 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
     /* Declarations */
     private final AldrinTalonSRX mLeftMaster, mLeftSlave, mRightMaster, mRightSlave;
     private final PigeonIMU mPigeon;
-    private final Solenoid mShift;
+    private final SimpleDoubleSolenoid mShift;
     private final PathHelper mPathHelper;
     private final DriveHelper mDriveHelper;
 
@@ -61,13 +62,15 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
         mRightSlave = CTREFactory.getSlaveTalon(Constants.RIGHT_SLAVE_DRIVE_PORT, mRightMaster);
 
         // PigeonIMU(talonSRX : TalonSRX)
-        mPigeon = new PigeonIMU(mRightSlave);
+        // mPigeon = new PigeonIMU(mRightSlave);
+        mPigeon = null;
 
-        // Solenoid(channel : int)
-        mShift = new Solenoid(Constants.SHIFT_CHANNEL);
+        // SimpleDoubleSolenoid(forwardChannel : int, reverseChannel : int)
+        mShift = new SimpleDoubleSolenoid(Constants.SHIFT_FORWARD_CHANNEL, Constants.SHIFT_REVERSE_CHANNEL);
 
         // PathHelper(master : TalonSRX, follower : TalonSRX, pigeon : PigeonIMU)
-        mPathHelper = new PathHelper(mRightMaster, mLeftMaster, mPigeon);
+        // mPathHelper = new PathHelper(mRightMaster, mLeftMaster, mPigeon);
+        mPathHelper = null;
         // DriveHelper(left : TalonSRX, right : TalonSRX)
         mDriveHelper = new DriveHelper(mLeftMaster, mRightMaster);
 
@@ -81,19 +84,17 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
                 "Failed to config LeftMaster ramp!");
         CTREDiagnostics.checkCommand(mRightMaster.configOpenloopRamp(Constants.RAMP_TIME, Constants.TIMEOUT_MS),
                 "Failed to config RightMaster ramp!");
-        CTREDiagnostics.checkCommand(mLeftMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative),
+        CTREDiagnostics.checkCommand(mLeftMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder),
                 "Failed to config LeftMaster encoder!");
-        CTREDiagnostics.checkCommand(mRightMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative),
+        CTREDiagnostics.checkCommand(mRightMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder),
                 "Failed to config RightMaster encoder!");
-        /*mLeftMaster.setInverted(true);
-        mLeftSlave.setInverted(true);
+        mLeftMaster.setInverted(false);
+        mLeftSlave.setInverted(false);
         mRightMaster.setInverted(true);
         mRightSlave.setInverted(true);
-        mLeftMaster.setSensorPhase(true);
-        mRightMaster.setSensorPhase(false);*/
         setLeftGains(mLeftGains);
         setRightGains(mRightGains);
-        mPathHelper.configTalons();
+        // mPathHelper.configTalons();
         resetSensors();
         stop();
     }
@@ -226,12 +227,13 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
     public void resetSensors() {
         CTREDiagnostics.checkCommand(mLeftMaster.setSelectedSensorPosition(0), "Failed to zero LeftMaster encoder!");
         CTREDiagnostics.checkCommand(mRightMaster.setSelectedSensorPosition(0), "Failed to zero RightMaster encoder!");
-        CTREDiagnostics.checkCommand(mPigeon.setYaw(0, Constants.TIMEOUT_MS), "Failed to zero Pigeon yaw!");
+        // CTREDiagnostics.checkCommand(mPigeon.setYaw(0, Constants.TIMEOUT_MS), "Failed to zero Pigeon yaw!");
     }
 
     @Override
     protected void initDefaultCommand() {
-        setDefaultCommand(new ArcadeDrive(false));
+        // setDefaultCommand(new ArcadeDrive(false));
+        setDefaultCommand(new CheesyDrive(false));
     }
 
     @Override

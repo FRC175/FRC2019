@@ -33,6 +33,9 @@ public class CheesyDrive extends AldrinCommand {
             double y = OI.getInstance().getDriverStickY();
             double x = OI.getInstance().getDriverStickX();
             boolean isQuickTurn = (y > Constants.QUICK_TURN_THRESHOLD && y < -Constants.QUICK_TURN_THRESHOLD);
+
+            mLogger.debug("LeftPosition: {}", Drive.getInstance().getLeftPosition());
+            mLogger.debug("RightPosition: {}", Drive.getInstance().getRightPosition());
             Drive.getInstance().cheesyDrive(y, x, isQuickTurn);
         }
     }

@@ -45,12 +45,14 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
         mMaster = CTREFactory.getMasterTalon(Constants.ELEVATOR_PORT);
 
         mWantedPosition = 0;
-        mGains = Constants.LATERAL_DRIVE_GAINS;
+        mGains = Constants.ELEVATOR_GAINS;
 
         /* Configuration */
         CTREDiagnostics.checkCommand(mMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative),
                 "Failed to config Elevator encoder!");
         setGains(mGains);
+        mMaster.setInverted(true);
+        mMaster.setSensorPhase(true);
     }
 
     public void setPower(double power) {
@@ -82,6 +84,10 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
         return mMaster.getSelectedSensorVelocity();
     }
 
+    public void setWantedPosition(int position) {
+        mWantedPosition = position;
+    }
+
     public boolean isAtWantedPosition() {
         return Math.abs(getPosition() - mWantedPosition) <= Constants.ALLOWED_POSITION_DEVIATION;
     }
@@ -103,8 +109,8 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
 
     @Override
     public void stop() {
-        setPosition(mWantedPosition);
-        // setPower(0);
+        // setPosition(mWantedPosition);
+        setPower(0);
     }
 
     @Override

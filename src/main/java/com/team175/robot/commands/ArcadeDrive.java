@@ -29,6 +29,8 @@ public class ArcadeDrive extends AldrinCommand {
     @Override
     protected void execute() {
         if (!LateralDrive.getInstance().isDeployed()) {
+            /*mLogger.debug("LeftPosition: {}", Drive.getInstance().getLeftPosition());
+            mLogger.debug("RightPosition: {}", Drive.getInstance().getRightPosition());*/
             Drive.getInstance().arcadeDrive(OI.getInstance().getDriverStickY(), OI.getInstance().getDriverStickX());
             // Drive.getInstance().altArcadeDrive(OI.getInstance().getDriverStickY(), OI.getInstance().getDriverStickX());
         }

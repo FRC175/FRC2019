@@ -2,14 +2,19 @@ package com.team175.robot.commands;
 
 import com.team175.robot.OI;
 import com.team175.robot.subsystems.Elevator;
+import com.team175.robot.subsystems.Manipulator;
 
 /**
  * @author Arvind
  */
 public class ManualElevator extends AldrinCommand {
 
+    private int mPosition;
+
     public ManualElevator() {
-        requires(Elevator.getInstance());
+        requires(Elevator.getInstance(), Manipulator.getInstance());
+
+        mPosition = 0;
 
         super.logInstantiation();
     }
@@ -21,7 +26,13 @@ public class ManualElevator extends AldrinCommand {
 
     @Override
     protected void execute() {
-        Elevator.getInstance().setPower(OI.getInstance().getOperatorStickY());
+        // TODO: Check if-block
+        if (!Manipulator.getInstance().isDeployed()) {
+        }
+
+        mLogger.debug("ElevatorPosition: {}", Elevator.getInstance().getPosition());
+        Elevator.getInstance().setPower(OI.getInstance().getOperatorStickY() * 0.75);
+        mPosition = Elevator.getInstance().getPosition();
     }
 
     @Override
@@ -31,6 +42,8 @@ public class ManualElevator extends AldrinCommand {
 
     @Override
     protected void end() {
+        // Keep elevator at wanted position
+        Elevator.getInstance().setWantedPosition(mPosition);
         Elevator.getInstance().stop();
 
         super.logEnd();

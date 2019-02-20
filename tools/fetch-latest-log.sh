@@ -3,5 +3,5 @@ serverDir="/home/lvuser/log"
 clientDir="C:/Users/BUZZ-175/RoboRIOLogs/"
 
 # Copy latest log from RIO to RoboRIOLogs folder
-scp $server:$serverDir/$(ssh $server 'ls -t /home/lvuser/log | head -1') $clientDir
-vi $clientDir/'ls -t /home/lvuser/csvlog | head -1'
+scp $server:$serverDir/$(ssh $server 'ls /home/lvuser/log/ -t | head -1') $clientDir
+vi 'ls C:/Users/BUZZ-175/RoboRIOLogs/ -t | head -1'

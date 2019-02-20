@@ -12,10 +12,10 @@ import com.team175.robot.commands.*;
 import com.team175.robot.positions.ElevatorPosition;
 import com.team175.robot.positions.ManipulatorArmPosition;
 import com.team175.robot.positions.ManipulatorRollerPosition;
+import com.team175.robot.util.drivers.AldrinButton;
 import com.team175.robot.util.drivers.AldrinJoystick;
 import com.team175.robot.util.drivers.NubButton;
 import edu.wpi.first.wpilibj.buttons.Button;
-import edu.wpi.first.wpilibj.buttons.JoystickButton;
 
 /**
  * @author Arvind
@@ -33,10 +33,13 @@ public final class OI {
     private final Button mStraightDrive;
     private final Button mLevelThreeClimb;
     private final Button mCancelAuto;
+    private final Button mManualFrontLift;
+    private final Button mManualRearLift;
     // private final Button mLineAlign;
 
     // Operator Stick Buttons
     private final Button mManualElevator;
+    private final Button mManualManipulatorArm;
     private final Button mToggleManipulator;
     private final Button mScoreHatch;
     private final Button mGrabHatch;
@@ -71,27 +74,30 @@ public final class OI {
         mOperatorStick = new AldrinJoystick(Constants.OPERATOR_STICK_PORT, Constants.OPERATOR_STICK_DEAD_ZONE);
 
         // Driver Stick Buttons
-        mManualLateralDrive = new JoystickButton(mDriverStick, Constants.LATERAL_DRIVE_TRIGGER);
-        mShift = new JoystickButton(mDriverStick, Constants.SHIFT_BUTTON);
-        mStraightDrive = new JoystickButton(mDriverStick, Constants.STRAIGHT_DRIVE_BUTTON);
-        mLevelThreeClimb = new JoystickButton(mDriverStick, Constants.LEVEL_THREE_CLIMB_BUTTON);
-        mCancelAuto = new JoystickButton(mDriverStick, Constants.CANCEL_AUTO_BUTTON);
-        // mLineAlign = new JoystickButton(mDriverStick, Constants.LINE_ALIGN_BUTTON);
+        mManualLateralDrive = new AldrinButton(mDriverStick, Constants.LATERAL_DRIVE_TRIGGER);
+        mShift = new AldrinButton(mDriverStick, Constants.SHIFT_BUTTON);
+        mStraightDrive = new AldrinButton(mDriverStick, Constants.STRAIGHT_DRIVE_BUTTON);
+        mLevelThreeClimb = new AldrinButton(mDriverStick, Constants.LEVEL_THREE_CLIMB_BUTTON);
+        mCancelAuto = new AldrinButton(mDriverStick, Constants.CANCEL_AUTO_BUTTON);
+        mManualFrontLift = new AldrinButton(mDriverStick, 9);
+        mManualRearLift = new AldrinButton(mDriverStick, 10);
+        // mLineAlign = new AldrinButton(mDriverStick, Constants.LINE_ALIGN_BUTTON);
 
         // Operator Stick Buttons
-        mManualElevator = new JoystickButton(mOperatorStick, Constants.MANUAL_ELEVATOR_TRIGGER);
-        mToggleManipulator = new JoystickButton(mOperatorStick, Constants.TOGGLE_MANIPULATOR_BUTTON);
-        mScoreHatch = new JoystickButton(mOperatorStick, Constants.SCORE_HATCH_BUTTON);
-        mGrabHatch = new JoystickButton(mOperatorStick, Constants.GRAB_HATCH_BUTTON);
-        mScoreCargo = new JoystickButton(mOperatorStick, Constants.SCORE_CARGO_BUTTON);
+        mManualElevator = new AldrinButton(mOperatorStick, Constants.MANUAL_ELEVATOR_TRIGGER);
+        mManualManipulatorArm = new NubButton(mOperatorStick, Constants.MANUAL_ELEVATOR_TRIGGER);
+        mToggleManipulator = new AldrinButton(mOperatorStick, Constants.TOGGLE_MANIPULATOR_BUTTON);
+        mScoreHatch = new AldrinButton(mOperatorStick, Constants.SCORE_HATCH_BUTTON);
+        mGrabHatch = new AldrinButton(mOperatorStick, Constants.GRAB_HATCH_BUTTON);
+        mScoreCargo = new AldrinButton(mOperatorStick, Constants.SCORE_CARGO_BUTTON);
         mScoreCargoFast = new NubButton(mOperatorStick, Constants.SCORE_CARGO_BUTTON);
-        mGrabCargo = new JoystickButton(mOperatorStick, Constants.GRAB_CARGO_BUTTON);
-        mElevatorPositionOne = new JoystickButton(mOperatorStick, Constants.ELEVATOR_POSITION_ONE_BUTTON);
-        mElevatorPositionTwo = new JoystickButton(mOperatorStick, Constants.ELEVATOR_POSITION_TWO_BUTTON);
-        mElevatorPositionThree = new JoystickButton(mOperatorStick, Constants.ELEVATOR_POSITION_THREE_BUTTON);
-        mElevatorPositionFour = new JoystickButton(mOperatorStick, Constants.ELEVATOR_POSITION_FOUR_BUTTON);
-        mElevatorPositionFive = new JoystickButton(mOperatorStick, Constants.ELEVATOR_POSITION_FIVE_BUTTON);
-        mElevatorPositionSix = new JoystickButton(mOperatorStick, Constants.ELEVATOR_POSITION_SIX_BUTTON);
+        mGrabCargo = new AldrinButton(mOperatorStick, Constants.GRAB_CARGO_BUTTON);
+        mElevatorPositionOne = new AldrinButton(mOperatorStick, Constants.ELEVATOR_POSITION_ONE_BUTTON);
+        mElevatorPositionTwo = new AldrinButton(mOperatorStick, Constants.ELEVATOR_POSITION_TWO_BUTTON);
+        mElevatorPositionThree = new AldrinButton(mOperatorStick, Constants.ELEVATOR_POSITION_THREE_BUTTON);
+        mElevatorPositionFour = new AldrinButton(mOperatorStick, Constants.ELEVATOR_POSITION_FOUR_BUTTON);
+        mElevatorPositionFive = new AldrinButton(mOperatorStick, Constants.ELEVATOR_POSITION_FIVE_BUTTON);
+        mElevatorPositionSix = new AldrinButton(mOperatorStick, Constants.ELEVATOR_POSITION_SIX_BUTTON);
         mManipulatorArmScorePosition = new NubButton(mOperatorStick, Constants.MANIPULATOR_ARM_SCORE_POSITION_BUTTON);
         mManipulatorArmBallPickupPosition = new NubButton(mOperatorStick, Constants.MANIPULATOR_ARM_BALL_PICKUP_POSITION_BUTTON);
         mManipulatorArmGroundPosition = new NubButton(mOperatorStick, Constants.MANIPULATOR_ARM_GROUND_POSITION_BUTTON);
@@ -103,10 +109,13 @@ public final class OI {
         mStraightDrive.whileHeld(new StraightDrive());
         mLevelThreeClimb.whenPressed(new LevelThreeClimb());
         mCancelAuto.whenPressed(new CancelAuto());
+        mManualFrontLift.whileHeld(new ManualFrontLift());
+        mManualRearLift.whileHeld(new ManualRearLift());
         // mLineAlign.whenPressed(new LineAlignment());
 
         // Operator Stick
         mManualElevator.whileHeld(new ManualElevator());
+        mManualManipulatorArm.whileHeld(new ManualManipulatorArm());
         mToggleManipulator.toggleWhenPressed(new ToggleManipulatorDeploy());
         mScoreHatch.whileHeld(new ManipulateGamePiece(ManipulatorRollerPosition.SCORE_HATCH));
         mGrabHatch.whileHeld(new ManipulateGamePiece(ManipulatorRollerPosition.GRAB_HATCH));
