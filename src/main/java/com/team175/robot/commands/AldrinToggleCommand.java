@@ -5,6 +5,10 @@ import edu.wpi.first.wpilibj.command.Subsystem;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/**
+ * @author Arvind
+ * @see InstantCommand
+ */
 public class AldrinToggleCommand extends InstantCommand implements LoggableCommand {
 
     protected final Logger mLogger = LoggerFactory.getLogger(getClass().getSimpleName());

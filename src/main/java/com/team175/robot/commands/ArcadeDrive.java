@@ -9,19 +9,19 @@ import com.team175.robot.subsystems.LateralDrive;
  */
 public class ArcadeDrive extends AldrinCommand {
 
-    private boolean mIsLowGear;
+    private boolean mIsHighGear;
 
-    public ArcadeDrive(boolean isLowGear) {
+    public ArcadeDrive(boolean isHighGear) {
         requires(Drive.getInstance(), LateralDrive.getInstance());
 
-        mIsLowGear = isLowGear;
+        mIsHighGear = isHighGear;
 
         super.logInstantiation();
     }
 
     @Override
     protected void initialize() {
-        Drive.getInstance().setLowGear(mIsLowGear);
+        Drive.getInstance().setHighGear(mIsHighGear);
 
         super.logInit();
     }
@@ -32,7 +32,6 @@ public class ArcadeDrive extends AldrinCommand {
             /*mLogger.debug("LeftPosition: {}", Drive.getInstance().getLeftPosition());
             mLogger.debug("RightPosition: {}", Drive.getInstance().getRightPosition());*/
             Drive.getInstance().arcadeDrive(OI.getInstance().getDriverStickY(), OI.getInstance().getDriverStickX());
-            // Drive.getInstance().altArcadeDrive(OI.getInstance().getDriverStickY(), OI.getInstance().getDriverStickX());
         }
     }
 

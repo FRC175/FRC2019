@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.command.Command;
 
 /**
  * @author Arvind
+ * @see Command
  */
 public abstract class AldrinCommand extends Command implements LoggableCommand {
 
@@ -35,6 +36,11 @@ public abstract class AldrinCommand extends Command implements LoggableCommand {
     @Override
     public void logEnd() {
         mLogger.info("Command ended/interrupted.");
+    }
+
+    @Override
+    protected void initialize() {
+        logInit();
     }
 
     @Override

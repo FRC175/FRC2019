@@ -8,7 +8,7 @@ import edu.wpi.first.wpilibj.buttons.Button;
  *
  * @author Arvind
  */
-public class TwoButton extends Button {
+public class DoubleButton extends Button {
 
     private GenericHID mJoystick;
     private int mFirstButtonNumber, mSecondButtonNumber;
@@ -23,7 +23,7 @@ public class TwoButton extends Button {
      * @param secondButtonNumber
      *         The number of the second button on the joystick
      */
-    public TwoButton(GenericHID joystick, int firstButtonNumber, int secondButtonNumber) {
+    public DoubleButton(GenericHID joystick, int firstButtonNumber, int secondButtonNumber) {
         mJoystick = joystick;
         mFirstButtonNumber = firstButtonNumber;
         mSecondButtonNumber = secondButtonNumber;

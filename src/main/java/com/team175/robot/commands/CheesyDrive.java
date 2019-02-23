@@ -10,19 +10,19 @@ import com.team175.robot.subsystems.LateralDrive;
  */
 public class CheesyDrive extends AldrinCommand {
 
-    private boolean mIsLowGear;
+    private boolean mIsHighGear;
 
-    public CheesyDrive(boolean isLowGear) {
+    public CheesyDrive(boolean isHighGear) {
         requires(Drive.getInstance(), LateralDrive.getInstance());
 
-        mIsLowGear = isLowGear;
+        mIsHighGear = isHighGear;
 
         super.logInstantiation();
     }
 
     @Override
     protected void initialize() {
-        Drive.getInstance().setLowGear(mIsLowGear);
+        Drive.getInstance().setHighGear(mIsHighGear);
 
         super.logInit();
     }

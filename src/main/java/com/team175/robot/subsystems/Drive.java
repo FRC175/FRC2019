@@ -8,7 +8,6 @@ import com.team175.robot.commands.CheesyDrive;
 import com.team175.robot.paths.Path;
 import com.team175.robot.util.DriveHelper;
 import com.team175.robot.util.PathHelper;
-import com.team175.robot.commands.ArcadeDrive;
 import com.team175.robot.util.drivers.AldrinTalonSRX;
 import com.team175.robot.util.CTREDiagnostics;
 import com.team175.robot.util.drivers.CTREFactory;
@@ -94,6 +93,7 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
         mRightSlave.setInverted(true);
         setLeftGains(mLeftGains);
         setRightGains(mRightGains);
+        setHighGear(false);
         // mPathHelper.configTalons();
         resetSensors();
         stop();
@@ -101,12 +101,12 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
 
     public void arcadeDrive(double throttle, double turn) {
         mDriveHelper.arcadeDrive(throttle, turn);
-        // mDriveHelper.altAcradeDrive(throttle, turn);
+        // mDriveHelper.altArcadeDrive(throttle, turn);
         // mDriveHelper.wpiArcadeDrive(throttle, turn);
     }
 
     public void cheesyDrive(double throttle, double turn, boolean isQuickTurn) {
-        mDriveHelper.cheesyDrive(throttle, turn, isQuickTurn, !isLowGear());
+        mDriveHelper.cheesyDrive(throttle, turn, isQuickTurn, isHighGear());
     }
 
     public void straightDrive(double throttle) {
@@ -134,12 +134,12 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
         return mRightMaster.getMotorOutputPercent();
     }
 
-    public void setLowGear(boolean enable) {
-        mShift.set(enable);
+    public void setHighGear(boolean enable) {
+        mShift.set(!enable); // Shift is in high gear by default
     }
 
-    public boolean isLowGear() {
-        return mShift.get();
+    public boolean isHighGear() {
+        return !mShift.get(); // Shift is in high gear by default
     }
 
     public void setBrakeMode(boolean enable) {
@@ -262,7 +262,7 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
         m.put("RDrivePower", getRightPower());
         m.put("DriveWantedPos", mWantedPosition);
         m.put("DriveWantedAngle", mWantedAngle);
-        m.put("DriveIsLowGear", isLowGear());
+        m.put("DriveIsLowGear", isHighGear());
         return m;
     }
 

@@ -13,7 +13,7 @@ public class ToggleManipulatorDeploy extends AldrinToggleCommand {
     public ToggleManipulatorDeploy() {
         requires(Manipulator.getInstance());
 
-        mDeploy = true;
+        mDeploy = false;
 
         super.logInstantiation();
     }

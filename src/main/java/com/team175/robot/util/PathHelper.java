@@ -117,7 +117,7 @@ public class PathHelper {
             point.timeDur = (int) points[i][2];
 
             // Pigeon is the auxiliary sensor
-            point.auxiliaryPos = 10.0 * points[i][3]; // Pigeon multiples 10 to angle
+            point.auxiliaryPos = 10.0 * points[i][3];
             point.auxiliaryVel = 0.0;
             point.auxiliaryArbFeedFwd = 0.0;
 

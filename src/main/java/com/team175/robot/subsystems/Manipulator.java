@@ -9,7 +9,6 @@ import com.team175.robot.positions.ManipulatorRollerPosition;
 import com.team175.robot.util.drivers.AldrinTalonSRX;
 import com.team175.robot.util.CTREDiagnostics;
 import com.team175.robot.util.drivers.CTREFactory;
-
 import com.team175.robot.util.drivers.SimpleDoubleSolenoid;
 import com.team175.robot.util.tuning.ClosedLoopTunable;
 import com.team175.robot.util.tuning.ClosedLoopGains;
@@ -205,7 +204,7 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
         m.put("ManipArmWantedPos", mArmWantedPosition);
         m.put("ManipArmPos", getArmPosition());
         m.put("ManipArmPower", getArmPower());
-        m.put("ManipulatorArmVolt", getArmVoltage());
+        m.put("ManipArmVolt", getArmVoltage());
         return m;
     }
 
