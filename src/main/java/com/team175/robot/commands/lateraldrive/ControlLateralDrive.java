@@ -1,17 +1,18 @@
-package com.team175.robot.commands;
+package com.team175.robot.commands.lateraldrive;
 
 import com.team175.robot.OI;
+import com.team175.robot.commands.AldrinCommand;
 import com.team175.robot.subsystems.Drive;
 import com.team175.robot.subsystems.LateralDrive;
+import com.team175.robot.subsystems.Lift;
 
 /**
  * @author Arvind
  */
-public class ManualLateralDrive extends AldrinCommand {
+public class ControlLateralDrive extends AldrinCommand {
 
-    public ManualLateralDrive() {
-        requires(LateralDrive.getInstance(), Drive.getInstance());
-
+    public ControlLateralDrive() {
+        requires(Drive.getInstance(), LateralDrive.getInstance());
         super.logInstantiation();
     }
 
@@ -19,13 +20,12 @@ public class ManualLateralDrive extends AldrinCommand {
     protected void initialize() {
         Drive.getInstance().stop();
         LateralDrive.getInstance().deploy(true);
-
-        super.logInit();
+        super.initialize();
     }
 
     @Override
     protected void execute() {
-        mLogger.debug("LateralPosition: {}", LateralDrive.getInstance().getPosition());
+        // mLogger.debug("LateralPosition: {}", LateralDrive.getInstance().getPosition());
         LateralDrive.getInstance().setPower(OI.getInstance().getDriverStickX());
     }
 
@@ -37,13 +37,7 @@ public class ManualLateralDrive extends AldrinCommand {
     @Override
     protected void end() {
         LateralDrive.getInstance().stop();
-
-        super.logEnd();
-    }
-
-    @Override
-    protected void interrupted() {
-        end();
+        super.end();
     }
 
 }

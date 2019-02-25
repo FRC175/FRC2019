@@ -1,10 +1,13 @@
-package com.team175.robot.commands;
+/*
+package com.team175.robot.commands.old;
 
 import com.team175.robot.subsystems.Manipulator;
 
+*/
 /**
  * @author Arvind
- */
+ *//*
+
 public class TogglePunchHatch extends AldrinToggleCommand {
 
     private boolean mPush;
@@ -25,4 +28,4 @@ public class TogglePunchHatch extends AldrinToggleCommand {
         super.logInit();
     }
 
-}
+}*/

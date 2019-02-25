@@ -1,12 +1,16 @@
-package com.team175.robot.commands;
+/*
+package com.team175.robot.commands.old;
 
+import com.team175.robot.commands.AldrinCommand;
 import com.team175.robot.positions.LiftPosition;
 import com.team175.robot.subsystems.Drive;
 import com.team175.robot.subsystems.Lift;
 
+*/
 /**
  * @author Arvind
- */
+ *//*
+
 public class PositionLift extends AldrinCommand {
 
     private LiftPosition mFrontPosition;
@@ -66,3 +70,4 @@ public class PositionLift extends AldrinCommand {
     }
 
 }
+*/

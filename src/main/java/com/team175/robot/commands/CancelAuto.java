@@ -1,5 +1,6 @@
 package com.team175.robot.commands;
 
+import com.team175.robot.commands.AldrinCommand;
 import com.team175.robot.util.choosers.AutoModeChooser;
 
 /**
@@ -14,23 +15,12 @@ public class CancelAuto extends AldrinCommand {
     @Override
     protected void initialize() {
         AutoModeChooser.getInstance().stop();
-
-        super.logInit();
+        super.initialize();
     }
 
     @Override
     protected boolean isFinished() {
-        return false;
-    }
-
-    @Override
-    protected void end() {
-        logEnd();
-    }
-
-    @Override
-    protected void interrupted() {
-        end();
+        return true;
     }
 
 }

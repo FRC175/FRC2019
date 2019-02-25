@@ -1,6 +1,7 @@
-package com.team175.robot.commands;
+package com.team175.robot.commands.drive;
 
 import com.team175.robot.OI;
+import com.team175.robot.commands.AldrinCommand;
 import com.team175.robot.subsystems.Drive;
 import com.team175.robot.subsystems.LateralDrive;
 
@@ -11,13 +12,7 @@ public class StraightDrive extends AldrinCommand {
 
     public StraightDrive() {
         requires(Drive.getInstance(), LateralDrive.getInstance());
-
         super.logInstantiation();
-    }
-
-    @Override
-    protected void initialize() {
-        super.logInit();
     }
 
     @Override
@@ -35,13 +30,7 @@ public class StraightDrive extends AldrinCommand {
     @Override
     protected void end() {
         Drive.getInstance().stop();
-
-        super.logEnd();
-    }
-
-    @Override
-    protected void interrupted() {
-        end();
+        super.end();
     }
 
 }

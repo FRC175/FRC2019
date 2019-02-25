@@ -1,6 +1,5 @@
 package com.team175.robot.util.choosers;
 
-import com.team175.robot.commands.ExampleCommand;
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -26,7 +25,7 @@ public class AutoModeChooser implements Chooser {
 
     private AutoModeChooser() {
         mChooser = new SendableChooser<>();
-        mChooser.setDefaultOption("Default Auto", new ExampleCommand());
+        // mChooser.setDefaultOption("Default Auto", new ExampleCommand());
     }
 
     @Override

@@ -1,38 +1,32 @@
-package com.team175.robot.commands;
+package com.team175.robot.commands.elevator;
 
 import com.team175.robot.OI;
+import com.team175.robot.commands.AldrinCommand;
 import com.team175.robot.subsystems.Elevator;
 import com.team175.robot.subsystems.Manipulator;
 
 /**
  * @author Arvind
  */
-public class ManualElevator extends AldrinCommand {
+public class ControlElevator extends AldrinCommand {
 
     private int mPosition;
 
-    public ManualElevator() {
+    public ControlElevator() {
         requires(Elevator.getInstance(), Manipulator.getInstance());
-
         mPosition = 0;
-
         super.logInstantiation();
-    }
-
-    @Override
-    protected void initialize() {
-        super.logInit();
     }
 
     @Override
     protected void execute() {
         // TODO: Check if-block
-        if (!Manipulator.getInstance().isDeployed()) {
+        // Ensure elevator cannot move when manipulator is stowed
+        if (Manipulator.getInstance().isDeployed()) {
+            // mLogger.debug("ElevatorPosition: {}", Elevator.getInstance().getPosition());
+            Elevator.getInstance().setPower(OI.getInstance().getOperatorStickY() * 0.75);
+            mPosition = Elevator.getInstance().getPosition();
         }
-
-        mLogger.debug("ElevatorPosition: {}", Elevator.getInstance().getPosition());
-        Elevator.getInstance().setPower(OI.getInstance().getOperatorStickY() * 0.75);
-        mPosition = Elevator.getInstance().getPosition();
     }
 
     @Override
@@ -45,13 +39,7 @@ public class ManualElevator extends AldrinCommand {
         // Keep elevator at wanted position
         Elevator.getInstance().setWantedPosition(mPosition);
         Elevator.getInstance().stop();
-
-        super.logEnd();
-    }
-
-    @Override
-    protected void interrupted() {
-        end();
+        super.end();
     }
 
 }

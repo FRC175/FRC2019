@@ -1,6 +1,7 @@
 package com.team175.robot.commands;
 
 import com.team175.robot.Robot;
+import com.team175.robot.commands.AldrinCommand;
 import com.team175.robot.util.tuning.CSVLogger;
 import com.team175.robot.util.tuning.ClosedLoopTunable;
 
@@ -13,13 +14,12 @@ public class ClosedLoopTuner extends AldrinCommand {
 
     private ClosedLoopTunable mSubsystem;
     private CSVLogger mWriter;
-    private Notifier mNotifier;
+    private Notifier mNotifier; // A WPILib object that spawns a new thread and calls run() at a certain refresh rate
 
     public ClosedLoopTuner(ClosedLoopTunable subsystem) {
         mSubsystem = subsystem;
         mWriter = new CSVLogger(mSubsystem);
         mNotifier = new Notifier(mWriter);
-
         super.logInstantiation();
     }
 
@@ -45,7 +45,7 @@ public class ClosedLoopTuner extends AldrinCommand {
             mLogger.error("Failed to start CSVLogger thread!", e);
         }
 
-        super.logInit();
+        super.initialize();
     }
 
     @Override
@@ -57,13 +57,7 @@ public class ClosedLoopTuner extends AldrinCommand {
     public void end() {
         mNotifier.stop();
         mWriter.stop();
-
-        super.logEnd();
-    }
-
-    @Override
-    protected void interrupted() {
-        end();
+        super.end();
     }
 
 }

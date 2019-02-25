@@ -1,31 +1,31 @@
-package com.team175.robot.commands;
+package com.team175.robot.commands.elevator;
 
+import com.team175.robot.commands.AldrinCommand;
 import com.team175.robot.positions.ElevatorPosition;
 import com.team175.robot.subsystems.Elevator;
+import com.team175.robot.subsystems.Manipulator;
 
 /**
  * @author Arvind
  */
-public class PositionElevator extends AldrinCommand {
+public class ElevatorToPosition extends AldrinCommand {
 
     private ElevatorPosition mPosition;
 
-    public PositionElevator(ElevatorPosition position) {
+    public ElevatorToPosition(ElevatorPosition position) {
         requires(Elevator.getInstance());
-
         mPosition = position;
-
         super.logInstantiation();
     }
 
     @Override
     protected void initialize() {
-        super.logInit();
-    }
-
-    @Override
-    protected void execute() {
-        Elevator.getInstance().setPosition(mPosition);
+        // TODO: Check if-block
+        // Ensure elevator cannot move when manipulator is stowed
+        if (Manipulator.getInstance().isDeployed()) {
+            Elevator.getInstance().setPosition(mPosition);
+        }
+        super.initialize();
     }
 
     @Override
@@ -36,13 +36,7 @@ public class PositionElevator extends AldrinCommand {
     @Override
     protected void end() {
         Elevator.getInstance().stop();
-
-        super.logEnd();
-    }
-
-    @Override
-    protected void interrupted() {
-        end();
+        super.end();
     }
 
 }

@@ -3,12 +3,12 @@ package com.team175.robot.positions;
 /**
  * @author Arvind
  */
-public enum ManipulatorArmPosition implements Position {
+public enum ManipulatorArmPosition {
 
     GROUND(384),
     BALL_PICKUP(327),
     SCORE(257),
-    HOME(187);
+    STOW(187);
 
     private final int mPosition;
 
@@ -16,7 +16,6 @@ public enum ManipulatorArmPosition implements Position {
         mPosition = position;
     }
 
-    @Override
     public int positionToMove() {
         return mPosition;
     }

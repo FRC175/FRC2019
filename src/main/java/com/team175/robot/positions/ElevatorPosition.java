@@ -3,7 +3,7 @@ package com.team175.robot.positions;
 /**
  * @author Arvind
  */
-public enum ElevatorPosition implements Position {
+public enum ElevatorPosition {
 
     CARGO_LEVEL_THREE(0),
     HATCH_LEVEL_THREE(0),
@@ -19,7 +19,6 @@ public enum ElevatorPosition implements Position {
         mPosition = position;
     }
 
-    @Override
     public int positionToMove() {
         return mPosition;
     }

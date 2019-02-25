@@ -47,8 +47,8 @@ public class AldrinVictorSPX extends VictorSPX {
         return super.config_kF(Constants.AUX_SLOT_INDEX, value, Constants.TIMEOUT_MS);
     }
 
-    public void setBrakeMode(boolean on) {
-        super.setNeutralMode(on ? NeutralMode.Brake : NeutralMode.Coast);
+    public void setBrakeMode(boolean enable) {
+        super.setNeutralMode(enable ? NeutralMode.Brake : NeutralMode.Coast);
     }
 
     @Override

@@ -1,5 +1,6 @@
-package com.team175.robot.commands;
+package com.team175.robot.commands.drive;
 
+import com.team175.robot.commands.AldrinCommand;
 import com.team175.robot.paths.Path;
 import com.team175.robot.subsystems.Drive;
 
@@ -14,15 +15,13 @@ public class FollowPath extends AldrinCommand {
 
     public FollowPath(Path path) {
         requires(Drive.getInstance());
-
         mPath = path;
     }
 
     @Override
     protected void initialize() {
         Drive.getInstance().setPath(mPath);
-
-        super.logInit();
+        super.initialize();
     }
 
     @Override
@@ -33,13 +32,7 @@ public class FollowPath extends AldrinCommand {
     @Override
     protected void end() {
         Drive.getInstance().stopPathFollowing();
-
-        super.logEnd();
-    }
-
-    @Override
-    protected void interrupted() {
-        end();
+        super.end();
     }
 
 }

@@ -1,11 +1,14 @@
-package com.team175.robot.commands;
+/*
+package com.team175.robot.commands.old;
 
+import com.team175.robot.OI;
+import com.team175.robot.commands.AldrinCommand;
 import com.team175.robot.subsystems.Drive;
 import com.team175.robot.subsystems.Lift;
 
-public class DriveLiftToRear extends AldrinCommand {
+public class ManualFrontLift extends AldrinCommand {
 
-    public DriveLiftToRear() {
+    public ManualFrontLift() {
         requires(Lift.getInstance(), Drive.getInstance());
 
         super.logInstantiation();
@@ -13,18 +16,20 @@ public class DriveLiftToRear extends AldrinCommand {
 
     @Override
     protected void initialize() {
+        Drive.getInstance().stop();
+
         super.logInit();
     }
 
     @Override
     protected void execute() {
-        Lift.getInstance().setDrivePower(0.75);
-        Drive.getInstance().setPower(0.25); // Make speed the same
+        Lift.getInstance().setFrontPower(OI.getInstance().getDriverStickY());
+        Lift.getInstance().setRearPower(OI.getInstance().getDriverStickY());
     }
 
     @Override
     protected boolean isFinished() {
-        return Lift.getInstance().isRearOnHab();
+        return false;
     }
 
     @Override
@@ -40,3 +45,4 @@ public class DriveLiftToRear extends AldrinCommand {
     }
 
 }
+*/

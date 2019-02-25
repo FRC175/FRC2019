@@ -3,7 +3,7 @@ package com.team175.robot.positions;
 /**
  * @author Arvind
  */
-public enum LineSensorPosition implements Position {
+public enum LineSensorPosition {
 
     // Political Spectrum
     EXTREME_LEFT(-100),
@@ -23,7 +23,6 @@ public enum LineSensorPosition implements Position {
         mPosition = position;
     }
 
-    @Override
     public int positionToMove() {
         return mPosition;
     }

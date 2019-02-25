@@ -9,6 +9,15 @@ package com.team175.robot;
 
 import com.team175.robot.auto.LevelThreeClimb;
 import com.team175.robot.commands.*;
+import com.team175.robot.commands.drive.ArcadeDrive;
+import com.team175.robot.commands.drive.StraightDrive;
+import com.team175.robot.commands.elevator.ControlElevator;
+import com.team175.robot.commands.elevator.ElevatorToPosition;
+import com.team175.robot.commands.lateraldrive.ControlLateralDrive;
+import com.team175.robot.commands.manipulator.ControlManipulatorArm;
+import com.team175.robot.commands.manipulator.ManipulateGamePieces;
+import com.team175.robot.commands.manipulator.ManipulatorArmToPosition;
+import com.team175.robot.commands.old.*;
 import com.team175.robot.positions.ElevatorPosition;
 import com.team175.robot.positions.ManipulatorArmPosition;
 import com.team175.robot.positions.ManipulatorRollerPosition;
@@ -33,8 +42,8 @@ public final class OI {
     private final Button mStraightDrive;
     private final Button mLevelThreeClimb;
     private final Button mCancelAuto;
-    private final Button mManualFrontLift;
-    private final Button mManualRearLift;
+    // private final Button mManualFrontLift;
+    // private final Button mManualRearLift;
     // private final Button mLineAlign;
 
     // Operator Stick Buttons
@@ -79,8 +88,8 @@ public final class OI {
         mStraightDrive = new SingleButton(mDriverStick, Constants.STRAIGHT_DRIVE_BUTTON);
         mLevelThreeClimb = new SingleButton(mDriverStick, Constants.LEVEL_THREE_CLIMB_BUTTON);
         mCancelAuto = new SingleButton(mDriverStick, Constants.CANCEL_AUTO_BUTTON);
-        mManualFrontLift = new SingleButton(mDriverStick, 9);
-        mManualRearLift = new SingleButton(mDriverStick, 10);
+        // mManualFrontLift = new SingleButton(mDriverStick, 9);
+        // mManualRearLift = new SingleButton(mDriverStick, 10);
         // mLineAlign = new SingleButton(mDriverStick, Constants.LINE_ALIGN_BUTTON);
 
         // Operator Stick Buttons
@@ -104,33 +113,33 @@ public final class OI {
 
         /* Command Assignment */
         // Driver Stick
-        mManualLateralDrive.whileHeld(new ManualLateralDrive());
+        mManualLateralDrive.whileHeld(new ControlLateralDrive());
         mShift.whileHeld(new ArcadeDrive(true));
         mStraightDrive.whileHeld(new StraightDrive());
         mLevelThreeClimb.whenPressed(new LevelThreeClimb());
         mCancelAuto.whenPressed(new CancelAuto());
-        mManualFrontLift.whileHeld(new ManualFrontLift());
-        mManualRearLift.whileHeld(new ManualRearLift());
+        // mManualFrontLift.whileHeld(new ManualFrontLift());
+        // mManualRearLift.whileHeld(new ManualRearLift());
         // mLineAlign.whenPressed(new LineAlignment());
 
         // Operator Stick
-        mManualElevator.whileHeld(new ManualElevator());
-        mManualManipulatorArm.whileHeld(new ManualManipulatorArm());
+        mManualElevator.whileHeld(new ControlElevator());
+        mManualManipulatorArm.whileHeld(new ControlManipulatorArm());
         mToggleManipulator.toggleWhenPressed(new ToggleManipulatorDeploy());
-        mScoreHatch.whileHeld(new ManipulateGamePiece(ManipulatorRollerPosition.SCORE_HATCH));
-        mGrabHatch.whileHeld(new ManipulateGamePiece(ManipulatorRollerPosition.GRAB_HATCH));
-        mScoreCargo.whileHeld(new ManipulateGamePiece(ManipulatorRollerPosition.SCORE_CARGO));
-        mScoreCargoFast.whileHeld(new ManipulateGamePiece(ManipulatorRollerPosition.SCORE_CARGO_FAST));
-        mGrabCargo.whileHeld(new ManipulateGamePiece(ManipulatorRollerPosition.GRAB_CARGO));
-        mElevatorPositionOne.whenPressed(new PositionElevator(ElevatorPosition.HATCH_LEVEL_ONE));
-        mElevatorPositionTwo.whenPressed(new PositionElevator(ElevatorPosition.CARGO_LEVEL_ONE));
-        mElevatorPositionThree.whenPressed(new PositionElevator(ElevatorPosition.HATCH_LEVEL_TWO));
-        mElevatorPositionFour.whenPressed(new PositionElevator(ElevatorPosition.CARGO_LEVEL_TWO));
-        mElevatorPositionFive.whenPressed(new PositionElevator(ElevatorPosition.HATCH_LEVEL_THREE));
-        mElevatorPositionSix.whenPressed(new PositionElevator(ElevatorPosition.CARGO_LEVEL_THREE));
-        mManipulatorArmScorePosition.whenPressed(new PositionManipulatorArm(ManipulatorArmPosition.SCORE));
-        mManipulatorArmBallPickupPosition.whenPressed(new PositionManipulatorArm(ManipulatorArmPosition.BALL_PICKUP));
-        mManipulatorArmGroundPosition.whenPressed(new PositionManipulatorArm(ManipulatorArmPosition.GROUND));
+        mScoreHatch.whileHeld(new ManipulateGamePieces(ManipulatorRollerPosition.SCORE_HATCH));
+        mGrabHatch.whileHeld(new ManipulateGamePieces(ManipulatorRollerPosition.GRAB_HATCH));
+        mScoreCargo.whileHeld(new ManipulateGamePieces(ManipulatorRollerPosition.SCORE_CARGO));
+        mScoreCargoFast.whileHeld(new ManipulateGamePieces(ManipulatorRollerPosition.SCORE_CARGO_FAST));
+        mGrabCargo.whileHeld(new ManipulateGamePieces(ManipulatorRollerPosition.GRAB_CARGO));
+        mElevatorPositionOne.whenPressed(new ElevatorToPosition(ElevatorPosition.HATCH_LEVEL_ONE));
+        mElevatorPositionTwo.whenPressed(new ElevatorToPosition(ElevatorPosition.CARGO_LEVEL_ONE));
+        mElevatorPositionThree.whenPressed(new ElevatorToPosition(ElevatorPosition.HATCH_LEVEL_TWO));
+        mElevatorPositionFour.whenPressed(new ElevatorToPosition(ElevatorPosition.CARGO_LEVEL_TWO));
+        mElevatorPositionFive.whenPressed(new ElevatorToPosition(ElevatorPosition.HATCH_LEVEL_THREE));
+        mElevatorPositionSix.whenPressed(new ElevatorToPosition(ElevatorPosition.CARGO_LEVEL_THREE));
+        mManipulatorArmScorePosition.whenPressed(new ManipulatorArmToPosition(ManipulatorArmPosition.SCORE));
+        mManipulatorArmBallPickupPosition.whenPressed(new ManipulatorArmToPosition(ManipulatorArmPosition.BALL_PICKUP));
+        mManipulatorArmGroundPosition.whenPressed(new ManipulatorArmToPosition(ManipulatorArmPosition.GROUND));
     }
 
     public double getDriverStickX() {

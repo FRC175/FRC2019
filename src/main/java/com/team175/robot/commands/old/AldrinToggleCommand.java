@@ -1,4 +1,4 @@
-package com.team175.robot.commands;
+package com.team175.robot.commands.old;
 
 import edu.wpi.first.wpilibj.command.InstantCommand;
 import edu.wpi.first.wpilibj.command.Subsystem;
@@ -9,7 +9,8 @@ import org.slf4j.LoggerFactory;
  * @author Arvind
  * @see InstantCommand
  */
-public class AldrinToggleCommand extends InstantCommand implements LoggableCommand {
+@Deprecated
+public class AldrinToggleCommand extends InstantCommand {
 
     protected final Logger mLogger = LoggerFactory.getLogger(getClass().getSimpleName());
 
@@ -23,17 +24,14 @@ public class AldrinToggleCommand extends InstantCommand implements LoggableComma
         }
     }
 
-    @Override
     public void logInstantiation() {
         mLogger.info("Command instantiated.");
     }
 
-    @Override
     public void logInit() {
         mLogger.info("Command initialized.");
     }
 
-    @Override
     public void logEnd() {
         mLogger.info("Command ended/interrupted.");
     }

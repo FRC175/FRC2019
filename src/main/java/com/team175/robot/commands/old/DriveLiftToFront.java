@@ -1,12 +1,12 @@
-package com.team175.robot.commands;
+/*package com.team175.robot.commands.old;
 
-/**
- * @author Arvind
- */
-public class CommandTemplate extends AldrinCommand {
+import com.team175.robot.commands.AldrinCommand;
+import com.team175.robot.subsystems.Lift;
 
-    public CommandTemplate() {
-        // requires();
+public class DriveLiftToFront extends AldrinCommand {
+
+    public DriveLiftToFront() {
+        requires(Lift.getInstance());
 
         super.logInstantiation();
     }
@@ -18,11 +18,12 @@ public class CommandTemplate extends AldrinCommand {
 
     @Override
     protected void execute() {
+        Lift.getInstance().setDrivePower(0.75);
     }
 
     @Override
     protected boolean isFinished() {
-        return false;
+        return Lift.getInstance().isFrontOnHab();
     }
 
     @Override
@@ -35,4 +36,4 @@ public class CommandTemplate extends AldrinCommand {
         end();
     }
 
-}
+}*/

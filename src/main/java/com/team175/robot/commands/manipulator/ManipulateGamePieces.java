@@ -1,31 +1,26 @@
-package com.team175.robot.commands;
+package com.team175.robot.commands.manipulator;
 
+import com.team175.robot.commands.AldrinCommand;
 import com.team175.robot.positions.ManipulatorRollerPosition;
 import com.team175.robot.subsystems.Manipulator;
 
 /**
  * @author Arvind
  */
-public class ManipulateGamePiece extends AldrinCommand {
+public class ManipulateGamePieces extends AldrinCommand {
 
     private ManipulatorRollerPosition mPosition;
 
-    public ManipulateGamePiece(ManipulatorRollerPosition position) {
+    public ManipulateGamePieces(ManipulatorRollerPosition position) {
         requires(Manipulator.getInstance());
-
         mPosition = position;
-
         super.logInstantiation();
     }
 
     @Override
     protected void initialize() {
-        super.logInit();
-    }
-
-    @Override
-    protected void execute() {
         Manipulator.getInstance().setRollerPosition(mPosition);
+        super.initialize();
     }
 
     @Override
@@ -36,13 +31,7 @@ public class ManipulateGamePiece extends AldrinCommand {
     @Override
     protected void end() {
         Manipulator.getInstance().stopRollers();
-
-        super.logEnd();
-    }
-
-    @Override
-    protected void interrupted() {
-        end();
+        super.end();
     }
 
 }

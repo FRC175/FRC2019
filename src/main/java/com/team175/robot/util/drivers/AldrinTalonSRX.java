@@ -66,8 +66,8 @@ public class AldrinTalonSRX extends TalonSRX {
         return configSelectedFeedbackSensor(feedbackDevice, Constants.SLOT_INDEX);
     }
 
-    public void setBrakeMode(boolean on) {
-        super.setNeutralMode(on ? NeutralMode.Brake : NeutralMode.Coast);
+    public void setBrakeMode(boolean enable) {
+        super.setNeutralMode(enable ? NeutralMode.Brake : NeutralMode.Coast);
     }
 
     public ErrorCode configPIDF(double kP, double kI, double kD, double kF) {

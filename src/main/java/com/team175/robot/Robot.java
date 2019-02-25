@@ -82,6 +82,9 @@ public class Robot extends TimedRobot {
     public void autonomousInit() {
         mAutoModeChooser.updateFromDashboard();
         mAutoModeChooser.start();
+
+        mDrive.setHighGear(true);
+        mDrive.setBrakeMode(true);
     }
 
     @Override
@@ -92,6 +95,8 @@ public class Robot extends TimedRobot {
     @Override
     public void teleopInit() {
         mAutoModeChooser.stop();
+
+        mDrive.setBrakeMode(false);
 
         // Comment out in production robot
         // mTunerChooser.updateFromDashboard();

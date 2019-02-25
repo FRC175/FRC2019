@@ -60,14 +60,15 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
         mDeploy = new SimpleDoubleSolenoid(Constants.MANIPULATOR_DEPLOY_FORWARD_CHANNEL, Constants.MANIPULATOR_DEPLOY_REVERSE_CHANNEL);
 
         mArmWantedPosition = 0;
+        // mArmWantedPosition = ManipulatorArmPosition.STOW.positionToMove();
         mArmGains = Constants.MANIPULATOR_ARM_GAINS;
 
         /* Configuration */
         CTREDiagnostics.checkCommand(mArmMaster.configSelectedFeedbackSensor(FeedbackDevice.Analog),
                 "Failed to config ManipulatorArm encoder!");
         setArmGains(mArmGains);
+        mArmMaster.setBrakeMode(true);
         deploy(true);
-        // setArmWantedPosition(ManipulatorArmPosition.HOME.positionToMove());
         stop();
         // setBrake(true);
         // stopRollers(); // Maybe change to stop() if encoder works correctly
@@ -130,7 +131,7 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
 
     public void stopArm() {
         // setArmPosition(mArmWantedPosition);
-        // setArmPower(0);
+        setArmPower(0);
         setBrake(true);
     }
 
@@ -149,8 +150,8 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
     }
 
     public void setArmPosition(ManipulatorArmPosition ap) {
-        // Stow manipulator when going to home position
-        if (ap == ManipulatorArmPosition.HOME) {
+        // Un-deploy manipulator when going to stow position
+        if (ap == ManipulatorArmPosition.STOW) {
             deploy(false);
         }
         setArmPosition(ap.positionToMove());

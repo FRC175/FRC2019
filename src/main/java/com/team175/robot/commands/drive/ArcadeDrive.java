@@ -1,6 +1,7 @@
-package com.team175.robot.commands;
+package com.team175.robot.commands.drive;
 
 import com.team175.robot.OI;
+import com.team175.robot.commands.AldrinCommand;
 import com.team175.robot.subsystems.Drive;
 import com.team175.robot.subsystems.LateralDrive;
 
@@ -13,17 +14,14 @@ public class ArcadeDrive extends AldrinCommand {
 
     public ArcadeDrive(boolean isHighGear) {
         requires(Drive.getInstance(), LateralDrive.getInstance());
-
         mIsHighGear = isHighGear;
-
         super.logInstantiation();
     }
 
     @Override
     protected void initialize() {
         Drive.getInstance().setHighGear(mIsHighGear);
-
-        super.logInit();
+        super.initialize();
     }
 
     @Override
@@ -43,13 +41,7 @@ public class ArcadeDrive extends AldrinCommand {
     @Override
     protected void end() {
         Drive.getInstance().stop();
-
-        super.logEnd();
-    }
-
-    @Override
-    protected void interrupted() {
-        end();
+        super.end();
     }
 
 }

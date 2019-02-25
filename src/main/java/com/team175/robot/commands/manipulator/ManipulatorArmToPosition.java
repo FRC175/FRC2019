@@ -1,31 +1,26 @@
-package com.team175.robot.commands;
+package com.team175.robot.commands.manipulator;
 
+import com.team175.robot.commands.AldrinCommand;
 import com.team175.robot.positions.ManipulatorArmPosition;
 import com.team175.robot.subsystems.Manipulator;
 
 /**
  * @author Arvind
  */
-public class PositionManipulatorArm extends AldrinCommand {
+public class ManipulatorArmToPosition extends AldrinCommand {
 
     private ManipulatorArmPosition mPosition;
     
-    public PositionManipulatorArm(ManipulatorArmPosition position) {
+    public ManipulatorArmToPosition(ManipulatorArmPosition position) {
         requires(Manipulator.getInstance());
-
         mPosition = position;
-
         super.logInstantiation();
     }
 
     @Override
     protected void initialize() {
-        super.logInit();
-    }
-
-    @Override
-    protected void execute() {
         Manipulator.getInstance().setArmPosition(mPosition);
+        super.initialize();
     }
 
     @Override
@@ -36,13 +31,7 @@ public class PositionManipulatorArm extends AldrinCommand {
     @Override
     protected void end() {
         Manipulator.getInstance().stopArm();
-
-        super.logEnd();
-    }
-
-    @Override
-    protected void interrupted() {
-        end();
+        super.end();
     }
 
 }

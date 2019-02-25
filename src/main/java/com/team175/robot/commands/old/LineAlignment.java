@@ -1,23 +1,28 @@
-package com.team175.robot.commands;
+/*
+package com.team175.robot.commands.old;
 
+import com.team175.robot.commands.AldrinCommand;
+
+*/
 /**
  * TODO: Update for lateral drive method calls.
  *
  * @author Arvind
- */
+ *//*
+
 public class LineAlignment extends AldrinCommand {
 
     public LineAlignment() {
         // requires(Breadboard.getInstance());
         // requires(LateralDrive.getInstance());
 
-        super.logInit();
+        super.logInstantiation();
     }
 
     // Called just before this Command runs the first time
     @Override
     protected void initialize() {
-        super.logInit();
+        super.initialize();
     }
 
     // Called repeatedly when this Command is scheduled to start
@@ -34,7 +39,7 @@ public class LineAlignment extends AldrinCommand {
     // Called once after isFinished returns true
     @Override
     protected void end() {
-        super.logEnd();
+        super.end();
     }
 
     // Called when another command which requires one or more of the same
@@ -44,4 +49,4 @@ public class LineAlignment extends AldrinCommand {
         end();
     }
 
-}
+}*/

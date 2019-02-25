@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.command.Command;
  * @author Arvind
  * @see Command
  */
-public abstract class AldrinCommand extends Command implements LoggableCommand {
+public abstract class AldrinCommand extends Command {
 
     protected final Logger mLogger = LoggerFactory.getLogger(getClass().getSimpleName());
 
@@ -23,29 +23,18 @@ public abstract class AldrinCommand extends Command implements LoggableCommand {
         }
     }
 
-    @Override
     public void logInstantiation() {
         mLogger.info("Command instantiated.");
     }
 
     @Override
-    public void logInit() {
+    protected void initialize() {
         mLogger.info("Command initialized.");
     }
 
     @Override
-    public void logEnd() {
-        mLogger.info("Command ended/interrupted.");
-    }
-
-    @Override
-    protected void initialize() {
-        logInit();
-    }
-
-    @Override
     protected void end() {
-        logEnd();
+        mLogger.info("Command ended/interrupted.");
     }
 
     @Override

@@ -4,7 +4,7 @@ import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.team175.robot.Constants;
-import com.team175.robot.commands.CheesyDrive;
+import com.team175.robot.commands.drive.CheesyDrive;
 import com.team175.robot.paths.Path;
 import com.team175.robot.util.DriveHelper;
 import com.team175.robot.util.PathHelper;
@@ -87,14 +87,14 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
                 "Failed to config LeftMaster encoder!");
         CTREDiagnostics.checkCommand(mRightMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder),
                 "Failed to config RightMaster encoder!");
+        setLeftGains(mLeftGains);
+        setRightGains(mRightGains);
         mLeftMaster.setInverted(false);
         mLeftSlave.setInverted(false);
         mRightMaster.setInverted(true);
         mRightSlave.setInverted(true);
-        setLeftGains(mLeftGains);
-        setRightGains(mRightGains);
-        setHighGear(false);
         // mPathHelper.configTalons();
+        setHighGear(false);
         resetSensors();
         stop();
     }

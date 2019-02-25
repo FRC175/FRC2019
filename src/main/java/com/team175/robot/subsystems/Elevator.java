@@ -53,6 +53,7 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
         setGains(mGains);
         mMaster.setInverted(true);
         mMaster.setSensorPhase(true);
+        mMaster.setBrakeMode(true);
     }
 
     public void setPower(double power) {
