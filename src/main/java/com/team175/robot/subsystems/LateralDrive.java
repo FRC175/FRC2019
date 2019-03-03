@@ -11,6 +11,7 @@ import com.team175.robot.util.choosers.RobotChooser;
 import com.team175.robot.util.drivers.AldrinTalonSRX;
 
 import com.team175.robot.util.drivers.SimpleDoubleSolenoid;
+import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.util.LinkedHashMap;
@@ -27,6 +28,7 @@ public final class LateralDrive extends AldrinSubsystem implements ClosedLoopTun
     private final SimpleDoubleSolenoid mDeploy;
     // private final Map<String, DigitalInput> mLineSensors;
     // private final Pixy mPixy;
+    // private final DigitalInput mPixy;
 
     private int mWantedPosition;
     private ClosedLoopGains mGains;
@@ -52,6 +54,7 @@ public final class LateralDrive extends AldrinSubsystem implements ClosedLoopTun
                 true);
 
         // DigitalInput(portNum : int)
+        // mPixy = new DigitalInput();
         /*mLineSensors = Map.of(
                 "LeftTwo", new DigitalInput(Constants.LEFT_TWO_SENSOR_PORT),
                 "LeftOne", new DigitalInput(Constants.LEFT_ONE_SENSOR_PORT),

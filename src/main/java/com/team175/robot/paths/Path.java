@@ -1,7 +1,7 @@
 package com.team175.robot.paths;
 
 /**
- * Based heavily off of Team319's Arc class.
+ * An object used to represent a path. Based heavily off of Team319's Arc class.
  *
  * @author Arvind
  */

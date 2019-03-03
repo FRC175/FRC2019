@@ -71,12 +71,14 @@ public final class Lift extends AldrinSubsystem {
 
     public void setFrontPower(double power) {
         // if (!isFrontForwardLimitHit() || !isFrontReverseLimitHit()) {
+            // mFrontBrake.set(false);
             mFront.set(power);
         // }
     }
 
     public void setRearPower(double power) {
         // if (!isRearForwardLimitHit() || !isRearReverseLimitHit()) {
+            // mRearBrake.set(false);
             mRear.set(power);
         // }
     }

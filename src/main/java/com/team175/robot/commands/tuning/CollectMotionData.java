@@ -14,47 +14,42 @@ public class CollectMotionData extends AldrinCommand {
 
     private Map<String, Supplier> mData;
     private CSVWriter mWriter;
-    private boolean mVelOrAccel;
-    private double mStartTime;
-    private double mCurrentTime;
-    private int mMax;
+    private double mStartTime, mPrevTime, mCurrentTime;
+    private int mMaxVel, mMaxAccel, mMaxJerk;
+    private double[][] mMotionData;
 
     private static final String FILE_PATH = "/home/lvuser/csvlog/motion-data.csv";
     private static final String DELIMITER = ",";
 
-    public CollectMotionData(boolean velOrAccel) {
+    public CollectMotionData() {
         requires(Drive.getInstance());
 
-        mData = new LinkedHashMap<>();
+        /*mData = new LinkedHashMap<>();
         mData.put("left_velocity", Drive.getInstance()::getLeftVelocity);
         mData.put("right_velocity", Drive.getInstance()::getRightVelocity);
         try {
             mWriter = new CSVWriter(mData, FILE_PATH, DELIMITER);
         } catch (FileNotFoundException e) {
             mLogger.error("Failed to instantiate CSVWriter!", e);
-        }
+        }*/
 
-        mVelOrAccel = velOrAccel;
-        mStartTime = 0;
-        mCurrentTime = 0;
-        mMax = Integer.MIN_VALUE;
+        mMaxVel = mMaxAccel = mMaxJerk = Integer.MIN_VALUE;
+        mStartTime = mPrevTime = mCurrentTime = 0;
     }
 
     @Override
     protected void initialize() {
-        mStartTime = !mVelOrAccel ? Timer.getFPGATimestamp() : mStartTime;
+        mPrevTime = Timer.getFPGATimestamp();
     }
 
     @Override
     protected void execute() {
-        if (mVelOrAccel) { // Collect velocity data
+        mCurrentTime = Timer.getFPGATimestamp();
 
-        } else { // Collect acceleration data
-            mCurrentTime = Timer.getFPGATimestamp();
+        if (mPrevTime == mCurrentTime) {
+            mPrevTime = Timer.getFPGATimestamp();
+        } else {
 
-            if (mStartTime == mCurrentTime) {
-                return;
-            }
         }
     }
 
@@ -65,9 +60,13 @@ public class CollectMotionData extends AldrinCommand {
 
     @Override
     protected void end() {
-        mLogger.info("Collection of {} data for Drive complete!", mVelOrAccel ? "velocity" : "acceleration");
+        // Determine max jerk
+
+        mLogger.info("Collection of motion data complete!");
         // mLogger.info("Retrieve csv log from RoboRIO and use kinematics script to analyze motion.");
-        mLogger.info("Max: {}", mMax);
+        mLogger.info("Max Velocity: {}", mMaxVel);
+        mLogger.info("Max Acceleration: {}", mMaxAccel);
+        mLogger.info("Max Jerk: {}", mMaxJerk);
     }
 
 }

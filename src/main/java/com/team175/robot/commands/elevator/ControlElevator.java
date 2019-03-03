@@ -24,7 +24,7 @@ public class ControlElevator extends AldrinCommand {
         // Ensure elevator cannot move when manipulator is stowed
         if (Manipulator.getInstance().isDeployed()) {
             // mLogger.debug("ElevatorPosition: {}", Elevator.getInstance().getPosition());
-            Elevator.getInstance().setPower(OI.getInstance().getOperatorStickY() * 0.75);
+            Elevator.getInstance().setPower(OI.getInstance().getOperatorStickY());
             mPosition = Elevator.getInstance().getPosition();
         }
     }

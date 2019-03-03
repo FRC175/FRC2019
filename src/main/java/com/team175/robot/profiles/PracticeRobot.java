@@ -29,7 +29,7 @@ public class PracticeRobot extends RobotProfile {
 
     @Override
     public CTREConfiguration getRightMasterConfig() {
-        return new CTREConfiguration.Builder(false)
+        return new CTREConfiguration.Builder(true)
                 .setPrimarySensor(FeedbackDevice.QuadEncoder)
                 .setPrimaryGains(new ClosedLoopGains(
                         Constants.PRACTICE_RIGHT_DRIVE_KP,
@@ -44,7 +44,7 @@ public class PracticeRobot extends RobotProfile {
 
     @Override
     public CTREConfiguration getRightSlaveConfig() {
-        return new CTREConfiguration.Builder(false).build();
+        return new CTREConfiguration.Builder(true).build();
     }
 
     @Override

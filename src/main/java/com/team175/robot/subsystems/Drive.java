@@ -58,15 +58,13 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
         mRightSlave = CTREFactory.getSlaveTalon(Constants.RIGHT_SLAVE_DRIVE_PORT, mRightMaster);
 
         // PigeonIMU(talonSRX : TalonSRX)
-        // mPigeon = new PigeonIMU(mRightSlave);
-        mPigeon = null;
+        mPigeon = new PigeonIMU(mLeftSlave);
 
         // SimpleDoubleSolenoid(forwardChannel : int, reverseChannel : int)
         mShift = new SimpleDoubleSolenoid(Constants.SHIFT_FORWARD_CHANNEL, Constants.SHIFT_REVERSE_CHANNEL);
 
         // PathHelper(master : TalonSRX, follower : TalonSRX, pigeon : PigeonIMU)
-        // mPathHelper = new PathHelper(mRightMaster, mLeftMaster, mPigeon);
-        mPathHelper = null;
+        mPathHelper = new PathHelper(mRightMaster, mLeftMaster, mPigeon);
         // DriveHelper(left : TalonSRX, right : TalonSRX)
         mDriveHelper = new DriveHelper(mLeftMaster, mRightMaster);
 
@@ -100,7 +98,7 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
                 "Failed to config LeftMaster ramp!");
         CTREDiagnostics.checkCommand(mRightMaster.configOpenloopRamp(Constants.RAMP_TIME, Constants.TIMEOUT_MS),
                 "Failed to config RightMaster ramp!");
-        // mPathHelper.configTalons();
+        mPathHelper.configTalons();
         setHighGear(false);
         resetSensors();
         stop();
@@ -231,6 +229,12 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
         /*mRightMaster.configAuxPIDF(mPigeonGains.getKp(), mPigeonGains.getKi(), mPigeonGains.getKd(), mPigeonGains.getKf());*/
         mPigeonGains = gains;
         CTREConfiguration.setAuxGains(mRightMaster, mPigeonGains, "RightMaster");
+    }
+
+    public double getAngle() {
+        double[] ypr = new double[3];
+        mPigeon.getYawPitchRoll(ypr);
+        return ypr[0];
     }
 
     @Override

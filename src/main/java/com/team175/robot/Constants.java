@@ -91,6 +91,7 @@ public final class Constants {
     public static final int ELEVATOR_POSITION_FOUR_BUTTON = 8;
     public static final int ELEVATOR_POSITION_FIVE_BUTTON = 10;
     public static final int ELEVATOR_POSITION_SIX_BUTTON = 12;
+    public static final int MANIPULATOR_ARM_STOW_POSITION_BUTTON = 2;
     public static final int MANIPULATOR_ARM_SCORE_POSITION_BUTTON = 8;
     public static final int MANIPULATOR_ARM_BALL_PICKUP_POSITION_BUTTON = 10;
     public static final int MANIPULATOR_ARM_GROUND_POSITION_BUTTON = 12;

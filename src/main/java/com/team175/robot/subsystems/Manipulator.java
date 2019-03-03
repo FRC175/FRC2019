@@ -88,11 +88,11 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
     }
 
     public void deploy(boolean enable) {
-        mDeploy.set(enable);
+        mDeploy.set(!enable);
     }
 
     public boolean isDeployed() {
-        return mDeploy.get();
+        return !mDeploy.get();
     }
 
     public void setRollerPower(double frontPower, double rearPower) {

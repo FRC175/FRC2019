@@ -10,10 +10,12 @@ package com.team175.robot;
 import com.team175.robot.commands.auto.CancelAuto;
 import com.team175.robot.commands.auto.LevelThreeClimb;
 import com.team175.robot.commands.drive.ArcadeDrive;
+import com.team175.robot.commands.drive.CheesyDrive;
 import com.team175.robot.commands.drive.StraightDrive;
 import com.team175.robot.commands.elevator.ControlElevator;
 import com.team175.robot.commands.elevator.ElevatorToPosition;
 import com.team175.robot.commands.lateraldrive.ControlLateralDrive;
+import com.team175.robot.commands.lift.ControlLift;
 import com.team175.robot.commands.manipulator.ControlManipulatorArm;
 import com.team175.robot.commands.manipulator.ManipulateGamePieces;
 import com.team175.robot.commands.manipulator.ManipulatorArmToPosition;
@@ -42,6 +44,7 @@ public final class OI {
     private final Button mStraightDrive;
     private final Button mLevelThreeClimb;
     private final Button mCancelAuto;
+    private final Button mManualLift;
     // private final Button mManualFrontLift;
     // private final Button mManualRearLift;
     // private final Button mLineAlign;
@@ -61,6 +64,7 @@ public final class OI {
     private final Button mElevatorPositionFour;
     private final Button mElevatorPositionFive;
     private final Button mElevatorPositionSix;
+    // private final Button mManipulatorArmStowPosition;
     private final Button mManipulatorArmScorePosition;
     private final Button mManipulatorArmBallPickupPosition;
     private final Button mManipulatorArmGroundPosition;
@@ -88,6 +92,7 @@ public final class OI {
         mStraightDrive = new SingleButton(mDriverStick, Constants.STRAIGHT_DRIVE_BUTTON);
         mLevelThreeClimb = new SingleButton(mDriverStick, Constants.LEVEL_THREE_CLIMB_BUTTON);
         mCancelAuto = new SingleButton(mDriverStick, Constants.CANCEL_AUTO_BUTTON);
+        mManualLift = new SingleButton(mDriverStick, 11); // TODO: Fix
         // mManualFrontLift = new SingleButton(mDriverStick, 9);
         // mManualRearLift = new SingleButton(mDriverStick, 10);
         // mLineAlign = new SingleButton(mDriverStick, Constants.LINE_ALIGN_BUTTON);
@@ -107,6 +112,7 @@ public final class OI {
         mElevatorPositionFour = new SingleButton(mOperatorStick, Constants.ELEVATOR_POSITION_FOUR_BUTTON);
         mElevatorPositionFive = new SingleButton(mOperatorStick, Constants.ELEVATOR_POSITION_FIVE_BUTTON);
         mElevatorPositionSix = new SingleButton(mOperatorStick, Constants.ELEVATOR_POSITION_SIX_BUTTON);
+        // mManipulatorArmStowPosition = new SingleButton(mOperatorStick, Constants.MANIPULATOR_ARM_STOW_POSITION_BUTTON);
         mManipulatorArmScorePosition = new NubDoubleButton(mOperatorStick, Constants.MANIPULATOR_ARM_SCORE_POSITION_BUTTON);
         mManipulatorArmBallPickupPosition = new NubDoubleButton(mOperatorStick, Constants.MANIPULATOR_ARM_BALL_PICKUP_POSITION_BUTTON);
         mManipulatorArmGroundPosition = new NubDoubleButton(mOperatorStick, Constants.MANIPULATOR_ARM_GROUND_POSITION_BUTTON);
@@ -114,10 +120,11 @@ public final class OI {
         /* Command Assignment */
         // Driver Stick
         mManualLateralDrive.whileHeld(new ControlLateralDrive());
-        mShift.whileHeld(new ArcadeDrive(true));
+        mShift.whileHeld(new CheesyDrive(true));
         mStraightDrive.whileHeld(new StraightDrive());
         mLevelThreeClimb.whenPressed(new LevelThreeClimb());
         mCancelAuto.whenPressed(new CancelAuto());
+        mManualLift.whileHeld(new ControlLift());
         // mManualFrontLift.whileHeld(new ManualFrontLift());
         // mManualRearLift.whileHeld(new ManualRearLift());
         // mLineAlign.whenPressed(new LineAlignment());
@@ -137,6 +144,7 @@ public final class OI {
         mElevatorPositionFour.whenPressed(new ElevatorToPosition(ElevatorPosition.CARGO_LEVEL_TWO));
         mElevatorPositionFive.whenPressed(new ElevatorToPosition(ElevatorPosition.HATCH_LEVEL_THREE));
         mElevatorPositionSix.whenPressed(new ElevatorToPosition(ElevatorPosition.CARGO_LEVEL_THREE));
+        // mManipulatorArmStowPosition.whenPressed(new ManipulatorArmToPosition(ManipulatorArmPosition.STOW));
         mManipulatorArmScorePosition.whenPressed(new ManipulatorArmToPosition(ManipulatorArmPosition.SCORE));
         mManipulatorArmBallPickupPosition.whenPressed(new ManipulatorArmToPosition(ManipulatorArmPosition.BALL_PICKUP));
         mManipulatorArmGroundPosition.whenPressed(new ManipulatorArmToPosition(ManipulatorArmPosition.GROUND));
