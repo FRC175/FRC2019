@@ -22,8 +22,8 @@ public class RobotChooser {
         mProfile = new CompetitionRobot();
     }
 
-    public void setProfile(boolean isPracticeBot) {
-        mProfile = isPracticeBot ? new PracticeRobot() : new CompetitionRobot();
+    public void setProfile(boolean isCompBot) {
+        mProfile = isCompBot ? new CompetitionRobot() : new PracticeRobot();
     }
 
     public RobotProfile getProfile() {

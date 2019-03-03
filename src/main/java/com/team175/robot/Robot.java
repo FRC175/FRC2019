@@ -45,7 +45,7 @@ public class Robot extends TimedRobot {
     @Override
     public void robotInit() {
         /* Instantiations */
-        RobotChooser.getInstance().setProfile(true);
+        RobotChooser.getInstance().setProfile(false);
         mDrive = Drive.getInstance();
         mElevator = Elevator.getInstance();
         mLateralDrive = LateralDrive.getInstance();

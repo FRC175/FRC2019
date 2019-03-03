@@ -85,10 +85,6 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
 
         /*mLeftGains = Constants.LEFT_DRIVE_GAINS;
         mRightGains = Constants.RIGHT_DRIVE_GAINS;
-        CTREDiagnostics.checkCommand(mLeftMaster.configOpenloopRamp(Constants.RAMP_TIME, Constants.TIMEOUT_MS),
-                "Failed to config LeftMaster ramp!");
-        CTREDiagnostics.checkCommand(mRightMaster.configOpenloopRamp(Constants.RAMP_TIME, Constants.TIMEOUT_MS),
-                "Failed to config RightMaster ramp!");
         CTREDiagnostics.checkCommand(mLeftMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder),
                 "Failed to config LeftMaster encoder!");
         CTREDiagnostics.checkCommand(mRightMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder),
@@ -100,6 +96,10 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
         mRightMaster.setInverted(true);
         mRightSlave.setInverted(true);*/
 
+        CTREDiagnostics.checkCommand(mLeftMaster.configOpenloopRamp(Constants.RAMP_TIME, Constants.TIMEOUT_MS),
+                "Failed to config LeftMaster ramp!");
+        CTREDiagnostics.checkCommand(mRightMaster.configOpenloopRamp(Constants.RAMP_TIME, Constants.TIMEOUT_MS),
+                "Failed to config RightMaster ramp!");
         // mPathHelper.configTalons();
         setHighGear(false);
         resetSensors();

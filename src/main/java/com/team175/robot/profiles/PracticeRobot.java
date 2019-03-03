@@ -86,7 +86,7 @@ public class PracticeRobot extends RobotProfile {
                         Constants.PRACTICE_MANIPULATOR_ARM_KP,
                         0,
                         Constants.PRACTICE_MANIPULATOR_ARM_KD,
-                        super.getLateralDriveTransmission().getKf(),
+                        super.getManipulatorArmTransmission().getKf(),
                         Constants.PRACTICE_MANIPULATOR_ARM_ACCELERATION,
                         Constants.PRACTICE_MANIPULATOR_ARM_CRUISE_VELOCITY
                 ))

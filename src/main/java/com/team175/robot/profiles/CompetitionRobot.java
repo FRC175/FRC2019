@@ -86,7 +86,7 @@ public class CompetitionRobot extends RobotProfile {
                         Constants.COMPETITION_MANIPULATOR_ARM_KP,
                         0,
                         Constants.COMPETITION_MANIPULATOR_ARM_KD,
-                        super.getLateralDriveTransmission().getKf(),
+                        super.getManipulatorArmTransmission().getKf(),
                         Constants.COMPETITION_MANIPULATOR_ARM_ACCELERATION,
                         Constants.COMPETITION_MANIPULATOR_ARM_CRUISE_VELOCITY
                 ))
