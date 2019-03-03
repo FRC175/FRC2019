@@ -7,8 +7,8 @@
 
 package com.team175.robot;
 
-import com.team175.robot.auto.LevelThreeClimb;
-import com.team175.robot.commands.*;
+import com.team175.robot.commands.auto.CancelAuto;
+import com.team175.robot.commands.auto.LevelThreeClimb;
 import com.team175.robot.commands.drive.ArcadeDrive;
 import com.team175.robot.commands.drive.StraightDrive;
 import com.team175.robot.commands.elevator.ControlElevator;

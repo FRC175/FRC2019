@@ -8,6 +8,7 @@ import org.slf4j.LoggerFactory;
 import edu.wpi.first.wpilibj.command.Subsystem;
 
 import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * @author Arvind
@@ -30,7 +31,7 @@ public abstract class AldrinSubsystem extends Subsystem implements Loggable {
      *
      * @return Map with telemetry data of subsystem
      */
-    public abstract Map<String, Object> getTelemetry();
+    public abstract Map<String, Supplier> getTelemetry();
 
     /**
      * Filters the different types of data from the getTelemetry() Map and sends it to the SmartDashboard.
@@ -39,16 +40,16 @@ public abstract class AldrinSubsystem extends Subsystem implements Loggable {
     public void outputToDashboard() {
         if (getTelemetry() != null) {
             getTelemetry().forEach((k, v) -> {
-                if (v instanceof Double || v instanceof Integer) {
+                if (v.get() instanceof Double || v.get() instanceof Integer) {
                     try {
-                        SmartDashboard.putNumber(k, Double.parseDouble(v.toString()));
+                        SmartDashboard.putNumber(k, Double.parseDouble(v.get().toString()));
                     } catch (NumberFormatException e) {
                         mLogger.error("Failed to parse number to SmartDashboard!", e);
                     }
-                } else if (v instanceof Boolean) {
-                    SmartDashboard.putBoolean(k, Boolean.parseBoolean(v.toString()));
+                } else if (v.get() instanceof Boolean) {
+                    SmartDashboard.putBoolean(k, Boolean.parseBoolean(v.get().toString()));
                 } else {
-                    SmartDashboard.putString(k, v.toString());
+                    SmartDashboard.putString(k, v.get().toString());
                 }
             });
         }
@@ -70,12 +71,6 @@ public abstract class AldrinSubsystem extends Subsystem implements Loggable {
      */
     public void onPeriodic() {
         outputToDashboard();
-    }
-
-    /**
-     * A simple method to zero sensor values. For use in subsystems with closed loop control.
-     */
-    public void resetSensors() {
     }
 
     /**

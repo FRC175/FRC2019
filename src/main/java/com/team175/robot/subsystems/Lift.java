@@ -5,13 +5,14 @@ import com.team175.robot.Constants;
 
 import com.team175.robot.positions.LiftPosition;
 import com.team175.robot.util.drivers.AldrinTalonSRX;
-import com.team175.robot.util.drivers.CTREFactory;
+import com.team175.robot.util.CTREFactory;
 import com.team175.robot.util.drivers.SimpleDoubleSolenoid;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Talon;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * @author Arvind
@@ -45,11 +46,11 @@ public final class Lift extends AldrinSubsystem {
         mFront = new Talon(Constants.LIFT_FRONT_PORT);
         mRear = new Talon(Constants.LIFT_REAR_PORT);
 
-        // SimpleDoubleSolenoid(forwardChannel : int, reverseChannel : int, pcmID : int)
+        // SimpleDoubleSolenoid(forwardChannel : int, reverseChannel : int, isOnPCMTwo : boolean)
         mFrontBrake = new SimpleDoubleSolenoid(Constants.LIFT_FRONT_BRAKE_FORWARD_CHANNEL, Constants.LIFT_FRONT_BRAKE_REVERSE_CHANNEL,
-                Constants.PCM_NUMBER_TWO_ID);
+                true);
         mRearBrake = new SimpleDoubleSolenoid(Constants.LIFT_REAR_BRAKE_FORWARD_CHANNEL, Constants.LIFT_REAR_BRAKE_REVERSE_CHANNEL,
-                Constants.PCM_NUMBER_TWO_ID);
+                true);
 
         // DigitalInput(portNum : int)
         mFrontForwardLimit = new DigitalInput(Constants.LIFT_FRONT_FORWARD_LIMIT_PORT);
@@ -145,11 +146,11 @@ public final class Lift extends AldrinSubsystem {
         setRearBrake(true);
     }
 
-    public Map<String, Object> getTelemetry() {
-        LinkedHashMap<String, Object> m = new LinkedHashMap<>();
-        m.put("FLiftPower", getFrontPower());
-        m.put("RLiftPower", getRearPower());
-        m.put("LiftDrivePower", getDrivePower());
+    public Map<String, Supplier> getTelemetry() {
+        LinkedHashMap<String, Supplier> m = new LinkedHashMap<>();
+        m.put("FLiftPower", this::getFrontPower);
+        m.put("RLiftPower", this::getRearPower);
+        m.put("LiftDrivePower", this::getDrivePower);
         return m;
     }
 

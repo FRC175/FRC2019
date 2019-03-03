@@ -1,11 +1,15 @@
-package com.team175.robot.commands;
+package com.team175.robot.commands.tuning;
 
 import com.team175.robot.Robot;
 import com.team175.robot.commands.AldrinCommand;
-import com.team175.robot.util.tuning.CSVLogger;
-import com.team175.robot.util.tuning.ClosedLoopTunable;
-
+import com.team175.robot.util.CSVWriter;
+import com.team175.robot.util.ClosedLoopTunable;
 import edu.wpi.first.wpilibj.Notifier;
+import edu.wpi.first.wpilibj.Timer;
+
+import java.io.FileNotFoundException;
+import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * @author Arvind
@@ -13,19 +17,33 @@ import edu.wpi.first.wpilibj.Notifier;
 public class ClosedLoopTuner extends AldrinCommand {
 
     private ClosedLoopTunable mSubsystem;
-    private CSVLogger mWriter;
+    private CSVWriter mWriter;
     private Notifier mNotifier; // A WPILib object that spawns a new thread and calls run() at a certain refresh rate
+
+    private static final String FILE_PATH = "/home/lvuser/csvlog/telemetry.csv";
+    private static final String DELIMITER = ",";
 
     public ClosedLoopTuner(ClosedLoopTunable subsystem) {
         mSubsystem = subsystem;
-        mWriter = new CSVLogger(mSubsystem);
-        mNotifier = new Notifier(mWriter);
+        // Add time to subsystem telemetry
+        Map<String, Supplier> m = subsystem.getCSVTelemetry();
+        m.put("time", Timer::getFPGATimestamp);
+
+        try {
+            mWriter = new CSVWriter(m, FILE_PATH, DELIMITER);
+        } catch (FileNotFoundException e) {
+            mLogger.error("Failed to instantiate CSVWriter!", e);
+        }
+
+        // Create Notifier with Runnable that writes data to log
+        mNotifier = new Notifier(() -> mWriter.write());
+
         super.logInstantiation();
     }
 
     @Override
     public void initialize() {
-        mSubsystem.reset();
+        mSubsystem.resetSensors();
 
         double refreshRate;
         try {
@@ -42,7 +60,7 @@ public class ClosedLoopTuner extends AldrinCommand {
             mNotifier.startPeriodic(refreshRate);
             mSubsystem.updateGains();
         } catch (Exception e) {
-            mLogger.error("Failed to start CSVLogger thread!", e);
+            mLogger.error("Failed to start ClosedLoopTuner thread!", e);
         }
 
         super.initialize();
@@ -56,7 +74,11 @@ public class ClosedLoopTuner extends AldrinCommand {
     @Override
     public void end() {
         mNotifier.stop();
-        mWriter.stop();
+        mWriter.close();
+
+        mLogger.info("Collection of data for {} complete!", mSubsystem.getClass().getSimpleName());
+        mLogger.info("Plot csv log from RoboRIO to determine gains.");
+
         super.end();
     }
 

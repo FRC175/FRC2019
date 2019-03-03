@@ -1,4 +1,4 @@
-package com.team175.robot.commands;
+package com.team175.robot.commands.auto;
 
 import com.team175.robot.commands.AldrinCommand;
 import com.team175.robot.util.choosers.AutoModeChooser;

@@ -1,6 +1,6 @@
 package com.team175.robot.util.choosers;
 
-import com.team175.robot.commands.ClosedLoopTuner;
+import com.team175.robot.commands.tuning.ClosedLoopTuner;
 import com.team175.robot.subsystems.Drive;
 import com.team175.robot.subsystems.Elevator;
 import com.team175.robot.subsystems.LateralDrive;
@@ -50,8 +50,7 @@ public class TunerChooser implements Chooser {
 
     @Override
     public void updateFromDashboard() {
-        SubsystemToTune s = mChooser.getSelected();
-        switch (s) {
+        switch (mChooser.getSelected()) {
             case DRIVE:
                 mTuner = new ClosedLoopTuner(Drive.getInstance());
                 break;

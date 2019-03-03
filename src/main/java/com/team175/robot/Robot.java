@@ -9,8 +9,8 @@ package com.team175.robot;
 
 import com.team175.robot.subsystems.*;
 import com.team175.robot.util.choosers.AutoModeChooser;
+import com.team175.robot.util.choosers.RobotChooser;
 import com.team175.robot.util.choosers.TunerChooser;
-import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import org.slf4j.Logger;
@@ -21,6 +21,9 @@ import java.util.List;
 /**
  * TODO: Consider using FastTimedRobot.
  *
+ * TODO: NEED TO FIX MANIPULATOR ARM BRAKE!!!
+ * TODO: NEED TO FIX ELEVATOR AND MANIPULATOR ARM COUNTS IN POSITION CONTROL!!!
+ *
  * @author Arvind
  */
 public class Robot extends TimedRobot {
@@ -29,6 +32,7 @@ public class Robot extends TimedRobot {
     private Drive mDrive;
     private Elevator mElevator;
     private LateralDrive mLateralDrive;
+    // private LED mLED;
     private Lift mLift;
     private Manipulator mManipulator;
     private Vision mVision;
@@ -41,9 +45,11 @@ public class Robot extends TimedRobot {
     @Override
     public void robotInit() {
         /* Instantiations */
+        RobotChooser.getInstance().setProfile(true);
         mDrive = Drive.getInstance();
         mElevator = Elevator.getInstance();
         mLateralDrive = LateralDrive.getInstance();
+        // mLED = LED.getInstance();
         mLift = Lift.getInstance();
         mManipulator = Manipulator.getInstance();
         mVision = Vision.getInstance();
@@ -51,7 +57,7 @@ public class Robot extends TimedRobot {
         mAutoModeChooser = AutoModeChooser.getInstance();
         mTunerChooser = TunerChooser.getInstance();
         mLogger = LoggerFactory.getLogger(getClass().getSimpleName());
-        mSubsystems = List.of(mManipulator); //, mElevator, mLateralDrive, mLift, mManipulator
+        mSubsystems = List.of(mDrive); //, mElevator, mLateralDrive, mLift, mManipulator
 
         /* Configuration */
         // Runs camera stream on separate thread
@@ -74,6 +80,7 @@ public class Robot extends TimedRobot {
     public void disabledPeriodic() {
         Scheduler.getInstance().run();
 
+        // mLED.moodLampCycle();
         // Comment out in production robot
         mSubsystems.forEach(AldrinSubsystem::updateFromDashboard);
     }
@@ -96,11 +103,8 @@ public class Robot extends TimedRobot {
     public void teleopInit() {
         mAutoModeChooser.stop();
 
+        mDrive.setHighGear(false);
         mDrive.setBrakeMode(false);
-
-        // Comment out in production robot
-        // mTunerChooser.updateFromDashboard();
-        // mTunerChooser.start();
     }
 
     @Override
@@ -113,7 +117,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void testInit() {
-        /*mLogger.info("Beginning robot diagnostics test.");
+        mLogger.info("Beginning robot diagnostics test.");
 
         boolean isGood = true;
         for (AldrinSubsystem as : mSubsystems) {
@@ -124,10 +128,10 @@ public class Robot extends TimedRobot {
             mLogger.error("Robot failed diagnostics test!");
         } else {
             mLogger.info("Robot passed diagnostics test!");
-        }*/
+        }
 
-        mTunerChooser.updateFromDashboard();
-        mTunerChooser.start();
+        /*mTunerChooser.updateFromDashboard();
+        mTunerChooser.start();*/
     }
 
     @Override

@@ -1,4 +1,4 @@
-package com.team175.robot.auto;
+package com.team175.robot.commands.auto;
 
 /**
  * @author Arvind

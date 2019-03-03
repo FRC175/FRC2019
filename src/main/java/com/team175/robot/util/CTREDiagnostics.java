@@ -37,8 +37,10 @@ public class CTREDiagnostics {
         double prevPower = mBMC.getMotorOutputPercent();
         mBMC.set(ControlMode.PercentOutput, 0.75);
         Timer.delay(DELAY_TIME);
+
         double power = mBMC.getMotorOutputPercent();
         mBMC.set(ControlMode.PercentOutput, 0);
+        Timer.delay(DELAY_TIME);
 
         if (power <= prevPower) {
             sLogger.warn("{} must be inverted!", mName);
@@ -52,12 +54,7 @@ public class CTREDiagnostics {
 
     private boolean checkEncoderExists() {
         if (mBMC instanceof TalonSRX) {
-            mBMC.set(ControlMode.PercentOutput, 0.75);
-            Timer.delay(DELAY_TIME);
-            boolean doesEncoderExist = ((TalonSRX) mBMC).getSensorCollection().getPulseWidthRiseToFallUs() != 0;
-            mBMC.set(ControlMode.PercentOutput, 0);
-
-            if (!doesEncoderExist) {
+            if (((TalonSRX) mBMC).getSensorCollection().getPulseWidthRiseToFallUs() == 0) {
                 sLogger.warn("{} does not have an encoder attached!", mName);
                 return false;
             } else {
@@ -75,8 +72,10 @@ public class CTREDiagnostics {
         double prePos = mBMC.getSelectedSensorPosition();
         mBMC.set(ControlMode.PercentOutput, (mIsOutputGood ? 0.75 : -0.75));
         Timer.delay(DELAY_TIME);
+
         mBMC.set(ControlMode.PercentOutput, 0);
         double postPos = mBMC.getSelectedSensorPosition();
+        Timer.delay(DELAY_TIME);
 
         if (postPos <= prePos) {
             sLogger.warn("{} sensor out of phase!", mName);
@@ -108,14 +107,14 @@ public class CTREDiagnostics {
             sLogger.info("Beginning diagnostics test for {}, trial {}.", mName, i + 1);
 
             mIsOutputGood = checkOutputDirection();
-            // mDoesEncoderExist = checkEncoderExists();
-            // mIsSensorInPhase = mDoesEncoderExist ? checkSensorPhase() : false;
-            mIsSensorInPhase = checkSensorPhase();
+            mDoesEncoderExist = checkEncoderExists();
+            mIsSensorInPhase = mDoesEncoderExist ? checkSensorPhase() : false;
+            // mIsSensorInPhase = checkSensorPhase();
             mIsFaulted = !checkFaults(); // Invert to see if motor is faulted
 
             isGood = true;
             isGood &= mIsOutputGood;
-            // isGood &= mDoesEncoderExist;
+            isGood &= mDoesEncoderExist;
             isGood &= mIsSensorInPhase;
             isGood &= !mIsFaulted; // Invert again to see if motor is good
         } while (!isGood && i++ < TEST_RETRY_COUNT);
@@ -127,22 +126,22 @@ public class CTREDiagnostics {
         return isGood;
     }
 
-    public static void checkCommand(ErrorCode code, String msg) {
-        if (code != ErrorCode.OK) {
-            sLogger.warn("{}\n" +
-                    "ErrorCode: {}", msg, code.toString());
-        }
-    }
-
     @Override
     public String toString() {
         StringBuilder sb = new StringBuilder();
         sb.append("Diagnostics Test Summary for ").append(mName).append(":\n");
         sb.append("Output Direction: ").append(mIsOutputGood).append("\n");
-        // sb.append("Encoder Existence: ").append(mDoesEncoderExist).append("\n");
+        sb.append("Encoder Existence: ").append(mDoesEncoderExist).append("\n");
         sb.append("Sensor Phase: ").append(mIsSensorInPhase).append("\n");
         sb.append("Motor Reset?: ").append(mIsFaulted);
         return sb.toString();
+    }
+
+    public static void checkCommand(ErrorCode code, String msg) {
+        if (code != ErrorCode.OK) {
+            sLogger.warn("{}\n" +
+                    "\tErrorCode: {}", msg, code.toString());
+        }
     }
 
 }

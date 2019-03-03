@@ -1,5 +1,6 @@
 package com.team175.robot.util.drivers;
 
+import com.team175.robot.Constants;
 import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
@@ -12,12 +13,13 @@ public class SimpleDoubleSolenoid {
 
     private DoubleSolenoid mSolenoid;
 
-    public SimpleDoubleSolenoid(int forwardChannel, int reverseChannel) {
-        mSolenoid = new DoubleSolenoid(forwardChannel, reverseChannel);
+    public SimpleDoubleSolenoid(int forwardChannel, int reverseChannel, boolean isOnPCMTwo) {
+        mSolenoid = new DoubleSolenoid(isOnPCMTwo ? Constants.PCM_NUMBER_TWO_ID : Constants.PCM_NUMBER_ONE_ID,
+                forwardChannel, reverseChannel);
     }
 
-    public SimpleDoubleSolenoid(int forwardChannel, int reverseChannel, int pcmID) {
-        mSolenoid = new DoubleSolenoid(pcmID, forwardChannel, reverseChannel);
+    public SimpleDoubleSolenoid(int forwardChannel, int reverseChannel) {
+        this(forwardChannel, reverseChannel, false);
     }
 
     public void set(boolean enable) {

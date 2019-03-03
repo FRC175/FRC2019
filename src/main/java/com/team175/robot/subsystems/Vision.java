@@ -3,6 +3,7 @@ package com.team175.robot.subsystems;
 import edu.wpi.first.cameraserver.CameraServer;
 
 import java.util.Map;
+import java.util.function.Supplier;
 
 /**
  * @author Arvind
@@ -38,7 +39,7 @@ public final class Vision extends AldrinSubsystem implements Runnable {
     }
 
     @Override
-    public Map<String, Object> getTelemetry() {
+    public Map<String, Supplier> getTelemetry() {
         return null;
     }
 

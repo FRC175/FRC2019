@@ -1,4 +1,4 @@
-package com.team175.robot.auto;
+package com.team175.robot.commands.auto;
 
 /*import com.team175.robot.commands.old.DriveLiftToFront;
 import com.team175.robot.commands.old.DriveLiftToRear;

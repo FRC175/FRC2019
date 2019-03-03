@@ -2,20 +2,17 @@ package com.team175.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
-import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
-import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.team175.robot.Constants;
 import com.team175.robot.positions.ElevatorPosition;
+import com.team175.robot.profiles.RobotProfile;
+import com.team175.robot.util.*;
+import com.team175.robot.util.choosers.RobotChooser;
 import com.team175.robot.util.drivers.AldrinTalonSRX;
-import com.team175.robot.util.CTREDiagnostics;
-import com.team175.robot.util.drivers.CTREFactory;
-import com.team175.robot.util.tuning.ClosedLoopTunable;
-import com.team175.robot.util.tuning.ClosedLoopGains;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.function.DoubleSupplier;
+import java.util.function.Supplier;
 
 /**
  * @author Arvind
@@ -45,14 +42,19 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
         mMaster = CTREFactory.getMasterTalon(Constants.ELEVATOR_PORT);
 
         mWantedPosition = 0;
-        mGains = Constants.ELEVATOR_GAINS;
 
         /* Configuration */
+        RobotProfile profile = RobotChooser.getInstance().getProfile();
+        CTREConfiguration.config(mMaster, profile.getElevatorConfig(), "Elevator");
+        mGains = CTREConfiguration.getGainsFromConfig(profile.getElevatorConfig(), true);
+
+        /*mGains = Constants.ELEVATOR_GAINS;
         CTREDiagnostics.checkCommand(mMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative),
                 "Failed to config Elevator encoder!");
         setGains(mGains);
         mMaster.setInverted(true);
-        mMaster.setSensorPhase(true);
+        mMaster.setSensorPhase(true);*/
+
         mMaster.setBrakeMode(true);
     }
 
@@ -104,28 +106,23 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
     }
 
     @Override
-    public void resetSensors() {
-        CTREDiagnostics.checkCommand(mMaster.setSelectedSensorPosition(0), "Failed to zero Elevator encoder!");
-    }
-
-    @Override
     public void stop() {
         // setPosition(mWantedPosition);
         setPower(0);
     }
 
     @Override
-    public Map<String, Object> getTelemetry() {
-        LinkedHashMap<String, Object> m = new LinkedHashMap<>();
-        m.put("ElevatorKp", mGains.getKp());
-        m.put("ElevatorKd", mGains.getKd());
-        m.put("ElevatorKf", mGains.getKf());
-        m.put("ElevatorAccel", mGains.getAcceleration());
-        m.put("ElevatorCruiseVel", mGains.getCruiseVelocity());
-        m.put("ElevatorWantedPos", mWantedPosition);
-        m.put("ElevatorPos", getPosition());
-        m.put("ElevatorPower", getPower());
-        m.put("ElevatorVolt", getVoltage());
+    public Map<String, Supplier> getTelemetry() {
+        LinkedHashMap<String, Supplier> m = new LinkedHashMap<>();
+        m.put("ElevatorKp", () -> mGains.getKp());
+        m.put("ElevatorKd", () -> mGains.getKd());
+        m.put("ElevatorKf", () -> mGains.getKf());
+        m.put("ElevatorAccel", () -> mGains.getAcceleration());
+        m.put("ElevatorCruiseVel", () -> mGains.getCruiseVelocity());
+        m.put("ElevatorWantedPos", () -> mWantedPosition);
+        m.put("ElevatorPos", this::getPosition);
+        m.put("ElevatorPower", this::getPower);
+        m.put("ElevatorVolt", this::getVoltage);
         return m;
     }
 
@@ -164,13 +161,13 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
     }
 
     @Override
-    public void reset() {
-        resetSensors();
+    public void resetSensors() {
+        CTREDiagnostics.checkCommand(mMaster.setSelectedSensorPosition(0), "Failed to zero Elevator encoder!");
     }
 
     @Override
-    public Map<String, DoubleSupplier> getCSVTelemetry() {
-        LinkedHashMap<String, DoubleSupplier> m = new LinkedHashMap<>();
+    public Map<String, Supplier> getCSVTelemetry() {
+        LinkedHashMap<String, Supplier> m = new LinkedHashMap<>();
         m.put("position", this::getPosition);
         m.put("wanted_position", () -> mWantedPosition);
         return m;

@@ -1,6 +1,6 @@
 <configuration>
-    <timestamp key="filePattern" datePattern="yyyy-MM-dd"/>
-    <!-- <timestamp key="filePattern" datePattern="yyyy-MM-dd-HH-mm"/> -->
+    <!--<timestamp key="filePattern" datePattern="yyyy-MM-dd"/>-->
+    <timestamp key="filePattern" datePattern="yyyy-MM-dd-HH-mm"/>
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <!-- encoders are assigned the type
@@ -18,28 +18,14 @@
         </encoder>
     </appender>
 
-    <!-- <appender name="DRIVER_STATION" class="com.team175.robot.util.tuningDriverStationAppender" /> -->
-
-    <!-- <appender name="FILE" class="ch.qos.logback.core.rolling.RollingFileAppender">
-        <rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-            <fileNamePattern>~/log/log-%d.log</fileNamePattern>
-            <maxHistory>120</maxHistory>
-            <totalSizeCap>1GB</totalSizeCap>
-        </rollingPolicy>
-        <triggeringPolicy class="ch.qos.logback.core.rolling.SizeBasedTriggeringPolicy">
-            <maxFileSize>5MB</maxFileSize>
-        </triggeringPolicy>
-        <encoder>
-            <pattern>%d{HH:mm:ss.SSS} [%thread] %-5level %logger{36} - %msg%n</pattern>
-        </encoder>
-    </appender> -->
+    <appender name="DRIVER_STATION" class="com.team175.robot.util.DriverStationAppender"/>
 
     <root level="debug">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="FILE"/>
     </root>
 
-    <!-- <root level="error">
+    <root level="error">
         <appender-ref ref="DRIVER_STATION"/>
-    </root> -->
+    </root>
 </configuration>

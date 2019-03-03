@@ -6,18 +6,17 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.team175.robot.Constants;
 import com.team175.robot.positions.ManipulatorArmPosition;
 import com.team175.robot.positions.ManipulatorRollerPosition;
+import com.team175.robot.profiles.RobotProfile;
+import com.team175.robot.util.*;
+import com.team175.robot.util.choosers.RobotChooser;
 import com.team175.robot.util.drivers.AldrinTalonSRX;
-import com.team175.robot.util.CTREDiagnostics;
-import com.team175.robot.util.drivers.CTREFactory;
 import com.team175.robot.util.drivers.SimpleDoubleSolenoid;
-import com.team175.robot.util.tuning.ClosedLoopTunable;
-import com.team175.robot.util.tuning.ClosedLoopGains;
 import edu.wpi.first.wpilibj.Talon;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.function.DoubleSupplier;
+import java.util.function.Supplier;
 
 /**
  * @author Arvind
@@ -61,12 +60,18 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
 
         mArmWantedPosition = 0;
         // mArmWantedPosition = ManipulatorArmPosition.STOW.positionToMove();
-        mArmGains = Constants.MANIPULATOR_ARM_GAINS;
 
         /* Configuration */
+        RobotProfile profile = RobotChooser.getInstance().getProfile();
+        CTREConfiguration.config(mArmMaster, profile.getManipulatorArmMasterConfig(), "ManipulatorArm");
+        CTREConfiguration.config(mArmSlave, profile.getManipulatorArmSlaveConfig(), "ManipulatorArmSlave");
+        mArmGains = CTREConfiguration.getGainsFromConfig(profile.getManipulatorArmMasterConfig(), true);
+
+        /*mArmGains = Constants.MANIPULATOR_ARM_GAINS;
         CTREDiagnostics.checkCommand(mArmMaster.configSelectedFeedbackSensor(FeedbackDevice.Analog),
                 "Failed to config ManipulatorArm encoder!");
-        setArmGains(mArmGains);
+        setArmGains(mArmGains);*/
+
         mArmMaster.setBrakeMode(true);
         deploy(true);
         stop();
@@ -104,7 +109,7 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
     }
 
     public void stopRollers() {
-        setRollerPower(0, 0);
+        setRollerPosition(ManipulatorRollerPosition.IDLE);
         punchHatch(false);
     }
 
@@ -184,28 +189,23 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
     }
 
     @Override
-    public void resetSensors() {
-        // CTREDiagnostics.checkCommand(mArmMaster.setSelectedSensorPosition(0), "Failed to zero arm encoder!");
-    }
-
-    @Override
     public void stop() {
         stopArm();
         stopRollers();
     }
 
     @Override
-    public Map<String, Object> getTelemetry() {
-        LinkedHashMap<String, Object> m = new LinkedHashMap<>();
-        m.put("ManipArmKp", mArmGains.getKp());
-        m.put("ManipArmKd", mArmGains.getKd());
-        m.put("ManipArmKf", mArmGains.getKf());
-        m.put("ManipArmAccel", mArmGains.getAcceleration());
-        m.put("ManipArmCruiseVel", mArmGains.getCruiseVelocity());
-        m.put("ManipArmWantedPos", mArmWantedPosition);
-        m.put("ManipArmPos", getArmPosition());
-        m.put("ManipArmPower", getArmPower());
-        m.put("ManipArmVolt", getArmVoltage());
+    public Map<String, Supplier> getTelemetry() {
+        LinkedHashMap<String, Supplier> m = new LinkedHashMap<>();
+        m.put("ManipArmKp", () -> mArmGains.getKp());
+        m.put("ManipArmKd", () -> mArmGains.getKd());
+        m.put("ManipArmKf", () -> mArmGains.getKf());
+        m.put("ManipArmAccel", () -> mArmGains.getAcceleration());
+        m.put("ManipArmCruiseVel", () -> mArmGains.getCruiseVelocity());
+        m.put("ManipArmWantedPos", () -> mArmWantedPosition);
+        m.put("ManipArmPos", this::getArmPosition);
+        m.put("ManipArmPower", this::getArmPower);
+        m.put("ManipArmVolt", this::getArmVoltage);
         return m;
     }
 
@@ -244,13 +244,13 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
     }
 
     @Override
-    public void reset() {
-        resetSensors();
+    public void resetSensors() {
+        // CTREDiagnostics.checkCommand(mArmMaster.setSelectedSensorPosition(0), "Failed to zero arm encoder!");
     }
 
     @Override
-    public Map<String, DoubleSupplier> getCSVTelemetry() {
-        LinkedHashMap<String, DoubleSupplier> m = new LinkedHashMap<>();
+    public Map<String, Supplier> getCSVTelemetry() {
+        LinkedHashMap<String, Supplier> m = new LinkedHashMap<>();
         m.put("position", this::getArmPosition);
         m.put("wanted_position", () -> mArmWantedPosition);
         return m;

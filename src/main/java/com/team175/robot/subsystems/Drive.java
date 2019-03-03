@@ -6,21 +6,18 @@ import com.ctre.phoenix.sensors.PigeonIMU;
 import com.team175.robot.Constants;
 import com.team175.robot.commands.drive.CheesyDrive;
 import com.team175.robot.paths.Path;
-import com.team175.robot.util.DriveHelper;
-import com.team175.robot.util.PathHelper;
+import com.team175.robot.profiles.RobotProfile;
+import com.team175.robot.util.*;
+import com.team175.robot.util.choosers.RobotChooser;
 import com.team175.robot.util.drivers.AldrinTalonSRX;
-import com.team175.robot.util.CTREDiagnostics;
-import com.team175.robot.util.drivers.CTREFactory;
 import com.team175.robot.util.drivers.SimpleDoubleSolenoid;
-import com.team175.robot.util.tuning.ClosedLoopTunable;
-import com.team175.robot.util.tuning.ClosedLoopGains;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.function.DoubleSupplier;
+import java.util.function.Supplier;
 
 /**
  * TODO: Add gyro PID tuning.
@@ -75,10 +72,19 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
 
         mWantedPosition = 0;
         mWantedAngle = 0.0;
-        mLeftGains = Constants.LEFT_DRIVE_GAINS;
-        mRightGains = Constants.RIGHT_DRIVE_GAINS;
 
         /* Configuration */
+        RobotProfile profile = RobotChooser.getInstance().getProfile();
+        CTREConfiguration.config(mLeftMaster, profile.getLeftMasterConfig(), "LeftMaster");
+        CTREConfiguration.config(mLeftSlave, profile.getLeftSlaveConfig(), "LeftSlave");
+        CTREConfiguration.config(mRightMaster, profile.getRightMasterConfig(), "RightMaster");
+        CTREConfiguration.config(mRightSlave, profile.getRightSlaveConfig(), "RightSlave");
+        mLeftGains = CTREConfiguration.getGainsFromConfig(profile.getLeftMasterConfig(), true);
+        mRightGains = CTREConfiguration.getGainsFromConfig(profile.getRightMasterConfig(), true);
+        // mPigeonGains = CTREConfiguration.getGainsFromConfig(profile.getRightMasterConfig(), false);
+
+        /*mLeftGains = Constants.LEFT_DRIVE_GAINS;
+        mRightGains = Constants.RIGHT_DRIVE_GAINS;
         CTREDiagnostics.checkCommand(mLeftMaster.configOpenloopRamp(Constants.RAMP_TIME, Constants.TIMEOUT_MS),
                 "Failed to config LeftMaster ramp!");
         CTREDiagnostics.checkCommand(mRightMaster.configOpenloopRamp(Constants.RAMP_TIME, Constants.TIMEOUT_MS),
@@ -92,7 +98,8 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
         mLeftMaster.setInverted(false);
         mLeftSlave.setInverted(false);
         mRightMaster.setInverted(true);
-        mRightSlave.setInverted(true);
+        mRightSlave.setInverted(true);*/
+
         // mPathHelper.configTalons();
         setHighGear(false);
         resetSensors();
@@ -199,35 +206,31 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
     }
 
     public void setLeftGains(ClosedLoopGains gains) {
-        mLeftGains = gains;
-        CTREDiagnostics.checkCommand(mLeftMaster.configPIDF(mLeftGains.getKp(), mLeftGains.getKi(), mLeftGains.getKd(),
+        /*CTREDiagnostics.checkCommand(mLeftMaster.configPIDF(mLeftGains.getKp(), mLeftGains.getKi(), mLeftGains.getKd(),
                 mLeftGains.getKf()), "Failed to config LeftMaster PID gains!");
         CTREDiagnostics.checkCommand(mLeftMaster.configMotionAcceleration(mLeftGains.getAcceleration()),
                 "Failed to config LeftMaster acceleration!");
         CTREDiagnostics.checkCommand(mLeftMaster.configMotionCruiseVelocity(mLeftGains.getCruiseVelocity()),
-                "Failed to config LeftMaster cruise velocity!");
+                "Failed to config LeftMaster cruise velocity!");*/
+        mLeftGains = gains;
+        CTREConfiguration.setPrimaryGains(mLeftMaster, mLeftGains, "LeftMaster");
     }
 
     public void setRightGains(ClosedLoopGains gains) {
-        mRightGains = gains;
-        CTREDiagnostics.checkCommand(mRightMaster.configPIDF(mRightGains.getKp(), mRightGains.getKi(), mRightGains.getKd(),
+        /*CTREDiagnostics.checkCommand(mRightMaster.configPIDF(mRightGains.getKp(), mRightGains.getKi(), mRightGains.getKd(),
                 mRightGains.getKf()), "Failed to config RightMaster PID gains!");
         CTREDiagnostics.checkCommand(mRightMaster.configMotionAcceleration(mRightGains.getAcceleration()),
                 "Failed to config RightMaster acceleration!");
         CTREDiagnostics.checkCommand(mRightMaster.configMotionCruiseVelocity(mRightGains.getCruiseVelocity()),
-                "Failed to config RightMaster cruise velocity!");
+                "Failed to config RightMaster cruise velocity!");*/
+        mRightGains = gains;
+        CTREConfiguration.setPrimaryGains(mRightMaster, mRightGains, "RightMaster");
     }
 
     public void setPigeonGains(ClosedLoopGains gains) {
+        /*mRightMaster.configAuxPIDF(mPigeonGains.getKp(), mPigeonGains.getKi(), mPigeonGains.getKd(), mPigeonGains.getKf());*/
         mPigeonGains = gains;
-        mRightMaster.configAuxPIDF(mPigeonGains.getKp(), mPigeonGains.getKi(), mPigeonGains.getKd(), mPigeonGains.getKf());
-    }
-
-    @Override
-    public void resetSensors() {
-        CTREDiagnostics.checkCommand(mLeftMaster.setSelectedSensorPosition(0), "Failed to zero LeftMaster encoder!");
-        CTREDiagnostics.checkCommand(mRightMaster.setSelectedSensorPosition(0), "Failed to zero RightMaster encoder!");
-        // CTREDiagnostics.checkCommand(mPigeon.setYaw(0, Constants.TIMEOUT_MS), "Failed to zero Pigeon yaw!");
+        CTREConfiguration.setAuxGains(mRightMaster, mPigeonGains, "RightMaster");
     }
 
     @Override
@@ -242,27 +245,27 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
     }
 
     @Override
-    public Map<String, Object> getTelemetry() {
-        LinkedHashMap<String, Object> m = new LinkedHashMap<>();
-        m.put("LDriveKp", mLeftGains.getKp());
-        m.put("LDriveKd", mLeftGains.getKd());
-        m.put("LDriveKf", mLeftGains.getKf());
-        m.put("LDriveAccel", mLeftGains.getAcceleration());
-        m.put("LDriveCruiseVel", mLeftGains.getCruiseVelocity());
-        m.put("LDriveError", getLeftClosedLoopError());
-        m.put("LDrivePos", getLeftPosition());
-        m.put("LDrivePower", getLeftPower());
-        m.put("RDriveKp", mRightGains.getKp());
-        m.put("RDriveKd", mRightGains.getKd());
-        m.put("RDriveKf", mRightGains.getKf());
-        m.put("RDriveAccel", mRightGains.getAcceleration());
-        m.put("RDriveCruiseVel", mRightGains.getCruiseVelocity());
-        m.put("RDriveError", getRightClosedLoopError());
-        m.put("RDrivePos", getRightPosition());
-        m.put("RDrivePower", getRightPower());
-        m.put("DriveWantedPos", mWantedPosition);
-        m.put("DriveWantedAngle", mWantedAngle);
-        m.put("DriveIsLowGear", isHighGear());
+    public Map<String, Supplier> getTelemetry() {
+        LinkedHashMap<String, Supplier> m = new LinkedHashMap<>();
+        m.put("LDriveKp", () -> mLeftGains.getKp());
+        m.put("LDriveKd", () -> mLeftGains.getKd());
+        m.put("LDriveKf", () -> mLeftGains.getKf());
+        m.put("LDriveAccel", () -> mLeftGains.getAcceleration());
+        m.put("LDriveCruiseVel", () -> mLeftGains.getCruiseVelocity());
+        m.put("LDriveError", this::getLeftClosedLoopError);
+        m.put("LDrivePos", this::getLeftPosition);
+        m.put("LDrivePower", this::getLeftPower);
+        m.put("RDriveKp", () -> mRightGains.getKp());
+        m.put("RDriveKd", () -> mRightGains.getKd());
+        m.put("RDriveKf", () -> mRightGains.getKf());
+        m.put("RDriveAccel", () -> mRightGains.getAcceleration());
+        m.put("RDriveCruiseVel", () -> mRightGains.getCruiseVelocity());
+        m.put("RDriveError", this::getRightClosedLoopError);
+        m.put("RDrivePos", this::getRightPosition);
+        m.put("RDrivePower", this::getRightPower);
+        m.put("DriveWantedPos", () -> mWantedPosition);
+        m.put("DriveWantedAngle", () -> mWantedAngle);
+        m.put("DriveIsLowGear", this::isHighGear);
         return m;
     }
 
@@ -316,13 +319,15 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
     }
 
     @Override
-    public void reset() {
-        resetSensors();
+    public void resetSensors() {
+        CTREDiagnostics.checkCommand(mLeftMaster.setSelectedSensorPosition(0), "Failed to zero LeftMaster encoder!");
+        CTREDiagnostics.checkCommand(mRightMaster.setSelectedSensorPosition(0), "Failed to zero RightMaster encoder!");
+        // CTREDiagnostics.checkCommand(mPigeon.setYaw(0, Constants.TIMEOUT_MS), "Failed to zero Pigeon yaw!");
     }
 
     @Override
-    public Map<String, DoubleSupplier> getCSVTelemetry() {
-        LinkedHashMap<String, DoubleSupplier> m = new LinkedHashMap<>();
+    public Map<String, Supplier> getCSVTelemetry() {
+        LinkedHashMap<String, Supplier> m = new LinkedHashMap<>();
         m.put("left_position", this::getLeftPosition);
         m.put("right_position", this::getRightPosition);
         m.put("wanted_position", () -> mWantedPosition);

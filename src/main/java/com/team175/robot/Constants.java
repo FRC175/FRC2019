@@ -1,8 +1,7 @@
 package com.team175.robot;
 
-import com.team175.robot.util.drivers.SimpleDoubleSolenoid;
-import com.team175.robot.util.tuning.ClosedLoopGains;
-import com.team175.robot.util.tuning.Transmission;
+import com.team175.robot.util.ClosedLoopGains;
+import com.team175.robot.util.Transmission;
 
 /**
  * @author Arvind
@@ -23,6 +22,7 @@ public final class Constants {
     public static final int LATERAL_DRIVE_PORT = 7;
     public static final int MANIPULATOR_ARM_MASTER_PORT = 10;
     public static final int MANIPULATOR_ARM_SLAVE_PORT = 9;
+    public static final int CANIFIER_PORT = -1; // TODO: Fix
 
     // Pneumatics
     public static final int SHIFT_FORWARD_CHANNEL = 4;
@@ -100,42 +100,92 @@ public final class Constants {
     // TODO: Consider replacing empirical with actual velocity
 
     // TODO: Verify max speed of motors
-    private static final int DRIVE_MAX_RPM = 5330;
-    private static final int ELEVATOR_MAX_RPM = 5840;
-    private static final int LATERAL_DRIVE_MAX_RPM = 19300; // Assuming this is 655
-    private static final int MANIPULATOR_ARM_MAX_RPM = 90; // Find speed of window motors
+    public static final int DRIVE_MAX_RPM = 5330;
+    public static final int ELEVATOR_MAX_RPM = 5840;
+    public static final int LATERAL_DRIVE_MAX_RPM = 19300; // Assuming this is 655
+    public static final int MANIPULATOR_ARM_MAX_RPM = 90;
 
     // TODO: Determine gear ratio of each motor
-    // private static final double DRIVE_GEAR_RATIO = 3.66 / 1.0;
-    private static final double ELEVATOR_GEAR_RATIO = 1;
-    private static final double LATERAL_DRIVE_GEAR_RATIO = 1;
-    private static final double MANIPULATOR_ARM_GEAR_RATIO = 1 / 1;
+    public static final double DRIVE_GEAR_RATIO = 3.66 / 1;
+    public static final double ELEVATOR_GEAR_RATIO = 1;
+    public static final double LATERAL_DRIVE_GEAR_RATIO = 1;
+    public static final double MANIPULATOR_ARM_GEAR_RATIO = 1 / 1;
 
     // TODO: Verify manipulator arm encoder counts per revolution
     // talonSRXCounts = counts * 4
-    private static final int DRIVE_COUNTS_PER_REVOLUTION = 4096;
-    private static final int ELEVATOR_COUNTS_PER_REVOLUTION = 4096;
-    private static final int LATERAL_DRIVE_COUNTS_PER_REVOLUTION = 512;
-    private static final int MANIPULATOR_ARM_COUNTS_PER_REVOLUTION = 4096;
+    public static final int DRIVE_COUNTS_PER_REVOLUTION = 4096;
+    public static final int ELEVATOR_COUNTS_PER_REVOLUTION = 4096;
+    public static final int LATERAL_DRIVE_COUNTS_PER_REVOLUTION = 512;
+    public static final int MANIPULATOR_ARM_COUNTS_PER_REVOLUTION = 4096;
 
     // TODO: Perhaps measure using Phoenix Tuner
-    public static final int DRIVE_MAX_VELOCITY = 3200;
+    /*public static final int DRIVE_MAX_VELOCITY = 3200;
     public static final int ELEVATOR_MAX_VELOCITY = 0;
     public static final int LATERAL_DRIVE_MAX_VELOCITY = 0;
-    public static final int MANIPULATOR_ARM_MAX_VELOCITY = 0;
+    public static final int MANIPULATOR_ARM_MAX_VELOCITY = 0;*/
 
-    private static final Transmission DRIVE_TRANSMISSION = new Transmission(DRIVE_MAX_VELOCITY,
+    /*private static final Transmission DRIVE_TRANSMISSION = new Transmission(DRIVE_MAX_VELOCITY,
             DRIVE_COUNTS_PER_REVOLUTION);
     private static final Transmission ELEVATOR_TRANSMISSION = new Transmission(ELEVATOR_MAX_RPM,
             ELEVATOR_COUNTS_PER_REVOLUTION, ELEVATOR_GEAR_RATIO);
     private static final Transmission LATERAL_DRIVE_TRANSMISSION = new Transmission(LATERAL_DRIVE_MAX_RPM,
             LATERAL_DRIVE_COUNTS_PER_REVOLUTION, LATERAL_DRIVE_GEAR_RATIO);
     private static final Transmission MANIPULATOR_ARM_TRANSMISSION = new Transmission(MANIPULATOR_ARM_MAX_RPM,
-            MANIPULATOR_ARM_COUNTS_PER_REVOLUTION, MANIPULATOR_ARM_GEAR_RATIO);
+            MANIPULATOR_ARM_COUNTS_PER_REVOLUTION, MANIPULATOR_ARM_GEAR_RATIO);*/
 
     /* Software Constants */
     // Closed Loop Gains
-    public static final ClosedLoopGains LEFT_DRIVE_GAINS = new ClosedLoopGains(0.1, 0, 0,
+    public static final double COMPETITION_LEFT_DRIVE_KP = 0.1;
+    public static final double COMPETITION_LEFT_DRIVE_KD = 0.0;
+    public static final int COMPETITION_LEFT_DRIVE_ACCELERATION = 0;
+    public static final int COMPETITION_LEFT_DRIVE_CRUISE_VELOCITY = 0;
+
+    public static final double PRACTICE_LEFT_DRIVE_KP = 0.1;
+    public static final double PRACTICE_LEFT_DRIVE_KD = 0.0;
+    public static final int PRACTICE_LEFT_DRIVE_ACCELERATION = 0;
+    public static final int PRACTICE_LEFT_DRIVE_CRUISE_VELOCITY = 0;
+
+    public static final double COMPETITION_RIGHT_DRIVE_KP = 0.1;
+    public static final double COMPETITION_RIGHT_DRIVE_KD = 0.0;
+    public static final int COMPETITION_RIGHT_DRIVE_ACCELERATION = 0;
+    public static final int COMPETITION_RIGHT_DRIVE_CRUISE_VELOCITY = 0;
+
+    public static final double PRACTICE_RIGHT_DRIVE_KP = 0.1;
+    public static final double PRACTICE_RIGHT_DRIVE_KD = 0.0;
+    public static final int PRACTICE_RIGHT_DRIVE_ACCELERATION = 0;
+    public static final int PRACTICE_RIGHT_DRIVE_CRUISE_VELOCITY = 0;
+
+    public static final double COMPETITION_ELEVATOR_KP = 0.1;
+    public static final double COMPETITION_ELEVATOR_KD = 0.0;
+    public static final int COMPETITION_ELEVATOR_ACCELERATION = 0;
+    public static final int COMPETITION_ELEVATOR_CRUISE_VELOCITY = 0;
+
+    public static final double PRACTICE_ELEVATOR_KP = 0.1;
+    public static final double PRACTICE_ELEVATOR_KD = 0.0;
+    public static final int PRACTICE_ELEVATOR_ACCELERATION = 0;
+    public static final int PRACTICE_ELEVATOR_CRUISE_VELOCITY = 0;
+
+    public static final double COMPETITION_LATERAL_DRIVE_KP = 0.1;
+    public static final double COMPETITION_LATERAL_DRIVE_KD = 0.0;
+    public static final int COMPETITION_LATERAL_DRIVE_ACCELERATION = 0;
+    public static final int COMPETITION_LATERAL_DRIVE_CRUISE_VELOCITY = 0;
+
+    public static final double PRACTICE_LATERAL_DRIVE_KP = 0.1;
+    public static final double PRACTICE_LATERAL_DRIVE_KD = 0.0;
+    public static final int PRACTICE_LATERAL_DRIVE_ACCELERATION = 0;
+    public static final int PRACTICE_LATERAL_DRIVE_CRUISE_VELOCITY = 0;
+
+    public static final double COMPETITION_MANIPULATOR_ARM_KP = 0.1;
+    public static final double COMPETITION_MANIPULATOR_ARM_KD = 0.0;
+    public static final int COMPETITION_MANIPULATOR_ARM_ACCELERATION = 0;
+    public static final int COMPETITION_MANIPULATOR_ARM_CRUISE_VELOCITY = 0;
+
+    public static final double PRACTICE_MANIPULATOR_ARM_KP = 0.1;
+    public static final double PRACTICE_MANIPULATOR_ARM_KD = 0.0;
+    public static final int PRACTICE_MANIPULATOR_ARM_ACCELERATION = 0;
+    public static final int PRACTICE_MANIPULATOR_ARM_CRUISE_VELOCITY = 0;
+
+    /*public static final ClosedLoopGains LEFT_DRIVE_GAINS = new ClosedLoopGains(0.1, 0, 0,
             DRIVE_TRANSMISSION.getKf(), DRIVE_TRANSMISSION.getVelocity() / 2,
             DRIVE_TRANSMISSION.getVelocity() / 2);
     public static final ClosedLoopGains RIGHT_DRIVE_GAINS = new ClosedLoopGains(0.1, 0, 0,
@@ -149,7 +199,7 @@ public final class Constants {
             LATERAL_DRIVE_TRANSMISSION.getVelocity() / 2);
     public static final ClosedLoopGains MANIPULATOR_ARM_GAINS = new ClosedLoopGains(0.1, 0, 0,
             MANIPULATOR_ARM_TRANSMISSION.getKf(), MANIPULATOR_ARM_TRANSMISSION.getVelocity() / 2,
-            MANIPULATOR_ARM_TRANSMISSION.getVelocity() / 2);
+            MANIPULATOR_ARM_TRANSMISSION.getVelocity() / 2);*/
 
     // CTRE Constants
     public static final int SLOT_INDEX = 0;

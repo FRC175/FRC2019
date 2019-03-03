@@ -5,18 +5,17 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.team175.robot.Constants;
 import com.team175.robot.positions.LineSensorPosition;
+import com.team175.robot.profiles.RobotProfile;
+import com.team175.robot.util.*;
+import com.team175.robot.util.choosers.RobotChooser;
 import com.team175.robot.util.drivers.AldrinTalonSRX;
-import com.team175.robot.util.CTREDiagnostics;
-import com.team175.robot.util.drivers.CTREFactory;
 
 import com.team175.robot.util.drivers.SimpleDoubleSolenoid;
-import com.team175.robot.util.tuning.ClosedLoopTunable;
-import com.team175.robot.util.tuning.ClosedLoopGains;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.function.DoubleSupplier;
+import java.util.function.Supplier;
 
 /**
  * @author Arvind
@@ -48,9 +47,9 @@ public final class LateralDrive extends AldrinSubsystem implements ClosedLoopTun
         // CTREFactory.getMasterTalon(portNum : int)
         mMaster = CTREFactory.getMasterTalon(Constants.LATERAL_DRIVE_PORT);
 
-        // SimpleDoubleSolenoid(forwardChannel : int, reverseChannel : int, pcmID : int)
+        // SimpleDoubleSolenoid(forwardChannel : int, reverseChannel : int, isOnPCMTwo : boolean)
         mDeploy = new SimpleDoubleSolenoid(Constants.LATERAL_DRIVE_DEPLOY_FORWARD_CHANNEL, Constants.LATERAL_DRIVE_DEPLOY_REVERSE_CHANNEL,
-                Constants.PCM_NUMBER_TWO_ID);
+                true);
 
         // DigitalInput(portNum : int)
         /*mLineSensors = Map.of(
@@ -62,12 +61,17 @@ public final class LateralDrive extends AldrinSubsystem implements ClosedLoopTun
         );*/
 
         mWantedPosition = 0;
-        mGains = Constants.LATERAL_DRIVE_GAINS;
 
         /* Configuration */
+        RobotProfile profile = RobotChooser.getInstance().getProfile();
+        CTREConfiguration.config(mMaster, profile.getLateralDriveConfig(), "LateralDrive");
+        mGains = CTREConfiguration.getGainsFromConfig(profile.getLateralDriveConfig(), true);
+
+        /*mGains = Constants.LATERAL_DRIVE_GAINS;
         CTREDiagnostics.checkCommand(mMaster.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder),
                 "Failed to config LateralDrive encoder!");
-        setGains(mGains);
+        setGains(mGains);*/
+
         resetSensors();
         stop();
     }
@@ -123,11 +127,6 @@ public final class LateralDrive extends AldrinSubsystem implements ClosedLoopTun
                 "Failed to config LateralDrive cruise velocity!");
     }
 
-    @Override
-    public void resetSensors() {
-        CTREDiagnostics.checkCommand(mMaster.setSelectedSensorPosition(0), "Failed to zero LateralDrive encoder!");
-    }
-
     /*private String getLineSensorArray() {
         String binarySensorArray = "";
         binarySensorArray += mLineSensors.get("LeftTwo").get() ? "1" : "0";
@@ -172,16 +171,16 @@ public final class LateralDrive extends AldrinSubsystem implements ClosedLoopTun
     }
 
     @Override
-    public Map<String, Object> getTelemetry() {
-        LinkedHashMap<String, Object> m = new LinkedHashMap<>();
-        m.put("LateralKp", mGains.getKp());
-        m.put("LateralKd", mGains.getKd());
-        m.put("LateralKf", mGains.getKf());
-        m.put("LateralAccel", mGains.getAcceleration());
-        m.put("LateralCruiseVel", mGains.getCruiseVelocity());
-        m.put("LateralWantedPos", mWantedPosition);
-        m.put("LateralPos", getPosition());
-        m.put("LateralPower", getPower());
+    public Map<String, Supplier> getTelemetry() {
+        LinkedHashMap<String, Supplier> m = new LinkedHashMap<>();
+        m.put("LateralKp", () -> mGains.getKp());
+        m.put("LateralKd", () -> mGains.getKd());
+        m.put("LateralKf", () -> mGains.getKf());
+        m.put("LateralAccel", () -> mGains.getAcceleration());
+        m.put("LateralCruiseVel", () -> mGains.getCruiseVelocity());
+        m.put("LateralWantedPos", () -> mWantedPosition);
+        m.put("LateralPos", this::getPosition);
+        m.put("LateralPower", this::getPower);
         return m;
     }
 
@@ -221,13 +220,13 @@ public final class LateralDrive extends AldrinSubsystem implements ClosedLoopTun
     }
 
     @Override
-    public void reset() {
-        resetSensors();
+    public void resetSensors() {
+        CTREDiagnostics.checkCommand(mMaster.setSelectedSensorPosition(0), "Failed to zero LateralDrive encoder!");
     }
 
     @Override
-    public Map<String, DoubleSupplier> getCSVTelemetry() {
-        LinkedHashMap<String, DoubleSupplier> m = new LinkedHashMap<>();
+    public Map<String, Supplier> getCSVTelemetry() {
+        LinkedHashMap<String, Supplier> m = new LinkedHashMap<>();
         m.put("position", this::getPosition);
         m.put("wanted_position", () -> mWantedPosition);
         return m;
