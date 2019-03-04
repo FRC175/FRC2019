@@ -6,7 +6,7 @@ package com.team175.robot.commands.auto;
 public class TwoHatchRocket extends AutoMode {
 
     public TwoHatchRocket(boolean isStartingOnRight) {
-        // addSequential(new FollowPath(new LevelTwoToLevelOne(false)));
+        // addSequential(new DrivePath(new LevelTwoToLevelOne(false)));
 
         if (isStartingOnRight) {
 

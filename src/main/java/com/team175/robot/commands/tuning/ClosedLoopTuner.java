@@ -12,6 +12,9 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 /**
+ * A command used to set a certain subsystem to a wanted position and records telemetry data of said subsystem into a
+ * CSV file. This CSV data is then graphed to be able to determine appropriate PID gains.
+ *
  * @author Arvind
  */
 public class ClosedLoopTuner extends AldrinCommand {

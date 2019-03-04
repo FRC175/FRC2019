@@ -9,11 +9,11 @@ import com.team175.robot.subsystems.Drive;
  *
  * @author Arvind
  */
-public class FollowPath extends AldrinCommand {
+public class DrivePath extends AldrinCommand {
 
     private Path mPath;
 
-    public FollowPath(Path path) {
+    public DrivePath(Path path) {
         requires(Drive.getInstance());
         mPath = path;
     }

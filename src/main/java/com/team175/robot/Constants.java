@@ -211,4 +211,7 @@ public final class Constants {
     public static final double RAMP_TIME = 0;
     public static final int S_CURVE_STRENGTH = 4; // Half smoothing (0-8)
 
+    // Other
+    public static final int BLINK_TIME = 0;
+
 }

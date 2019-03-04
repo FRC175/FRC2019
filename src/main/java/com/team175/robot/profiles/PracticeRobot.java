@@ -49,7 +49,7 @@ public class PracticeRobot extends RobotProfile {
 
     @Override
     public CTREConfiguration getElevatorConfig() {
-        return new CTREConfiguration.Builder(false)
+        return new CTREConfiguration.Builder(true)
                 .setPrimarySensor(FeedbackDevice.CTRE_MagEncoder_Relative)
                 /*.setSensorPhase(true)*/
                 .setPrimaryGains(new ClosedLoopGains(

@@ -7,12 +7,14 @@
 
 package com.team175.robot;
 
+import com.team175.robot.commands.tuning.CollectVelocityData;
 import com.team175.robot.subsystems.*;
 import com.team175.robot.util.choosers.AutoModeChooser;
 import com.team175.robot.util.choosers.RobotChooser;
 import com.team175.robot.util.choosers.TunerChooser;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -64,6 +66,9 @@ public class Robot extends TimedRobot {
         new Thread(mVision).start();
         // Comment out in production robot
         mSubsystems.forEach(AldrinSubsystem::outputToDashboard);
+
+        // Add velocity collection command to dashboard
+        SmartDashboard.putData("Collect Velocity Data", new CollectVelocityData());
     }
 
     @Override
