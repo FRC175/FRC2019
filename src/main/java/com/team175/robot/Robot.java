@@ -23,6 +23,7 @@ import java.util.List;
 /**
  * TODO: Consider using FastTimedRobot.
  *
+ * TODO: MAYBE BE ABLE TO CONTROL BOTH COMPRESSORS
  * TODO: NEED TO FIX MANIPULATOR ARM BRAKE!!!
  * TODO: NEED TO FIX ELEVATOR AND MANIPULATOR ARM COUNTS IN POSITION CONTROL!!!
  *
@@ -59,7 +60,7 @@ public class Robot extends TimedRobot {
         mAutoModeChooser = AutoModeChooser.getInstance();
         mTunerChooser = TunerChooser.getInstance();
         mLogger = LoggerFactory.getLogger(getClass().getSimpleName());
-        mSubsystems = List.of(mDrive); //, mElevator, mLateralDrive, mLift, mManipulator
+        mSubsystems = List.of(mDrive, mElevator, mLateralDrive, mLift, mManipulator);
 
         /* Configuration */
         // Runs camera stream on separate thread
@@ -110,6 +111,7 @@ public class Robot extends TimedRobot {
 
         mDrive.setHighGear(false);
         mDrive.setBrakeMode(false);
+        // mManipulator.setBrake(true);
     }
 
     @Override

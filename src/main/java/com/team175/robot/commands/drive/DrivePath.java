@@ -16,6 +16,7 @@ public class DrivePath extends AldrinCommand {
     public DrivePath(Path path) {
         requires(Drive.getInstance());
         mPath = path;
+        super.logInstantiation();
     }
 
     @Override

@@ -15,6 +15,8 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 /**
+ * TODO: Implement gain swapping when going up and down.
+ *
  * @author Arvind
  */
 public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable {
@@ -23,6 +25,7 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
     private final AldrinTalonSRX mMaster;
 
     private int mWantedPosition;
+    private boolean mIsGoingForward;
     private ClosedLoopGains mGains;
 
     // Singleton Instance
@@ -92,7 +95,7 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
     }
 
     public boolean isAtWantedPosition() {
-        return Math.abs(getPosition() - mWantedPosition) <= Constants.ALLOWED_POSITION_DEVIATION;
+        return Math.abs(getPosition() - mWantedPosition) <= Constants.ALLOWED_ELEVATOR_POSITION_DEVIATION;
     }
 
     public void setGains(ClosedLoopGains gains) {
@@ -107,8 +110,8 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
 
     @Override
     public void stop() {
-        // setPosition(mWantedPosition);
-        setPower(0);
+        setPosition(mWantedPosition);
+        // setPower(0);
     }
 
     @Override

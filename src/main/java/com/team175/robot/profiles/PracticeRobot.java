@@ -51,7 +51,7 @@ public class PracticeRobot extends RobotProfile {
     public CTREConfiguration getElevatorConfig() {
         return new CTREConfiguration.Builder(true)
                 .setPrimarySensor(FeedbackDevice.CTRE_MagEncoder_Relative)
-                /*.setSensorPhase(true)*/
+                .setSensorPhase(true)
                 .setPrimaryGains(new ClosedLoopGains(
                         Constants.PRACTICE_ELEVATOR_KP,
                         0,
@@ -65,7 +65,7 @@ public class PracticeRobot extends RobotProfile {
 
     @Override
     public CTREConfiguration getLateralDriveConfig() {
-        return new CTREConfiguration.Builder(false)
+        return new CTREConfiguration.Builder(true)
                 .setPrimarySensor(FeedbackDevice.QuadEncoder)
                 .setPrimaryGains(new ClosedLoopGains(
                         Constants.PRACTICE_LATERAL_DRIVE_KP,
@@ -80,8 +80,9 @@ public class PracticeRobot extends RobotProfile {
 
     @Override
     public CTREConfiguration getManipulatorArmMasterConfig() {
-        return new CTREConfiguration.Builder(false)
+        return new CTREConfiguration.Builder(true)
                 .setPrimarySensor(FeedbackDevice.Analog)
+                .setSensorPhase(true)
                 .setPrimaryGains(new ClosedLoopGains(
                         Constants.PRACTICE_MANIPULATOR_ARM_KP,
                         0,
@@ -95,7 +96,7 @@ public class PracticeRobot extends RobotProfile {
 
     @Override
     public CTREConfiguration getManipulatorArmSlaveConfig() {
-        return new CTREConfiguration.Builder(false).build();
+        return new CTREConfiguration.Builder(true).build();
     }
 
 }

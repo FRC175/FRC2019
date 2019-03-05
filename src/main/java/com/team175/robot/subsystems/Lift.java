@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.team175.robot.Constants;
 
 import com.team175.robot.positions.LiftPosition;
+import com.team175.robot.util.drivers.AldrinTalon;
 import com.team175.robot.util.drivers.AldrinTalonSRX;
 import com.team175.robot.util.CTREFactory;
 import com.team175.robot.util.drivers.SimpleDoubleSolenoid;
@@ -21,7 +22,7 @@ public final class Lift extends AldrinSubsystem {
 
     /* Declarations */
     private final AldrinTalonSRX mDrive;
-    private final Talon mFront, mRear;
+    private final AldrinTalon mFront, mRear;
     private final SimpleDoubleSolenoid mFrontBrake, mRearBrake;
     private final DigitalInput mFrontForwardLimit, mRearForwardLimit, mFrontReverseLimit, mRearReverseLimit,
             mFrontHabSensor, mRearHabSensor;
@@ -43,8 +44,8 @@ public final class Lift extends AldrinSubsystem {
         mDrive = CTREFactory.getTalon(Constants.LIFT_DRIVE_PORT);
 
         // Talon(portNum : int)
-        mFront = new Talon(Constants.LIFT_FRONT_PORT);
-        mRear = new Talon(Constants.LIFT_REAR_PORT);
+        mFront = new AldrinTalon(Constants.LIFT_FRONT_PORT);
+        mRear = new AldrinTalon(Constants.LIFT_REAR_PORT);
 
         // SimpleDoubleSolenoid(forwardChannel : int, reverseChannel : int, isOnPCMTwo : boolean)
         mFrontBrake = new SimpleDoubleSolenoid(Constants.LIFT_FRONT_BRAKE_FORWARD_CHANNEL, Constants.LIFT_FRONT_BRAKE_REVERSE_CHANNEL,

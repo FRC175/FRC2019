@@ -12,8 +12,15 @@ import com.team175.robot.Constants;
  */
 public class AldrinTalonSRX extends TalonSRX {
 
+    private int mPDPChannel;
+
     public AldrinTalonSRX(int portNum) {
+        this(portNum, -1);
+    }
+
+    public AldrinTalonSRX(int portNum, int pdpChannel) {
         super(portNum);
+        mPDPChannel = pdpChannel;
     }
 
     public ErrorCode config_kP(double value) {
@@ -99,6 +106,16 @@ public class AldrinTalonSRX extends TalonSRX {
         }
 
         return ErrorCode.OK;
+    }
+
+    public double getPDPCurrent() {
+        if (mPDPChannel == -1) {
+            throw new UnsupportedOperationException("Talon SRX " + super.getDeviceID() +
+                    " is not configured to read PDP current!");
+        } else {
+            // return RegulatoryHardware.getInstance().getPDP().getCurrent(mPDPChannel);
+            return RegulatoryHardware.getInstance().getCurrentForPDPChannel(mPDPChannel);
+        }
     }
 
 }

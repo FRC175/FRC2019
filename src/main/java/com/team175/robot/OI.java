@@ -11,6 +11,7 @@ import com.team175.robot.commands.auto.CancelAuto;
 import com.team175.robot.commands.auto.LevelThreeClimb;
 import com.team175.robot.commands.drive.ArcadeDrive;
 import com.team175.robot.commands.drive.CheesyDrive;
+import com.team175.robot.commands.drive.ShiftDriveGear;
 import com.team175.robot.commands.drive.StraightDrive;
 import com.team175.robot.commands.elevator.ControlElevator;
 import com.team175.robot.commands.elevator.ElevatorToPosition;
@@ -120,7 +121,8 @@ public final class OI {
         /* Command Assignment */
         // Driver Stick
         mManualLateralDrive.whileHeld(new ControlLateralDrive());
-        mShift.whileHeld(new CheesyDrive(true));
+        // mShift.whileHeld(new ArcadeDrive(true));
+        mShift.whileHeld(new ShiftDriveGear());
         mStraightDrive.whileHeld(new StraightDrive());
         mLevelThreeClimb.whenPressed(new LevelThreeClimb());
         mCancelAuto.whenPressed(new CancelAuto());

@@ -15,9 +15,7 @@ public class CheesyDrive extends AldrinCommand {
 
     public CheesyDrive(boolean isHighGear) {
         requires(Drive.getInstance(), LateralDrive.getInstance());
-
         mIsHighGear = isHighGear;
-
         super.logInstantiation();
     }
 

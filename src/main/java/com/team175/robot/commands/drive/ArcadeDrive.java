@@ -18,6 +18,10 @@ public class ArcadeDrive extends AldrinCommand {
         super.logInstantiation();
     }
 
+    public ArcadeDrive() {
+        this(false);
+    }
+
     @Override
     protected void initialize() {
         Drive.getInstance().setHighGear(mIsHighGear);

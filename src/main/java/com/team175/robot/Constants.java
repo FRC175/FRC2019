@@ -23,6 +23,7 @@ public final class Constants {
     public static final int MANIPULATOR_ARM_MASTER_PORT = 10;
     public static final int MANIPULATOR_ARM_SLAVE_PORT = 9;
     public static final int CANIFIER_PORT = -1; // TODO: Fix
+    public static final int PDP_PORT = 2; // TODO: Fix
 
     // Pneumatics
     public static final int SHIFT_FORWARD_CHANNEL = 4;
@@ -108,7 +109,7 @@ public final class Constants {
 
     // TODO: Determine gear ratio of each motor
     public static final double DRIVE_GEAR_RATIO = 3.66 / 1;
-    public static final double ELEVATOR_GEAR_RATIO = 1;
+    public static final double ELEVATOR_GEAR_RATIO = 35 / 1;
     public static final double LATERAL_DRIVE_GEAR_RATIO = 1;
     public static final double MANIPULATOR_ARM_GEAR_RATIO = 1 / 1;
 
@@ -161,10 +162,10 @@ public final class Constants {
     public static final int COMPETITION_ELEVATOR_ACCELERATION = 0;
     public static final int COMPETITION_ELEVATOR_CRUISE_VELOCITY = 0;
 
-    public static final double PRACTICE_ELEVATOR_KP = 0.1;
+    public static final double PRACTICE_ELEVATOR_KP = 8;
     public static final double PRACTICE_ELEVATOR_KD = 0.0;
-    public static final int PRACTICE_ELEVATOR_ACCELERATION = 0;
-    public static final int PRACTICE_ELEVATOR_CRUISE_VELOCITY = 0;
+    public static final int PRACTICE_ELEVATOR_ACCELERATION = 1000;
+    public static final int PRACTICE_ELEVATOR_CRUISE_VELOCITY = 1000;
 
     public static final double COMPETITION_LATERAL_DRIVE_KP = 0.1;
     public static final double COMPETITION_LATERAL_DRIVE_KD = 0.0;
@@ -178,13 +179,13 @@ public final class Constants {
 
     public static final double COMPETITION_MANIPULATOR_ARM_KP = 0.1;
     public static final double COMPETITION_MANIPULATOR_ARM_KD = 0.0;
-    public static final int COMPETITION_MANIPULATOR_ARM_ACCELERATION = 0;
-    public static final int COMPETITION_MANIPULATOR_ARM_CRUISE_VELOCITY = 0;
+    public static final int COMPETITION_MANIPULATOR_ARM_ACCELERATION = 600;
+    public static final int COMPETITION_MANIPULATOR_ARM_CRUISE_VELOCITY = 600;
 
-    public static final double PRACTICE_MANIPULATOR_ARM_KP = 0.1;
+    public static final double PRACTICE_MANIPULATOR_ARM_KP = 10;
     public static final double PRACTICE_MANIPULATOR_ARM_KD = 0.0;
-    public static final int PRACTICE_MANIPULATOR_ARM_ACCELERATION = 0;
-    public static final int PRACTICE_MANIPULATOR_ARM_CRUISE_VELOCITY = 0;
+    public static final int PRACTICE_MANIPULATOR_ARM_ACCELERATION = 600;
+    public static final int PRACTICE_MANIPULATOR_ARM_CRUISE_VELOCITY = 600;
 
     /*public static final ClosedLoopGains LEFT_DRIVE_GAINS = new ClosedLoopGains(0.1, 0, 0,
             DRIVE_TRANSMISSION.getKf(), DRIVE_TRANSMISSION.getVelocity() / 2,
@@ -207,6 +208,7 @@ public final class Constants {
     public static final int AUX_SLOT_INDEX = 1;
     public static final int TIMEOUT_MS = 10;
     public static final int ALLOWED_POSITION_DEVIATION = 10;
+    public static final int ALLOWED_ELEVATOR_POSITION_DEVIATION = 100;
     public static final double QUICK_TURN_THRESHOLD = 0.2; // Used for Cheesy Drive
     public static final double RAMP_TIME = 0;
     public static final int S_CURVE_STRENGTH = 4; // Half smoothing (0-8)

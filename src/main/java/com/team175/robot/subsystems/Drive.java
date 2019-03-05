@@ -4,6 +4,7 @@ import com.ctre.phoenix.motorcontrol.*;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.ctre.phoenix.sensors.PigeonIMU;
 import com.team175.robot.Constants;
+import com.team175.robot.commands.drive.ArcadeDrive;
 import com.team175.robot.commands.drive.CheesyDrive;
 import com.team175.robot.paths.Path;
 import com.team175.robot.profiles.RobotProfile;
@@ -239,8 +240,8 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
 
     @Override
     protected void initDefaultCommand() {
-        // setDefaultCommand(new ArcadeDrive(false));
-        setDefaultCommand(new CheesyDrive(false));
+        setDefaultCommand(new ArcadeDrive());
+        // setDefaultCommand(new CheesyDrive(false));
     }
 
     @Override
@@ -269,6 +270,7 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
         m.put("RDrivePower", this::getRightPower);
         m.put("DriveWantedPos", () -> mWantedPosition);
         m.put("DriveWantedAngle", () -> mWantedAngle);
+        m.put("GyroAngle", this::getAngle);
         m.put("DriveIsLowGear", this::isHighGear);
         return m;
     }

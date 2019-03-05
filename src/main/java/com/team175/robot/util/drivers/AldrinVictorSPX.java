@@ -11,8 +11,15 @@ import com.team175.robot.Constants;
  */
 public class AldrinVictorSPX extends VictorSPX {
 
+    private int mPDPChannel;
+
     public AldrinVictorSPX(int portNum) {
+        this(portNum, -1);
+    }
+
+    public AldrinVictorSPX(int portNum, int pdpChannel) {
         super(portNum);
+        mPDPChannel = pdpChannel;
     }
 
     public ErrorCode config_kP(double value) {
@@ -85,6 +92,16 @@ public class AldrinVictorSPX extends VictorSPX {
         }
 
         return ErrorCode.OK;
+    }
+
+    public double getPDPCurrent() {
+        if (mPDPChannel == -1) {
+            throw new UnsupportedOperationException("Victor SPX " + super.getDeviceID() +
+                    " is not configured to read PDP current!");
+        } else {
+            // return RegulatoryHardware.getInstance().getPDP().getCurrent(mPDPChannel);
+            return RegulatoryHardware.getInstance().getCurrentForPDPChannel(mPDPChannel);
+        }
     }
 
 }
