@@ -9,6 +9,7 @@ package com.team175.robot;
 
 import com.team175.robot.commands.auto.CancelAuto;
 import com.team175.robot.commands.auto.LevelThreeClimb;
+import com.team175.robot.commands.auto.LevelTwoClimb;
 import com.team175.robot.commands.drive.ArcadeDrive;
 import com.team175.robot.commands.drive.CheesyDrive;
 import com.team175.robot.commands.drive.ShiftDriveGear;
@@ -47,6 +48,7 @@ public final class OI {
     private final Button mShift;
     private final Button mStraightDrive;
     private final Button mLevelThreeClimb;
+    private final Button mLevelTwoClimb;
     private final Button mCancelAuto;
     private final Button mManualLift;
     private final Button mManualFrontLift;
@@ -96,6 +98,7 @@ public final class OI {
         mShift = new SingleButton(mDriverStick, Constants.SHIFT_BUTTON);
         mStraightDrive = new SingleButton(mDriverStick, Constants.STRAIGHT_DRIVE_BUTTON);
         mLevelThreeClimb = new SingleButton(mDriverStick, Constants.LEVEL_THREE_CLIMB_BUTTON);
+        mLevelTwoClimb = new SingleButton(mDriverStick, Constants.LEVEL_TWO_CLIMB_BUTTON);
         mCancelAuto = new SingleButton(mDriverStick, Constants.CANCEL_AUTO_BUTTON);
         mManualLift = new SingleButton(mDriverStick, 11); // TODO: Fix
         mManualFrontLift = new SingleButton(mDriverStick, 9);
@@ -127,9 +130,10 @@ public final class OI {
         // Driver Stick
         mManualLateralDrive.whileHeld(new ControlLateralDrive());
         mShift.whileHeld(new ArcadeDrive(true));
-        // mShift.whileHeld(new ShiftDriveGear());
+        // mShift.whileHeld(new CheesyDrive(true));
         mStraightDrive.whileHeld(new StraightDrive());
-        mLevelThreeClimb.whenPressed(new LevelThreeClimb());
+        // mLevelThreeClimb.whenPressed(new LevelThreeClimb());
+        mLevelTwoClimb.whenPressed(new LevelTwoClimb());
         mCancelAuto.whenPressed(new CancelAuto());
         mManualLift.whileHeld(new ControlLift());
         mManualFrontLift.whileHeld(new ControlFrontLift());

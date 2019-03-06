@@ -48,7 +48,7 @@ public class ClosedLoopTuner extends AldrinCommand {
     public void initialize() {
         mSubsystem.resetSensors();
 
-        double refreshRate;
+        /*double refreshRate;
         try {
             // Take half of kDefaultPeriod in the Robot's superclass (in case either FastTimedRobot or TimeRobot is used
             refreshRate = Double.parseDouble(Robot.class.getSuperclass().getField("kDefaultPeriod").get(null).toString())
@@ -56,7 +56,8 @@ public class ClosedLoopTuner extends AldrinCommand {
         } catch (IllegalAccessException | NoSuchFieldException | NumberFormatException e) {
             mLogger.warn("Failed to parse refresh rate! Using default of 10 ms instead...", e);
             refreshRate = 0.01; // 10 ms
-        }
+        }*/
+        double refreshRate = Robot.getRefreshRate() / 2;
         mLogger.debug("Refresh Rate: {}", refreshRate);
 
         try {

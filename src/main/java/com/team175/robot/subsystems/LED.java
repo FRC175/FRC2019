@@ -19,6 +19,8 @@ public class LED extends AldrinSubsystem {
 
     private static LED sInstance;
 
+    private static final int BLINK_TIME = 0;
+
     /*private enum LEDState {
         SET_COLOR,
         BLINK_COLOR,
@@ -54,7 +56,7 @@ public class LED extends AldrinSubsystem {
     }
 
     public void blinkColor(LEDColor color) {
-        blinkColor(color.getColor(), Constants.BLINK_TIME);
+        blinkColor(color.getColor(), BLINK_TIME);
     }
 
     public void moodLampCycle() {

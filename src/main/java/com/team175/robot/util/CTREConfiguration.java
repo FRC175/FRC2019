@@ -1,6 +1,5 @@
 package com.team175.robot.util;
 
-import com.ctre.phoenix.ErrorCode;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
 import com.team175.robot.Constants;
@@ -20,7 +19,6 @@ public class CTREConfiguration {
     private int mForwardSoftLimit;
     private int mReverseSoftLimit;
     private FeedbackDevice mPrimarySensor;
-    /*private FeedbackDevice mAuxSensor;*/
     private ClosedLoopGains mPrimaryGains;
     private ClosedLoopGains mAuxGains;
 
@@ -47,7 +45,6 @@ public class CTREConfiguration {
             this.forwardSoftLimit = 0;
             this.reverseSoftLimit = 0;
             this.primarySensor = null;
-            /*this.auxSensor = null;*/
             this.primaryGains = null;
             this.auxGains = null;
         }
@@ -71,11 +68,6 @@ public class CTREConfiguration {
             this.primarySensor = primarySensor;
             return this;
         }
-
-        /*public Builder setAuxSensor(FeedbackDevice auxSensor) {
-            this.auxSensor = auxSensor;
-            return this;
-        }*/
 
         public Builder setPrimaryGains(ClosedLoopGains primaryGains) {
             this.primaryGains = primaryGains;
@@ -114,13 +106,9 @@ public class CTREConfiguration {
                 "Failed to config " + name + " reverse soft limit!");
 
         if (config.mPrimarySensor != null) {
-            CTREDiagnostics.checkCommand(bmc.configSelectedFeedbackSensor(config.mPrimarySensor, Constants.SLOT_INDEX, Constants.TIMEOUT_MS),
+            CTREDiagnostics.checkCommand(bmc.configSelectedFeedbackSensor(config.mPrimarySensor, Constants.PRIMARY_GAINS_SLOT, Constants.TIMEOUT_MS),
                     "Failed to config " + name + " encoder!");
         }
-        /*if (config.mAuxSensor != null) {
-            CTREDiagnostics.checkCommand(bmc.configSelectedFeedbackSensor(config.mAuxSensor, Constants.AUX_SLOT_INDEX, Constants.TIMEOUT_MS),
-                    "Failed to config " + name + " aux sensor!");
-        }*/
 
         if (config.mPrimaryGains != null) {
             setPrimaryGains(bmc, config.mPrimaryGains, name);
@@ -134,27 +122,27 @@ public class CTREConfiguration {
         return isPrimaryGains ? config.mPrimaryGains : config.mAuxGains;
     }
 
-    public static void setGains(BaseMotorController bmc, ClosedLoopGains gains, int slotIdx, String name) {
-        CTREDiagnostics.checkCommand(bmc.config_kP(slotIdx, gains.getKp()),
+    public static void setGains(BaseMotorController bmc, ClosedLoopGains gains, int gainsSlot, String name) {
+        CTREDiagnostics.checkCommand(bmc.config_kP(gainsSlot, gains.getKp()),
                 "Failed to config " + name + " kP!");
-        CTREDiagnostics.checkCommand(bmc.config_kI(slotIdx, gains.getKi()),
+        CTREDiagnostics.checkCommand(bmc.config_kI(gainsSlot, gains.getKi()),
                 "Failed to config " + name + " kI!");
-        CTREDiagnostics.checkCommand(bmc.config_kD(slotIdx, gains.getKd()),
+        CTREDiagnostics.checkCommand(bmc.config_kD(gainsSlot, gains.getKd()),
                 "Failed to config " + name + " kD!");
-        CTREDiagnostics.checkCommand(bmc.config_kF(slotIdx, gains.getKf()),
+        CTREDiagnostics.checkCommand(bmc.config_kF(gainsSlot, gains.getKf()),
                 "Failed to config " + name + " kF!");
-        CTREDiagnostics.checkCommand(bmc.configMotionAcceleration(slotIdx, gains.getAcceleration()),
+        CTREDiagnostics.checkCommand(bmc.configMotionAcceleration(gainsSlot, gains.getAcceleration()),
                 "Failed to config " + name + " acceleration!");
-        CTREDiagnostics.checkCommand(bmc.configMotionCruiseVelocity(slotIdx, gains.getCruiseVelocity()),
+        CTREDiagnostics.checkCommand(bmc.configMotionCruiseVelocity(gainsSlot, gains.getCruiseVelocity()),
                 "Failed to config " + name + " cruise velocity!");
     }
 
     public static void setPrimaryGains(BaseMotorController bmc, ClosedLoopGains gains, String name) {
-        setGains(bmc, gains, Constants.SLOT_INDEX, name);
+        setGains(bmc, gains, Constants.PRIMARY_GAINS_SLOT, name);
     }
 
     public static void setAuxGains(BaseMotorController bmc, ClosedLoopGains gains, String name) {
-        setGains(bmc, gains, Constants.AUX_SLOT_INDEX, name);
+        setGains(bmc, gains, Constants.AUX_GAINS_SLOT, name);
     }
 
 }

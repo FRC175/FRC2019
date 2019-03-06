@@ -23,35 +23,35 @@ public class AldrinVictorSPX extends VictorSPX {
     }
 
     public ErrorCode config_kP(double value) {
-        return super.config_kP(Constants.SLOT_INDEX, value, Constants.TIMEOUT_MS);
+        return super.config_kP(Constants.PRIMARY_GAINS_SLOT, value, Constants.TIMEOUT_MS);
     }
 
     public ErrorCode config_kI(double value) {
-        return super.config_kI(Constants.SLOT_INDEX, value, Constants.TIMEOUT_MS);
+        return super.config_kI(Constants.PRIMARY_GAINS_SLOT, value, Constants.TIMEOUT_MS);
     }
 
     public ErrorCode config_kD(double value) {
-        return super.config_kD(Constants.SLOT_INDEX, value, Constants.TIMEOUT_MS);
+        return super.config_kD(Constants.PRIMARY_GAINS_SLOT, value, Constants.TIMEOUT_MS);
     }
 
     public ErrorCode config_kF(double value) {
-        return super.config_kF(Constants.SLOT_INDEX, value, Constants.TIMEOUT_MS);
+        return super.config_kF(Constants.PRIMARY_GAINS_SLOT, value, Constants.TIMEOUT_MS);
     }
 
     public ErrorCode config_aux_kP(double value) {
-        return super.config_kP(Constants.AUX_SLOT_INDEX, value, Constants.TIMEOUT_MS);
+        return super.config_kP(Constants.AUX_GAINS_SLOT, value, Constants.TIMEOUT_MS);
     }
 
     public ErrorCode config_aux_kI(double value) {
-        return super.config_kI(Constants.AUX_SLOT_INDEX, value, Constants.TIMEOUT_MS);
+        return super.config_kI(Constants.AUX_GAINS_SLOT, value, Constants.TIMEOUT_MS);
     }
 
     public ErrorCode config_aux_kD(double value) {
-        return super.config_kD(Constants.AUX_SLOT_INDEX, value, Constants.TIMEOUT_MS);
+        return super.config_kD(Constants.AUX_GAINS_SLOT, value, Constants.TIMEOUT_MS);
     }
 
     public ErrorCode config_aux_kF(double value) {
-        return super.config_kF(Constants.AUX_SLOT_INDEX, value, Constants.TIMEOUT_MS);
+        return super.config_kF(Constants.AUX_GAINS_SLOT, value, Constants.TIMEOUT_MS);
     }
 
     public void setBrakeMode(boolean enable) {
@@ -60,7 +60,7 @@ public class AldrinVictorSPX extends VictorSPX {
 
     @Override
     public ErrorCode setSelectedSensorPosition(int sensorPos) {
-        return super.setSelectedSensorPosition(sensorPos, Constants.SLOT_INDEX, Constants.TIMEOUT_MS);
+        return super.setSelectedSensorPosition(sensorPos, Constants.PRIMARY_GAINS_SLOT, Constants.TIMEOUT_MS);
     }
 
     public ErrorCode configPIDF(double kP, double kI, double kD, double kF) {

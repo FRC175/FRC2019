@@ -13,6 +13,8 @@ public class CheesyDrive extends AldrinCommand {
 
     private boolean mIsHighGear;
 
+    private static final double QUICK_TURN_THRESHOLD = 0.2;
+
     public CheesyDrive(boolean isHighGear) {
         requires(Drive.getInstance(), LateralDrive.getInstance());
         mIsHighGear = isHighGear;
@@ -30,7 +32,7 @@ public class CheesyDrive extends AldrinCommand {
         if (!LateralDrive.getInstance().isDeployed()) {
             double y = OI.getInstance().getDriverStickY();
             double x = OI.getInstance().getDriverStickX();
-            boolean isQuickTurn = (y > Constants.QUICK_TURN_THRESHOLD && y < -Constants.QUICK_TURN_THRESHOLD);
+            boolean isQuickTurn = (y < QUICK_TURN_THRESHOLD && y > -QUICK_TURN_THRESHOLD);
 
             /*mLogger.debug("LeftPosition: {}", Drive.getInstance().getLeftPosition());
             mLogger.debug("RightPosition: {}", Drive.getInstance().getRightPosition());*/

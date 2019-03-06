@@ -20,7 +20,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 /**
- * TODO: Implement gain swapping when going up and down.
+ * TODO: Bring up Arm to score position when current spike is detected when grabbing ball
  *
  * @author Arvind
  */
@@ -34,8 +34,9 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
     private int mArmWantedPosition;
     private ClosedLoopGains mArmForwardGains, mArmReverseGains;
 
-    // Singleton Instance
     private static Manipulator sInstance;
+
+    private static final int ALLOWED_POSITION_DEVIATION = 10;
 
     public static Manipulator getInstance() {
         if (sInstance == null) {
@@ -68,13 +69,8 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
         RobotProfile profile = RobotChooser.getInstance().getProfile();
         CTREConfiguration.config(mArmMaster, profile.getManipulatorArmMasterConfig(), "ManipulatorArm");
         CTREConfiguration.config(mArmSlave, profile.getManipulatorArmSlaveConfig(), "ManipulatorArmSlave");
-        /*mArmGains = CTREConfiguration.getGainsFromConfig(profile.getManipulatorArmMasterConfig(), true);*/
-        mArmForwardGains = new ClosedLoopGains(Constants.MANIPULATOR_ARM_FORWARD_KP, 0, Constants.MANIPULATOR_ARM_FORWARD_KD,
-                RobotChooser.getInstance().getProfile().getManipulatorArmTransmission().getKf(),
-                Constants.PRACTICE_MANIPULATOR_ARM_ACCELERATION, Constants.PRACTICE_MANIPULATOR_ARM_CRUISE_VELOCITY);
-        mArmReverseGains = new ClosedLoopGains(Constants.MANIPULATOR_ARM_FORWARD_KP, 0, Constants.MANIPULATOR_ARM_FORWARD_KD,
-                RobotChooser.getInstance().getProfile().getManipulatorArmTransmission().getKf(),
-                Constants.PRACTICE_MANIPULATOR_ARM_ACCELERATION, Constants.PRACTICE_MANIPULATOR_ARM_CRUISE_VELOCITY);
+        mArmForwardGains = CTREConfiguration.getGainsFromConfig(profile.getManipulatorArmMasterConfig(), true);
+        mArmReverseGains = CTREConfiguration.getGainsFromConfig(profile.getManipulatorArmMasterConfig(), false);
 
         /*mArmGains = Constants.MANIPULATOR_ARM_GAINS;
         CTREDiagnostics.checkCommand(mArmMaster.configSelectedFeedbackSensor(FeedbackDevice.Analog),
@@ -161,10 +157,12 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
         setBrake(false);
         mArmWantedPosition = position;
 
-        if (mArmWantedPosition >= getArmPosition()) {
-            setArmGains(mArmForwardGains);
-        } else {
-            setArmGains(mArmReverseGains);
+        if (mArmWantedPosition >= getArmPosition()) { // Going down
+            // setArmGains(mArmForwardGains);
+            mArmMaster.selectProfileSlot(Constants.PRIMARY_GAINS_SLOT, 0);
+        } else { // Going down
+            // setArmGains(mArmReverseGains);
+            mArmMaster.selectProfileSlot(Constants.AUX_GAINS_SLOT, 0);
         }
 
         mArmMaster.set(ControlMode.MotionMagic, mArmWantedPosition);
@@ -191,26 +189,27 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
     }
 
     public boolean isArmAtWantedPosition() {
-        return Math.abs(getArmPosition() - mArmWantedPosition) <= Constants.ALLOWED_POSITION_DEVIATION;
+        return Math.abs(getArmPosition() - mArmWantedPosition) <= ALLOWED_POSITION_DEVIATION;
     }
 
     public void setArmForwardGains(ClosedLoopGains gains) {
         mArmForwardGains = gains;
+        CTREConfiguration.setPrimaryGains(mArmMaster, mArmForwardGains, "ManipulatorArm");
     }
 
     public void setArmReverseGains(ClosedLoopGains gains) {
         mArmReverseGains = gains;
+        CTREConfiguration.setAuxGains(mArmMaster, mArmReverseGains, "ManipulatorArm");
     }
 
-    public void setArmGains(ClosedLoopGains gains) {
-        /*mArmGains = gains;*/
+    /*public void setArmGains(ClosedLoopGains gains) {
         CTREDiagnostics.checkCommand(mArmMaster.configPIDF(gains.getKp(), gains.getKi(), gains.getKd(), gains.getKf()),
                 "Failed to config Arm PID gains!");
         CTREDiagnostics.checkCommand(mArmMaster.configMotionAcceleration(gains.getAcceleration()),
                 "Failed to config Arm acceleration!");
         CTREDiagnostics.checkCommand(mArmMaster.configMotionCruiseVelocity(gains.getCruiseVelocity()),
                 "Failed to config Arm cruise velocity!");
-    }
+    }*/
 
     @Override
     public void stop() {
@@ -221,6 +220,7 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
     @Override
     public Map<String, Supplier> getTelemetry() {
         LinkedHashMap<String, Supplier> m = new LinkedHashMap<>();
+
         m.put("ManipArmForKp", () -> mArmForwardGains.getKp());
         m.put("ManipArmForKd", () -> mArmForwardGains.getKd());
         m.put("ManipArmForKf", () -> mArmForwardGains.getKf());
@@ -237,6 +237,7 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
         m.put("ManipArmPos", this::getArmPosition);
         m.put("ManipArmPower", this::getArmPower);
         m.put("ManipArmVolt", this::getArmVoltage);
+
         return m;
     }
 

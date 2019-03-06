@@ -38,8 +38,9 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
     private double mWantedAngle;
     private ClosedLoopGains mLeftGains, mRightGains, mPigeonGains;
 
-    // Singleton Instance
     private static Drive sInstance;
+
+    public static final double RAMP_TIME = 0;
 
     public static Drive getInstance() {
         if (sInstance == null) {
@@ -95,9 +96,9 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
         mRightMaster.setInverted(true);
         mRightSlave.setInverted(true);*/
 
-        CTREDiagnostics.checkCommand(mLeftMaster.configOpenloopRamp(Constants.RAMP_TIME, Constants.TIMEOUT_MS),
+        CTREDiagnostics.checkCommand(mLeftMaster.configOpenloopRamp(RAMP_TIME, Constants.TIMEOUT_MS),
                 "Failed to config LeftMaster ramp!");
-        CTREDiagnostics.checkCommand(mRightMaster.configOpenloopRamp(Constants.RAMP_TIME, Constants.TIMEOUT_MS),
+        CTREDiagnostics.checkCommand(mRightMaster.configOpenloopRamp(RAMP_TIME, Constants.TIMEOUT_MS),
                 "Failed to config RightMaster ramp!");
         mPathHelper.configTalons();
         setHighGear(false);
@@ -252,6 +253,7 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
     @Override
     public Map<String, Supplier> getTelemetry() {
         LinkedHashMap<String, Supplier> m = new LinkedHashMap<>();
+
         m.put("LDriveKp", () -> mLeftGains.getKp());
         m.put("LDriveKd", () -> mLeftGains.getKd());
         m.put("LDriveKf", () -> mLeftGains.getKf());
@@ -260,6 +262,7 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
         m.put("LDriveError", this::getLeftClosedLoopError);
         m.put("LDrivePos", this::getLeftPosition);
         m.put("LDrivePower", this::getLeftPower);
+
         m.put("RDriveKp", () -> mRightGains.getKp());
         m.put("RDriveKd", () -> mRightGains.getKd());
         m.put("RDriveKf", () -> mRightGains.getKf());
@@ -268,10 +271,12 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
         m.put("RDriveError", this::getRightClosedLoopError);
         m.put("RDrivePos", this::getRightPosition);
         m.put("RDrivePower", this::getRightPower);
+
         m.put("DriveWantedPos", () -> mWantedPosition);
         m.put("DriveWantedAngle", () -> mWantedAngle);
-        m.put("GyroAngle", this::getAngle);
         m.put("DriveIsLowGear", this::isHighGear);
+        m.put("GyroAngle", this::getAngle);
+
         return m;
     }
 
@@ -328,7 +333,7 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
     public void resetSensors() {
         CTREDiagnostics.checkCommand(mLeftMaster.setSelectedSensorPosition(0), "Failed to zero LeftMaster encoder!");
         CTREDiagnostics.checkCommand(mRightMaster.setSelectedSensorPosition(0), "Failed to zero RightMaster encoder!");
-        // CTREDiagnostics.checkCommand(mPigeon.setYaw(0, Constants.TIMEOUT_MS), "Failed to zero Pigeon yaw!");
+        CTREDiagnostics.checkCommand(mPigeon.setYaw(0, Constants.TIMEOUT_MS), "Failed to zero Pigeon yaw!");
     }
 
     @Override

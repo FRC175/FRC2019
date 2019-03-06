@@ -146,4 +146,8 @@ public class Robot extends TimedRobot {
         Scheduler.getInstance().run();
     }
 
+    public static double getRefreshRate() {
+        return kDefaultPeriod;
+    }
+
 }

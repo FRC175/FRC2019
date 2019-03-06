@@ -75,6 +75,7 @@ public final class Constants {
     public static final int SHIFT_BUTTON = 2;
     public static final int STRAIGHT_DRIVE_BUTTON = 3;
     public static final int LEVEL_THREE_CLIMB_BUTTON = 12;
+    public static final int LEVEL_TWO_CLIMB_BUTTON = 8;
     public static final int CANCEL_AUTO_BUTTON = 6;
     // public static final int LINE_ALIGN_BUTTON = 12;
 
@@ -213,16 +214,8 @@ public final class Constants {
             MANIPULATOR_ARM_TRANSMISSION.getVelocity() / 2);*/
 
     // CTRE Constants
-    public static final int SLOT_INDEX = 0;
-    public static final int AUX_SLOT_INDEX = 1;
+    public static final int PRIMARY_GAINS_SLOT = 0;
+    public static final int AUX_GAINS_SLOT = 1;
     public static final int TIMEOUT_MS = 10;
-    public static final int ALLOWED_POSITION_DEVIATION = 10;
-    public static final int ALLOWED_ELEVATOR_POSITION_DEVIATION = 100;
-    public static final double QUICK_TURN_THRESHOLD = 0.2; // Used for Cheesy Drive
-    public static final double RAMP_TIME = 0;
-    public static final int S_CURVE_STRENGTH = 4; // Half smoothing (0-8)
-
-    // Other
-    public static final int BLINK_TIME = 0;
 
 }

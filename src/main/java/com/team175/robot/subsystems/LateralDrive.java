@@ -33,8 +33,9 @@ public final class LateralDrive extends AldrinSubsystem implements ClosedLoopTun
     private int mWantedPosition;
     private ClosedLoopGains mGains;
 
-    // Singleton Instance
     private static LateralDrive sInstance;
+
+    private static final int ALLOWED_POSITION_DEVIATION = 10;
 
     public static LateralDrive getInstance() {
         if (sInstance == null) {
@@ -117,17 +118,18 @@ public final class LateralDrive extends AldrinSubsystem implements ClosedLoopTun
     }
 
     public boolean isAtWantedPosition() {
-        return Math.abs(getPosition() - mWantedPosition) <= Constants.ALLOWED_POSITION_DEVIATION;
+        return Math.abs(getPosition() - mWantedPosition) <= ALLOWED_POSITION_DEVIATION;
     }
 
     public void setGains(ClosedLoopGains gains) {
-        mGains = gains;
-        CTREDiagnostics.checkCommand(mMaster.configPIDF(mGains.getKp(), mGains.getKi(), mGains.getKd(), mGains.getKf()),
+        /*CTREDiagnostics.checkCommand(mMaster.configPIDF(mGains.getKp(), mGains.getKi(), mGains.getKd(), mGains.getKf()),
                 "Failed to config LateralDrive PID gains!");
         CTREDiagnostics.checkCommand(mMaster.configMotionAcceleration(mGains.getAcceleration()),
                 "Failed to config LateralDrive acceleration!");
         CTREDiagnostics.checkCommand(mMaster.configMotionCruiseVelocity(mGains.getCruiseVelocity()),
-                "Failed to config LateralDrive cruise velocity!");
+                "Failed to config LateralDrive cruise velocity!");*/
+        mGains = gains;
+        CTREConfiguration.setPrimaryGains(mMaster, mGains, "LateralDrive");
     }
 
     /*private String getLineSensorArray() {

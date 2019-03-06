@@ -15,8 +15,6 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 /**
- * TODO: Implement gain swapping when going up and down.
- *
  * @author Arvind
  */
 public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable {
@@ -30,6 +28,8 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
 
     // Singleton Instance
     private static Elevator sInstance;
+
+    private static final int ALLOWED_POSITION_DEVIATION = 100;
 
     public static Elevator getInstance() {
         if (sInstance == null) {
@@ -49,13 +49,8 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
         /* Configuration */
         RobotProfile profile = RobotChooser.getInstance().getProfile();
         CTREConfiguration.config(mMaster, profile.getElevatorConfig(), "Elevator");
-        /*mGains = CTREConfiguration.getGainsFromConfig(profile.getElevatorConfig(), true);*/
-        mForwardGains = new ClosedLoopGains(Constants.ELEVATOR_FORWARD_KP, 0, Constants.ELEVATOR_FORWARD_KD,
-                RobotChooser.getInstance().getProfile().getDriveTransmission().getKf(),
-                Constants.PRACTICE_ELEVATOR_ACCELERATION, Constants.PRACTICE_ELEVATOR_CRUISE_VELOCITY);
-        mReverseGains = new ClosedLoopGains(Constants.ELEVATOR_FORWARD_KP, 0, Constants.ELEVATOR_FORWARD_KD,
-                RobotChooser.getInstance().getProfile().getDriveTransmission().getKf(),
-                Constants.PRACTICE_ELEVATOR_ACCELERATION, Constants.PRACTICE_ELEVATOR_CRUISE_VELOCITY);
+        mForwardGains = CTREConfiguration.getGainsFromConfig(profile.getElevatorConfig(), true);
+        mReverseGains = CTREConfiguration.getGainsFromConfig(profile.getElevatorConfig(), false);
 
         /*mGains = Constants.ELEVATOR_GAINS;
         CTREDiagnostics.checkCommand(mMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative),
@@ -82,10 +77,12 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
     public void setPosition(int position) {
         mWantedPosition = position;
 
-        if (mWantedPosition <= getPosition()) {
-            setGains(mReverseGains);
-        } else {
-            setGains(mForwardGains);
+        if (mWantedPosition > getPosition()) { // Going Up
+            // setGains(mForwardGains);
+            mMaster.selectProfileSlot(Constants.PRIMARY_GAINS_SLOT, 0);
+        } else { // Going down
+            // setGains(mReverseGains);
+            mMaster.selectProfileSlot(Constants.AUX_GAINS_SLOT, 0);
         }
 
         mMaster.set(ControlMode.MotionMagic, mWantedPosition);
@@ -108,26 +105,27 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
     }
 
     public boolean isAtWantedPosition() {
-        return Math.abs(getPosition() - mWantedPosition) <= Constants.ALLOWED_ELEVATOR_POSITION_DEVIATION;
+        return Math.abs(getPosition() - mWantedPosition) <= ALLOWED_POSITION_DEVIATION;
     }
 
     public void setForwardGains(ClosedLoopGains gains) {
         mForwardGains = gains;
+        CTREConfiguration.setPrimaryGains(mMaster, mForwardGains, "Elevator");
     }
 
     public void setReverseGains(ClosedLoopGains gains) {
         mReverseGains = gains;
+        CTREConfiguration.setAuxGains(mMaster, mReverseGains, "Elevator");
     }
 
-    public void setGains(ClosedLoopGains gains) {
-        /*mGains = gains;*/
+    /*public void setGains(ClosedLoopGains gains) {
         CTREDiagnostics.checkCommand(mMaster.configPIDF(gains.getKp(), gains.getKi(), gains.getKd(), gains.getKf()),
                 "Failed to config Elevator PID gains!");
         CTREDiagnostics.checkCommand(mMaster.configMotionAcceleration(gains.getAcceleration()),
                 "Failed to config Elevator acceleration!");
         CTREDiagnostics.checkCommand(mMaster.configMotionCruiseVelocity(gains.getCruiseVelocity()),
                 "Failed to config Elevator cruise velocity!");
-    }
+    }*/
 
     @Override
     public void stop() {
@@ -138,6 +136,7 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
     @Override
     public Map<String, Supplier> getTelemetry() {
         LinkedHashMap<String, Supplier> m = new LinkedHashMap<>();
+
         m.put("ElevatorForKp", () -> mForwardGains.getKp());
         m.put("ElevatorForKd", () -> mForwardGains.getKd());
         m.put("ElevatorForKf", () -> mForwardGains.getKf());
@@ -154,6 +153,7 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
         m.put("ElevatorPos", this::getPosition);
         m.put("ElevatorPower", this::getPower);
         m.put("ElevatorVolt", this::getVoltage);
+
         return m;
     }
 
