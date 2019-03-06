@@ -25,8 +25,8 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
     private final AldrinTalonSRX mMaster;
 
     private int mWantedPosition;
-    private boolean mIsGoingForward;
-    private ClosedLoopGains mGains;
+    // private ClosedLoopGains mGains;
+    private ClosedLoopGains mForwardGains, mReverseGains;
 
     // Singleton Instance
     private static Elevator sInstance;
@@ -49,7 +49,13 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
         /* Configuration */
         RobotProfile profile = RobotChooser.getInstance().getProfile();
         CTREConfiguration.config(mMaster, profile.getElevatorConfig(), "Elevator");
-        mGains = CTREConfiguration.getGainsFromConfig(profile.getElevatorConfig(), true);
+        /*mGains = CTREConfiguration.getGainsFromConfig(profile.getElevatorConfig(), true);*/
+        mForwardGains = new ClosedLoopGains(Constants.ELEVATOR_FORWARD_KP, 0, Constants.ELEVATOR_FORWARD_KD,
+                RobotChooser.getInstance().getProfile().getDriveTransmission().getKf(),
+                Constants.PRACTICE_ELEVATOR_ACCELERATION, Constants.PRACTICE_ELEVATOR_CRUISE_VELOCITY);
+        mReverseGains = new ClosedLoopGains(Constants.ELEVATOR_FORWARD_KP, 0, Constants.ELEVATOR_FORWARD_KD,
+                RobotChooser.getInstance().getProfile().getDriveTransmission().getKf(),
+                Constants.PRACTICE_ELEVATOR_ACCELERATION, Constants.PRACTICE_ELEVATOR_CRUISE_VELOCITY);
 
         /*mGains = Constants.ELEVATOR_GAINS;
         CTREDiagnostics.checkCommand(mMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative),
@@ -75,6 +81,13 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
 
     public void setPosition(int position) {
         mWantedPosition = position;
+
+        if (mWantedPosition <= getPosition()) {
+            setGains(mReverseGains);
+        } else {
+            setGains(mForwardGains);
+        }
+
         mMaster.set(ControlMode.MotionMagic, mWantedPosition);
     }
 
@@ -98,13 +111,21 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
         return Math.abs(getPosition() - mWantedPosition) <= Constants.ALLOWED_ELEVATOR_POSITION_DEVIATION;
     }
 
+    public void setForwardGains(ClosedLoopGains gains) {
+        mForwardGains = gains;
+    }
+
+    public void setReverseGains(ClosedLoopGains gains) {
+        mReverseGains = gains;
+    }
+
     public void setGains(ClosedLoopGains gains) {
-        mGains = gains;
-        CTREDiagnostics.checkCommand(mMaster.configPIDF(mGains.getKp(), mGains.getKi(), mGains.getKd(), mGains.getKf()),
+        /*mGains = gains;*/
+        CTREDiagnostics.checkCommand(mMaster.configPIDF(gains.getKp(), gains.getKi(), gains.getKd(), gains.getKf()),
                 "Failed to config Elevator PID gains!");
-        CTREDiagnostics.checkCommand(mMaster.configMotionAcceleration(mGains.getAcceleration()),
+        CTREDiagnostics.checkCommand(mMaster.configMotionAcceleration(gains.getAcceleration()),
                 "Failed to config Elevator acceleration!");
-        CTREDiagnostics.checkCommand(mMaster.configMotionCruiseVelocity(mGains.getCruiseVelocity()),
+        CTREDiagnostics.checkCommand(mMaster.configMotionCruiseVelocity(gains.getCruiseVelocity()),
                 "Failed to config Elevator cruise velocity!");
     }
 
@@ -117,11 +138,18 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
     @Override
     public Map<String, Supplier> getTelemetry() {
         LinkedHashMap<String, Supplier> m = new LinkedHashMap<>();
-        m.put("ElevatorKp", () -> mGains.getKp());
-        m.put("ElevatorKd", () -> mGains.getKd());
-        m.put("ElevatorKf", () -> mGains.getKf());
-        m.put("ElevatorAccel", () -> mGains.getAcceleration());
-        m.put("ElevatorCruiseVel", () -> mGains.getCruiseVelocity());
+        m.put("ElevatorForKp", () -> mForwardGains.getKp());
+        m.put("ElevatorForKd", () -> mForwardGains.getKd());
+        m.put("ElevatorForKf", () -> mForwardGains.getKf());
+        m.put("ElevatorForAccel", () -> mForwardGains.getAcceleration());
+        m.put("ElevatorForCruiseVel", () -> mForwardGains.getCruiseVelocity());
+
+        m.put("ElevatorRevKp", () -> mReverseGains.getKp());
+        m.put("ElevatorRevKd", () -> mReverseGains.getKd());
+        m.put("ElevatorRevKf", () -> mReverseGains.getKf());
+        m.put("ElevatorRevAccel", () -> mReverseGains.getAcceleration());
+        m.put("ElevatorRevCruiseVel", () -> mReverseGains.getCruiseVelocity());
+
         m.put("ElevatorWantedPos", () -> mWantedPosition);
         m.put("ElevatorPos", this::getPosition);
         m.put("ElevatorPower", this::getPower);
@@ -131,11 +159,27 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
 
     @Override
     public void updateFromDashboard() {
-        setGains(new ClosedLoopGains(SmartDashboard.getNumber("ElevatorKp", 0), 0,
+        /*setGains(new ClosedLoopGains(SmartDashboard.getNumber("ElevatorKp", 0), 0,
                 SmartDashboard.getNumber("ElevatorKd", 0),
                 SmartDashboard.getNumber("ElevatorKf", 0),
                 (int) SmartDashboard.getNumber("ElevatorAccel", 0),
-                (int) SmartDashboard.getNumber("ElevatorCruiseVel", 0)));
+                (int) SmartDashboard.getNumber("ElevatorCruiseVel", 0)));*/
+        setForwardGains(new ClosedLoopGains(
+                SmartDashboard.getNumber("ElevatorForKp", 0),
+                0,
+                SmartDashboard.getNumber("ElevatorForKd", 0),
+                SmartDashboard.getNumber("ElevatorForKf", 0),
+                (int) SmartDashboard.getNumber("ElevatorForAccel", 0),
+                (int) SmartDashboard.getNumber("ElevatorForCruiseVel", 0)
+        ));
+        setReverseGains(new ClosedLoopGains(
+                SmartDashboard.getNumber("ElevatorRevKp", 0),
+                0,
+                SmartDashboard.getNumber("ElevatorRevKd", 0),
+                SmartDashboard.getNumber("ElevatorRevKf", 0),
+                (int) SmartDashboard.getNumber("ElevatorRevAccel", 0),
+                (int) SmartDashboard.getNumber("ElevatorRevCruiseVel", 0)
+        ));
         setPosition((int) SmartDashboard.getNumber("ElevatorWantedPos", 0));
     }
 

@@ -32,8 +32,7 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
     private final SimpleDoubleSolenoid mHatchPunch, mBrake, mDeploy;
 
     private int mArmWantedPosition;
-    private boolean mIsArmGoingForward;
-    private ClosedLoopGains mArmGains;
+    private ClosedLoopGains mArmForwardGains, mArmReverseGains;
 
     // Singleton Instance
     private static Manipulator sInstance;
@@ -69,7 +68,13 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
         RobotProfile profile = RobotChooser.getInstance().getProfile();
         CTREConfiguration.config(mArmMaster, profile.getManipulatorArmMasterConfig(), "ManipulatorArm");
         CTREConfiguration.config(mArmSlave, profile.getManipulatorArmSlaveConfig(), "ManipulatorArmSlave");
-        mArmGains = CTREConfiguration.getGainsFromConfig(profile.getManipulatorArmMasterConfig(), true);
+        /*mArmGains = CTREConfiguration.getGainsFromConfig(profile.getManipulatorArmMasterConfig(), true);*/
+        mArmForwardGains = new ClosedLoopGains(Constants.MANIPULATOR_ARM_FORWARD_KP, 0, Constants.MANIPULATOR_ARM_FORWARD_KD,
+                RobotChooser.getInstance().getProfile().getManipulatorArmTransmission().getKf(),
+                Constants.PRACTICE_MANIPULATOR_ARM_ACCELERATION, Constants.PRACTICE_MANIPULATOR_ARM_CRUISE_VELOCITY);
+        mArmReverseGains = new ClosedLoopGains(Constants.MANIPULATOR_ARM_FORWARD_KP, 0, Constants.MANIPULATOR_ARM_FORWARD_KD,
+                RobotChooser.getInstance().getProfile().getManipulatorArmTransmission().getKf(),
+                Constants.PRACTICE_MANIPULATOR_ARM_ACCELERATION, Constants.PRACTICE_MANIPULATOR_ARM_CRUISE_VELOCITY);
 
         /*mArmGains = Constants.MANIPULATOR_ARM_GAINS;
         CTREDiagnostics.checkCommand(mArmMaster.configSelectedFeedbackSensor(FeedbackDevice.Analog),
@@ -155,6 +160,13 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
     public void setArmPosition(int position) {
         setBrake(false);
         mArmWantedPosition = position;
+
+        if (mArmWantedPosition >= getArmPosition()) {
+            setArmGains(mArmForwardGains);
+        } else {
+            setArmGains(mArmReverseGains);
+        }
+
         mArmMaster.set(ControlMode.MotionMagic, mArmWantedPosition);
     }
 
@@ -194,9 +206,9 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
         /*mArmGains = gains;*/
         CTREDiagnostics.checkCommand(mArmMaster.configPIDF(gains.getKp(), gains.getKi(), gains.getKd(), gains.getKf()),
                 "Failed to config Arm PID gains!");
-        CTREDiagnostics.checkCommand(mArmMaster.configMotionAcceleration(mArmGains.getAcceleration()),
+        CTREDiagnostics.checkCommand(mArmMaster.configMotionAcceleration(gains.getAcceleration()),
                 "Failed to config Arm acceleration!");
-        CTREDiagnostics.checkCommand(mArmMaster.configMotionCruiseVelocity(mArmGains.getCruiseVelocity()),
+        CTREDiagnostics.checkCommand(mArmMaster.configMotionCruiseVelocity(gains.getCruiseVelocity()),
                 "Failed to config Arm cruise velocity!");
     }
 
@@ -209,11 +221,18 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
     @Override
     public Map<String, Supplier> getTelemetry() {
         LinkedHashMap<String, Supplier> m = new LinkedHashMap<>();
-        m.put("ManipArmKp", () -> mArmGains.getKp());
-        m.put("ManipArmKd", () -> mArmGains.getKd());
-        m.put("ManipArmKf", () -> mArmGains.getKf());
-        m.put("ManipArmAccel", () -> mArmGains.getAcceleration());
-        m.put("ManipArmCruiseVel", () -> mArmGains.getCruiseVelocity());
+        m.put("ManipArmForKp", () -> mArmForwardGains.getKp());
+        m.put("ManipArmForKd", () -> mArmForwardGains.getKd());
+        m.put("ManipArmForKf", () -> mArmForwardGains.getKf());
+        m.put("ManipArmForAccel", () -> mArmForwardGains.getAcceleration());
+        m.put("ManipArmForCruiseVel", () -> mArmForwardGains.getCruiseVelocity());
+
+        m.put("ManipArmRevKp", () -> mArmReverseGains.getKp());
+        m.put("ManipArmRevKd", () -> mArmReverseGains.getKd());
+        m.put("ManipArmRevKf", () -> mArmReverseGains.getKf());
+        m.put("ManipArmRevAccel", () -> mArmReverseGains.getAcceleration());
+        m.put("ManipArmRevCruiseVel", () -> mArmReverseGains.getCruiseVelocity());
+
         m.put("ManipArmWantedPos", () -> mArmWantedPosition);
         m.put("ManipArmPos", this::getArmPosition);
         m.put("ManipArmPower", this::getArmPower);
@@ -229,20 +248,20 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
                 (int) SmartDashboard.getNumber("ManipArmAccel", 0),
                 (int) SmartDashboard.getNumber("ManipArmCruiseVel", 0)));*/
         setArmForwardGains(new ClosedLoopGains(
-                SmartDashboard.getNumber("ManipForArmKp", 0),
+                SmartDashboard.getNumber("ManipArmForKp", 0),
                 0,
-                SmartDashboard.getNumber("ManipForArmKd", 0),
-                SmartDashboard.getNumber("ManipArmKf", 0),
-                (int) SmartDashboard.getNumber("ManipArmAccel", 0),
-                (int) SmartDashboard.getNumber("ManipArmCruiseVel", 0)
+                SmartDashboard.getNumber("ManipArmForKd", 0),
+                SmartDashboard.getNumber("ManipArmForKf", 0),
+                (int) SmartDashboard.getNumber("ManipArmForAccel", 0),
+                (int) SmartDashboard.getNumber("ManipArmForCruiseVel", 0)
         ));
         setArmReverseGains(new ClosedLoopGains(
-                SmartDashboard.getNumber("ManipRevArmKp", 0),
+                SmartDashboard.getNumber("ManipArmRevKp", 0),
                 0,
-                SmartDashboard.getNumber("ManipRevArmKd", 0),
-                SmartDashboard.getNumber("ManipArmKf", 0),
-                (int) SmartDashboard.getNumber("ManipArmAccel", 0),
-                (int) SmartDashboard.getNumber("ManipArmCruiseVel", 0)
+                SmartDashboard.getNumber("ManipArmRevKd", 0),
+                SmartDashboard.getNumber("ManipArmRevKf", 0),
+                (int) SmartDashboard.getNumber("ManipArmRevAccel", 0),
+                (int) SmartDashboard.getNumber("ManipArmRevCruiseVel", 0)
         ));
         setArmPosition((int) SmartDashboard.getNumber("ManipArmWantedPos", 0));
     }

@@ -80,7 +80,7 @@ public class PracticeRobot extends RobotProfile {
 
     @Override
     public CTREConfiguration getManipulatorArmMasterConfig() {
-        return new CTREConfiguration.Builder(true)
+        return new CTREConfiguration.Builder(false)
                 .setPrimarySensor(FeedbackDevice.Analog)
                 .setSensorPhase(true)
                 .setPrimaryGains(new ClosedLoopGains(
@@ -96,7 +96,7 @@ public class PracticeRobot extends RobotProfile {
 
     @Override
     public CTREConfiguration getManipulatorArmSlaveConfig() {
-        return new CTREConfiguration.Builder(true).build();
+        return new CTREConfiguration.Builder(false).build();
     }
 
 }

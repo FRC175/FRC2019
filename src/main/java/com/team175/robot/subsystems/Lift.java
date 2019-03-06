@@ -21,8 +21,7 @@ import java.util.function.Supplier;
 public final class Lift extends AldrinSubsystem {
 
     /* Declarations */
-    private final AldrinTalonSRX mDrive;
-    private final AldrinTalon mFront, mRear;
+    private final AldrinTalon mFront, mRear, mDrive;
     private final SimpleDoubleSolenoid mFrontBrake, mRearBrake;
     private final DigitalInput mFrontForwardLimit, mRearForwardLimit, mFrontReverseLimit, mRearReverseLimit,
             mFrontHabSensor, mRearHabSensor;
@@ -40,12 +39,10 @@ public final class Lift extends AldrinSubsystem {
 
     private Lift() {
         /* Instantiations */
-        // CTREFactory.getTalon(portNum : int)
-        mDrive = CTREFactory.getTalon(Constants.LIFT_DRIVE_PORT);
-
         // Talon(portNum : int)
         mFront = new AldrinTalon(Constants.LIFT_FRONT_PORT);
         mRear = new AldrinTalon(Constants.LIFT_REAR_PORT);
+        mDrive = new AldrinTalon(Constants.LIFT_DRIVE_PORT);
 
         // SimpleDoubleSolenoid(forwardChannel : int, reverseChannel : int, isOnPCMTwo : boolean)
         mFrontBrake = new SimpleDoubleSolenoid(Constants.LIFT_FRONT_BRAKE_FORWARD_CHANNEL, Constants.LIFT_FRONT_BRAKE_REVERSE_CHANNEL,
@@ -93,7 +90,7 @@ public final class Lift extends AldrinSubsystem {
     }
 
     public void setDrivePower(double power) {
-        mDrive.set(ControlMode.PercentOutput, power);
+        mDrive.set(power);
     }
 
     public double getFrontPower() {
@@ -105,7 +102,7 @@ public final class Lift extends AldrinSubsystem {
     }
 
     public double getDrivePower() {
-        return mDrive.getMotorOutputPercent();
+        return mDrive.get();
     }
 
     public void setFrontBrake(boolean enable) {

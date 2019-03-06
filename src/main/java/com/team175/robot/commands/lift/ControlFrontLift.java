@@ -2,12 +2,13 @@ package com.team175.robot.commands.lift;
 
 import com.team175.robot.OI;
 import com.team175.robot.commands.AldrinCommand;
+import com.team175.robot.positions.LiftPosition;
 import com.team175.robot.subsystems.Drive;
 import com.team175.robot.subsystems.Lift;
 
-public class ControlLift extends AldrinCommand {
+public class ControlFrontLift extends AldrinCommand {
 
-    public ControlLift() {
+    public ControlFrontLift() {
         requires(Lift.getInstance(), Drive.getInstance());
         super.logInstantiation();
     }
@@ -21,8 +22,6 @@ public class ControlLift extends AldrinCommand {
     @Override
     protected void execute() {
         Lift.getInstance().setFrontPower(OI.getInstance().getDriverStickY());
-        Lift.getInstance().setRearPower(OI.getInstance().getDriverStickY() * 0.45);
-        Lift.getInstance().setDrivePower(OI.getInstance().getDriverStickX());
     }
 
     @Override
@@ -32,7 +31,8 @@ public class ControlLift extends AldrinCommand {
 
     @Override
     protected void end() {
-        Lift.getInstance().stop();
+        Lift.getInstance().setFrontPower(0);
+        Lift.getInstance().setFrontBrake(true);
         super.end();
     }
 

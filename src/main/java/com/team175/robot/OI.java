@@ -16,7 +16,10 @@ import com.team175.robot.commands.drive.StraightDrive;
 import com.team175.robot.commands.elevator.ControlElevator;
 import com.team175.robot.commands.elevator.ElevatorToPosition;
 import com.team175.robot.commands.lateraldrive.ControlLateralDrive;
+import com.team175.robot.commands.lift.ControlFrontLift;
 import com.team175.robot.commands.lift.ControlLift;
+import com.team175.robot.commands.lift.ControlLiftDrive;
+import com.team175.robot.commands.lift.ControlRearLift;
 import com.team175.robot.commands.manipulator.ControlManipulatorArm;
 import com.team175.robot.commands.manipulator.ManipulateGamePieces;
 import com.team175.robot.commands.manipulator.ManipulatorArmToPosition;
@@ -46,8 +49,9 @@ public final class OI {
     private final Button mLevelThreeClimb;
     private final Button mCancelAuto;
     private final Button mManualLift;
-    // private final Button mManualFrontLift;
-    // private final Button mManualRearLift;
+    private final Button mManualFrontLift;
+    private final Button mManualRearLift;
+    private final Button mManualLiftDrive;
     // private final Button mLineAlign;
 
     // Operator Stick Buttons
@@ -94,8 +98,9 @@ public final class OI {
         mLevelThreeClimb = new SingleButton(mDriverStick, Constants.LEVEL_THREE_CLIMB_BUTTON);
         mCancelAuto = new SingleButton(mDriverStick, Constants.CANCEL_AUTO_BUTTON);
         mManualLift = new SingleButton(mDriverStick, 11); // TODO: Fix
-        // mManualFrontLift = new SingleButton(mDriverStick, 9);
-        // mManualRearLift = new SingleButton(mDriverStick, 10);
+        mManualFrontLift = new SingleButton(mDriverStick, 9);
+        mManualRearLift = new SingleButton(mDriverStick, 10);
+        mManualLiftDrive = new SingleButton(mDriverStick, 7);
         // mLineAlign = new SingleButton(mDriverStick, Constants.LINE_ALIGN_BUTTON);
 
         // Operator Stick Buttons
@@ -121,14 +126,15 @@ public final class OI {
         /* Command Assignment */
         // Driver Stick
         mManualLateralDrive.whileHeld(new ControlLateralDrive());
-        // mShift.whileHeld(new ArcadeDrive(true));
-        mShift.whileHeld(new ShiftDriveGear());
+        mShift.whileHeld(new ArcadeDrive(true));
+        // mShift.whileHeld(new ShiftDriveGear());
         mStraightDrive.whileHeld(new StraightDrive());
         mLevelThreeClimb.whenPressed(new LevelThreeClimb());
         mCancelAuto.whenPressed(new CancelAuto());
         mManualLift.whileHeld(new ControlLift());
-        // mManualFrontLift.whileHeld(new ManualFrontLift());
-        // mManualRearLift.whileHeld(new ManualRearLift());
+        mManualFrontLift.whileHeld(new ControlFrontLift());
+        mManualRearLift.whileHeld(new ControlRearLift());
+        mManualLiftDrive.whileHeld(new ControlLiftDrive());
         // mLineAlign.whenPressed(new LineAlignment());
 
         // Operator Stick

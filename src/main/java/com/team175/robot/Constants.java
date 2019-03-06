@@ -24,7 +24,6 @@ public final class Constants {
     public static final int MANIPULATOR_ARM_SLAVE_PORT = 9;
     public static final int CANIFIER_PORT = -1; // TODO: Fix
     public static final int PDP_PORT = 2; // TODO: Fix
-
     // Pneumatics
     public static final int SHIFT_FORWARD_CHANNEL = 4;
     public static final int SHIFT_REVERSE_CHANNEL = 5;
@@ -176,6 +175,16 @@ public final class Constants {
     public static final double PRACTICE_LATERAL_DRIVE_KD = 0.0;
     public static final int PRACTICE_LATERAL_DRIVE_ACCELERATION = 0;
     public static final int PRACTICE_LATERAL_DRIVE_CRUISE_VELOCITY = 0;
+
+    public static final double MANIPULATOR_ARM_FORWARD_KP = 0.1;
+    public static final double MANIPULATOR_ARM_FORWARD_KD = 0.0;
+    public static final double MANIPULATOR_ARM_REVERSE_KP = 0.1;
+    public static final double MANIPULATOR_ARM_REVERSE_KD = 0.0;
+
+    public static final double ELEVATOR_FORWARD_KP = 0.1;
+    public static final double ELEVATOR_FORWARD_KD = 0.0;
+    public static final double ELEVATOR_REVERSE_KP = 0.1;
+    public static final double ELEVATOR_REVERSE_KD = 0.0;
 
     public static final double COMPETITION_MANIPULATOR_ARM_KP = 0.1;
     public static final double COMPETITION_MANIPULATOR_ARM_KD = 0.0;
