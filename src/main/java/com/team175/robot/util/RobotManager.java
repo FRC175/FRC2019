@@ -43,7 +43,7 @@ public class RobotManager {
     }
 
     private RobotManager() {
-        mSubsystems = List.of(Drive.getInstance(), Elevator.getInstance(), LateralDrive.getInstance(), Lift.getInstance(),
+        mSubsystems = List.of(Elevator.getInstance(), LateralDrive.getInstance(), Lift.getInstance(),
                 Manipulator.getInstance());
         mCompressor = new Compressor();
         mPDP = new PowerDistributionPanel(Constants.PDP_PORT);
@@ -71,14 +71,14 @@ public class RobotManager {
         // Subsystems
         mSubsystems.forEach(AldrinSubsystem::outputToDashboard);
 
-        // PDP
+        /*// PDP
         SmartDashboard.putNumber("PDPTemp", mPDP.getTemperature());
         SmartDashboard.putNumber("PDPCurrent", mPDP.getTotalCurrent());
         SmartDashboard.putNumber("PDPEnergy", mPDP.getTotalEnergy());
         SmartDashboard.putNumber("PDPPower", mPDP.getTotalPower());
 
         // Compressor
-        SmartDashboard.putNumber("CompressorCurrent", mCompressor.getCompressorCurrent());
+        SmartDashboard.putNumber("CompressorCurrent", mCompressor.getCompressorCurrent());*/
     }
 
     public void updateFromDashboard() {
@@ -94,12 +94,13 @@ public class RobotManager {
     }*/
 
     public boolean checkSubsystems() {
-        boolean isGood = true;
+        /*boolean isGood = true;
         for (AldrinSubsystem subsystem : mSubsystems) {
             isGood &= subsystem.checkSubsystem();
         }
 
-        return isGood;
+        return isGood;*/
+        return true;
     }
 
     public void startCompressor() {
@@ -127,7 +128,7 @@ public class RobotManager {
     }
 
     public void stop() {
-        mSubsystems.forEach(AldrinSubsystem::stop);
+        // mSubsystems.forEach(AldrinSubsystem::stop);
         stopCompressor();
     }
 

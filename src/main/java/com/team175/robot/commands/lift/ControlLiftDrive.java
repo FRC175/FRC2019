@@ -19,7 +19,7 @@ public class ControlLiftDrive extends AldrinCommand {
 
     @Override
     protected void execute() {
-        Lift.getInstance().setDrivePower(OI.getInstance().getDriverStickX());
+        Lift.getInstance().setDrivePower(OI.getInstance().getDriverStickY());
     }
 
     @Override

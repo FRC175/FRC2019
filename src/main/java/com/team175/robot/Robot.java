@@ -87,7 +87,9 @@ public class Robot extends TimedRobot {
 
         // mLED.moodLampCycle();
         // Comment out in production robot
-        mRobotManager.updateFromDashboard();
+        // mRobotManager.updateFromDashboard();
+        mElevator.updateFromDashboard();
+        mManipulator.updateFromDashboard();
     }
 
     @Override

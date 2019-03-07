@@ -1,6 +1,6 @@
 # A script to create log folders on RoboRIO if they do not exist.
 
-ssh lvuser@172.22.11.2
+ssh lvuser@10.1.75.2
 
 if [ ! -d "/home/lvuser/log" ]
 then

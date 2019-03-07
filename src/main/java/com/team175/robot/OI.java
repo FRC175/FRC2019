@@ -47,8 +47,8 @@ public final class OI {
     private final Button mManualLateralDrive;
     private final Button mShift;
     private final Button mStraightDrive;
-    private final Button mLevelThreeClimb;
-    private final Button mLevelTwoClimb;
+    // private final Button mLevelThreeClimb;
+    // private final Button mLevelTwoClimb;
     private final Button mCancelAuto;
     private final Button mManualLift;
     private final Button mManualFrontLift;
@@ -97,13 +97,13 @@ public final class OI {
         mManualLateralDrive = new SingleButton(mDriverStick, Constants.LATERAL_DRIVE_TRIGGER);
         mShift = new SingleButton(mDriverStick, Constants.SHIFT_BUTTON);
         mStraightDrive = new SingleButton(mDriverStick, Constants.STRAIGHT_DRIVE_BUTTON);
-        mLevelThreeClimb = new SingleButton(mDriverStick, Constants.LEVEL_THREE_CLIMB_BUTTON);
-        mLevelTwoClimb = new SingleButton(mDriverStick, Constants.LEVEL_TWO_CLIMB_BUTTON);
+        // mLevelThreeClimb = new SingleButton(mDriverStick, Constants.LEVEL_THREE_CLIMB_BUTTON);
+        // mLevelTwoClimb = new SingleButton(mDriverStick, Constants.LEVEL_TWO_CLIMB_BUTTON);
         mCancelAuto = new SingleButton(mDriverStick, Constants.CANCEL_AUTO_BUTTON);
-        mManualLift = new SingleButton(mDriverStick, 11); // TODO: Fix
-        mManualFrontLift = new SingleButton(mDriverStick, 9);
-        mManualRearLift = new SingleButton(mDriverStick, 10);
-        mManualLiftDrive = new SingleButton(mDriverStick, 7);
+        mManualLift = new SingleButton(mDriverStick, Constants.MANUAL_LIFT_BUTTON);
+        mManualFrontLift = new SingleButton(mDriverStick, Constants.MANUAL_FRONT_LIFT_BUTTON);
+        mManualRearLift = new SingleButton(mDriverStick, Constants.MANUAL_REAR_LIFT_BUTTON);
+        mManualLiftDrive = new SingleButton(mDriverStick, Constants.MANUAL_DRIVE_BUTTON);
         // mLineAlign = new SingleButton(mDriverStick, Constants.LINE_ALIGN_BUTTON);
 
         // Operator Stick Buttons
@@ -133,7 +133,7 @@ public final class OI {
         // mShift.whileHeld(new CheesyDrive(true));
         mStraightDrive.whileHeld(new StraightDrive());
         // mLevelThreeClimb.whenPressed(new LevelThreeClimb());
-        mLevelTwoClimb.whenPressed(new LevelTwoClimb());
+        // mLevelTwoClimb.whenPressed(new LevelTwoClimb());
         mCancelAuto.whenPressed(new CancelAuto());
         mManualLift.whileHeld(new ControlLift());
         mManualFrontLift.whileHeld(new ControlFrontLift());

@@ -1,4 +1,4 @@
-server="lvuser@172.22.11.2"
+server="lvuser@10.1.75.2"
 serverDir="/home/lvuser/log"
 clientDir="C:/Users/BUZZ-175/RoboRIOLogs/"
 
