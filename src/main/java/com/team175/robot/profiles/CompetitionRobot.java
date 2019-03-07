@@ -52,13 +52,23 @@ public class CompetitionRobot extends RobotProfile {
         return new CTREConfiguration.Builder(true)
                 .setPrimarySensor(FeedbackDevice.CTRE_MagEncoder_Relative)
                 .setSensorPhase(true)
+                // Forward Gains
                 .setPrimaryGains(new ClosedLoopGains(
-                        Constants.COMPETITION_ELEVATOR_KP,
+                        8,
                         0,
-                        Constants.COMPETITION_ELEVATOR_KD,
+                        0,
                         super.getElevatorTransmission().getKf(),
-                        Constants.COMPETITION_ELEVATOR_ACCELERATION,
-                        Constants.COMPETITION_ELEVATOR_CRUISE_VELOCITY
+                        1000,
+                        1000
+                ))
+                // Reverse Gains
+                .setAuxGains(new ClosedLoopGains(
+                        8,
+                        0,
+                        0,
+                        super.getElevatorTransmission().getKf(),
+                        1000,
+                        1000
                 ))
                 .build();
     }
@@ -83,12 +93,20 @@ public class CompetitionRobot extends RobotProfile {
         return new CTREConfiguration.Builder(false)
                 .setPrimarySensor(FeedbackDevice.Analog)
                 .setPrimaryGains(new ClosedLoopGains(
-                        Constants.COMPETITION_MANIPULATOR_ARM_KP,
+                        12,
                         0,
-                        Constants.COMPETITION_MANIPULATOR_ARM_KD,
+                        0,
                         super.getManipulatorArmTransmission().getKf(),
-                        Constants.COMPETITION_MANIPULATOR_ARM_ACCELERATION,
-                        Constants.COMPETITION_MANIPULATOR_ARM_CRUISE_VELOCITY
+                        600,
+                        600
+                ))
+                .setAuxGains(new ClosedLoopGains(
+                        50,
+                        0,
+                        0,
+                        super.getManipulatorArmTransmission().getKf(),
+                        600,
+                        600
                 ))
                 .build();
     }

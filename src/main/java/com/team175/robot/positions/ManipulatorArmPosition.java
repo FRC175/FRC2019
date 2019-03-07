@@ -5,10 +5,10 @@ package com.team175.robot.positions;
  */
 public enum ManipulatorArmPosition {
 
-    GROUND(-2340),
-    BALL_PICKUP(-2231),
-    SCORE(-2128),
-    STOW(-1850);
+    GROUND(294),
+    BALL_PICKUP(186),
+    SCORE(75),
+    STOW(-190);
 
     private final int mPosition;
 

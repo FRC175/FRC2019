@@ -78,11 +78,11 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
         mWantedPosition = position;
 
         if (mWantedPosition > getPosition()) { // Going Up
-            // setGains(mForwardGains);
-            mMaster.selectProfileSlot(Constants.PRIMARY_GAINS_SLOT, 0);
+            setGains(mForwardGains);
+            // mMaster.selectProfileSlot(Constants.PRIMARY_GAINS_SLOT, 0);
         } else { // Going down
-            // setGains(mReverseGains);
-            mMaster.selectProfileSlot(Constants.AUX_GAINS_SLOT, 0);
+            setGains(mReverseGains);
+            // mMaster.selectProfileSlot(Constants.AUX_GAINS_SLOT, 0);
         }
 
         mMaster.set(ControlMode.MotionMagic, mWantedPosition);
@@ -108,6 +108,14 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
         return Math.abs(getPosition() - mWantedPosition) <= ALLOWED_POSITION_DEVIATION;
     }
 
+    public boolean isForwardLimitHit() {
+        return mMaster.getSensorCollection().isFwdLimitSwitchClosed();
+    }
+
+    public boolean isReverseLimitHit() {
+        return mMaster.getSensorCollection().isRevLimitSwitchClosed();
+    }
+
     public void setForwardGains(ClosedLoopGains gains) {
         mForwardGains = gains;
         CTREConfiguration.setPrimaryGains(mMaster, mForwardGains, "Elevator");
@@ -118,14 +126,14 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
         CTREConfiguration.setAuxGains(mMaster, mReverseGains, "Elevator");
     }
 
-    /*public void setGains(ClosedLoopGains gains) {
+    public void setGains(ClosedLoopGains gains) {
         CTREDiagnostics.checkCommand(mMaster.configPIDF(gains.getKp(), gains.getKi(), gains.getKd(), gains.getKf()),
                 "Failed to config Elevator PID gains!");
         CTREDiagnostics.checkCommand(mMaster.configMotionAcceleration(gains.getAcceleration()),
                 "Failed to config Elevator acceleration!");
         CTREDiagnostics.checkCommand(mMaster.configMotionCruiseVelocity(gains.getCruiseVelocity()),
                 "Failed to config Elevator cruise velocity!");
-    }*/
+    }
 
     @Override
     public void stop() {
@@ -153,6 +161,8 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
         m.put("ElevatorPos", this::getPosition);
         m.put("ElevatorPower", this::getPower);
         m.put("ElevatorVolt", this::getVoltage);
+        m.put("ElevatorForLimit", this::isForwardLimitHit);
+        m.put("ElevatorRevLimit", this::isReverseLimitHit);
 
         return m;
     }

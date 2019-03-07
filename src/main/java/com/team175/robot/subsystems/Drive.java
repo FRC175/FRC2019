@@ -274,7 +274,7 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
 
         m.put("DriveWantedPos", () -> mWantedPosition);
         m.put("DriveWantedAngle", () -> mWantedAngle);
-        m.put("DriveIsLowGear", this::isHighGear);
+        m.put("DriveIsHighGear", this::isHighGear);
         m.put("GyroAngle", this::getAngle);
 
         return m;

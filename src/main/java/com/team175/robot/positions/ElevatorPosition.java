@@ -10,6 +10,7 @@ public enum ElevatorPosition {
     CARGO_LEVEL_TWO(14520),
     HATCH_LEVEL_TWO(11180),
     CARGO_LEVEL_ONE(4007),
+    PICKUP(1211),
     HATCH_LEVEL_ONE(348);
 
     private final int mPosition;

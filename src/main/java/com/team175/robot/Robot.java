@@ -48,7 +48,7 @@ public class Robot extends TimedRobot {
     @Override
     public void robotInit() {
         /* Instantiations */
-        RobotChooser.getInstance().setProfile(false);
+        RobotChooser.getInstance().setProfile(true);
         mDrive = Drive.getInstance();
         mElevator = Elevator.getInstance();
         mLateralDrive = LateralDrive.getInstance();
@@ -60,7 +60,7 @@ public class Robot extends TimedRobot {
         mAutoModeChooser = AutoModeChooser.getInstance();
         mTunerChooser = TunerChooser.getInstance();
         mLogger = LoggerFactory.getLogger(getClass().getSimpleName());
-        mSubsystems = List.of(mDrive, mElevator, mLateralDrive, mLift, mManipulator);
+        mSubsystems = List.of(mDrive); //, mElevator, mLateralDrive, mLift, mManipulator
 
         /* Configuration */
         // Runs camera stream on separate thread

@@ -13,6 +13,7 @@ import com.team175.robot.util.drivers.AldrinTalon;
 import com.team175.robot.util.drivers.AldrinTalonSRX;
 import com.team175.robot.util.drivers.SimpleDoubleSolenoid;
 import edu.wpi.first.wpilibj.Talon;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.util.LinkedHashMap;
@@ -63,7 +64,7 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
         mDeploy = new SimpleDoubleSolenoid(Constants.MANIPULATOR_DEPLOY_FORWARD_CHANNEL, Constants.MANIPULATOR_DEPLOY_REVERSE_CHANNEL);
 
         mArmWantedPosition = 0;
-        // mArmWantedPosition = ManipulatorArmPosition.STOW.positionToMove();
+        // mArmWantedPosition = ManipulatorArmPosition.SCORE.positionToMove();
 
         /* Configuration */
         RobotProfile profile = RobotChooser.getInstance().getProfile();
@@ -110,6 +111,7 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
 
         if (rp == ManipulatorRollerPosition.SCORE_HATCH) {
             punchHatch(true);
+            Timer.delay(2 / 10);
         }
     }
 
@@ -158,11 +160,11 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
         mArmWantedPosition = position;
 
         if (mArmWantedPosition >= getArmPosition()) { // Going down
-            // setArmGains(mArmForwardGains);
-            mArmMaster.selectProfileSlot(Constants.PRIMARY_GAINS_SLOT, 0);
-        } else { // Going down
-            // setArmGains(mArmReverseGains);
-            mArmMaster.selectProfileSlot(Constants.AUX_GAINS_SLOT, 0);
+            setArmGains(mArmForwardGains);
+            // mArmMaster.selectProfileSlot(Constants.PRIMARY_GAINS_SLOT, 0);
+        } else { // Going up
+            setArmGains(mArmReverseGains);
+            // mArmMaster.selectProfileSlot(Constants.AUX_GAINS_SLOT, 0);
         }
 
         mArmMaster.set(ControlMode.MotionMagic, mArmWantedPosition);
@@ -172,7 +174,10 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
         // Un-deploy manipulator when going to stow position
         if (ap == ManipulatorArmPosition.STOW) {
             deploy(false);
+        } else {
+            deploy(true);
         }
+
         setArmPosition(ap.positionToMove());
     }
 
@@ -202,14 +207,14 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
         CTREConfiguration.setAuxGains(mArmMaster, mArmReverseGains, "ManipulatorArm");
     }
 
-    /*public void setArmGains(ClosedLoopGains gains) {
+    public void setArmGains(ClosedLoopGains gains) {
         CTREDiagnostics.checkCommand(mArmMaster.configPIDF(gains.getKp(), gains.getKi(), gains.getKd(), gains.getKf()),
                 "Failed to config Arm PID gains!");
         CTREDiagnostics.checkCommand(mArmMaster.configMotionAcceleration(gains.getAcceleration()),
                 "Failed to config Arm acceleration!");
         CTREDiagnostics.checkCommand(mArmMaster.configMotionCruiseVelocity(gains.getCruiseVelocity()),
                 "Failed to config Arm cruise velocity!");
-    }*/
+    }
 
     @Override
     public void stop() {
