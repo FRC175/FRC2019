@@ -9,8 +9,8 @@ package com.team175.robot;
 
 import com.team175.robot.commands.tuning.CollectVelocityData;
 import com.team175.robot.subsystems.*;
+import com.team175.robot.util.RobotManager;
 import com.team175.robot.util.choosers.AutoModeChooser;
-import com.team175.robot.util.choosers.RobotChooser;
 import com.team175.robot.util.choosers.TunerChooser;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
@@ -18,12 +18,9 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.List;
-
 /**
  * TODO: Consider using FastTimedRobot.
  *
- * TODO: MAYBE BE ABLE TO CONTROL BOTH COMPRESSORS
  * TODO: NEED TO FIX MANIPULATOR ARM BRAKE!!!
  * TODO: NEED TO FIX ELEVATOR AND MANIPULATOR ARM COUNTS IN POSITION CONTROL!!!
  *
@@ -43,12 +40,13 @@ public class Robot extends TimedRobot {
     private AutoModeChooser mAutoModeChooser;
     private TunerChooser mTunerChooser;
     private Logger mLogger;
-    private List<AldrinSubsystem> mSubsystems;
+    private RobotManager mRobotManager;
 
     @Override
     public void robotInit() {
         /* Instantiations */
-        RobotChooser.getInstance().setProfile(true);
+        mRobotManager = RobotManager.getInstance();
+        mRobotManager.setProfile(true);
         mDrive = Drive.getInstance();
         mElevator = Elevator.getInstance();
         mLateralDrive = LateralDrive.getInstance();
@@ -60,13 +58,12 @@ public class Robot extends TimedRobot {
         mAutoModeChooser = AutoModeChooser.getInstance();
         mTunerChooser = TunerChooser.getInstance();
         mLogger = LoggerFactory.getLogger(getClass().getSimpleName());
-        mSubsystems = List.of(mDrive); //, mElevator, mLateralDrive, mLift, mManipulator
 
         /* Configuration */
         // Runs camera stream on separate thread
         new Thread(mVision).start();
         // Comment out in production robot
-        mSubsystems.forEach(AldrinSubsystem::outputToDashboard);
+        mRobotManager.outputToDashboard();
 
         // Add velocity collection command to dashboard
         SmartDashboard.putData("Collect Velocity Data", new CollectVelocityData());
@@ -79,7 +76,9 @@ public class Robot extends TimedRobot {
     @Override
     public void disabledInit() {
         mTunerChooser.stop();
-        mSubsystems.forEach(AldrinSubsystem::outputToDashboard);
+        mRobotManager.outputToDashboard();
+
+        /*mRobotManager.stopCompressor();*/
     }
 
     @Override
@@ -88,7 +87,7 @@ public class Robot extends TimedRobot {
 
         // mLED.moodLampCycle();
         // Comment out in production robot
-        mSubsystems.forEach(AldrinSubsystem::updateFromDashboard);
+        mRobotManager.updateFromDashboard();
     }
 
     @Override
@@ -98,6 +97,7 @@ public class Robot extends TimedRobot {
 
         mDrive.setHighGear(true);
         mDrive.setBrakeMode(true);
+        mDrive.resetSensors();
     }
 
     @Override
@@ -111,6 +111,7 @@ public class Robot extends TimedRobot {
 
         mDrive.setHighGear(false);
         mDrive.setBrakeMode(false);
+        mDrive.resetSensors();
         // mManipulator.setBrake(true);
     }
 
@@ -119,26 +120,25 @@ public class Robot extends TimedRobot {
         Scheduler.getInstance().run();
 
         // Comment out in production robot
-        mSubsystems.forEach(AldrinSubsystem::onPeriodic);
+        mRobotManager.outputToDashboard();
     }
 
     @Override
     public void testInit() {
-        mLogger.info("Beginning robot diagnostics test.");
+        /*mLogger.info("Beginning robot diagnostics test.");
 
-        boolean isGood = true;
-        for (AldrinSubsystem as : mSubsystems) {
-            isGood &= as.checkSubsystem();
-        }
+        boolean isGood = mRobotManager.checkSubsystems();
 
         if (!isGood) {
             mLogger.error("Robot failed diagnostics test!");
         } else {
             mLogger.info("Robot passed diagnostics test!");
-        }
+        }*/
 
         /*mTunerChooser.updateFromDashboard();
         mTunerChooser.start();*/
+
+        /*mRobotManager.startCompressor();*/
     }
 
     @Override

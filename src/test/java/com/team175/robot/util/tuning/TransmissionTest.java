@@ -1,5 +1,6 @@
-package com.team175.robot.util;
+package com.team175.robot.util.tuning;
 
+import com.team175.robot.util.tuning.Transmission;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -20,7 +21,7 @@ public class TransmissionTest {
     }
 
     public double getKf195Method(int maxRPM, int countsPerRev, double gearRatio) {
-        // Video is wrong: Correct formula is returned, NOT commented out one
+        // Video is wrong: Correct formula is the returned one, NOT the commented out one
         // return 1023.0 / (maxRPM / gearRatio / (600.0 * countsPerRev));
         return 1023.0 / ((double) (maxRPM * countsPerRev) / gearRatio / 600.0);
     }

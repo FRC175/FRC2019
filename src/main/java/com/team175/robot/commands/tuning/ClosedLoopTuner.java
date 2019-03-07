@@ -2,8 +2,8 @@ package com.team175.robot.commands.tuning;
 
 import com.team175.robot.Robot;
 import com.team175.robot.commands.AldrinCommand;
-import com.team175.robot.util.CSVWriter;
-import com.team175.robot.util.ClosedLoopTunable;
+import com.team175.robot.util.tuning.CSVWriter;
+import com.team175.robot.util.tuning.ClosedLoopTunable;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.Timer;
 
@@ -23,7 +23,7 @@ public class ClosedLoopTuner extends AldrinCommand {
     private CSVWriter mWriter;
     private Notifier mNotifier; // A WPILib object that spawns a new thread and calls run() at a certain refresh rate
 
-    private static final String FILE_PATH = "/home/lvuser/csvlog/telemetry.csv";
+    private static final String FILE_PATH = "/home/lvuser/csvlog/tuning-data.csv";
     private static final String DELIMITER = ",";
 
     public ClosedLoopTuner(ClosedLoopTunable subsystem) {

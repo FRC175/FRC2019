@@ -19,7 +19,7 @@ public enum ElevatorPosition {
         mPosition = position;
     }
 
-    public int positionToMove() {
+    public int getPosition() {
         return mPosition;
     }
 

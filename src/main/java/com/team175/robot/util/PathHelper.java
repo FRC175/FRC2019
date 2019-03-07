@@ -61,16 +61,16 @@ public class PathHelper {
                 "Failed to config RightMaster sensor term 0!");
         CTREDiagnostics.checkCommand(mMaster.configSensorTerm(SensorTerm.Sum1, FeedbackDevice.QuadEncoder, Constants.TIMEOUT_MS),
                 "Failed to config RightMaster sensor term 1!");
-        CTREDiagnostics.checkCommand(mMaster.configSelectedFeedbackSensor(FeedbackDevice.SensorSum, Constants.PRIMARY_GAINS_SLOT,
-                Constants.TIMEOUT_MS), "Failed to set RightMaster feedback sensor as sum of both left and right!");
-        CTREDiagnostics.checkCommand(mMaster.configSelectedFeedbackCoefficient(0.5, Constants.PRIMARY_GAINS_SLOT, Constants.TIMEOUT_MS),
+        CTREDiagnostics.checkCommand(mMaster.configSelectedFeedbackSensor(FeedbackDevice.SensorSum, 0, Constants.TIMEOUT_MS),
+                "Failed to set RightMaster feedback sensor as sum of both left and right!");
+        CTREDiagnostics.checkCommand(mMaster.configSelectedFeedbackCoefficient(0.5, 0, Constants.TIMEOUT_MS),
                 "Failed to set RightMaster encoder sum feedback coefficient at 0.5!");
 
         // Config master secondary sensor to be pigeon
         CTREDiagnostics.checkCommand(mMaster.configRemoteFeedbackFilter(mPigeon.getDeviceID(), RemoteSensorSource.Pigeon_Yaw,
                 Constants.AUX_GAINS_SLOT, Constants.TIMEOUT_MS), "Failed to config Pigeon as remote sensor for RightMaster!");
-        CTREDiagnostics.checkCommand(mMaster.configSelectedFeedbackCoefficient((3600.0 / 8192.0), Constants.AUX_GAINS_SLOT,
-                Constants.TIMEOUT_MS), "Failed to config RightMaster pigeon feedback coefficient at 3600.0 / 8192.0.");
+        CTREDiagnostics.checkCommand(mMaster.configSelectedFeedbackCoefficient((3600.0 / 8192.0), 1, Constants.TIMEOUT_MS),
+                "Failed to config RightMaster pigeon feedback coefficient at 3600 / 8192.");
     }
 
     /**

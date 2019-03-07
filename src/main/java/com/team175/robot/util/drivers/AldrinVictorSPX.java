@@ -1,9 +1,11 @@
 package com.team175.robot.util.drivers;
 
 import com.ctre.phoenix.ErrorCode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.team175.robot.Constants;
+import com.team175.robot.util.RobotManager;
 
 /**
  * @author Arvind
@@ -54,13 +56,26 @@ public class AldrinVictorSPX extends VictorSPX {
         return super.config_kF(Constants.AUX_GAINS_SLOT, value, Constants.TIMEOUT_MS);
     }
 
-    public void setBrakeMode(boolean enable) {
-        super.setNeutralMode(enable ? NeutralMode.Brake : NeutralMode.Coast);
+    public ErrorCode configSelectedFeedbackSensor(FeedbackDevice feedbackDevice, int pidIdx) {
+        return super.configSelectedFeedbackSensor(feedbackDevice, pidIdx, Constants.TIMEOUT_MS);
+    }
+
+    public ErrorCode setSelectedSensorPosition(int sensorPos, int pidIdx) {
+        return super.setSelectedSensorPosition(sensorPos, pidIdx, Constants.TIMEOUT_MS);
     }
 
     @Override
     public ErrorCode setSelectedSensorPosition(int sensorPos) {
-        return super.setSelectedSensorPosition(sensorPos, Constants.PRIMARY_GAINS_SLOT, Constants.TIMEOUT_MS);
+        return setSelectedSensorPosition(sensorPos, 0);
+    }
+
+    @Override
+    public ErrorCode configSelectedFeedbackSensor(FeedbackDevice feedbackDevice) {
+        return configSelectedFeedbackSensor(feedbackDevice, Constants.PRIMARY_GAINS_SLOT);
+    }
+
+    public void setBrakeMode(boolean enable) {
+        super.setNeutralMode(enable ? NeutralMode.Brake : NeutralMode.Coast);
     }
 
     public ErrorCode configPIDF(double kP, double kI, double kD, double kF) {
@@ -96,11 +111,10 @@ public class AldrinVictorSPX extends VictorSPX {
 
     public double getPDPCurrent() {
         if (mPDPChannel == -1) {
-            throw new UnsupportedOperationException("Victor SPX " + super.getDeviceID() +
+            throw new UnsupportedOperationException("Talon SRX " + super.getDeviceID() +
                     " is not configured to read PDP current!");
         } else {
-            // return RegulatoryHardware.getInstance().getPDP().getCurrent(mPDPChannel);
-            return RegulatoryHardware.getInstance().getCurrentForPDPChannel(mPDPChannel);
+            return RobotManager.getInstance().getCurrentForPDPChannel(mPDPChannel);
         }
     }
 

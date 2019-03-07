@@ -1,9 +1,8 @@
 package com.team175.robot.profiles;
 
 import com.team175.robot.Constants;
-import com.team175.robot.subsystems.Drive;
 import com.team175.robot.util.CTREConfiguration;
-import com.team175.robot.util.Transmission;
+import com.team175.robot.util.tuning.Transmission;
 
 /**
  * @author Arvind

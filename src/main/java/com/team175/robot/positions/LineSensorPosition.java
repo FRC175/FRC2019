@@ -23,7 +23,7 @@ public enum LineSensorPosition {
         mPosition = position;
     }
 
-    public int positionToMove() {
+    public int getPosition() {
         return mPosition;
     }
 

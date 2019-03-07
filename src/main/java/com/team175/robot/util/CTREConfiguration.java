@@ -3,6 +3,7 @@ package com.team175.robot.util;
 import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
 import com.team175.robot.Constants;
+import com.team175.robot.util.tuning.ClosedLoopGains;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -10,36 +11,28 @@ import org.slf4j.LoggerFactory;
  * A object used to hold a CTRE Motor Controller's configuration settings in order to adapt to the different hardware
  * changes across the competition and practice robots. A builder is used in order to make this object immutable.
  *
+ * TODO: Remove setPrimaryGains() and boolean isPrimary to setGains()
+ *
  * @author Arvind
  */
 public class CTREConfiguration {
 
-    private boolean mIsInverted;
-    private boolean mSensorPhase;
-    private int mForwardSoftLimit;
-    private int mReverseSoftLimit;
+    private boolean mIsInverted, mSensorPhase;
+    private int mForwardSoftLimit, mReverseSoftLimit;
     private FeedbackDevice mPrimarySensor;
-    private ClosedLoopGains mPrimaryGains;
-    private ClosedLoopGains mAuxGains;
+    private ClosedLoopGains mPrimaryGains, mAuxGains;
 
     private static final Logger sLogger = LoggerFactory.getLogger(CTREConfiguration.class);
 
     public static class Builder {
 
-        // Required
-        private boolean isInverted;
-
-        // Optional
-        private boolean sensorPhase;
-        private int forwardSoftLimit;
-        private int reverseSoftLimit;
+        private boolean isInverted, sensorPhase;
+        private int forwardSoftLimit, reverseSoftLimit;
         private FeedbackDevice primarySensor;
-        /*private FeedbackDevice auxSensor;*/
-        private ClosedLoopGains primaryGains;
-        private ClosedLoopGains auxGains;
+        private ClosedLoopGains primaryGains, auxGains;
 
-        public Builder(boolean isInverted) {
-            this.isInverted = isInverted;
+        public Builder() {
+            this.isInverted = false;
             this.sensorPhase = false;
             // TODO: Check soft limit initial values
             this.forwardSoftLimit = 0;
@@ -47,6 +40,11 @@ public class CTREConfiguration {
             this.primarySensor = null;
             this.primaryGains = null;
             this.auxGains = null;
+        }
+
+        public Builder setInverted(boolean isInverted) {
+            this.isInverted = isInverted;
+            return this;
         }
 
         public Builder setSensorPhase(boolean sensorPhase) {
@@ -91,7 +89,6 @@ public class CTREConfiguration {
         mForwardSoftLimit = b.forwardSoftLimit;
         mReverseSoftLimit = b.reverseSoftLimit;
         mPrimarySensor = b.primarySensor;
-        /*mAuxSensor = b.auxSensor;*/
         mPrimaryGains = b.primaryGains;
         mAuxGains = b.auxGains;
     }
@@ -111,38 +108,34 @@ public class CTREConfiguration {
         }
 
         if (config.mPrimaryGains != null) {
-            setPrimaryGains(bmc, config.mPrimaryGains, name);
+            setGains(bmc, config.mPrimaryGains, true, name);
         }
         if (config.mAuxGains != null) {
-            setAuxGains(bmc, config.mAuxGains, name);
+            setGains(bmc, config.mAuxGains, false, name);
         }
-    }
-
-    public static ClosedLoopGains getGainsFromConfig(CTREConfiguration config, boolean isPrimaryGains) {
-        return isPrimaryGains ? config.mPrimaryGains : config.mAuxGains;
     }
 
     public static void setGains(BaseMotorController bmc, ClosedLoopGains gains, int gainsSlot, String name) {
-        CTREDiagnostics.checkCommand(bmc.config_kP(gainsSlot, gains.getKp()),
+        CTREDiagnostics.checkCommand(bmc.config_kP(gainsSlot, gains.getKp(), Constants.TIMEOUT_MS),
                 "Failed to config " + name + " kP!");
-        CTREDiagnostics.checkCommand(bmc.config_kI(gainsSlot, gains.getKi()),
+        CTREDiagnostics.checkCommand(bmc.config_kI(gainsSlot, gains.getKi(), Constants.TIMEOUT_MS),
                 "Failed to config " + name + " kI!");
-        CTREDiagnostics.checkCommand(bmc.config_kD(gainsSlot, gains.getKd()),
+        CTREDiagnostics.checkCommand(bmc.config_kD(gainsSlot, gains.getKd(), Constants.TIMEOUT_MS),
                 "Failed to config " + name + " kD!");
-        CTREDiagnostics.checkCommand(bmc.config_kF(gainsSlot, gains.getKf()),
+        CTREDiagnostics.checkCommand(bmc.config_kF(gainsSlot, gains.getKf(), Constants.TIMEOUT_MS),
                 "Failed to config " + name + " kF!");
-        CTREDiagnostics.checkCommand(bmc.configMotionAcceleration(gainsSlot, gains.getAcceleration()),
+        CTREDiagnostics.checkCommand(bmc.configMotionAcceleration(gains.getAcceleration(), Constants.TIMEOUT_MS),
                 "Failed to config " + name + " acceleration!");
-        CTREDiagnostics.checkCommand(bmc.configMotionCruiseVelocity(gainsSlot, gains.getCruiseVelocity()),
+        CTREDiagnostics.checkCommand(bmc.configMotionCruiseVelocity(gains.getCruiseVelocity(), Constants.TIMEOUT_MS),
                 "Failed to config " + name + " cruise velocity!");
     }
 
-    public static void setPrimaryGains(BaseMotorController bmc, ClosedLoopGains gains, String name) {
-        setGains(bmc, gains, Constants.PRIMARY_GAINS_SLOT, name);
+    public static void setGains(BaseMotorController bmc, ClosedLoopGains gains, boolean isPrimaryGains, String name) {
+        setGains(bmc, gains, isPrimaryGains ? Constants.PRIMARY_GAINS_SLOT : Constants.AUX_GAINS_SLOT, name);
     }
 
-    public static void setAuxGains(BaseMotorController bmc, ClosedLoopGains gains, String name) {
-        setGains(bmc, gains, Constants.AUX_GAINS_SLOT, name);
+    public static ClosedLoopGains getGains(CTREConfiguration config, boolean isPrimaryGains) {
+        return isPrimaryGains ? config.mPrimaryGains : config.mAuxGains;
     }
 
 }

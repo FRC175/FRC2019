@@ -1,5 +1,6 @@
 package com.team175.robot.util.drivers;
 
+import com.team175.robot.util.RobotManager;
 import edu.wpi.first.wpilibj.Talon;
 
 public class AldrinTalon extends Talon {
@@ -20,8 +21,7 @@ public class AldrinTalon extends Talon {
             throw new UnsupportedOperationException("Talon SR " + super.getChannel() +
                     " is not configured to read PDP current!");
         } else {
-            // return RegulatoryHardware.getInstance().getPDP().getCurrent(mPDPChannel);
-            return RegulatoryHardware.getInstance().getCurrentForPDPChannel(mPDPChannel);
+            return RobotManager.getInstance().getCurrentForPDPChannel(mPDPChannel);
         }
     }
 

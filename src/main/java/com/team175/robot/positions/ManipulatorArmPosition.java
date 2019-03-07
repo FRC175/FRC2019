@@ -16,7 +16,7 @@ public enum ManipulatorArmPosition {
         mPosition = position;
     }
 
-    public int positionToMove() {
+    public int getPosition() {
         return mPosition;
     }
 

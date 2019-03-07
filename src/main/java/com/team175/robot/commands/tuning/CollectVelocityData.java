@@ -2,7 +2,7 @@ package com.team175.robot.commands.tuning;
 
 import com.team175.robot.commands.AldrinCommand;
 import com.team175.robot.subsystems.Drive;
-import com.team175.robot.util.CSVWriter;
+import com.team175.robot.util.tuning.CSVWriter;
 import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.Timer;
 
@@ -49,6 +49,7 @@ public class CollectVelocityData extends AldrinCommand {
     @Override
     protected void initialize() {
         Drive.getInstance().setPower(0);
+        Drive.getInstance().setHighGear(true);
         mNotifier.startPeriodic(NOTIFIER_LOOP_RATE);
 
         mLogger.info("Starting velocity collection...");

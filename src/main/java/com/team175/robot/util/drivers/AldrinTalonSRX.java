@@ -5,8 +5,11 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.team175.robot.Constants;
+import com.team175.robot.util.RobotManager;
 
 /**
+ * TODO: Delete PIDF methods
+ *
  * @author Arvind
  * @see TalonSRX
  */
@@ -65,7 +68,7 @@ public class AldrinTalonSRX extends TalonSRX {
 
     @Override
     public ErrorCode setSelectedSensorPosition(int sensorPos) {
-        return setSelectedSensorPosition(sensorPos, Constants.PRIMARY_GAINS_SLOT);
+        return setSelectedSensorPosition(sensorPos, 0);
     }
 
     @Override
@@ -113,8 +116,7 @@ public class AldrinTalonSRX extends TalonSRX {
             throw new UnsupportedOperationException("Talon SRX " + super.getDeviceID() +
                     " is not configured to read PDP current!");
         } else {
-            // return RegulatoryHardware.getInstance().getPDP().getCurrent(mPDPChannel);
-            return RegulatoryHardware.getInstance().getCurrentForPDPChannel(mPDPChannel);
+            return RobotManager.getInstance().getCurrentForPDPChannel(mPDPChannel);
         }
     }
 
