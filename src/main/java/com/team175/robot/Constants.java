@@ -71,6 +71,7 @@ public final class Constants {
     public static final int LATERAL_DRIVE_TRIGGER = 1; // 1 is the trigger button
     public static final int SHIFT_BUTTON = 2;
     public static final int STRAIGHT_DRIVE_BUTTON = 3;
+    public static final int RESET_GYRO_BUTTON = 5;
     // public static final int LEVEL_THREE_CLIMB_BUTTON = 12;
     // public static final int LEVEL_TWO_CLIMB_BUTTON = 8;
     // public static final int LINE_ALIGN_BUTTON = 12;

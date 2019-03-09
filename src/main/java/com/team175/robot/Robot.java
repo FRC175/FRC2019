@@ -10,6 +10,7 @@ package com.team175.robot;
 import com.team175.robot.commands.tuning.CollectVelocityData;
 import com.team175.robot.subsystems.*;
 import com.team175.robot.util.RobotManager;
+import com.team175.robot.util.choosers.RobotChooser;
 import com.team175.robot.util.choosers.AutoModeChooser;
 import com.team175.robot.util.choosers.TunerChooser;
 import edu.wpi.first.wpilibj.TimedRobot;
@@ -45,8 +46,8 @@ public class Robot extends TimedRobot {
     @Override
     public void robotInit() {
         /* Instantiations */
+        RobotChooser.getInstance().setProfile(true);
         mRobotManager = RobotManager.getInstance();
-        mRobotManager.setProfile(true);
         mDrive = Drive.getInstance();
         mElevator = Elevator.getInstance();
         mLateralDrive = LateralDrive.getInstance();

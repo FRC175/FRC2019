@@ -6,7 +6,7 @@ import com.team175.robot.Constants;
 import com.team175.robot.positions.LineSensorPosition;
 import com.team175.robot.profiles.RobotProfile;
 import com.team175.robot.util.*;
-import com.team175.robot.util.RobotManager;
+import com.team175.robot.util.choosers.RobotChooser;
 import com.team175.robot.util.drivers.AldrinTalonSRX;
 
 import com.team175.robot.util.drivers.SimpleDoubleSolenoid;
@@ -67,7 +67,7 @@ public final class LateralDrive extends AldrinSubsystem implements ClosedLoopTun
         mWantedPosition = 0;
 
         /* Configuration */
-        RobotProfile profile = RobotManager.getInstance().getProfile();
+        RobotProfile profile = RobotChooser.getInstance().getProfile();
         CTREConfiguration.config(mMaster, profile.getLateralDriveConfig(), "LateralDrive");
         mGains = CTREConfiguration.getGains(profile.getLateralDriveConfig(), true);
 

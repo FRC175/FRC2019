@@ -8,7 +8,7 @@ import com.team175.robot.commands.drive.ArcadeDrive;
 import com.team175.robot.paths.Path;
 import com.team175.robot.profiles.RobotProfile;
 import com.team175.robot.util.*;
-import com.team175.robot.util.RobotManager;
+import com.team175.robot.util.choosers.RobotChooser;
 import com.team175.robot.util.drivers.AldrinTalonSRX;
 import com.team175.robot.util.drivers.SimpleDoubleSolenoid;
 import com.team175.robot.util.tuning.ClosedLoopGains;
@@ -75,7 +75,7 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
         mWantedAngle = 0.0;
 
         /* Configuration */
-        RobotProfile profile = RobotManager.getInstance().getProfile();
+        RobotProfile profile = RobotChooser.getInstance().getProfile();
         CTREConfiguration.config(mLeftMaster, profile.getLeftMasterConfig(), "LeftMaster");
         CTREConfiguration.config(mLeftSlave, profile.getLeftSlaveConfig(), "LeftSlave");
         CTREConfiguration.config(mRightMaster, profile.getRightMasterConfig(), "RightMaster");
@@ -144,11 +144,11 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
     }
 
     public void setHighGear(boolean enable) {
-        mShift.set(!enable); // Shift is in high gear by default
+        mShift.set(enable); // Shift is in high gear by default
     }
 
     public boolean isHighGear() {
-        return !mShift.get(); // Shift is in high gear by default
+        return mShift.get(); // Shift is in high gear by default
     }
 
     public void setBrakeMode(boolean enable) {

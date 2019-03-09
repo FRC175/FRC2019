@@ -27,7 +27,6 @@ public class RobotManager {
     /*private final Logger mLogger;
 
     private CSVWriter mWriter;*/
-    private RobotProfile mProfile;
 
     private static RobotManager sInstance;
 
@@ -43,7 +42,7 @@ public class RobotManager {
     }
 
     private RobotManager() {
-        mSubsystems = List.of(Elevator.getInstance(), LateralDrive.getInstance(), Lift.getInstance(),
+        mSubsystems = List.of(Drive.getInstance(), Elevator.getInstance(), LateralDrive.getInstance(), Lift.getInstance(),
                 Manipulator.getInstance());
         mCompressor = new Compressor();
         mPDP = new PowerDistributionPanel(Constants.PDP_PORT);
@@ -63,26 +62,24 @@ public class RobotManager {
         } catch (FileNotFoundException e) {
             mLogger.error("Failed to instantiate CSVWriter!", e);
         }*/
-
-        mProfile = new CompetitionRobot();
     }
 
     public void outputToDashboard() {
         // Subsystems
         mSubsystems.forEach(AldrinSubsystem::outputToDashboard);
 
-        /*// PDP
+        // PDP
         SmartDashboard.putNumber("PDPTemp", mPDP.getTemperature());
         SmartDashboard.putNumber("PDPCurrent", mPDP.getTotalCurrent());
         SmartDashboard.putNumber("PDPEnergy", mPDP.getTotalEnergy());
         SmartDashboard.putNumber("PDPPower", mPDP.getTotalPower());
 
         // Compressor
-        SmartDashboard.putNumber("CompressorCurrent", mCompressor.getCompressorCurrent());*/
+        SmartDashboard.putNumber("CompressorCurrent", mCompressor.getCompressorCurrent());
     }
 
     public void updateFromDashboard() {
-        mSubsystems.forEach(AldrinSubsystem::updateFromDashboard);
+        // mSubsystems.forEach(AldrinSubsystem::updateFromDashboard);
     }
 
     /*public void startCSVLog() {
@@ -115,20 +112,8 @@ public class RobotManager {
         return mPDP.getCurrent(channel);
     }
 
-    public void setProfile(boolean isCompBot) {
-        mProfile = isCompBot ? new CompetitionRobot() : new PracticeRobot();
-    }
-
-    public RobotProfile getProfile() {
-        return mProfile;
-    }
-
-    public boolean isCompetitionRobot() {
-        return mProfile instanceof CompetitionRobot;
-    }
-
     public void stop() {
-        // mSubsystems.forEach(AldrinSubsystem::stop);
+        mSubsystems.forEach(AldrinSubsystem::stop);
         stopCompressor();
     }
 

@@ -49,7 +49,7 @@ public class CompetitionRobot extends RobotProfile {
                 .setPrimarySensor(FeedbackDevice.CTRE_MagEncoder_Relative)
                 .setSensorPhase(true)
                 // Forward Gains
-                .setPrimaryGains(new ClosedLoopGains(8, 0, 0, super.getElevatorTransmission().getKf(),
+                .setPrimaryGains(new ClosedLoopGains(12, 0, 0, super.getElevatorTransmission().getKf(),
                         1000, 1000
                 ))
                 // Reverse Gains
@@ -76,7 +76,7 @@ public class CompetitionRobot extends RobotProfile {
                 .setPrimaryGains(new ClosedLoopGains(12, 0, 0, super.getManipulatorArmTransmission().getKf(),
                         600, 600))
                 // Reverse Gains
-                .setAuxGains(new ClosedLoopGains(20, 0, 0, super.getManipulatorArmTransmission().getKf(),
+                .setAuxGains(new ClosedLoopGains(30, 0, 0, super.getManipulatorArmTransmission().getKf(),
                         600, 600))
                 .build();
     }

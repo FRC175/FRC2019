@@ -7,7 +7,7 @@ import com.team175.robot.positions.ManipulatorArmPosition;
 import com.team175.robot.positions.ManipulatorRollerPosition;
 import com.team175.robot.profiles.RobotProfile;
 import com.team175.robot.util.*;
-import com.team175.robot.util.RobotManager;
+import com.team175.robot.util.choosers.RobotChooser;
 import com.team175.robot.util.drivers.AldrinTalon;
 import com.team175.robot.util.drivers.AldrinTalonSRX;
 import com.team175.robot.util.drivers.SimpleDoubleSolenoid;
@@ -67,7 +67,7 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
         // mArmWantedPosition = ManipulatorArmPosition.SCORE.getPosition();
 
         /* Configuration */
-        RobotProfile profile = RobotManager.getInstance().getProfile();
+        RobotProfile profile = RobotChooser.getInstance().getProfile();
         CTREConfiguration.config(mArmMaster, profile.getManipulatorArmMasterConfig(), "ManipulatorArm");
         CTREConfiguration.config(mArmSlave, profile.getManipulatorArmSlaveConfig(), "ManipulatorArmSlave");
         mArmForwardGains = CTREConfiguration.getGains(profile.getManipulatorArmMasterConfig(), true);
@@ -207,14 +207,14 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
         CTREConfiguration.setGains(mArmMaster, mArmReverseGains, false, "ManipulatorArm");
     }
 
-    /*public void setArmGains(ClosedLoopGains gains) {
+    public void setArmGains(ClosedLoopGains gains) {
         CTREDiagnostics.checkCommand(mArmMaster.configPIDF(gains.getKp(), gains.getKi(), gains.getKd(), gains.getKf()),
                 "Failed to config Arm PID gains!");
         CTREDiagnostics.checkCommand(mArmMaster.configMotionAcceleration(gains.getAcceleration()),
                 "Failed to config Arm acceleration!");
         CTREDiagnostics.checkCommand(mArmMaster.configMotionCruiseVelocity(gains.getCruiseVelocity()),
                 "Failed to config Arm cruise velocity!");
-    }*/
+    }
 
     @Override
     public void stop() {

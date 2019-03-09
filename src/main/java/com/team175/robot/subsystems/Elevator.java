@@ -5,7 +5,7 @@ import com.team175.robot.Constants;
 import com.team175.robot.positions.ElevatorPosition;
 import com.team175.robot.profiles.RobotProfile;
 import com.team175.robot.util.*;
-import com.team175.robot.util.RobotManager;
+import com.team175.robot.util.choosers.RobotChooser;
 import com.team175.robot.util.drivers.AldrinTalonSRX;
 import com.team175.robot.util.tuning.ClosedLoopGains;
 import com.team175.robot.util.tuning.ClosedLoopTunable;
@@ -50,7 +50,7 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
         mWantedPosition = 0;
 
         /* Configuration */
-        RobotProfile profile = RobotManager.getInstance().getProfile();
+        RobotProfile profile = RobotChooser.getInstance().getProfile();
         CTREConfiguration.config(mMaster, profile.getElevatorConfig(), "Elevator");
         mForwardGains = CTREConfiguration.getGains(profile.getElevatorConfig(), true);
         mReverseGains = CTREConfiguration.getGains(profile.getElevatorConfig(), false);
@@ -129,14 +129,14 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
         CTREConfiguration.setGains(mMaster, mReverseGains, false, "Elevator");
     }
 
-    /*public void setGains(ClosedLoopGains gains) {
+    public void setGains(ClosedLoopGains gains) {
         CTREDiagnostics.checkCommand(mMaster.configPIDF(gains.getKp(), gains.getKi(), gains.getKd(), gains.getKf()),
                 "Failed to config Elevator PID gains!");
         CTREDiagnostics.checkCommand(mMaster.configMotionAcceleration(gains.getAcceleration()),
                 "Failed to config Elevator acceleration!");
         CTREDiagnostics.checkCommand(mMaster.configMotionCruiseVelocity(gains.getCruiseVelocity()),
                 "Failed to config Elevator cruise velocity!");
-    }*/
+    }
 
     @Override
     public void stop() {

@@ -21,7 +21,9 @@ public class ManipulatorArmToPosition extends AldrinCommand {
 
     @Override
     protected void initialize() {
-        Elevator.getInstance().setPosition(ElevatorPosition.PICKUP);
+        if (mPosition != ManipulatorArmPosition.SCORE) {
+            Elevator.getInstance().setPosition(ElevatorPosition.PICKUP_ABOVE);
+        }
         Manipulator.getInstance().setArmPosition(mPosition);
         super.initialize();
     }
