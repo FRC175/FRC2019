@@ -19,7 +19,7 @@ import java.util.List;
  *
  * @author Arvind
  */
-public class RobotManager {
+public final class RobotManager {
 
     private final List<AldrinSubsystem> mSubsystems;
     private final Compressor mCompressor;
@@ -44,6 +44,7 @@ public class RobotManager {
     private RobotManager() {
         mSubsystems = List.of(Drive.getInstance(), Elevator.getInstance(), LateralDrive.getInstance(), Lift.getInstance(),
                 Manipulator.getInstance());
+        // mSubsystems = List.of(Drive.getInstance(), Elevator.getInstance(), Lift.getInstance(), Manipulator.getInstance());
         mCompressor = new Compressor();
         mPDP = new PowerDistributionPanel(Constants.PDP_PORT);
         /*mLogger = LoggerFactory.getLogger(getClass().getSimpleName());
@@ -79,7 +80,7 @@ public class RobotManager {
     }
 
     public void updateFromDashboard() {
-        // mSubsystems.forEach(AldrinSubsystem::updateFromDashboard);
+        mSubsystems.forEach(AldrinSubsystem::updateFromDashboard);
     }
 
     /*public void startCSVLog() {

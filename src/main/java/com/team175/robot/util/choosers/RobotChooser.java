@@ -1,14 +1,8 @@
 package com.team175.robot.util.choosers;
 
-import com.team175.robot.Constants;
 import com.team175.robot.profiles.CompetitionRobot;
 import com.team175.robot.profiles.PracticeRobot;
 import com.team175.robot.profiles.RobotProfile;
-import com.team175.robot.subsystems.*;
-import edu.wpi.first.wpilibj.Compressor;
-import edu.wpi.first.wpilibj.PowerDistributionPanel;
-
-import java.util.List;
 
 /**
  * @author Arvind

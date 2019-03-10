@@ -3,6 +3,7 @@ package com.team175.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 
 import com.team175.robot.Constants;
+import com.team175.robot.commands.manipulator.ManipulatorArmToPosition;
 import com.team175.robot.positions.ManipulatorArmPosition;
 import com.team175.robot.positions.ManipulatorRollerPosition;
 import com.team175.robot.profiles.RobotProfile;
@@ -63,8 +64,8 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
         mBrake = new SimpleDoubleSolenoid(Constants.MANIPULATOR_BRAKE_FORWARD_CHANNEL, Constants.MANIPULATOR_BRAKE_REVERSE_CHANNEL);
         mDeploy = new SimpleDoubleSolenoid(Constants.MANIPULATOR_DEPLOY_FORWARD_CHANNEL, Constants.MANIPULATOR_DEPLOY_REVERSE_CHANNEL);
 
-        mArmWantedPosition = 0;
-        // mArmWantedPosition = ManipulatorArmPosition.SCORE.getPosition();
+        // mArmWantedPosition = 0;
+        mArmWantedPosition = ManipulatorArmPosition.SCORE.getPosition();
 
         /* Configuration */
         RobotProfile profile = RobotChooser.getInstance().getProfile();
@@ -168,17 +169,20 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
         }
 
         mArmMaster.set(ControlMode.MotionMagic, mArmWantedPosition);
+        // mLogger.debug("Going to {}", mArmWantedPosition);
     }
 
     public void setArmPosition(ManipulatorArmPosition ap) {
         // Un-deploy manipulator when going to stow position
         if (ap == ManipulatorArmPosition.STOW) {
             deploy(false);
-        } else {
-            deploy(true);
         }
 
         setArmPosition(ap.getPosition());
+
+        /*if (ap != ManipulatorArmPosition.STOW) {
+             deploy(true);
+        }*/
     }
 
     public int getArmPosition() {
@@ -214,6 +218,11 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
                 "Failed to config Arm acceleration!");
         CTREDiagnostics.checkCommand(mArmMaster.configMotionCruiseVelocity(gains.getCruiseVelocity()),
                 "Failed to config Arm cruise velocity!");
+    }
+
+    @Override
+    protected void initDefaultCommand() {
+        // setDefaultCommand(new ManipulatorArmToPosition(ManipulatorArmPosition.SCORE));
     }
 
     @Override

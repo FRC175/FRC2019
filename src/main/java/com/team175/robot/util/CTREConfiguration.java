@@ -11,16 +11,14 @@ import org.slf4j.LoggerFactory;
  * A object used to hold a CTRE Motor Controller's configuration settings in order to adapt to the different hardware
  * changes across the competition and practice robots. A builder is used in order to make this object immutable.
  *
- * TODO: Remove setPrimaryGains() and boolean isPrimary to setGains()
- *
  * @author Arvind
  */
 public class CTREConfiguration {
 
-    private boolean mIsInverted, mSensorPhase;
-    private int mForwardSoftLimit, mReverseSoftLimit;
-    private FeedbackDevice mPrimarySensor;
-    private ClosedLoopGains mPrimaryGains, mAuxGains;
+    private final boolean mIsInverted, mSensorPhase;
+    private final int mForwardSoftLimit, mReverseSoftLimit;
+    private final FeedbackDevice mPrimarySensor;
+    private final ClosedLoopGains mPrimaryGains, mAuxGains;
 
     private static final Logger sLogger = LoggerFactory.getLogger(CTREConfiguration.class);
 

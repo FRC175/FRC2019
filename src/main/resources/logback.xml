@@ -1,6 +1,6 @@
 <configuration>
-    <!--<timestamp key="filePattern" datePattern="yyyy-MM-dd"/>-->
-    <timestamp key="filePattern" datePattern="yyyy-MM-dd-HH-mm"/>
+    <timestamp key="filePattern" datePattern="yyyy-MM-dd"/>
+    <!--<timestamp key="filePattern" datePattern="yyyy-MM-dd-HH-mm"/>-->
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <!-- encoders are assigned the type
@@ -18,14 +18,14 @@
         </encoder>
     </appender>
 
-    <appender name="DRIVER_STATION" class="com.team175.robot.util.DriverStationAppender"/>
+    <!--<appender name="DRIVER_STATION" class="com.team175.robot.util.DriverStationAppender"/>-->
 
     <root level="debug">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="FILE"/>
     </root>
 
-    <root level="error">
+    <!--<root level="error">
         <appender-ref ref="DRIVER_STATION"/>
-    </root>
+    </root>-->
 </configuration>

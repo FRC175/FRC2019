@@ -186,6 +186,7 @@ public final class LateralDrive extends AldrinSubsystem implements ClosedLoopTun
         m.put("LateralWantedPos", () -> mWantedPosition);
         m.put("LateralPos", this::getPosition);
         m.put("LateralPower", this::getPower);
+        m.put("LateralIsDeployed", this::isDeployed);
         return m;
     }
 

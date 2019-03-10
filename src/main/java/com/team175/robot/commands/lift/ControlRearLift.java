@@ -8,8 +8,20 @@ import com.team175.robot.subsystems.Lift;
 
 public class ControlRearLift extends AldrinCommand {
 
+    private LiftPosition mPosition;
+    private boolean mIsManual;
+
+    public ControlRearLift(LiftPosition position) {
+        requires(Lift.getInstance(), Drive.getInstance());
+        mPosition = position;
+        mIsManual = false;
+        super.logInstantiation();
+    }
+
     public ControlRearLift() {
         requires(Lift.getInstance(), Drive.getInstance());
+        mPosition = null;
+        mIsManual = true;
         super.logInstantiation();
     }
 
@@ -21,7 +33,11 @@ public class ControlRearLift extends AldrinCommand {
 
     @Override
     protected void execute() {
-        Lift.getInstance().setRearPower(OI.getInstance().getDriverStickY());
+        if (mIsManual) {
+            Lift.getInstance().setRearPower(OI.getInstance().getDriverStickY());
+        } else {
+            Lift.getInstance().setRearPosition(mPosition);
+        }
     }
 
     @Override

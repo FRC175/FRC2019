@@ -27,6 +27,7 @@ public class ControlElevator extends AldrinCommand {
             Elevator.getInstance().setPower(OI.getInstance().getOperatorStickY());
             mPosition = Elevator.getInstance().getPosition();
         }
+        super.initialize();
     }
 
     @Override

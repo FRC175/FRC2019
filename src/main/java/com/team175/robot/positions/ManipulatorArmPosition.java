@@ -9,7 +9,7 @@ public enum ManipulatorArmPosition {
     BALL_PICKUP(186),
     SCORE(75),
     STOW(-190);*/
-    HATCH_PICKUP(384),
+    HATCH_PICKUP(386),
     BALL_PICKUP(338),
     SCORE(254),
     STOW(187);

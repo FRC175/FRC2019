@@ -1,6 +1,7 @@
 package com.team175.robot.commands.auto;
 
 import com.team175.robot.commands.AldrinCommand;
+import com.team175.robot.subsystems.Drive;
 import com.team175.robot.util.choosers.AutoModeChooser;
 
 /**
@@ -9,6 +10,7 @@ import com.team175.robot.util.choosers.AutoModeChooser;
 public class CancelAuto extends AldrinCommand {
 
     public CancelAuto() {
+        requires(Drive.getInstance());
         super.logInstantiation();
     }
 
@@ -21,6 +23,13 @@ public class CancelAuto extends AldrinCommand {
     @Override
     protected boolean isFinished() {
         return true;
+    }
+
+    @Override
+    protected void end() {
+        Drive.getInstance().setHighGear(false);
+        Drive.getInstance().setBrakeMode(false);
+        super.end();
     }
 
 }

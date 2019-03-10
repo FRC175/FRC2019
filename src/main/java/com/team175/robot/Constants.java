@@ -63,7 +63,7 @@ public final class Constants {
     /* Input Map */
     // Joystick Ports
     public static final int DRIVER_STICK_PORT = 0;
-    public static final double DRIVER_STICK_DEAD_ZONE = 0.05;
+    public static final double DRIVER_STICK_DEAD_ZONE = 0.1;
     public static final int OPERATOR_STICK_PORT = 1;
     public static final double OPERATOR_STICK_DEAD_ZONE = 0.05;
 
@@ -80,6 +80,10 @@ public final class Constants {
     public static final int MANUAL_FRONT_LIFT_BUTTON = 12;
     public static final int MANUAL_REAR_LIFT_BUTTON = 11;
     public static final int MANUAL_DRIVE_BUTTON = 7;
+    public static final int EXTEND_FRONT_LIFT_BUTTON = 12;
+    public static final int RETRACT_FRONT_LIFT_BUTTON = 10;
+    public static final int EXTEND_REAR_LIFT_BUTTON = 11;
+    public static final int RETRACT_REAR_LIFT_BUTTON = 9;
 
     // Operator Stick Buttons
     public static final int MANUAL_ELEVATOR_TRIGGER = 1;
@@ -94,6 +98,8 @@ public final class Constants {
     public static final int ELEVATOR_POSITION_FOUR_BUTTON = 10;
     public static final int ELEVATOR_POSITION_FIVE_BUTTON = 11;
     public static final int ELEVATOR_POSITION_SIX_BUTTON = 12;
+    public static final int ELEVATOR_CARGO_LOADING_POSITION_BUTTON = 9;
+    public static final int ELEVATOR_GROUND_PICKUP_POSITION_BUTTON = 7;
     public static final int MANIPULATOR_ARM_STOW_POSITION_BUTTON = 2;
     public static final int MANIPULATOR_ARM_SCORE_POSITION_BUTTON = 8;
     public static final int MANIPULATOR_ARM_BALL_PICKUP_POSITION_BUTTON = 10;

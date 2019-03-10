@@ -23,8 +23,7 @@ public class AldrinJoystick extends Joystick {
      *         The port on the Driver Station that the joystick is plugged into.
      */
     public AldrinJoystick(int port) {
-        super(port);
-        mDeadZone = 0;
+        this(port, 0);
     }
 
     /**
@@ -38,16 +37,6 @@ public class AldrinJoystick extends Joystick {
      */
     public AldrinJoystick(int port, double deadZone) {
         super(port);
-        mDeadZone = deadZone;
-    }
-
-    /**
-     * Adjusts dead zone of joystick's axises.
-     *
-     * @param deadZone
-     *         The percent of dead zone to add to the joystick axises.
-     */
-    public void setDeadZone(int deadZone) {
         mDeadZone = deadZone;
     }
 

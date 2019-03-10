@@ -32,7 +32,7 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
     // Singleton Instance
     private static Elevator sInstance;
 
-    private static final int ALLOWED_POSITION_DEVIATION = 100;
+    private static final int ALLOWED_POSITION_DEVIATION = 50;
 
     public static Elevator getInstance() {
         if (sInstance == null) {
@@ -54,6 +54,9 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
         CTREConfiguration.config(mMaster, profile.getElevatorConfig(), "Elevator");
         mForwardGains = CTREConfiguration.getGains(profile.getElevatorConfig(), true);
         mReverseGains = CTREConfiguration.getGains(profile.getElevatorConfig(), false);
+
+        /*CTREDiagnostics.checkCommand(mMaster.configClosedloopRamp(0.25, Constants.TIMEOUT_MS),
+                "Failed to config Elevator closed loop ramp!");*/
 
         /*mGains = Constants.ELEVATOR_GAINS;
         CTREDiagnostics.checkCommand(mMaster.configSelectedFeedbackSensor(FeedbackDevice.CTRE_MagEncoder_Relative),

@@ -73,10 +73,10 @@ public class CompetitionRobot extends RobotProfile {
         return new CTREConfiguration.Builder()
                 .setPrimarySensor(FeedbackDevice.Analog)
                 // Forward Gains
-                .setPrimaryGains(new ClosedLoopGains(12, 0, 0, super.getManipulatorArmTransmission().getKf(),
+                .setPrimaryGains(new ClosedLoopGains(24, 0, 48, super.getManipulatorArmTransmission().getKf(),
                         600, 600))
                 // Reverse Gains
-                .setAuxGains(new ClosedLoopGains(30, 0, 0, super.getManipulatorArmTransmission().getKf(),
+                .setAuxGains(new ClosedLoopGains(50, 0, 100, super.getManipulatorArmTransmission().getKf(),
                         600, 600))
                 .build();
     }

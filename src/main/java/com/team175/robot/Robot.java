@@ -22,9 +22,6 @@ import org.slf4j.LoggerFactory;
 /**
  * TODO: Consider using FastTimedRobot.
  *
- * TODO: NEED TO FIX MANIPULATOR ARM BRAKE!!!
- * TODO: NEED TO FIX ELEVATOR AND MANIPULATOR ARM COUNTS IN POSITION CONTROL!!!
- *
  * @author Arvind
  */
 public class Robot extends TimedRobot {
@@ -63,6 +60,7 @@ public class Robot extends TimedRobot {
         /* Configuration */
         // Runs camera stream on separate thread
         new Thread(mVision).start();
+        // mVision.run();
         // Comment out in production robot
         mRobotManager.outputToDashboard();
 
@@ -89,6 +87,7 @@ public class Robot extends TimedRobot {
         // mLED.moodLampCycle();
         // Comment out in production robot
         // mRobotManager.updateFromDashboard();
+
         mElevator.updateFromDashboard();
         mManipulator.updateFromDashboard();
     }
@@ -98,14 +97,25 @@ public class Robot extends TimedRobot {
         mAutoModeChooser.updateFromDashboard();
         mAutoModeChooser.start();
 
-        mDrive.setHighGear(true);
-        mDrive.setBrakeMode(true);
+        if (mAutoModeChooser.isAutoModeSelected()) {
+            mDrive.setHighGear(true);
+            mDrive.setBrakeMode(true);
+        } else {
+            mDrive.setHighGear(false);
+            mDrive.setBrakeMode(false);
+        }
         mDrive.resetSensors();
+        mManipulator.setBrake(true);
+        mLateralDrive.deploy(false);
+
+        mLogger.debug("Beginning auto!");
     }
 
     @Override
     public void autonomousPeriodic() {
         Scheduler.getInstance().run();
+
+        mRobotManager.outputToDashboard();
     }
 
     @Override
@@ -115,14 +125,16 @@ public class Robot extends TimedRobot {
         mDrive.setHighGear(false);
         mDrive.setBrakeMode(false);
         mDrive.resetSensors();
-        // mManipulator.setBrake(true);
+        mManipulator.setBrake(true);
+        mLateralDrive.deploy(false);
+
+        mLogger.debug("Beginning teleop!");
     }
 
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
 
-        // Comment out in production robot
         mRobotManager.outputToDashboard();
     }
 

@@ -26,7 +26,8 @@ public class ControlLateralDrive extends AldrinCommand {
     @Override
     protected void execute() {
         // mLogger.debug("LateralPosition: {}", LateralDrive.getInstance().getPosition());
-        LateralDrive.getInstance().setPower(OI.getInstance().getDriverStickX());
+        // LateralDrive.getInstance().setPower(OI.getInstance().getDriverStickX());
+        LateralDrive.getInstance().setPower(OI.getInstance().getDriverStickX() * 0.5);
     }
 
     @Override

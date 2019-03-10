@@ -26,6 +26,11 @@ public class AutoModeChooser implements Chooser {
     private AutoModeChooser() {
         mChooser = new SendableChooser<>();
         // mChooser.setDefaultOption("Default Auto", new ExampleCommand());
+        mChooser.setDefaultOption("No Auto", null);
+    }
+
+    public boolean isAutoModeSelected() {
+        return mMode != null;
     }
 
     @Override
@@ -40,14 +45,14 @@ public class AutoModeChooser implements Chooser {
 
     @Override
     public void start() {
-        if (mMode != null) {
+        if (isAutoModeSelected()) {
             mMode.start();
         }
     }
 
     @Override
     public void stop() {
-        if (mMode != null) {
+        if (isAutoModeSelected()) {
             mMode.cancel();
             mMode = null;
         }

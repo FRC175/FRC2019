@@ -5,8 +5,8 @@ package com.team175.robot.positions;
  */
 public enum LiftPosition {
 
-    EXTEND(0.75),
-    RETRACT(0.75),
+    EXTEND(-1),
+    RETRACT(1),
     IDLE(0);
 
     private final double mPower;

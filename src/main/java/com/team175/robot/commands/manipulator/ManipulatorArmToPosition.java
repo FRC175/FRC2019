@@ -21,9 +21,10 @@ public class ManipulatorArmToPosition extends AldrinCommand {
 
     @Override
     protected void initialize() {
-        if (mPosition != ManipulatorArmPosition.SCORE) {
-            Elevator.getInstance().setPosition(ElevatorPosition.PICKUP_ABOVE);
+        if (mPosition == ManipulatorArmPosition.HATCH_PICKUP) {
+            Elevator.getInstance().setPosition(ElevatorPosition.GROUND_PICKUP_ABOVE);
         }
+        // mLogger.debug("Setting arm position to {}", mPosition.getPosition());
         Manipulator.getInstance().setArmPosition(mPosition);
         super.initialize();
     }
@@ -35,6 +36,9 @@ public class ManipulatorArmToPosition extends AldrinCommand {
 
     @Override
     protected void end() {
+        if (mPosition != ManipulatorArmPosition.STOW) {
+            Manipulator.getInstance().deploy(true);
+        }
         Manipulator.getInstance().stopArm();
         super.end();
     }
