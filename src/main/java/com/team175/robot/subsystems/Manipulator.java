@@ -311,8 +311,11 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
     @Override
     public Map<String, Supplier> getCSVTelemetry() {
         LinkedHashMap<String, Supplier> m = new LinkedHashMap<>();
-        m.put("position", this::getArmPosition);
-        m.put("wanted_position", () -> mArmWantedPosition);
+        m.put("arm_position", this::getArmPosition);
+        m.put("arm_wanted_position", () -> mArmWantedPosition);
+        m.put("arm_velocity", this::getArmVelocity);
+        m.put("arm_voltage", this::getArmVoltage);
+        m.put("arm_current", mArmMaster::getOutputCurrent);
         return m;
     }
 

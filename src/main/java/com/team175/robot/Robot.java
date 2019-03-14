@@ -60,10 +60,7 @@ public class Robot extends TimedRobot {
         /* Configuration */
         // Runs camera stream on separate thread
         new Thread(mVision).start();
-        // mVision.run();
-        // Comment out in production robot
         mRobotManager.outputToDashboard();
-
         // Add velocity collection command to dashboard
         SmartDashboard.putData("Collect Velocity Data", new CollectVelocityData());
     }
@@ -78,6 +75,7 @@ public class Robot extends TimedRobot {
         mRobotManager.outputToDashboard();
 
         /*mRobotManager.stopCompressor();*/
+        mLogger.debug("Beginning disabled!");
     }
 
     @Override
@@ -85,9 +83,7 @@ public class Robot extends TimedRobot {
         Scheduler.getInstance().run();
 
         // mLED.moodLampCycle();
-        // Comment out in production robot
         // mRobotManager.updateFromDashboard();
-
         mElevator.updateFromDashboard();
         mManipulator.updateFromDashboard();
     }
@@ -140,6 +136,8 @@ public class Robot extends TimedRobot {
 
     @Override
     public void testInit() {
+        mLogger.debug("Beginning test!");
+
         /*mLogger.info("Beginning robot diagnostics test.");
 
         boolean isGood = mRobotManager.checkSubsystems();

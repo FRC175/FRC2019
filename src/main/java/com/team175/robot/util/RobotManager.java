@@ -16,6 +16,7 @@ import java.util.List;
  * able to control them all from one place.
  *
  * TODO: MAYBE BE ABLE TO CONTROL BOTH COMPRESSORS
+ * TODO: Add ability to start and end loops for each subsystem
  *
  * @author Arvind
  */

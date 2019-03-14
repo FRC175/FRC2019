@@ -8,6 +8,7 @@ import com.team175.robot.util.drivers.AldrinTalon;
 import com.team175.robot.util.drivers.AldrinTalonSRX;
 import com.team175.robot.util.CTREFactory;
 import com.team175.robot.util.drivers.SimpleDoubleSolenoid;
+import com.team175.robot.util.tuning.CSVWritable;
 import edu.wpi.first.wpilibj.DigitalInput;
 import edu.wpi.first.wpilibj.Talon;
 
@@ -16,9 +17,11 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 /**
+ * TODO: Determine PDP Channel
+ *
  * @author Arvind
  */
-public final class Lift extends AldrinSubsystem {
+public final class Lift extends AldrinSubsystem implements CSVWritable {
 
     /* Declarations */
     private final AldrinTalon mFront, mRear, mDrive;
@@ -156,6 +159,14 @@ public final class Lift extends AldrinSubsystem {
 
     @Override
     public void updateFromDashboard() {
+    }
+
+    @Override
+    public Map<String, Supplier> getCSVTelemetry() {
+        Map<String, Supplier> m = new LinkedHashMap<>();
+        /*m.put("front_lift_current", mFront::getPDPCurrent);
+        m.put("rear_lift_current", mRear::getPDPCurrent);*/
+        return m;
     }
 
 }

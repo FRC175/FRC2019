@@ -234,8 +234,8 @@ public final class LateralDrive extends AldrinSubsystem implements ClosedLoopTun
     @Override
     public Map<String, Supplier> getCSVTelemetry() {
         LinkedHashMap<String, Supplier> m = new LinkedHashMap<>();
-        m.put("position", this::getPosition);
-        m.put("wanted_position", () -> mWantedPosition);
+        m.put("lateral_position", this::getPosition);
+        m.put("lateral_wanted_position", () -> mWantedPosition);
         return m;
     }
 

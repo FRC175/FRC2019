@@ -228,8 +228,11 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
     @Override
     public Map<String, Supplier> getCSVTelemetry() {
         LinkedHashMap<String, Supplier> m = new LinkedHashMap<>();
-        m.put("position", this::getPosition);
-        m.put("wanted_position", () -> mWantedPosition);
+        m.put("elevator_position", this::getPosition);
+        m.put("elevator_wanted_position", () -> mWantedPosition);
+        m.put("elevator_velocity", this::getVelocity);
+        m.put("elevator_current", mMaster::getOutputCurrent);
+        m.put("elevator_voltage", this::getVoltage);
         return m;
     }
 

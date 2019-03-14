@@ -350,11 +350,11 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
     @Override
     public Map<String, Supplier> getCSVTelemetry() {
         LinkedHashMap<String, Supplier> m = new LinkedHashMap<>();
-        m.put("left_position", this::getLeftPosition);
-        m.put("right_position", this::getRightPosition);
-        m.put("wanted_position", () -> mWantedPosition);
-        m.put("left_velocity", this::getLeftVelocity);
-        m.put("right_velocity", this::getRightVelocity);
+        m.put("drive_left_position", this::getLeftPosition);
+        m.put("drive_right_position", this::getRightPosition);
+        m.put("drive_wanted_position", () -> mWantedPosition);
+        m.put("drive_left_velocity", this::getLeftVelocity);
+        m.put("drive_right_velocity", this::getRightVelocity);
         return m;
     }
 
