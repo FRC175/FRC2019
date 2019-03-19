@@ -3,7 +3,7 @@ package com.team175.robot.util.tuning;
 /**
  * @author Arvind
  */
-public final class ClosedLoopGains {
+public class ClosedLoopGains {
 
     private final double mKp, mKi, mKd, mKf;
     private final int mAcceleration, mCruiseVelocity;

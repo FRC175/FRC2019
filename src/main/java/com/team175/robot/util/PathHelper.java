@@ -14,7 +14,7 @@ import com.team175.robot.paths.Path;
  *
  * @author Arvind
  */
-public class PathHelper {
+public final class PathHelper {
 
     /**
      * The Talon SRXs

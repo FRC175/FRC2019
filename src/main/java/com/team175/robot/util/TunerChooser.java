@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * @author Arvind
  */
-public class TunerChooser {
+public final class TunerChooser {
 
     private final SendableChooser<SubsystemToTune> mChooser;
 

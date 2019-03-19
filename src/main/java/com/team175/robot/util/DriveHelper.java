@@ -11,7 +11,7 @@ import com.ctre.phoenix.motorcontrol.can.TalonSRX;
  *
  * @author Arvind
  */
-public class DriveHelper {
+public final class DriveHelper {
 
     /**
      * The Talon SRXs

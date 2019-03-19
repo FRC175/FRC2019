@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * @author Arvind
  */
-public class AutoModeChooser {
+public final class AutoModeChooser {
 
     private final SendableChooser<Command> mChooser;
 

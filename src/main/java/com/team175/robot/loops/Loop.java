@@ -1,4 +1,4 @@
-package com.team175.robot.util;
+package com.team175.robot.loops;
 
 /**
  * An ever-so-slightly modified version of Team254's Loop object.

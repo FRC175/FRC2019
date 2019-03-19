@@ -2,61 +2,17 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="3e6f0885-15de-43fe-95ed-a2b9cd45fd4a" name="Default Changelist" comment="">
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/auto/LogCommand.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/led/LEDToColor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/util/LoopHelper.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/util/drivers/Limelight.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/util/tuning/ClosedLoopMotorController.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/util/tuning/ClosedLoopTuner.java" afterDir="false" />
+      <change afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/loops/CSVWriterLoop.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/Constants.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/Constants.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/OI.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/OI.java" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/Robot.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/Robot.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/auto/AutoMode.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/auto/AutoMode.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/auto/CancelAuto.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/auto/CancelAuto.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/auto/CrossTheLine.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/auto/CrossTheLine.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/auto/TwoHatchRocket.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/auto/TwoHatchRocket.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/elevator/ControlElevator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/elevator/ControlElevator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/elevator/ElevatorToPosition.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/elevator/ElevatorToPosition.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/led/ControlLED.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/led/ControlLED.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/manipulator/ControlManipulatorArm.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/manipulator/ControlManipulatorArm.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/manipulator/ManipulateGamePieces.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/manipulator/ManipulateGamePieces.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/manipulator/ManipulatorArmToPosition.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/manipulator/ManipulatorArmToPosition.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/old/AldrinToggleCommand.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/old/DriveLiftToFront.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/old/DriveLiftToRear.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/old/ExampleCommand.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/old/LineAlignment.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/old/ManualFrontLift.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/old/ManualRearLift.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/old/PositionLift.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/old/ToggleFrontLiftBrake.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/old/ToggleManipulatorDeploy.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/old/TogglePunchHatch.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/old/ToggleRearLiftBrake.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/tuning/ClosedLoopTuner.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/tuning/ClosedLoopTuner.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/tuning/CollectVelocityData.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/tuning/CollectVelocityData.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/subsystems/AldrinSubsystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/subsystems/AldrinSubsystem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/subsystems/Drive.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/subsystems/Drive.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/subsystems/Elevator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/subsystems/Elevator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/subsystems/ExampleSubsystem.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/subsystems/ExampleSubsystem.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/subsystems/LED.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/subsystems/LED.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/subsystems/LateralDrive.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/subsystems/LateralDrive.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/subsystems/Lift.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/subsystems/Lift.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/subsystems/Manipulator.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/subsystems/Manipulator.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/subsystems/Vision.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/subsystems/Vision.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/util/Loggable.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/util/Loopable.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/util/Loop.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/util/RobotManager.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/util/RobotManager.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/util/choosers/AutoModeChooser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/util/AutoModeChooser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/util/choosers/Chooser.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/util/choosers/LEDColorChooser.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/util/choosers/RobotChooser.java" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/util/choosers/TunerChooser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/util/TunerChooser.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/util/drivers/AldrinTalon.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/util/drivers/AldrinTalon.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/util/drivers/AldrinTalonSRX.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/util/drivers/AldrinTalonSRX.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/util/drivers/AldrinVictorSPX.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/util/drivers/AldrinVictorSPX.java" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/main/resources/logback.xml" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/resources/logback.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/util/AutoModeChooser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/util/AutoModeChooser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/util/DriveHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/util/DriveHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/util/DriverStationAppender.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/util/DriverStationAppender.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/util/Loop.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/loops/Loop.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/util/LoopHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/loops/Looper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/util/PathHelper.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/util/PathHelper.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/util/TunerChooser.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/util/TunerChooser.java" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/com/team175/robot/util/tuning/ClosedLoopGains.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/com/team175/robot/util/tuning/ClosedLoopGains.java" afterDir="false" />
     </list>
     <ignored path="$PROJECT_DIR$/bin/default/" />
     <ignored path="$PROJECT_DIR$/.gradle/" />
@@ -99,59 +55,31 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/subsystems/Drive.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/commands/tuning/ClosedLoopTuner.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="4221">
-              <caret line="233" column="22" selection-start-line="233" selection-start-column="16" selection-end-line="233" selection-end-column="22" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#8100#8101#0" expanded="true" />
-                <element signature="e#8127#8128#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="203">
+              <caret line="23" column="48" lean-forward="true" selection-start-line="23" selection-start-column="48" selection-end-line="23" selection-end-column="48" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/util/RobotManager.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/loops/Loop.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1806">
-              <caret line="19" column="62" selection-start-line="19" selection-start-column="62" selection-end-line="19" selection-end-column="62" />
-              <folding>
-                <element signature="imports" expanded="true" />
-                <element signature="e#4404#4405#0" expanded="true" />
-                <element signature="e#4475#4476#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/util/LoopHelper.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="294">
-              <caret line="14" column="41" lean-forward="true" selection-start-line="14" selection-start-column="41" selection-end-line="14" selection-end-column="41" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file pinned="false" current-in-tab="false">
-        <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/edu.wpi.first.wpilibj/wpilibj-java/2019.4.1/ba505e826a3d95e2acc68d1c219bb55781cd2b94/wpilibj-java-2019.4.1-sources.jar!/edu/wpi/first/wpilibj/PIDController.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="336">
-              <caret line="21" column="13" selection-start-line="21" selection-start-column="13" selection-end-line="21" selection-end-column="13" />
+            <state relative-caret-position="210">
+              <caret line="10" column="17" selection-start-line="10" selection-start-column="17" selection-end-line="10" selection-end-column="17" />
             </state>
           </provider>
         </entry>
       </file>
       <file pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/util/Loop.java">
+        <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/loops/CSVWriterLoop.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="105">
-              <caret line="5" column="98" selection-start-line="5" selection-start-column="98" selection-end-line="5" selection-end-column="98" />
+            <state relative-caret-position="546">
+              <caret line="26" column="38" lean-forward="true" selection-start-line="26" selection-start-column="38" selection-end-line="26" selection-end-column="38" />
+              <folding>
+                <element signature="imports" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -225,19 +153,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/lift/FrontLiftToPosition.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/lift/ControlRearLift.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/lift/ControlFrontLift.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/lateraldrive/ControlLateralDrive.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/team175/robot/positions/LiftPosition.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/team175/robot/positions/ManipulatorArmPosition.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/team175/robot/profiles/CompetitionRobot.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/team175/robot/positions/ElevatorPosition.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/team175/robot/util/CTREConfiguration.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/team175/robot/util/drivers/AldrinJoystick.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/team175/robot/util/choosers/RobotChooser.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/elevator/ControlElevator.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/manipulator/ManipulateGamePieces.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/auto/LogCommand.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/elevator/ElevatorToPosition.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/manipulator/ControlManipulatorArm.java" />
@@ -268,14 +183,27 @@
         <option value="$PROJECT_DIR$/src/main/java/com/team175/robot/subsystems/LateralDrive.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/team175/robot/subsystems/Elevator.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/team175/robot/util/RobotManager.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/team175/robot/Robot.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/tuning/CollectVelocityData.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/tuning/ClosedLoopTuner.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/team175/robot/util/Looper.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/team175/robot/util/Loopable.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/team175/robot/util/LoopableManager.java" />
-        <option value="$PROJECT_DIR$/src/main/java/com/team175/robot/util/LoopHelper.java" />
         <option value="$PROJECT_DIR$/src/main/java/com/team175/robot/util/Loop.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/team175/robot/commands/tuning/ClosedLoopTuner.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/team175/robot/util/LoopHelper.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/team175/robot/util/AutoModeChooser.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/team175/robot/util/DriveHelper.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/team175/robot/util/PathHelper.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/team175/robot/util/TunerChooser.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/team175/robot/util/CTREDiagnostics.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/team175/robot/util/CTREConfiguration.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/team175/robot/util/DriverStationAppender.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/team175/robot/util/tuning/Transmission.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/team175/robot/util/tuning/ClosedLoopGains.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/team175/robot/Robot.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/team175/robot/loops/LoopHelper.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/team175/robot/loops/Looper.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/team175/robot/util/tuning/CSVWriter.java" />
+        <option value="$PROJECT_DIR$/src/main/java/com/team175/robot/loops/CSVWriterLoop.java" />
       </list>
     </option>
   </component>
@@ -338,26 +266,7 @@
               <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
               <item name="java" type="462c0819:PsiDirectoryNode" />
               <item name="robot" type="462c0819:PsiDirectoryNode" />
-              <item name="commands" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="FRC2019" type="b2602c69:ProjectViewProjectNode" />
-              <item name="FRC2019" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="robot" type="462c0819:PsiDirectoryNode" />
-              <item name="commands" type="462c0819:PsiDirectoryNode" />
-              <item name="tuning" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="FRC2019" type="b2602c69:ProjectViewProjectNode" />
-              <item name="FRC2019" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="8a07ba80:GradleTreeStructureProvider$GradleModuleDirectoryNode" />
-              <item name="java" type="462c0819:PsiDirectoryNode" />
-              <item name="robot" type="462c0819:PsiDirectoryNode" />
-              <item name="util" type="462c0819:PsiDirectoryNode" />
+              <item name="loops" type="462c0819:PsiDirectoryNode" />
             </path>
           </expand>
           <select />
@@ -366,7 +275,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553030846720" />
+    <property name="com.android.tools.idea.instantapp.provision.ProvisionBeforeRunTaskProvider.myTimeStamp" value="1553031758661" />
     <property name="last_opened_file_path" value="D:/Personal/Development/Java/JavaOne" />
     <property name="project.structure.last.edited" value="Project" />
     <property name="project.structure.proportion" value="0.15" />
@@ -518,7 +427,14 @@
       <option name="project" value="LOCAL" />
       <updated>1552246349114</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="Refactor code, begin limelight integration, begin integration of team254's loop system, and begin work on real-time PID graphing and tuning system">
+      <created>1553030967705</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1553030967720</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TodoView">
@@ -597,49 +513,10 @@
   <component name="VcsManagerConfiguration">
     <MESSAGE value="Fix for PID tuning" />
     <MESSAGE value="Add waterbury changes" />
-    <option name="LAST_COMMIT_MESSAGE" value="Add waterbury changes" />
+    <MESSAGE value="Refactor code, begin limelight integration, begin integration of team254's loop system, and begin work on real-time PID graphing and tuning system" />
+    <option name="LAST_COMMIT_MESSAGE" value="Refactor code, begin limelight integration, begin integration of team254's loop system, and begin work on real-time PID graphing and tuning system" />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/util/tuning/RobotManager.java" />
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/subsystems/AldrinSubsystem.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="42">
-          <caret line="2" column="39" selection-start-line="2" selection-start-column="39" selection-end-line="2" selection-end-column="39" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/util/Loggable.java" />
-    <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/edu.wpi.first.wpilibj/wpilibj-java/2019.4.1/ba505e826a3d95e2acc68d1c219bb55781cd2b94/wpilibj-java-2019.4.1-sources.jar!/edu/wpi/first/wpilibj/livewindow/LiveWindow.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="24" column="39" lean-forward="true" selection-start-line="24" selection-start-column="39" selection-end-line="24" selection-end-column="39" />
-          <folding>
-            <element signature="e#1005#1044#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/Constants.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="856">
-          <caret line="43" column="53" lean-forward="true" selection-start-line="43" selection-start-column="53" selection-end-line="43" selection-end-column="53" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/paths/Path.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="147">
-          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/util/PathHelper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/commands/elevator/ControlElevator.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="147">
@@ -672,13 +549,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/util/TunerChooser.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="147">
-          <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/commands/led/LEDToColor.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="84">
@@ -702,13 +572,6 @@
             <element signature="e#922#923#0" expanded="true" />
             <element signature="e#990#991#0" expanded="true" />
           </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/util/DriverStationAppender.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="189">
-          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
         </state>
       </provider>
     </entry>
@@ -768,13 +631,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/util/CTREConfiguration.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="686">
-          <caret line="136" column="5" lean-forward="true" selection-start-line="136" selection-start-column="5" selection-end-line="136" selection-end-column="5" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/util/tuning/ClosedLoopMotorController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="378">
@@ -782,31 +638,10 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/util/tuning/ClosedLoopTuner.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="231">
-          <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/util/tuning/CSVWriter.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="210">
-          <caret line="12" column="19" selection-start-line="12" selection-start-column="19" selection-end-line="12" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/util/tuning/CSVWritable.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="147">
           <caret line="8" column="17" selection-start-line="8" selection-start-column="17" selection-end-line="8" selection-end-column="17" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/util/tuning/Transmission.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="147">
-          <caret line="7" column="13" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
         </state>
       </provider>
     </entry>
@@ -864,13 +699,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/util/DriveHelper.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-798">
-          <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/util/FastTimedRobot.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="126">
@@ -896,40 +724,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/subsystems/Drive.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="4221">
-          <caret line="233" column="22" selection-start-line="233" selection-start-column="16" selection-end-line="233" selection-end-column="22" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#8100#8101#0" expanded="true" />
-            <element signature="e#8127#8128#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/Robot.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="686">
-          <caret line="163" column="41" selection-start-line="163" selection-start-column="41" selection-end-line="163" selection-end-column="41" />
-          <folding>
-            <element signature="e#0#5068#0" expanded="true" />
-            <element signature="imports" expanded="true" />
-            <element signature="e#4936#4937#0" expanded="true" />
-            <element signature="e#4981#4982#0" expanded="true" />
-            <element signature="e#5026#5027#0" expanded="true" />
-            <element signature="e#5063#5064#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/commands/tuning/ClosedLoopTuner.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="59" column="11" lean-forward="true" selection-start-line="59" selection-start-column="11" selection-end-line="59" selection-end-column="11" />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/util/Looper.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="1659">
@@ -947,18 +741,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/util/RobotManager.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-1806">
-          <caret line="19" column="62" selection-start-line="19" selection-start-column="62" selection-end-line="19" selection-end-column="62" />
-          <folding>
-            <element signature="imports" expanded="true" />
-            <element signature="e#4404#4405#0" expanded="true" />
-            <element signature="e#4475#4476#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/com.ctre.phoenix/api-java/5.14.0/71d5827e312fb56659224d954c38c21f8cd2fd39/api-java-5.14.0-sources.jar!/com/ctre/phoenix/ILoopable.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="105">
@@ -973,6 +755,30 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/util/RobotManager.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1806">
+          <caret line="19" column="62" selection-start-line="19" selection-start-column="62" selection-end-line="19" selection-end-column="62" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#4404#4405#0" expanded="true" />
+            <element signature="e#4475#4476#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/subsystems/Drive.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="4221">
+          <caret line="233" column="22" selection-start-line="233" selection-start-column="16" selection-end-line="233" selection-end-column="22" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#8100#8101#0" expanded="true" />
+            <element signature="e#8127#8128#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="jar://$USER_HOME$/.gradle/caches/modules-2/files-2.1/edu.wpi.first.wpilibj/wpilibj-java/2019.4.1/ba505e826a3d95e2acc68d1c219bb55781cd2b94/wpilibj-java-2019.4.1-sources.jar!/edu/wpi/first/wpilibj/PIDController.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="336">
@@ -980,20 +786,148 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/util/LoopHelper.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/loops.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="294">
-          <caret line="14" column="41" lean-forward="true" selection-start-line="14" selection-start-column="41" selection-end-line="14" selection-end-column="41" />
+        <state relative-caret-position="42">
+          <caret line="2" column="18" selection-start-line="2" selection-start-column="18" selection-end-line="2" selection-end-column="18" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/util/AutoModeChooser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="9" column="7" lean-forward="true" selection-start-line="9" selection-start-column="7" selection-end-line="9" selection-end-column="12" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/util/DriveHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="21">
+          <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/util/PathHelper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="16" column="13" selection-start-line="16" selection-start-column="13" selection-end-line="16" selection-end-column="13" />
+          <folding>
+            <element signature="e#6431#6432#0" expanded="true" />
+            <element signature="e#6487#6488#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/util/TunerChooser.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="13" column="7" selection-start-line="13" selection-start-column="7" selection-end-line="13" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/util/CTREFactory.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="13" column="19" selection-start-line="13" selection-start-column="19" selection-end-line="13" selection-end-column="19" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/util/CTREDiagnostics.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="14" column="7" lean-forward="true" selection-start-line="14" selection-start-column="7" selection-end-line="14" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/util/CTREConfiguration.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="15" column="7" lean-forward="true" selection-start-line="15" selection-start-column="7" selection-end-line="15" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/util/DriverStationAppender.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="189">
+          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+          <folding>
+            <element signature="e#409#410#0" expanded="true" />
+            <element signature="e#486#487#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/util/tuning/ClosedLoopTuner.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="231">
+          <caret line="11" lean-forward="true" selection-start-line="11" selection-end-line="11" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/util/tuning/Transmission.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="147">
+          <caret line="7" column="7" selection-start-line="7" selection-start-column="7" selection-end-line="7" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/util/tuning/ClosedLoopGains.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="5" column="7" selection-start-line="5" selection-start-column="7" selection-end-line="5" selection-end-column="7" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/commands/tuning/ClosedLoopTuner.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="203">
+          <caret line="23" column="48" lean-forward="true" selection-start-line="23" selection-start-column="48" selection-end-line="23" selection-end-column="48" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/Robot.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="462">
+          <caret line="27" column="45" lean-forward="true" selection-start-line="27" selection-start-column="45" selection-end-line="27" selection-end-column="45" />
+          <folding>
+            <element signature="imports" expanded="true" />
+            <element signature="e#4936#4937#0" expanded="true" />
+            <element signature="e#4981#4982#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/loops/Loop.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="210">
+          <caret line="10" column="17" selection-start-line="10" selection-start-column="17" selection-end-line="10" selection-end-column="17" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/util/tuning/CSVWriter.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="252">
+          <caret line="51" column="8" selection-start-line="51" selection-start-column="8" selection-end-line="51" selection-end-column="8" />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/loops/Looper.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="42">
+          <caret line="17" column="25" selection-start-line="17" selection-start-column="25" selection-end-line="17" selection-end-column="25" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/util/Loop.java">
+    <entry file="file://$PROJECT_DIR$/src/main/java/com/team175/robot/loops/CSVWriterLoop.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="5" column="98" selection-start-line="5" selection-start-column="98" selection-end-line="5" selection-end-column="98" />
+        <state relative-caret-position="546">
+          <caret line="26" column="38" lean-forward="true" selection-start-line="26" selection-start-column="38" selection-end-line="26" selection-end-column="38" />
+          <folding>
+            <element signature="imports" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

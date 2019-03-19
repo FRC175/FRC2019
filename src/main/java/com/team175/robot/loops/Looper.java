@@ -1,6 +1,5 @@
-package com.team175.robot.util;
+package com.team175.robot.loops;
 
-import com.team175.robot.Robot;
 import edu.wpi.first.wpilibj.Notifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -8,7 +7,7 @@ import org.slf4j.LoggerFactory;
 import java.util.List;
 
 /**
- * A slightly modified version of Team254's Looper object that is simplified by taking advantage of Java's new
+ * A slightly modified version of Team254's Looper object that is mainly simplified by taking advantage of Java's new
  * (~5 years old) functional programming stuff.
  *
  * This code runs all of the robot's loops. Loop objects are stored in a List object. They are started when the robot
@@ -16,20 +15,20 @@ import java.util.List;
  *
  * @author Team254
  */
-public class LoopHelper {
+public final class Looper {
 
     private final List<Loop> mLoops;
     private final Notifier mNotifier;
     private final Logger mLogger;
+    private final double mPeriod;
 
     private boolean mIsRunning;
 
-    private static double PERIOD = Robot.getDefaultPeriod() / 2;
-
-    public LoopHelper(Loop... loops) {
+    public Looper(double period, Loop... loops) {
         mLoops = List.of(loops);
         mNotifier = new Notifier(() -> mLoops.forEach(Loop::loop));
         mLogger = LoggerFactory.getLogger(getClass().getSimpleName());
+        mPeriod = period;
         mIsRunning = false;
     }
 
@@ -37,8 +36,8 @@ public class LoopHelper {
         if (!mIsRunning) {
             mLogger.info("Starting loops.");
             mLoops.forEach(Loop::start);
-            mLogger.info("Starting loops' period method");
-            mNotifier.startPeriodic(PERIOD);
+            mLogger.info("Starting loops' periodic method.");
+            mNotifier.startPeriodic(mPeriod);
             mIsRunning = true;
         }
     }

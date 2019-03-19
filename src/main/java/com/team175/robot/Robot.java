@@ -25,7 +25,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author Arvind
  */
-public class Robot extends TimedRobot {
+public final class Robot extends TimedRobot {
 
     private Drive mDrive;
     private Elevator mElevator;

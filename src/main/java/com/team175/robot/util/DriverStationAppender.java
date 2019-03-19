@@ -9,7 +9,7 @@ import edu.wpi.first.wpilibj.DriverStation;
  *
  * @author Arvind
  */
-public class DriverStationAppender extends AppenderBase<ILoggingEvent> {
+public final class DriverStationAppender extends AppenderBase<ILoggingEvent> {
 
     @Override
     protected void append(ILoggingEvent event) {
