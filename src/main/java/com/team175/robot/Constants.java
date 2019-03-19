@@ -9,7 +9,9 @@ public final class Constants {
     private Constants() {
     }
 
-    /* Hardware Map */
+    // ----------------------------------------------------------------------------------------------------
+    // Hardware Map
+    // ----------------------------------------------------------------------------------------------------
     // CAN Ports
     public static final int LEFT_MASTER_DRIVE_PORT = 5;
     public static final int LEFT_SLAVE_DRIVE_PORT = 6;
@@ -21,6 +23,7 @@ public final class Constants {
     public static final int MANIPULATOR_ARM_SLAVE_PORT = 9;
     public static final int CANIFIER_PORT = -1; // TODO: Fix
     public static final int PDP_PORT = 2; // TODO: Fix
+
     // Pneumatics
     public static final int SHIFT_FORWARD_CHANNEL = 4;
     public static final int SHIFT_REVERSE_CHANNEL = 5;
@@ -60,7 +63,9 @@ public final class Constants {
     public static final int RIGHT_ONE_SENSOR_PORT = 2;
     public static final int RIGHT_TWO_SENSOR_PORT = 1;*/
 
-    /* Input Map */
+    // ----------------------------------------------------------------------------------------------------
+    // Input Map
+    // ----------------------------------------------------------------------------------------------------
     // Joystick Ports
     public static final int DRIVER_STICK_PORT = 0;
     public static final double DRIVER_STICK_DEAD_ZONE = 0.1;
@@ -105,7 +110,9 @@ public final class Constants {
     public static final int MANIPULATOR_ARM_BALL_PICKUP_POSITION_BUTTON = 10;
     public static final int MANIPULATOR_ARM_GROUND_POSITION_BUTTON = 12;
 
-    /* Physical Constants */
+    // ----------------------------------------------------------------------------------------------------
+    // Physical Constants
+    // ----------------------------------------------------------------------------------------------------
     // TODO: Verify max speed of motors
     public static final int DRIVE_MAX_RPM = 5330;
     public static final int ELEVATOR_MAX_RPM = 5840;
@@ -124,9 +131,9 @@ public final class Constants {
     public static final int LATERAL_DRIVE_COUNTS_PER_REVOLUTION = 512;
     public static final int MANIPULATOR_ARM_COUNTS_PER_REVOLUTION = 4096;
 
-    /* Software Constants */
-    // Closed Loop Gains
-
+    // ----------------------------------------------------------------------------------------------------
+    // Software Constants
+    // ----------------------------------------------------------------------------------------------------
     // CTRE Constants
     public static final int PRIMARY_GAINS_SLOT = 0;
     public static final int AUX_GAINS_SLOT = 1;

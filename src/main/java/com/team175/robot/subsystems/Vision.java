@@ -1,5 +1,6 @@
 package com.team175.robot.subsystems;
 
+import com.team175.robot.util.drivers.Limelight;
 import edu.wpi.first.cameraserver.CameraServer;
 
 import java.util.Map;
@@ -10,10 +11,9 @@ import java.util.function.Supplier;
  */
 public final class Vision extends AldrinSubsystem implements Runnable {
 
-    /* Declarations */
     private final CameraServer mCamera;
+    // private final Limelight mLimelight;
 
-    // Singleton Instance
     private static Vision sInstance;
 
     public static Vision getInstance() {
@@ -25,8 +25,8 @@ public final class Vision extends AldrinSubsystem implements Runnable {
     }
 
     private Vision() {
-        /* Instantiation */
         mCamera = CameraServer.getInstance();
+        // mLimelight = Limelight.getInstance();
     }
 
     @Override
@@ -41,10 +41,6 @@ public final class Vision extends AldrinSubsystem implements Runnable {
     @Override
     public Map<String, Supplier> getTelemetry() {
         return null;
-    }
-
-    @Override
-    public void updateFromDashboard() {
     }
 
 }

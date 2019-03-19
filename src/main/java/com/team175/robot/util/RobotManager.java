@@ -10,6 +10,7 @@ import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.util.List;
+import java.util.Optional;
 
 /**
  * An object that contains all the subsystems and various other components (i.e. Compressor and PDP) of the robot to be
@@ -29,6 +30,7 @@ public final class RobotManager {
 
     private CSVWriter mWriter;*/
 
+    private static Optional<RobotProfile> sProfile = Optional.empty();
     private static RobotManager sInstance;
 
     private static final String LOG_FILE_PATH = "/home/lvuser/csvlog/all-telemetry.csv";
@@ -93,13 +95,28 @@ public final class RobotManager {
     }*/
 
     public boolean checkSubsystems() {
-        /*boolean isGood = true;
+        boolean isGood = true;
         for (AldrinSubsystem subsystem : mSubsystems) {
             isGood &= subsystem.checkSubsystem();
         }
+        return isGood;
+    }
 
-        return isGood;*/
-        return true;
+    public void startTuning() {
+        /*
+        startNotifier()
+        In Notifier:
+            updateCSVWriter()
+            updateFromDashboard()
+            flushCSVWriter()
+         */
+    }
+
+    public void stopTuning() {
+        /*
+        flushCSVWriter()
+        stopNotifier()
+         */
     }
 
     public void startCompressor() {
@@ -117,6 +134,18 @@ public final class RobotManager {
     public void stop() {
         mSubsystems.forEach(AldrinSubsystem::stop);
         stopCompressor();
+    }
+
+    public static void setProfile(boolean isCompBot) {
+        sProfile = isCompBot ? Optional.of(new CompetitionRobot()) : Optional.of(new PracticeRobot());
+    }
+
+    public static RobotProfile getProfile() {
+        return sProfile.orElseThrow(IllegalStateException::new);
+    }
+
+    public static boolean isCompetitionRobot() {
+        return getProfile() instanceof CompetitionRobot;
     }
 
 }

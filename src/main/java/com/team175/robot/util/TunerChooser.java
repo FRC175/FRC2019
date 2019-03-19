@@ -1,4 +1,4 @@
-package com.team175.robot.util.choosers;
+package com.team175.robot.util;
 
 import com.team175.robot.commands.tuning.ClosedLoopTuner;
 import com.team175.robot.subsystems.Drive;
@@ -11,7 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * @author Arvind
  */
-public class TunerChooser implements Chooser {
+public class TunerChooser {
 
     private final SendableChooser<SubsystemToTune> mChooser;
 
@@ -43,12 +43,10 @@ public class TunerChooser implements Chooser {
         outputToDashboard();
     }
 
-    @Override
     public void outputToDashboard() {
         SmartDashboard.putData("Tuner Chooser", mChooser);
     }
 
-    @Override
     public void updateFromDashboard() {
         switch (mChooser.getSelected()) {
             case DRIVE:
@@ -69,14 +67,12 @@ public class TunerChooser implements Chooser {
         }
     }
 
-    @Override
     public void start() {
         if (mTuner != null) {
             mTuner.initialize();
         }
     }
 
-    @Override
     public void stop() {
         if (mTuner != null) {
             mTuner.end();

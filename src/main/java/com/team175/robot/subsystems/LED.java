@@ -5,8 +5,10 @@ import com.ctre.phoenix.CANifier.LEDChannel;
 import com.team175.robot.Constants;
 import com.team175.robot.positions.LEDColor;
 import com.team175.robot.util.CTREDiagnostics;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.awt.Color;
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -17,9 +19,11 @@ public class LED extends AldrinSubsystem {
 
     private final CANifier mController;
 
-    private static LED sInstance;
+    private Color mCurrentColor;
 
     private static final int BLINK_TIME = 0;
+
+    private static LED sInstance;
 
     /*private enum LEDState {
         SET_COLOR,
@@ -40,6 +44,9 @@ public class LED extends AldrinSubsystem {
         mController = new CANifier(Constants.CANIFIER_PORT);
         CTREDiagnostics.checkCommand(mController.configFactoryDefault(Constants.TIMEOUT_MS),
                 "Failed to config CANifier to factory defaults.");
+
+        mCurrentColor = new Color(0, 0, 0);
+        setColor(mCurrentColor);
     }
 
     public void setColor(Color color) {
@@ -64,7 +71,6 @@ public class LED extends AldrinSubsystem {
         // TODO: Perhaps use sine wave to make light smooth
     }
 
-
     public void breathColor(Color color) {
     }
 
@@ -76,11 +82,20 @@ public class LED extends AldrinSubsystem {
 
     @Override
     public Map<String, Supplier> getTelemetry() {
-        return null;
+        Map<String, Supplier> m = new LinkedHashMap<>();
+        m.put("LEDRed", mCurrentColor::getRed);
+        m.put("LEDGreen", mCurrentColor::getGreen);
+        m.put("LEDBlue", mCurrentColor::getBlue);
+        return m;
     }
 
     @Override
     public void updateFromDashboard() {
+        setColor(new Color(
+                (int) SmartDashboard.getNumber("LEDRed", 0),
+                (int) SmartDashboard.getNumber("LEDGreen", 0),
+                (int) SmartDashboard.getNumber("LEDBlue", 0)
+        ));
     }
 
     /*@Override

@@ -1,5 +1,6 @@
 package com.team175.robot.commands.tuning;
 
+import com.team175.robot.Robot;
 import com.team175.robot.commands.AldrinCommand;
 import com.team175.robot.subsystems.Drive;
 import com.team175.robot.util.tuning.CSVWriter;
@@ -28,7 +29,7 @@ public class CollectVelocityData extends AldrinCommand {
     private static final String FILE_PATH = "/home/lvuser/csvlog/velocity-data.csv";
     private static final String DELIMITER = ",";
     private static final int RUN_TIME = 5; // 5 s
-    private static final double NOTIFIER_LOOP_RATE = 0.02; // 20 ms
+    private static final double PERIOD = Robot.getDefaultPeriod();
 
     public CollectVelocityData() {
         requires(Drive.getInstance());
@@ -50,7 +51,7 @@ public class CollectVelocityData extends AldrinCommand {
     protected void initialize() {
         Drive.getInstance().setPower(0);
         Drive.getInstance().setHighGear(true);
-        mNotifier.startPeriodic(NOTIFIER_LOOP_RATE);
+        mNotifier.startPeriodic(PERIOD);
 
         mLogger.info("Starting velocity collection...");
         Drive.getInstance().setPower(1);

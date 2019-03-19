@@ -1,4 +1,4 @@
-package com.team175.robot.util.choosers;
+package com.team175.robot.util;
 
 import edu.wpi.first.wpilibj.command.Command;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * @author Arvind
  */
-public class AutoModeChooser implements Chooser {
+public class AutoModeChooser {
 
     private final SendableChooser<Command> mChooser;
 
@@ -33,24 +33,20 @@ public class AutoModeChooser implements Chooser {
         return mMode != null;
     }
 
-    @Override
     public void outputToDashboard() {
         SmartDashboard.putData("Auto Mode Chooser", mChooser);
     }
 
-    @Override
     public void updateFromDashboard() {
         mMode = mChooser.getSelected();
     }
 
-    @Override
     public void start() {
         if (isAutoModeSelected()) {
             mMode.start();
         }
     }
 
-    @Override
     public void stop() {
         if (isAutoModeSelected()) {
             mMode.cancel();

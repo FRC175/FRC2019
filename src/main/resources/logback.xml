@@ -1,6 +1,6 @@
 <configuration>
-    <timestamp key="filePattern" datePattern="yyyy-MM-dd"/>
-    <!--<timestamp key="filePattern" datePattern="yyyy-MM-dd-HH-mm"/>-->
+    <!--<timestamp key="filePattern" datePattern="yyyy-MM-dd"/>-->
+    <timestamp key="filePattern" datePattern="yyyy-MM-dd-HH-mm"/>
 
     <appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
         <!-- encoders are assigned the type

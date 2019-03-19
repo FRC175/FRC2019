@@ -25,6 +25,7 @@ public class ClosedLoopTuner extends AldrinCommand {
 
     private static final String FILE_PATH = "/home/lvuser/csvlog/tuning-data.csv";
     private static final String DELIMITER = ",";
+    private static final double PERIOD = Robot.getDefaultPeriod() / 2;
 
     public ClosedLoopTuner(ClosedLoopTunable subsystem) {
         mSubsystem = subsystem;
@@ -57,11 +58,9 @@ public class ClosedLoopTuner extends AldrinCommand {
             mLogger.warn("Failed to parse refresh rate! Using default of 10 ms instead...", e);
             refreshRate = 0.01; // 10 ms
         }*/
-        double refreshRate = Robot.getRefreshRate() / 2;
-        mLogger.debug("Refresh Rate: {}", refreshRate);
 
         try {
-            mNotifier.startPeriodic(refreshRate);
+            mNotifier.startPeriodic(PERIOD);
             mSubsystem.updateGains();
         } catch (Exception e) {
             mLogger.error("Failed to start ClosedLoopTuner thread!", e);

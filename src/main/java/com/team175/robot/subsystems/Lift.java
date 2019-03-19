@@ -23,13 +23,11 @@ import java.util.function.Supplier;
  */
 public final class Lift extends AldrinSubsystem implements CSVWritable {
 
-    /* Declarations */
     private final AldrinTalon mFront, mRear, mDrive;
     private final SimpleDoubleSolenoid mFrontBrake, mRearBrake;
     private final DigitalInput mFrontForwardLimit, mRearForwardLimit, mFrontReverseLimit, mRearReverseLimit,
             mFrontHabSensor, mRearHabSensor;
 
-    // Singleton Instance
     private static Lift sInstance;
 
     public static Lift getInstance() {
@@ -41,7 +39,6 @@ public final class Lift extends AldrinSubsystem implements CSVWritable {
     }
 
     private Lift() {
-        /* Instantiations */
         // Talon(portNum : int)
         mFront = new AldrinTalon(Constants.LIFT_FRONT_PORT);
         mRear = new AldrinTalon(Constants.LIFT_REAR_PORT);
@@ -61,7 +58,6 @@ public final class Lift extends AldrinSubsystem implements CSVWritable {
         mFrontHabSensor = new DigitalInput(Constants.LIFT_FRONT_HAB_SENSOR_PORT);
         mRearHabSensor = new DigitalInput(Constants.LIFT_REAR_HAB_SENSOR_PORT);
 
-        /* Configuration */
         stop();
     }
 
@@ -155,10 +151,6 @@ public final class Lift extends AldrinSubsystem implements CSVWritable {
         m.put("RLiftPower", this::getRearPower);
         m.put("LiftDrivePower", this::getDrivePower);
         return m;
-    }
-
-    @Override
-    public void updateFromDashboard() {
     }
 
     @Override

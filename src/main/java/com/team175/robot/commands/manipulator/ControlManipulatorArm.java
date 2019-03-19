@@ -9,11 +9,8 @@ import com.team175.robot.subsystems.Manipulator;
  */
 public class ControlManipulatorArm extends AldrinCommand {
 
-    private int mPosition;
-
     public ControlManipulatorArm() {
         requires(Manipulator.getInstance());
-        mPosition = 0;
         super.logInstantiation();
     }
 
@@ -21,7 +18,6 @@ public class ControlManipulatorArm extends AldrinCommand {
     protected void execute() {
         // mLogger.debug("ManipulatorPosition: {}", Manipulator.getInstance().getArmPosition());
         Manipulator.getInstance().setArmPower(OI.getInstance().getOperatorStickX());
-        mPosition = Manipulator.getInstance().getArmPosition();
     }
 
     @Override
@@ -31,8 +27,6 @@ public class ControlManipulatorArm extends AldrinCommand {
 
     @Override
     protected void end() {
-        // Keep manipulator at wanted position
-        Manipulator.getInstance().setArmWantedPosition(mPosition);
         Manipulator.getInstance().stopArm();
         super.end();
     }

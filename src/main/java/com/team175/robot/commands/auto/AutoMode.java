@@ -10,6 +10,7 @@ import org.slf4j.LoggerFactory;
  *
  * @author Arvind
  */
+@Deprecated
 public class AutoMode extends CommandGroup {
 
     protected final Logger mLogger = LoggerFactory.getLogger(getClass().getSimpleName());

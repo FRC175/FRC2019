@@ -12,6 +12,8 @@ public class ManipulateGamePieces extends AldrinCommand {
 
     private ManipulatorRollerPosition mPosition;
 
+    private static final double TIME_DELAY = 0.5;
+
     public ManipulateGamePieces(ManipulatorRollerPosition position) {
         requires(Manipulator.getInstance());
         mPosition = position;
@@ -22,7 +24,7 @@ public class ManipulateGamePieces extends AldrinCommand {
     protected void initialize() {
         Manipulator.getInstance().setRollerPosition(mPosition);
         if (mPosition == ManipulatorRollerPosition.SCORE_HATCH) {
-            Timer.delay(0.5);
+            Timer.delay(TIME_DELAY);
             Manipulator.getInstance().setRollerPower(0, 0);
         }
         super.initialize();

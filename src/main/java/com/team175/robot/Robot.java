@@ -7,14 +7,15 @@
 
 package com.team175.robot;
 
+import com.team175.robot.commands.led.ControlLED;
 import com.team175.robot.commands.tuning.CollectVelocityData;
 import com.team175.robot.subsystems.*;
+import com.team175.robot.util.AutoModeChooser;
 import com.team175.robot.util.RobotManager;
-import com.team175.robot.util.choosers.RobotChooser;
-import com.team175.robot.util.choosers.AutoModeChooser;
-import com.team175.robot.util.choosers.TunerChooser;
+import com.team175.robot.util.TunerChooser;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,7 +27,6 @@ import org.slf4j.LoggerFactory;
  */
 public class Robot extends TimedRobot {
 
-    /* Declarations */
     private Drive mDrive;
     private Elevator mElevator;
     private LateralDrive mLateralDrive;
@@ -42,8 +42,7 @@ public class Robot extends TimedRobot {
 
     @Override
     public void robotInit() {
-        /* Instantiations */
-        RobotChooser.getInstance().setProfile(true);
+        RobotManager.setProfile(true);
         mRobotManager = RobotManager.getInstance();
         mDrive = Drive.getInstance();
         mElevator = Elevator.getInstance();
@@ -57,12 +56,15 @@ public class Robot extends TimedRobot {
         mTunerChooser = TunerChooser.getInstance();
         mLogger = LoggerFactory.getLogger(getClass().getSimpleName());
 
-        /* Configuration */
         // Runs camera stream on separate thread
         new Thread(mVision).start();
         mRobotManager.outputToDashboard();
         // Add velocity collection command to dashboard
         SmartDashboard.putData("Collect Velocity Data", new CollectVelocityData());
+        // Add LED tuning command to dashboard
+        SmartDashboard.putData("LED Color Chooser", new ControlLED());
+        // According to ChiefDelphi, disabling this should fix the loop overrun message
+        LiveWindow.disableAllTelemetry();
     }
 
     @Override
@@ -159,7 +161,7 @@ public class Robot extends TimedRobot {
         Scheduler.getInstance().run();
     }
 
-    public static double getRefreshRate() {
+    public static double getDefaultPeriod() {
         return kDefaultPeriod;
     }
 

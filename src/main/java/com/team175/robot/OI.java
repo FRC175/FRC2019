@@ -34,7 +34,6 @@ import edu.wpi.first.wpilibj.buttons.Button;
  */
 public final class OI {
 
-    /* Declarations */
     // Joysticks
     private final AldrinJoystick mDriverStick;
     private final AldrinJoystick mOperatorStick;
@@ -80,7 +79,6 @@ public final class OI {
     private final Button mManipulatorArmBallPickupPosition;
     private final Button mManipulatorArmGroundPosition;
 
-    // Singleton Instance
     private static OI sInstance;
 
     public static OI getInstance() {
@@ -92,7 +90,9 @@ public final class OI {
     }
 
     private OI() {
-        /* Instantiations */
+        // ----------------------------------------------------------------------------------------------------
+        // Instantiations
+        // ----------------------------------------------------------------------------------------------------
         // Joystick
         mDriverStick = new AldrinJoystick(Constants.DRIVER_STICK_PORT, Constants.DRIVER_STICK_DEAD_ZONE);
         mOperatorStick = new AldrinJoystick(Constants.OPERATOR_STICK_PORT, Constants.OPERATOR_STICK_DEAD_ZONE);
@@ -138,7 +138,9 @@ public final class OI {
         mManipulatorArmBallPickupPosition = new NubDoubleButton(mOperatorStick, Constants.MANIPULATOR_ARM_BALL_PICKUP_POSITION_BUTTON);
         mManipulatorArmGroundPosition = new NubDoubleButton(mOperatorStick, Constants.MANIPULATOR_ARM_GROUND_POSITION_BUTTON);
 
-        /* Command Assignment */
+        // ----------------------------------------------------------------------------------------------------
+        // Command Assignment
+        // ----------------------------------------------------------------------------------------------------
         // Driver Stick
         mManualLateralDrive.whileHeld(new ControlLateralDrive());
         mShift.whileHeld(new ArcadeDrive(true));

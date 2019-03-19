@@ -1,6 +1,5 @@
 package com.team175.robot.subsystems;
 
-import com.team175.robot.util.Loggable;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,9 +14,8 @@ import java.util.function.Supplier;
  *
  * @author Arvind
  */
-public abstract class AldrinSubsystem extends Subsystem implements Loggable {
+public abstract class AldrinSubsystem extends Subsystem {
 
-    /* Declarations */
     /**
      * A logger shared by various subsystems.
      */
@@ -36,9 +34,8 @@ public abstract class AldrinSubsystem extends Subsystem implements Loggable {
     public abstract Map<String, Supplier> getTelemetry();
 
     /**
-     * Filters the different types of data from the getTelemetry() Map and sends it to the SmartDashboard.
+     * Filters the different types of data from the getTelemetry() map and sends it to the SmartDashboard.
      */
-    @Override
     public void outputToDashboard() {
         if (getTelemetry() != null) {
             getTelemetry().forEach((k, v) -> {
@@ -73,6 +70,12 @@ public abstract class AldrinSubsystem extends Subsystem implements Loggable {
      */
     public void onPeriodic() {
         outputToDashboard();
+    }
+
+    /**
+     * Updates subsystems with modified fields from the SmartDashboard.
+     */
+    public void updateFromDashboard() {
     }
 
     /**

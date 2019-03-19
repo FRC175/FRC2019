@@ -2,7 +2,7 @@ package com.team175.robot.commands.auto;
 
 import com.team175.robot.commands.AldrinCommand;
 import com.team175.robot.subsystems.Drive;
-import com.team175.robot.util.choosers.AutoModeChooser;
+import com.team175.robot.util.AutoModeChooser;
 
 /**
  * @author Arvind

@@ -44,11 +44,7 @@ public class ExampleSubsystem extends Subsystem {
      */
     public static ExampleSubsystem getInstance() {
         if (sInstance == null) {
-            try {
-                sInstance = new ExampleSubsystem();
-            } catch (Exception e) {
-                // DriverStation.reportError("Example Subsystem failed to instantiate.\n" + e, true);
-            }
+            sInstance = new ExampleSubsystem();
         }
 
         return sInstance;

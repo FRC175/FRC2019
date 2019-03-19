@@ -6,7 +6,6 @@ import com.ctre.phoenix.motorcontrol.NeutralMode;
 import com.ctre.phoenix.motorcontrol.can.VictorSPX;
 import com.team175.robot.Constants;
 import com.team175.robot.util.RobotManager;
-import com.team175.robot.util.choosers.RobotChooser;
 
 /**
  * @author Arvind

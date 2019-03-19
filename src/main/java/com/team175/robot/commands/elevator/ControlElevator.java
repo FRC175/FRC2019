@@ -20,8 +20,6 @@ public class ControlElevator extends AldrinCommand {
 
     @Override
     protected void execute() {
-        // TODO: Check if-block
-        // Ensure elevator cannot move when manipulator is stowed
         if (Manipulator.getInstance().isDeployed()) {
             // mLogger.debug("ElevatorPosition: {}", Elevator.getInstance().getPosition());
             Elevator.getInstance().setPower(OI.getInstance().getOperatorStickY());
