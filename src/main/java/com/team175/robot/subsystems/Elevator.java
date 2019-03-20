@@ -116,6 +116,10 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
     }
 
     @Override
+    public void start() {
+    }
+
+    @Override
     public void stop() {
         setPosition(mWantedPosition);
     }

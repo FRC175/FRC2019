@@ -194,6 +194,10 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
     }
 
     @Override
+    public void start() {
+    }
+
+    @Override
     public void stop() {
         stopArm();
         stopRollers();

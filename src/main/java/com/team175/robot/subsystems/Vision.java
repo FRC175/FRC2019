@@ -30,8 +30,11 @@ public final class Vision extends AldrinSubsystem implements Runnable {
     }
 
     @Override
-    public void run() {
-        mCamera.startAutomaticCapture();
+    public void start() {
+    }
+
+    @Override
+    public void loop() {
     }
 
     @Override
@@ -41,6 +44,11 @@ public final class Vision extends AldrinSubsystem implements Runnable {
     @Override
     public Map<String, Supplier> getTelemetry() {
         return null;
+    }
+
+    @Override
+    public void run() {
+        mCamera.startAutomaticCapture();
     }
 
 }

@@ -137,6 +137,10 @@ public final class Lift extends AldrinSubsystem implements CSVWritable {
     }
 
     @Override
+    public void start() {
+    }
+
+    @Override
     public void stop() {
         setFrontPower(0);
         setRearPower(0);
