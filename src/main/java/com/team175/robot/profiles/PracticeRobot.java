@@ -48,7 +48,7 @@ public class PracticeRobot extends RobotProfile {
                 .setPrimarySensor(FeedbackDevice.CTRE_MagEncoder_Relative)
                 .setSensorPhase(true)
                 // Forward Gains
-                .setPrimaryGains(new ClosedLoopGains(8, 0, 0, super.getElevatorTransmission().getKf(),
+                .setPrimaryGains(new ClosedLoopGains(12, 0, 0, super.getElevatorTransmission().getKf(),
                         1000, 1000
                 ))
                 // Reverse Gains

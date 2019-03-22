@@ -49,6 +49,7 @@ public final class Constants {
     public static final int LIFT_DRIVE_PORT = 9;
     public static final int MANIPULATOR_FRONT_ROLLER = 7;
     public static final int MANIPULATOR_REAR_ROLLER = 6;
+//    public static final int CAMERA_SERVO = 4; adding servo
 
     // Digital Inputs
     public static final int LIFT_FRONT_FORWARD_LIMIT_PORT = 0;

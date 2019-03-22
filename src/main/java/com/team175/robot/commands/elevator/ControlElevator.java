@@ -20,11 +20,11 @@ public class ControlElevator extends AldrinCommand {
 
     @Override
     protected void execute() {
-        if (Manipulator.getInstance().isDeployed()) {
+        // if (Manipulator.getInstance().isDeployed()) {
             // mLogger.debug("ElevatorPosition: {}", Elevator.getInstance().getPosition());
             Elevator.getInstance().setPower(OI.getInstance().getOperatorStickY());
             mPosition = Elevator.getInstance().getPosition();
-        }
+        // }
         super.initialize();
     }
 
