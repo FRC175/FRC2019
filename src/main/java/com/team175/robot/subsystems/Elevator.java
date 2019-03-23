@@ -1,6 +1,8 @@
 package com.team175.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
+import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.team175.robot.Constants;
 import com.team175.robot.positions.ElevatorPosition;
 import com.team175.robot.profiles.RobotProfile;
@@ -46,6 +48,12 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
         CTREConfiguration.config(mMaster, profile.getElevatorConfig(), "Elevator");
         mForwardGains = CTREConfiguration.getGains(profile.getElevatorConfig(), true);
         mReverseGains = CTREConfiguration.getGains(profile.getElevatorConfig(), false);
+        CTREDiagnostics.checkCommand(mMaster.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector,
+                LimitSwitchNormal.NormallyClosed, Constants.TIMEOUT_MS),
+                "Failed to config elevator forward limit switch!");
+        CTREDiagnostics.checkCommand(mMaster.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector,
+                LimitSwitchNormal.NormallyClosed, Constants.TIMEOUT_MS),
+                "Failed to config elevator reverse limit switch!");
 
         mMaster.setBrakeMode(true);
     }

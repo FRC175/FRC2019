@@ -1,7 +1,6 @@
 package com.team175.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-
 import com.team175.robot.Constants;
 import com.team175.robot.positions.ManipulatorArmPosition;
 import com.team175.robot.positions.ManipulatorRollerPosition;
