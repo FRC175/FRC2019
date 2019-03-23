@@ -32,10 +32,8 @@ public final class CTREFactory {
 
     private static void configClosedLoop(BaseMotorController bmc) {
         configOpenLoop(bmc);
-
         bmc.configMotionSCurveStrength(S_CURVE_STRENGTH, Constants.TIMEOUT_MS);
-        // bmc.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder, Constants.PRIMARY_GAINS_SLOT, Constants.TIMEOUT_MS);
-        // bmc.configAllowableClosedloopError(Constants.PRIMARY_GAINS_SLOT, Constants.ALLOWED_POSITION_DEVIATION, Constants.TIMEOUT_MS);
+        bmc.configAllowableClosedloopError(Constants.PRIMARY_GAINS_SLOT, 100, Constants.TIMEOUT_MS);
     }
 
     public static AldrinTalonSRX getTalon(int portNum) {

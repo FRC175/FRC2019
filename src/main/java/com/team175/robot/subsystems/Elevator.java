@@ -194,7 +194,7 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
 
     @Override
     public void resetSensors() {
-        CTREDiagnostics.checkCommand(mMaster.setSelectedSensorPosition(0), "Failed to zero Elevator encoder!");
+        CTREDiagnostics.checkCommand(mMaster.setPrimarySensorPosition(0), "Failed to zero Elevator encoder!");
     }
 
     @Override

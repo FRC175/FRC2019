@@ -216,7 +216,7 @@ public final class LateralDrive extends AldrinSubsystem implements ClosedLoopTun
 
     @Override
     public void resetSensors() {
-        CTREDiagnostics.checkCommand(mMaster.setSelectedSensorPosition(0), "Failed to zero LateralDrive encoder!");
+        CTREDiagnostics.checkCommand(mMaster.setPrimarySensorPosition(0), "Failed to zero LateralDrive encoder!");
     }
 
     @Override

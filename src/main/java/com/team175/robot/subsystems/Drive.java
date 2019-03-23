@@ -222,9 +222,9 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
     }
 
     public void resetEncoders() {
-        CTREDiagnostics.checkCommand(mLeftMaster.setSelectedSensorPosition(0), "Failed to zero LeftMaster encoder!");
-        CTREDiagnostics.checkCommand(mRightMaster.setSelectedSensorPosition(0), "Failed to zero RightMaster encoder!");
-        // CTREDiagnostics.checkCommand(mRightMaster.setSelectedSensorPosition(0, 1), "Failed to zero RightMaster aux sensor!");
+        CTREDiagnostics.checkCommand(mLeftMaster.setPrimarySensorPosition(0), "Failed to zero LeftMaster encoder!");
+        CTREDiagnostics.checkCommand(mRightMaster.setPrimarySensorPosition(0), "Failed to zero RightMaster encoder!");
+        CTREDiagnostics.checkCommand(mRightMaster.setAuxSensorPosition(0), "Failed to zero RightMaster aux sensor!");
     }
 
     public double getAngle() {

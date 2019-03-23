@@ -1,6 +1,8 @@
 package com.team175.robot.util;
 
 import com.team175.robot.Constants;
+import com.team175.robot.loops.CSVWriterLoop;
+import com.team175.robot.loops.Looper;
 import com.team175.robot.profiles.CompetitionRobot;
 import com.team175.robot.profiles.PracticeRobot;
 import com.team175.robot.profiles.RobotProfile;
@@ -26,6 +28,8 @@ public final class RobotManager {
     private final List<AldrinSubsystem> mSubsystems;
     private final Compressor mCompressor;
     private final PowerDistributionPanel mPDP;
+    // private final Looper mSubsystemLooper;
+    // private final Looper mCSVLooper;
     /*private final Logger mLogger;
 
     private CSVWriter mWriter;*/
@@ -35,6 +39,7 @@ public final class RobotManager {
 
     private static final String LOG_FILE_PATH = "/home/lvuser/csvlog/all-telemetry.csv";
     private static final String LOG_DELIMITER = ",";
+    private static final double LOOPER_PERIOD = 0.01;
 
     public static RobotManager getInstance() {
         if (sInstance == null) {
@@ -47,9 +52,9 @@ public final class RobotManager {
     private RobotManager() {
         mSubsystems = List.of(Drive.getInstance(), Elevator.getInstance(), LateralDrive.getInstance(), Lift.getInstance(),
                 Manipulator.getInstance());
-        // mSubsystems = List.of(Drive.getInstance(), Elevator.getInstance(), Lift.getInstance(), Manipulator.getInstance());
         mCompressor = new Compressor();
         mPDP = new PowerDistributionPanel(Constants.PDP_PORT);
+        // mSubsystemLooper = new Looper(mSubsystems, LOOPER_PERIOD);
         /*mLogger = LoggerFactory.getLogger(getClass().getSimpleName());
 
         Map<String, Supplier> m = new LinkedHashMap<>();
@@ -131,8 +136,11 @@ public final class RobotManager {
         return mPDP.getCurrent(channel);
     }
 
-    public void stop() {
-        mSubsystems.forEach(AldrinSubsystem::stop);
+    public void startSubsystems() {
+
+    }
+
+    public void stopSubsystems() {
         stopCompressor();
     }
 

@@ -1,27 +1,27 @@
 package com.team175.robot.positions;
 
+import com.team175.robot.util.RobotManager;
+
 /**
  * @author Arvind
  */
 public enum ManipulatorArmPosition {
 
-    /*HATCH_PICKUP(294),
-    BALL_PICKUP(186),
-    SCORE(75),
-    STOW(-190);*/
-    HATCH_PICKUP(386),
-    BALL_PICKUP(338),
-    SCORE(254),
-    STOW(187);
+    HATCH_PICKUP(386, 294),
+    BALL_PICKUP(338, 186),
+    SCORE(254, 75),
+    STOW(187, -190);
 
-    private final int mPosition;
+    private final int mCompetitionPosition;
+    private final int mPracticePosition;
 
-    ManipulatorArmPosition(int position) {
-        mPosition = position;
+    ManipulatorArmPosition(int competitionPosition, int practicePosition) {
+        mCompetitionPosition = competitionPosition;
+        mPracticePosition = practicePosition;
     }
 
     public int getPosition() {
-        return mPosition;
+        return RobotManager.isCompetitionRobot() ? mCompetitionPosition : mPracticePosition;
     }
 
 }

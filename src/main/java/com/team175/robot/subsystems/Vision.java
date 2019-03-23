@@ -26,7 +26,7 @@ public final class Vision extends AldrinSubsystem implements Runnable {
 
     private Vision() {
         mCamera = CameraServer.getInstance();
-        // mLimelight = Limelight.getInstance();
+        // mLimelight = new Limelight();
     }
 
     @Override
@@ -47,7 +47,8 @@ public final class Vision extends AldrinSubsystem implements Runnable {
     }
 
     @Override
-    public void run() { mCamera.addAxisCamera("10.1.12");
+    public void run() {
+        mCamera.addAxisCamera("10.1.12");
     }
 
 }
