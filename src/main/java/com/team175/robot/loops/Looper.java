@@ -24,8 +24,8 @@ public final class Looper {
 
     private boolean mIsRunning;
 
-    public Looper(double period, Loop... loops) {
-        mLoops = List.of(loops);
+    public Looper(List<Loop> loops, double period) {
+        mLoops = loops;
         mNotifier = new Notifier(() -> mLoops.forEach(Loop::loop));
         mLogger = LoggerFactory.getLogger(getClass().getSimpleName());
         mPeriod = period;

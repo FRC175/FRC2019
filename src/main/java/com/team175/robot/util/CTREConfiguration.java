@@ -8,7 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * A object used to hold a CTRE Motor Controller's configuration settings in order to adapt to the different hardware
+ * An object used to hold a CTRE Motor Controller's configuration settings in order to adapt to the different hardware
  * changes across the competition and practice robots. A builder is used in order to make this object immutable.
  *
  * @author Arvind
@@ -32,7 +32,6 @@ public class CTREConfiguration {
         public Builder() {
             this.isInverted = false;
             this.sensorPhase = false;
-            // TODO: Check soft limit initial values
             this.forwardSoftLimit = 0;
             this.reverseSoftLimit = 0;
             this.primarySensor = null;

@@ -10,6 +10,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * An object that runs a series of diagnostics tests on a CTRE motor controller to verify motor integrity.
+ *
  * @author Arvind
  */
 public class CTREDiagnostics {

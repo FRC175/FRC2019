@@ -26,7 +26,7 @@ public final class Vision extends AldrinSubsystem implements Runnable {
 
     private Vision() {
         mCamera = CameraServer.getInstance();
-        // mLimelight = Limelight.getInstance();
+        // mLimelight = new Limelight();
     }
 
     @Override

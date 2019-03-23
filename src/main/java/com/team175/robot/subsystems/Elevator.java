@@ -48,6 +48,12 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
         CTREConfiguration.config(mMaster, profile.getElevatorConfig(), "Elevator");
         mForwardGains = CTREConfiguration.getGains(profile.getElevatorConfig(), true);
         mReverseGains = CTREConfiguration.getGains(profile.getElevatorConfig(), false);
+        CTREDiagnostics.checkCommand(mMaster.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector,
+                LimitSwitchNormal.NormallyClosed, Constants.TIMEOUT_MS),
+                "Failed to config elevator forward limit switch!");
+        CTREDiagnostics.checkCommand(mMaster.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector,
+                LimitSwitchNormal.NormallyClosed, Constants.TIMEOUT_MS),
+                "Failed to config elevator reverse limit switch!");
 
         CTREDiagnostics.checkCommand(mMaster.configForwardLimitSwitchSource(LimitSwitchSource.FeedbackConnector,
                 LimitSwitchNormal.NormallyClosed, Constants.TIMEOUT_MS),
@@ -205,7 +211,7 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
 
     @Override
     public void resetSensors() {
-        CTREDiagnostics.checkCommand(mMaster.setSelectedSensorPosition(0), "Failed to zero Elevator encoder!");
+        CTREDiagnostics.checkCommand(mMaster.setPrimarySensorPosition(0), "Failed to zero Elevator encoder!");
     }
 
     @Override
