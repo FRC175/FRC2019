@@ -21,7 +21,7 @@ public final class Constants {
     public static final int LATERAL_DRIVE_PORT = 7;
     public static final int MANIPULATOR_ARM_MASTER_PORT = 10;
     public static final int MANIPULATOR_ARM_SLAVE_PORT = 9;
-    public static final int CANIFIER_PORT = -1; // TODO: Fix
+    public static final int CANIFIER_PORT = 0; // TODO: Fix
     public static final int PDP_PORT = 2; // TODO: Fix
 
     // Pneumatics
