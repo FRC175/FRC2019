@@ -18,14 +18,8 @@
         </encoder>
     </appender>
 
-    <!--<appender name="DRIVER_STATION" class="com.team175.robot.util.DriverStationAppender"/>-->
-
     <root level="debug">
         <appender-ref ref="STDOUT"/>
         <appender-ref ref="FILE"/>
     </root>
-
-    <!--<root level="error">
-        <appender-ref ref="DRIVER_STATION"/>
-    </root>-->
 </configuration>

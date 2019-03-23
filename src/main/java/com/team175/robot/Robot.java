@@ -7,64 +7,30 @@
 
 package com.team175.robot;
 
-import com.team175.robot.commands.led.ControlLED;
-import com.team175.robot.commands.tuning.CollectVelocityData;
+import com.team175.robot.positions.LEDColor;
 import com.team175.robot.subsystems.*;
-import com.team175.robot.util.AutoModeChooser;
-import com.team175.robot.util.RobotManager;
-import com.team175.robot.util.TunerChooser;
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.command.Scheduler;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-/**
- * TODO: Consider using FastTimedRobot.
- *
- * @author Arvind
- */
+import java.awt.*;
+
 public final class Robot extends TimedRobot {
 
-    private Drive mDrive;
-    private Elevator mElevator;
-    private LateralDrive mLateralDrive;
-    // private LED mLED;
-    private Lift mLift;
-    private Manipulator mManipulator;
-    private Vision mVision;
-    private OI mOI;
-    private AutoModeChooser mAutoModeChooser;
-    private TunerChooser mTunerChooser;
-    private Logger mLogger;
-    private RobotManager mRobotManager;
+    private LED mLED = LED.getInstance();
+    private Color mColor = new Color(0, 0, 0);
+    private boolean mIsOff = false;
+    private int[] mColors = new int[3];
+    private Logger mLogger = LoggerFactory.getLogger(getClass().getSimpleName());
 
     @Override
     public void robotInit() {
-        RobotManager.setProfile(false);
-        mRobotManager = RobotManager.getInstance();
-        mDrive = Drive.getInstance();
-        mElevator = Elevator.getInstance();
-        mLateralDrive = LateralDrive.getInstance();
-        // mLED = LED.getInstance();
-        mLift = Lift.getInstance();
-        mManipulator = Manipulator.getInstance();
-        mVision = Vision.getInstance();
-        mOI = OI.getInstance();
-        mAutoModeChooser = AutoModeChooser.getInstance();
-        mTunerChooser = TunerChooser.getInstance();
-        mLogger = LoggerFactory.getLogger(getClass().getSimpleName());
-
-        // Runs camera stream on separate thread
-        new Thread(mVision).start();
-        mRobotManager.outputToDashboard();
-        // Add velocity collection command to dashboard
-        SmartDashboard.putData("Collect Velocity Data", new CollectVelocityData());
-        // Add LED tuning command to dashboard
-        SmartDashboard.putData("LED Color Chooser", new ControlLED());
         // According to ChiefDelphi, disabling this should fix the loop overrun message
         LiveWindow.disableAllTelemetry();
+        mLED.outputToDashboard();
     }
 
     @Override
@@ -73,92 +39,67 @@ public final class Robot extends TimedRobot {
 
     @Override
     public void disabledInit() {
-        mTunerChooser.stop();
-        mRobotManager.outputToDashboard();
 
-        /*mRobotManager.stopCompressor();*/
-        mLogger.debug("Beginning disabled!");
     }
 
     @Override
     public void disabledPeriodic() {
         Scheduler.getInstance().run();
 
-        // mLED.moodLampCycle();
-        // mRobotManager.updateFromDashboard();
-        mElevator.updateFromDashboard();
-        mManipulator.updateFromDashboard();
+        mLED.updateFromDashboard();
     }
 
     @Override
     public void autonomousInit() {
-        mAutoModeChooser.updateFromDashboard();
-        mAutoModeChooser.start();
-
-        if (mAutoModeChooser.isAutoModeSelected()) {
-            mDrive.setHighGear(true);
-            mDrive.setBrakeMode(true);
-        } else {
-            mDrive.setHighGear(false);
-            mDrive.setBrakeMode(false);
-        }
-        mDrive.resetSensors();
-        mManipulator.setBrake(true);
-        mLateralDrive.deploy(false);
-
-        mLogger.debug("Beginning auto!");
+        mLogger.info("Please work!!!");
+        mLogger.warn("Test2!!!");
+        mLogger.error("Testing!!!");
     }
 
     @Override
     public void autonomousPeriodic() {
-        Scheduler.getInstance().run();
-
-        mRobotManager.outputToDashboard();
     }
 
     @Override
     public void teleopInit() {
-        mAutoModeChooser.stop();
-
-        mDrive.setHighGear(false);
-        mDrive.setBrakeMode(false);
-        mDrive.resetSensors();
-        mManipulator.setBrake(true);
-        mLateralDrive.deploy(false);
-
-        mLogger.debug("Beginning teleop!");
+        mColor = mLED.getWantedColor();
+        mLED.setColor(new Color(0, 0, 0));
     }
 
+    // Blink color
     @Override
     public void teleopPeriodic() {
-        Scheduler.getInstance().run();
-
-        mRobotManager.outputToDashboard();
+        if (mIsOff) {
+            mLED.setColor(LEDColor.OFF);
+        } else {
+            mLED.setColor(mColor);
+        }
+        mIsOff = !mIsOff;
+        Timer.delay(0.2);
     }
 
     @Override
     public void testInit() {
-        mLogger.debug("Beginning test!");
-
-        /*mLogger.info("Beginning robot diagnostics test.");
-
-        boolean isGood = mRobotManager.checkSubsystems();
-
-        if (!isGood) {
-            mLogger.error("Robot failed diagnostics test!");
-        } else {
-            mLogger.info("Robot passed diagnostics test!");
-        }*/
-
-        /*mTunerChooser.updateFromDashboard();
-        mTunerChooser.start();*/
-
-        /*mRobotManager.startCompressor();*/
     }
 
+    // RGB mood lamp
     @Override
     public void testPeriodic() {
-        Scheduler.getInstance().run();
+        mColors[0] = 255;
+        mColors[1] = 0;
+        mColors[2] = 0;
+
+        for (int decColor = 0; decColor < 3; decColor++) {
+            int incColor = decColor == 2 ? 0 : decColor + 1;
+
+            for (int i = 0; i < 255; i++) {
+                mColors[decColor]--;
+                mColors[incColor]++;
+
+                mLED.setColor(new Color(mColors[0], mColors[1], mColors[2]));
+                Timer.delay(0.01);
+            }
+        }
     }
 
     public static double getDefaultPeriod() {

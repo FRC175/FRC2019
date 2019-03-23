@@ -53,9 +53,10 @@ public class LED extends AldrinSubsystem {
     }
 
     public void setColor(Color color) {
-        mController.setLEDOutput((double) color.getRed() / 255, LEDChannel.LEDChannelA);
-        mController.setLEDOutput((double) color.getGreen() / 255, LEDChannel.LEDChannelB);
-        mController.setLEDOutput((double) color.getBlue() / 255, LEDChannel.LEDChannelC);
+        mWantedColor = color;
+        mController.setLEDOutput((double) mWantedColor.getRed() / 255, LEDChannel.LEDChannelA);
+        mController.setLEDOutput((double) mWantedColor.getGreen() / 255, LEDChannel.LEDChannelB);
+        mController.setLEDOutput((double) mWantedColor.getBlue() / 255, LEDChannel.LEDChannelC);
     }
 
     public void setColor(LEDColor color) {
@@ -75,6 +76,10 @@ public class LED extends AldrinSubsystem {
     }
 
     public void breathColor(Color color) {
+    }
+
+    public Color getWantedColor() {
+        return mWantedColor;
     }
 
     @Override
