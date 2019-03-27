@@ -1,7 +1,8 @@
 package com.team175.robot.subsystems;
 
-import com.team175.robot.util.drivers.Limelight;
+import com.team175.robot.Constants;
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.Servo;
 
 import java.util.Map;
 import java.util.function.Supplier;
@@ -12,7 +13,7 @@ import java.util.function.Supplier;
 public final class Vision extends AldrinSubsystem implements Runnable {
 
     private final CameraServer mCamera;
-    // private final Limelight mLimelight;
+    private final Servo mRotator;
 
     private static Vision sInstance;
 
@@ -26,15 +27,25 @@ public final class Vision extends AldrinSubsystem implements Runnable {
 
     private Vision() {
         mCamera = CameraServer.getInstance();
-        // mLimelight = new Limelight();
+
+        // Servo(portNum : int)
+        mRotator = new Servo(Constants.CAMERA_ROTATOR_PORT);
+
+        rotateCameraDown(true);
+
+        super.logInstantiation();
+    }
+
+    public void rotateCameraDown(boolean enable) {
+        mRotator.set(enable ? 1 : 0);
+    }
+
+    public boolean isCameraDown() {
+        return mRotator.get() == 1;
     }
 
     @Override
     public void start() {
-    }
-
-    @Override
-    public void loop() {
     }
 
     @Override

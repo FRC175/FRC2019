@@ -22,11 +22,12 @@ public class ManipulateGamePieces extends AldrinCommand {
 
     @Override
     protected void initialize() {
+        mLogger.debug("Setting rollers to {}.", mPosition.toString());
         Manipulator.getInstance().setRollerPosition(mPosition);
-        if (mPosition == ManipulatorRollerPosition.SCORE_HATCH) {
+        /*if (mPosition == ManipulatorRollerPosition.SCORE_HATCH) {
             Timer.delay(TIME_DELAY);
             Manipulator.getInstance().setRollerPower(0, 0);
-        }
+        }*/
         super.initialize();
     }
 
@@ -37,6 +38,7 @@ public class ManipulateGamePieces extends AldrinCommand {
 
     @Override
     protected void end() {
+        mLogger.debug("Stopping rollers.");
         Manipulator.getInstance().stopRollers();
         super.end();
     }

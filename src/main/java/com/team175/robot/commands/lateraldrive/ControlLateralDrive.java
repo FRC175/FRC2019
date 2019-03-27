@@ -20,13 +20,12 @@ public class ControlLateralDrive extends AldrinCommand {
     protected void initialize() {
         Drive.getInstance().stop();
         LateralDrive.getInstance().deploy(true);
+        mLogger.debug("Starting lateral position: {}", LateralDrive.getInstance().getPosition());
         super.initialize();
     }
 
     @Override
     protected void execute() {
-        // mLogger.debug("LateralPosition: {}", LateralDrive.getInstance().getPosition());
-        // LateralDrive.getInstance().setPower(OI.getInstance().getDriverStickX());
         LateralDrive.getInstance().setPower(OI.getInstance().getDriverStickX() * 0.5);
     }
 
@@ -37,6 +36,7 @@ public class ControlLateralDrive extends AldrinCommand {
 
     @Override
     protected void end() {
+        mLogger.debug("Final lateral position: {}", LateralDrive.getInstance().getPosition());
         LateralDrive.getInstance().stop();
         super.end();
     }

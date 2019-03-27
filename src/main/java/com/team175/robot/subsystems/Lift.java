@@ -1,16 +1,12 @@
 package com.team175.robot.subsystems;
 
-import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.team175.robot.Constants;
 
 import com.team175.robot.positions.LiftPosition;
 import com.team175.robot.util.drivers.AldrinTalon;
-import com.team175.robot.util.drivers.AldrinTalonSRX;
-import com.team175.robot.util.CTREFactory;
 import com.team175.robot.util.drivers.SimpleDoubleSolenoid;
 import com.team175.robot.util.tuning.CSVWritable;
 import edu.wpi.first.wpilibj.DigitalInput;
-import edu.wpi.first.wpilibj.Talon;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -59,6 +55,8 @@ public final class Lift extends AldrinSubsystem implements CSVWritable {
         mRearHabSensor = new DigitalInput(Constants.LIFT_REAR_HAB_SENSOR_PORT);
 
         stop();
+
+        super.logInstantiation();
     }
 
     /*public void setPower(double power) {
@@ -80,12 +78,12 @@ public final class Lift extends AldrinSubsystem implements CSVWritable {
         // }
     }
 
-    public void setFrontPosition(LiftPosition lp) {
-        setFrontPower(lp.getPower());
+    public void setFrontPosition(LiftPosition position) {
+        setFrontPower(position.getPower());
     }
 
-    public void setRearPosition(LiftPosition lp) {
-        setRearPower(lp.getPower());
+    public void setRearPosition(LiftPosition position) {
+        setRearPower(position.getPower());
     }
 
     public void setDrivePower(double power) {
@@ -159,7 +157,7 @@ public final class Lift extends AldrinSubsystem implements CSVWritable {
 
     @Override
     public Map<String, Supplier> getCSVTelemetry() {
-        Map<String, Supplier> m = new LinkedHashMap<>();
+        LinkedHashMap<String, Supplier> m = new LinkedHashMap<>();
         /*m.put("front_lift_current", mFront::getPDPCurrent);
         m.put("rear_lift_current", mRear::getPDPCurrent);*/
         return m;

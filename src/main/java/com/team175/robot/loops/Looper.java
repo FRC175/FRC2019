@@ -24,7 +24,7 @@ public final class Looper {
 
     private boolean mIsRunning;
 
-    public Looper(List<Loop> loops, double period) {
+    public Looper(double period, List<Loop> loops) {
         mLoops = loops;
         mNotifier = new Notifier(() -> mLoops.forEach(Loop::loop));
         mLogger = LoggerFactory.getLogger(getClass().getSimpleName());
@@ -32,7 +32,11 @@ public final class Looper {
         mIsRunning = false;
     }
 
-    public void start() {
+    public Looper(double period, Loop... loops) {
+        this(period, List.of(loops));
+    }
+
+    public synchronized void start() {
         if (!mIsRunning) {
             mLogger.info("Starting loops.");
             mLoops.forEach(Loop::start);
@@ -42,7 +46,7 @@ public final class Looper {
         }
     }
 
-    public void stop() {
+    public synchronized void stop() {
         if (mIsRunning) {
             mLogger.info("Stopping loops.");
             mNotifier.stop();

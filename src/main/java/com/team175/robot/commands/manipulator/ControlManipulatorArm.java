@@ -15,8 +15,12 @@ public class ControlManipulatorArm extends AldrinCommand {
     }
 
     @Override
+    protected void initialize() {
+        mLogger.debug("Starting arm position: {}", Manipulator.getInstance().getArmPosition());
+    }
+
+    @Override
     protected void execute() {
-        // mLogger.debug("ManipulatorPosition: {}", Manipulator.getInstance().getArmPosition());
         Manipulator.getInstance().setArmPower(OI.getInstance().getOperatorStickX());
     }
 
@@ -27,6 +31,7 @@ public class ControlManipulatorArm extends AldrinCommand {
 
     @Override
     protected void end() {
+        mLogger.debug("Final arm position: {}", Manipulator.getInstance().getArmPosition());
         Manipulator.getInstance().stopArm();
         super.end();
     }

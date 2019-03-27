@@ -22,7 +22,8 @@ public final class Constants {
     public static final int MANIPULATOR_ARM_MASTER_PORT = 10;
     public static final int MANIPULATOR_ARM_SLAVE_PORT = 9;
     public static final int CANIFIER_PORT = -1; // TODO: Fix
-    public static final int PDP_PORT = 2; // TODO: Fix
+    public static final int COMPRESSOR_PORT = -1; // TODO: Fix
+    public static final int PDP_PORT = 2;
 
     // Pneumatics
     public static final int SHIFT_FORWARD_CHANNEL = 4;
@@ -47,8 +48,9 @@ public final class Constants {
     public static final int LIFT_FRONT_PORT = 8;
     public static final int LIFT_REAR_PORT = 5;
     public static final int LIFT_DRIVE_PORT = 9;
-    public static final int MANIPULATOR_FRONT_ROLLER = 7;
-    public static final int MANIPULATOR_REAR_ROLLER = 6;
+    public static final int MANIPULATOR_FRONT_ROLLER_PORT = 7;
+    public static final int MANIPULATOR_REAR_ROLLER_PORT = 6;
+    public static final int CAMERA_ROTATOR_PORT = 4;
 
     // Digital Inputs
     public static final int LIFT_FRONT_FORWARD_LIMIT_PORT = 0;
@@ -84,7 +86,7 @@ public final class Constants {
     public static final int MANUAL_LIFT_BUTTON = 9;
     public static final int MANUAL_FRONT_LIFT_BUTTON = 12;
     public static final int MANUAL_REAR_LIFT_BUTTON = 11;
-    public static final int MANUAL_DRIVE_BUTTON = 7;
+    public static final int MANUAL_LIFT_DRIVE_BUTTON = 7;
     public static final int EXTEND_FRONT_LIFT_BUTTON = 12;
     public static final int RETRACT_FRONT_LIFT_BUTTON = 10;
     public static final int EXTEND_REAR_LIFT_BUTTON = 11;

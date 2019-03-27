@@ -69,13 +69,13 @@ public final class TunerChooser {
 
     public void start() {
         if (mTuner != null) {
-            mTuner.initialize();
+            mTuner.start();
         }
     }
 
     public void stop() {
         if (mTuner != null) {
-            mTuner.end();
+            mTuner.cancel();
             mTuner = null;
         }
     }

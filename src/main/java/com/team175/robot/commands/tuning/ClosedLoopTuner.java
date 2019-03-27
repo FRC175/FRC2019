@@ -2,9 +2,9 @@ package com.team175.robot.commands.tuning;
 
 import com.team175.robot.Robot;
 import com.team175.robot.commands.AldrinCommand;
-import com.team175.robot.util.tuning.CSVWriter;
+import com.team175.robot.loops.CSVWriterLoop;
+import com.team175.robot.loops.Looper;
 import com.team175.robot.util.tuning.ClosedLoopTunable;
-import edu.wpi.first.wpilibj.Notifier;
 import edu.wpi.first.wpilibj.Timer;
 
 import java.io.FileNotFoundException;
@@ -13,57 +13,48 @@ import java.util.function.Supplier;
 
 /**
  * A command used to set a certain subsystem to a wanted position and records telemetry data of said subsystem into a
- * CSV file. This CSV data is then graphed to be able to determine appropriate PID gains.
+ * CSV file. This CSV data is graphed real time and PID gains updated in order to make subsystem reach the wanted
+ * position as closed as possible.
  *
  * @author Arvind
  */
 public class ClosedLoopTuner extends AldrinCommand {
 
     private ClosedLoopTunable mSubsystem;
-    private CSVWriter mWriter;
-    private Notifier mNotifier; // A WPILib object that spawns a new thread and calls run() at a certain refresh rate
+    private Looper mLooper;
 
-    private static final String FILE_PATH = "/home/lvuser/csvlog/tuning-data.csv";
-    private static final String DELIMITER = ",";
     private static final double PERIOD = Robot.getDefaultPeriod() / 2;
+    private static final String FILE_PATH = "/home/lvuser/csvlog/tuning-data.csv";
 
     public ClosedLoopTuner(ClosedLoopTunable subsystem) {
         mSubsystem = subsystem;
-        // Add time to subsystem telemetry
-        Map<String, Supplier> m = subsystem.getCSVTelemetry();
-        m.put("time", Timer::getFPGATimestamp);
+        Map<String, Supplier> data = subsystem.getCSVTelemetry();
+        data.put("time", Timer::getFPGATimestamp); // Add time to subsystem telemetry
 
         try {
-            mWriter = new CSVWriter(m, FILE_PATH, DELIMITER);
+            mLooper = new Looper(PERIOD, new CSVWriterLoop(data, FILE_PATH) {
+                @Override
+                public void loop() {
+                    mWriter.write();
+                    mWriter.flush();
+                    mSubsystem.updateGains();
+                }
+            });
         } catch (FileNotFoundException e) {
-            mLogger.error("Failed to instantiate CSVWriter!", e);
+            mLogger.error("Failed to instantiate looper!", e);
         }
-
-        // Create Notifier with Runnable that writes data to log
-        mNotifier = new Notifier(() -> mWriter.write());
 
         super.logInstantiation();
     }
 
     @Override
     public void initialize() {
-        mSubsystem.resetSensors();
-
-        /*double refreshRate;
-        try {
-            // Take half of kDefaultPeriod in the Robot's superclass (in case either FastTimedRobot or TimeRobot is used
-            refreshRate = Double.parseDouble(Robot.class.getSuperclass().getField("kDefaultPeriod").get(null).toString())
-                    / 2.0;
-        } catch (IllegalAccessException | NoSuchFieldException | NumberFormatException e) {
-            mLogger.warn("Failed to parse refresh rate! Using default of 10 ms instead...", e);
-            refreshRate = 0.01; // 10 ms
-        }*/
+        // mSubsystem.resetSensors();
 
         try {
-            mNotifier.startPeriodic(PERIOD);
-            mSubsystem.updateGains();
+            mLooper.start();
         } catch (Exception e) {
-            mLogger.error("Failed to start ClosedLoopTuner thread!", e);
+            mLogger.error("Failed to start looper!", e);
         }
 
         super.initialize();
@@ -76,11 +67,11 @@ public class ClosedLoopTuner extends AldrinCommand {
 
     @Override
     public void end() {
-        mNotifier.stop();
-        mWriter.close();
+        mLooper.stop();
 
-        mLogger.info("Collection of data for {} complete!", mSubsystem.getClass().getSimpleName());
-        mLogger.info("Plot csv log from RoboRIO to determine gains.");
+        /*mLogger.info("Collection of data for {} complete!", mSubsystem.getClass().getSimpleName());
+        mLogger.info("Plot csv log from RoboRIO to determine gains.");*/
+        mLogger.info("Tuning of {} subsystem complete!", mSubsystem.getClass().getSimpleName());
 
         super.end();
     }

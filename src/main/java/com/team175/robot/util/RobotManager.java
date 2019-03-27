@@ -2,24 +2,30 @@ package com.team175.robot.util;
 
 import com.team175.robot.Constants;
 import com.team175.robot.loops.CSVWriterLoop;
+import com.team175.robot.loops.Loop;
 import com.team175.robot.loops.Looper;
 import com.team175.robot.profiles.CompetitionRobot;
 import com.team175.robot.profiles.PracticeRobot;
 import com.team175.robot.profiles.RobotProfile;
 import com.team175.robot.subsystems.*;
+import com.team175.robot.util.tuning.CSVWritable;
 import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
-import java.util.List;
-import java.util.Optional;
+import java.io.FileNotFoundException;
+import java.util.*;
+import java.util.function.Supplier;
 
 /**
  * An object that contains all the subsystems and various other components (i.e. Compressor and PDP) of the robot to be
  * able to control them all from one place.
  *
- * TODO: MAYBE BE ABLE TO CONTROL BOTH COMPRESSORS
- * TODO: Add ability to start and end loops for each subsystem
+ * TODO: Maybe be able to control both compressors.
+ * TODO: Clean up.
  *
  * @author Arvind
  */
@@ -28,17 +34,15 @@ public final class RobotManager {
     private final List<AldrinSubsystem> mSubsystems;
     private final Compressor mCompressor;
     private final PowerDistributionPanel mPDP;
-    // private final Looper mSubsystemLooper;
-    // private final Looper mCSVLooper;
-    /*private final Logger mLogger;
+    private final Logger mLogger;
+    private final Looper mSubsystemLooper;
 
-    private CSVWriter mWriter;*/
+    private Looper mCSVLooper;
 
     private static Optional<RobotProfile> sProfile = Optional.empty();
     private static RobotManager sInstance;
 
-    private static final String LOG_FILE_PATH = "/home/lvuser/csvlog/all-telemetry.csv";
-    private static final String LOG_DELIMITER = ",";
+    private static final String CSV_LOG_FILE_PATH = "/home/lvuser/csvlog/subsystem-telemetry.csv";
     private static final double LOOPER_PERIOD = 0.01;
 
     public static RobotManager getInstance() {
@@ -52,25 +56,24 @@ public final class RobotManager {
     private RobotManager() {
         mSubsystems = List.of(Drive.getInstance(), Elevator.getInstance(), LateralDrive.getInstance(), Lift.getInstance(),
                 Manipulator.getInstance());
-        mCompressor = new Compressor();
+        mCompressor = new Compressor(Constants.COMPRESSOR_PORT);
         mPDP = new PowerDistributionPanel(Constants.PDP_PORT);
-        // mSubsystemLooper = new Looper(mSubsystems, LOOPER_PERIOD);
-        /*mLogger = LoggerFactory.getLogger(getClass().getSimpleName());
+        mLogger = LoggerFactory.getLogger(getClass().getSimpleName());
+        mSubsystemLooper = new Looper(LOOPER_PERIOD, (Loop) mSubsystems);
 
-        Map<String, Supplier> m = new LinkedHashMap<>();
-        // Only add subsystems who are CSVWritable
-        mSubsystems.forEach((s) -> s.getTelemetry().forEach((k, v) -> {
-                    if (s instanceof CSVWritable) {
-                        m.put(k, v);
-                    }
-                }
-        ));
-        m.put("time", Timer::getFPGATimestamp);
+        LinkedHashMap<String, Supplier> data = new LinkedHashMap<>();
+        // Add data from each subsystem's getCSVTelemetry()
+        for (AldrinSubsystem s : mSubsystems) {
+            if (s instanceof CSVWritable) {
+                ((CSVWritable) s).getCSVTelemetry().forEach(data::put);
+            }
+        }
+        data.put("time", Timer::getFPGATimestamp);
         try {
-            mWriter = new CSVWriter(m, LOG_FILE_PATH, LOG_DELIMITER);
+            mCSVLooper = new Looper(LOOPER_PERIOD, new CSVWriterLoop(data, CSV_LOG_FILE_PATH));
         } catch (FileNotFoundException e) {
-            mLogger.error("Failed to instantiate CSVWriter!", e);
-        }*/
+            mLogger.error("Failed to instantiate CSVLooper!", e);
+        }
     }
 
     public void outputToDashboard() {
@@ -91,13 +94,13 @@ public final class RobotManager {
         mSubsystems.forEach(AldrinSubsystem::updateFromDashboard);
     }
 
-    /*public void startCSVLog() {
-        mWriter.write();
+    public void startCSVLogging() {
+        mCSVLooper.start();
     }
 
-    public void stopCSVLog() {
-        mWriter.flush();
-    }*/
+    public void stopCSVLogging() {
+        mCSVLooper.stop();
+    }
 
     public boolean checkSubsystems() {
         boolean isGood = true;
@@ -105,23 +108,6 @@ public final class RobotManager {
             isGood &= subsystem.checkSubsystem();
         }
         return isGood;
-    }
-
-    public void startTuning() {
-        /*
-        startNotifier()
-        In Notifier:
-            updateCSVWriter()
-            updateFromDashboard()
-            flushCSVWriter()
-         */
-    }
-
-    public void stopTuning() {
-        /*
-        flushCSVWriter()
-        stopNotifier()
-         */
     }
 
     public void startCompressor() {
@@ -137,10 +123,11 @@ public final class RobotManager {
     }
 
     public void startSubsystems() {
-
+        mSubsystemLooper.start();
     }
 
     public void stopSubsystems() {
+        mSubsystemLooper.stop();
         stopCompressor();
     }
 

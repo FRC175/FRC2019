@@ -86,8 +86,8 @@ public final class Robot extends TimedRobot {
 
         // mLED.moodLampCycle();
         // mRobotManager.updateFromDashboard();
-        mElevator.updateFromDashboard();
-        mManipulator.updateFromDashboard();
+        // mElevator.updateFromDashboard();
+        // mManipulator.updateFromDashboard();
     }
 
     @Override
@@ -150,8 +150,8 @@ public final class Robot extends TimedRobot {
             mLogger.info("Robot passed diagnostics test!");
         }*/
 
-        /*mTunerChooser.updateFromDashboard();
-        mTunerChooser.start();*/
+        mTunerChooser.updateFromDashboard();
+        mTunerChooser.start();
 
         /*mRobotManager.startCompressor();*/
     }

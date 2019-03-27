@@ -2,6 +2,8 @@ package com.team175.robot.commands.tuning;
 
 import com.team175.robot.Robot;
 import com.team175.robot.commands.AldrinCommand;
+import com.team175.robot.loops.CSVWriterLoop;
+import com.team175.robot.loops.Looper;
 import com.team175.robot.subsystems.Drive;
 import com.team175.robot.util.tuning.CSVWriter;
 import edu.wpi.first.wpilibj.Notifier;
@@ -22,27 +24,22 @@ import java.util.function.Supplier;
  */
 public class CollectVelocityData extends AldrinCommand {
 
-    private Map<String, Supplier> mData;
-    private CSVWriter mWriter;
-    private Notifier mNotifier;
+    private Looper mLooper;
 
-    private static final String FILE_PATH = "/home/lvuser/csvlog/velocity-data.csv";
-    private static final String DELIMITER = ",";
-    private static final int RUN_TIME = 5; // 5 s
     private static final double PERIOD = Robot.getDefaultPeriod();
+    private static final String FILE_PATH = "/home/lvuser/csvlog/velocity-data.csv";
+    private static final int RUN_TIME = 5; // 5 s
 
     public CollectVelocityData() {
         requires(Drive.getInstance());
 
-        mData = new LinkedHashMap<>();
-        mData.put("velocity", () -> (Drive.getInstance().getLeftVelocity() + Drive.getInstance().getRightVelocity()) / 2);
-        mData.put("time", Timer::getFPGATimestamp);
+        Map<String, Supplier> data = Drive.getInstance().getCSVTelemetry();
+        data.put("time", Timer::getFPGATimestamp);
         try {
-            mWriter = new CSVWriter(mData, FILE_PATH, DELIMITER);
+            mLooper = new Looper(PERIOD, new CSVWriterLoop(data, FILE_PATH));
         } catch (FileNotFoundException e) {
             mLogger.error("Failed to instantiate CSVWriter!", e);
         }
-        mNotifier = new Notifier(() -> mWriter.write());
 
         super.logInstantiation();
     }
@@ -51,7 +48,7 @@ public class CollectVelocityData extends AldrinCommand {
     protected void initialize() {
         Drive.getInstance().setPower(0);
         Drive.getInstance().setHighGear(true);
-        mNotifier.startPeriodic(PERIOD);
+        mLooper.start();
 
         mLogger.info("Starting velocity collection...");
         Drive.getInstance().setPower(1);
@@ -66,8 +63,7 @@ public class CollectVelocityData extends AldrinCommand {
 
     @Override
     protected void end() {
-        mNotifier.stop();
-        mWriter.close();
+        mLooper.stop();
 
         mLogger.info("Collection of velocity data complete!");
         mLogger.info("Retrieve csv log from RoboRIO and use kinematics script to analyze motion.");

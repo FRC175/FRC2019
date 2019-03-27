@@ -28,6 +28,13 @@ public abstract class AldrinSubsystem extends Subsystem implements Loop {
     public abstract Map<String, Supplier> getTelemetry();
 
     /**
+     * A method called by subsystems when instantiation is complete.
+     */
+    public void logInstantiation() {
+        mLogger.info("Subsystem successfully instantiated.");
+    }
+
+    /**
      * Filters the different types of data from the getTelemetry() map and sends it to the SmartDashboard.
      */
     public void outputToDashboard() {
@@ -48,9 +55,6 @@ public abstract class AldrinSubsystem extends Subsystem implements Loop {
         }
     }
 
-    /**
-     * Called to perform actions periodically.
-     */
     @Override
     public void loop() {
         outputToDashboard();

@@ -56,6 +56,8 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
                 "Failed to config elevator reverse limit switch!");
 
         mMaster.setBrakeMode(true);
+
+        super.logInstantiation();
     }
 
     public void setPower(double power) {

@@ -24,22 +24,23 @@ public abstract class AldrinCommand extends Command {
     }
 
     public void logInstantiation() {
-        mLogger.info("Command instantiated.");
+        mLogger.info("Command successfully instantiated.");
     }
 
     @Override
     protected void initialize() {
-        mLogger.info("Command initialized.");
+        mLogger.info("Command successfully initialized.");
     }
 
     @Override
     protected void end() {
-        mLogger.info("Command ended/interrupted.");
+        mLogger.info("Command ended.");
     }
 
     @Override
     protected void interrupted() {
         end();
+        mLogger.info("Command was interrupted.");
     }
 
 }

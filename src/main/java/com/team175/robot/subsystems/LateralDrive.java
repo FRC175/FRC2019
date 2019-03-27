@@ -69,6 +69,8 @@ public final class LateralDrive extends AldrinSubsystem implements ClosedLoopTun
 
         resetSensors();
         stop();
+
+        super.logInstantiation();
     }
 
     public void deploy(boolean enable) {

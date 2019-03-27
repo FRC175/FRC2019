@@ -49,8 +49,8 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
         mArmSlave = CTREFactory.getSlaveTalon(Constants.MANIPULATOR_ARM_SLAVE_PORT, mArmMaster);
 
         // Talon(portNum : int)
-        mFrontRoller = new AldrinTalon(Constants.MANIPULATOR_FRONT_ROLLER);
-        mRearRoller = new AldrinTalon(Constants.MANIPULATOR_REAR_ROLLER);
+        mFrontRoller = new AldrinTalon(Constants.MANIPULATOR_FRONT_ROLLER_PORT);
+        mRearRoller = new AldrinTalon(Constants.MANIPULATOR_REAR_ROLLER_PORT);
 
         // SimpleDoubleSolenoid(forwardChannel : int, reverseChannel : int)
         mHatchPunch = new SimpleDoubleSolenoid(Constants.MANIPULATOR_HATCH_PUNCH_FORWARD_CHANNEL,
@@ -70,6 +70,8 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
         mArmMaster.setBrakeMode(true);
         deploy(true);
         stop();
+
+        super.logInstantiation();
     }
 
     public void setBrake(boolean enable) {
@@ -93,10 +95,10 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
         mRearRoller.set(rearPower);
     }
 
-    public void setRollerPosition(ManipulatorRollerPosition rp) {
-        setRollerPower(rp.getFrontPower(), rp.getRearPower());
+    public void setRollerPosition(ManipulatorRollerPosition position) {
+        setRollerPower(position.getFrontPower(), position.getRearPower());
 
-        if (rp == ManipulatorRollerPosition.SCORE_HATCH) {
+        if (position == ManipulatorRollerPosition.SCORE_HATCH) {
             punchHatch(true);
         }
     }
@@ -128,7 +130,6 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
     }
 
     public void stopArm() {
-        // setArmPosition(mArmWantedPosition);
         setArmPower(0);
         setBrake(true);
     }
@@ -157,13 +158,8 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
         mArmMaster.set(ControlMode.MotionMagic, mArmWantedPosition);
     }
 
-    public void setArmPosition(ManipulatorArmPosition ap) {
-        // Un-deploy manipulator when going to stow position
-        if (ap == ManipulatorArmPosition.STOW) {
-            deploy(false);
-        }
-
-        setArmPosition(ap.getPosition());
+    public void setArmPosition(ManipulatorArmPosition position) {
+        setArmPosition(position.getPosition());
     }
 
     public int getArmPosition() {
@@ -176,6 +172,10 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
 
     public void setArmWantedPosition(int position) {
         mArmWantedPosition = position;
+    }
+
+    public boolean isArmAtPosition(ManipulatorArmPosition position) {
+        return Math.abs(getArmPosition() - position.getPosition()) <= ALLOWED_POSITION_DEVIATION;
     }
 
     public boolean isArmAtWantedPosition() {

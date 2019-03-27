@@ -48,8 +48,7 @@ public final class OI {
     private final Button mCancelAuto;
     /*private final Button mManualLift;
     private final Button mManualFrontLift;
-    private final Button mManualRearLift;
-    private final Button mManualLiftDrive;*/
+    private final Button mManualRearLift;*/
     private final Button mManualLiftDrive;
     private final Button mExtendFrontLift;
     private final Button mRetractFrontLift;
@@ -107,9 +106,8 @@ public final class OI {
         mCancelAuto = new SingleButton(mDriverStick, Constants.CANCEL_AUTO_BUTTON);
         /*mManualLift = new SingleButton(mDriverStick, Constants.MANUAL_LIFT_BUTTON);
         mManualFrontLift = new SingleButton(mDriverStick, Constants.MANUAL_FRONT_LIFT_BUTTON);
-        mManualRearLift = new SingleButton(mDriverStick, Constants.MANUAL_REAR_LIFT_BUTTON);
-        mManualLiftDrive = new SingleButton(mDriverStick, Constants.MANUAL_DRIVE_BUTTON);*/
-        mManualLiftDrive = new SingleButton(mDriverStick, Constants.MANUAL_DRIVE_BUTTON);
+        mManualRearLift = new SingleButton(mDriverStick, Constants.MANUAL_REAR_LIFT_BUTTON);*/
+        mManualLiftDrive = new SingleButton(mDriverStick, Constants.MANUAL_LIFT_DRIVE_BUTTON);
         mExtendFrontLift = new SingleButton(mDriverStick, Constants.EXTEND_FRONT_LIFT_BUTTON);
         mRetractFrontLift = new SingleButton(mDriverStick, Constants.RETRACT_FRONT_LIFT_BUTTON);
         mExtendRearLift = new SingleButton(mDriverStick, Constants.EXTEND_REAR_LIFT_BUTTON);
@@ -152,8 +150,7 @@ public final class OI {
         mCancelAuto.whenPressed(new CancelAuto());
         /*mManualLift.whileHeld(new ControlLift());
         mManualFrontLift.whileHeld(new ControlFrontLift());
-        mManualRearLift.whileHeld(new ControlRearLift());
-        mManualLiftDrive.whileHeld(new ControlLiftDrive());*/
+        mManualRearLift.whileHeld(new ControlRearLift());*/
         mManualLiftDrive.whileHeld(new ControlLiftDrive());
         mExtendFrontLift.whileHeld(new ControlFrontLift(LiftPosition.EXTEND));
         mRetractFrontLift.whileHeld(new ControlFrontLift(LiftPosition.RETRACT));

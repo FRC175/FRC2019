@@ -36,18 +36,10 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
     private int mLeftWantedPosition, mRightWantedPosition;
     private double mWantedAngle;
     private ClosedLoopGains mLeftGains, mRightGains, mPigeonGains;
-    private DriveState mWantedState;
 
     public static final double RAMP_TIME = 0;
 
     private static Drive sInstance;
-
-    private enum DriveState {
-        OPEN_LOOP,
-        MOTION_MAGIC,
-        TURN_TO_ANGLE,
-        OFF;
-    }
 
     public static Drive getInstance() {
         if (sInstance == null) {
@@ -78,7 +70,6 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
 
         mLeftWantedPosition = mRightWantedPosition = 0;
         mWantedAngle = 0;
-        mWantedState = DriveState.OPEN_LOOP;
 
         RobotProfile profile = RobotManager.getProfile();
         CTREConfiguration.config(mLeftMaster, profile.getLeftMasterConfig(), "LeftMaster");
@@ -98,6 +89,8 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
 
         setHighGear(false);
         stop();
+
+        super.logInstantiation();
     }
 
     public void arcadeDrive(double throttle, double turn) {
@@ -113,12 +106,10 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
     }
 
     public void setLeftPower(double power) {
-        mWantedState = DriveState.OPEN_LOOP;
         mLeftMaster.set(ControlMode.PercentOutput, power);
     }
 
     public void setRightPower(double power) {
-        mWantedState = DriveState.OPEN_LOOP;
         mRightMaster.set(ControlMode.PercentOutput, power);
     }
 
@@ -149,7 +140,6 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
     }
 
     public void setLeftPosition(int position) {
-        mWantedState = DriveState.MOTION_MAGIC;
         mLeftWantedPosition = position;
         mLogger.debug("Setting left position to {}.", mLeftWantedPosition);
         mLogger.debug("Current left position: {}", getLeftPosition());
@@ -157,7 +147,6 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
     }
 
     public void setRightPosition(int position) {
-        mWantedState = DriveState.MOTION_MAGIC;
         mRightWantedPosition = position;
         mLogger.debug("Setting right position to {}.", mRightWantedPosition);
         mLogger.debug("Current right position: {}", getRightPosition());
@@ -239,25 +228,6 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
 
     @Override
     public void start() {
-    }
-
-    @Override
-    public void loop() {
-        switch (mWantedState) {
-            case OPEN_LOOP:
-                break;
-            case MOTION_MAGIC:
-                break;
-            case TURN_TO_ANGLE:
-                break;
-            case OFF:
-                mLeftMaster.set(ControlMode.Disabled, 0);
-                mRightMaster.set(ControlMode.Disabled, 0);
-                break;
-            default:
-                break;
-        }
-        outputToDashboard();
     }
 
     @Override

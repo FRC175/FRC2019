@@ -2,6 +2,7 @@ package com.team175.robot.commands.elevator;
 
 import com.team175.robot.commands.AldrinCommand;
 import com.team175.robot.positions.ElevatorPosition;
+import com.team175.robot.positions.ManipulatorArmPosition;
 import com.team175.robot.subsystems.Elevator;
 import com.team175.robot.subsystems.Manipulator;
 
@@ -20,8 +21,8 @@ public class ElevatorToPosition extends AldrinCommand {
 
     @Override
     protected void initialize() {
-        // Ensure elevator cannot move when manipulator is stowed
-        if (Manipulator.getInstance().isDeployed()) {
+        // Ensure elevator cannot move when manipulator is in stow position
+        if (Manipulator.getInstance().isDeployed() && !Manipulator.getInstance().isArmAtPosition(ManipulatorArmPosition.STOW)) {
             mLogger.debug("Setting elevator to {} position.", mPosition.toString());
             Elevator.getInstance().setPosition(mPosition);
         }
@@ -35,6 +36,7 @@ public class ElevatorToPosition extends AldrinCommand {
 
     @Override
     protected void end() {
+        mLogger.debug("Final elevator position: {}", Elevator.getInstance().getPosition());
         Elevator.getInstance().stop();
         super.end();
     }
