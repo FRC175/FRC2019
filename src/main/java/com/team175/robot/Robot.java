@@ -42,7 +42,7 @@ public final class Robot extends TimedRobot {
 
     @Override
     public void robotInit() {
-        RobotManager.setProfile(true);
+        RobotManager.setProfile(false);
         mRobotManager = RobotManager.getInstance();
         mDrive = Drive.getInstance();
         mElevator = Elevator.getInstance();

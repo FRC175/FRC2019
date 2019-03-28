@@ -5,6 +5,7 @@ import com.team175.robot.commands.AldrinCommand;
 import com.team175.robot.positions.LiftPosition;
 import com.team175.robot.subsystems.Drive;
 import com.team175.robot.subsystems.Lift;
+import edu.wpi.first.wpilibj.Timer;
 
 public class ControlFrontLift extends AldrinCommand {
 
@@ -28,6 +29,17 @@ public class ControlFrontLift extends AldrinCommand {
     @Override
     protected void initialize() {
         Drive.getInstance().stop();
+        if (!mIsManual) {
+            if (mPosition == LiftPosition.RETRACT) {
+                // Bring up and then disengage
+                Lift.getInstance().setFrontPosition(LiftPosition.EXTEND);
+                Timer.delay(0.175);
+                Lift.getInstance().setFrontBrake(false);
+                Lift.getInstance().setFrontPower(0);
+            } else if (mPosition == LiftPosition.EXTEND) {
+                Lift.getInstance().setFrontBrake(false);
+            }
+        }
         super.initialize();
     }
 

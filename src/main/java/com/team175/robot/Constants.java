@@ -24,6 +24,9 @@ public final class Constants {
     public static final int CANIFIER_PORT = -1; // TODO: Fix
     public static final int COMPRESSOR_PORT = -1; // TODO: Fix
     public static final int PDP_PORT = 2;
+    public static final int FRONT_LIFT_PORT = 15;
+    public static final int REAR_LIFT_PORT = 16;
+
 
     // Pneumatics
     public static final int SHIFT_FORWARD_CHANNEL = 4;
@@ -57,8 +60,8 @@ public final class Constants {
     public static final int LIFT_REAR_FORWARD_LIMIT_PORT = 1;
     public static final int LIFT_FRONT_REVERSE_LIMIT_PORT = 2;
     public static final int LIFT_REAR_REVERSE_LIMIT_PORT = 3;
-    public static final int LIFT_FRONT_HAB_SENSOR_PORT = 4;
-    public static final int LIFT_REAR_HAB_SENSOR_PORT = 5;
+    public static final int LIFT_FRONT_HAB_SENSOR_PORT = 0;
+    public static final int LIFT_REAR_HAB_SENSOR_PORT = 1;
     /*public static final int LEFT_TWO_SENSOR_PORT = 5;
     public static final int LEFT_ONE_SENSOR_PORT = 4;
     public static final int CENTER_SENSOR_PORT = 3;
@@ -91,6 +94,7 @@ public final class Constants {
     public static final int RETRACT_FRONT_LIFT_BUTTON = 10;
     public static final int EXTEND_REAR_LIFT_BUTTON = 11;
     public static final int RETRACT_REAR_LIFT_BUTTON = 9;
+    public static final int ROTATE_CAMERA_BUTTON = 8;
 
     // Operator Stick Buttons
     public static final int MANUAL_ELEVATOR_TRIGGER = 1;

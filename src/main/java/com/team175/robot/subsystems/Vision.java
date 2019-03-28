@@ -31,7 +31,7 @@ public final class Vision extends AldrinSubsystem implements Runnable {
         // Servo(portNum : int)
         mRotator = new Servo(Constants.CAMERA_ROTATOR_PORT);
 
-        rotateCameraDown(true);
+        rotateCameraDown(false);
 
         super.logInstantiation();
     }

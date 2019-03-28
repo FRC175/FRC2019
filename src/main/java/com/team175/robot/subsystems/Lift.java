@@ -1,9 +1,13 @@
 package com.team175.robot.subsystems;
 
+import com.ctre.phoenix.motorcontrol.ControlMode;
+import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.team175.robot.Constants;
 
 import com.team175.robot.positions.LiftPosition;
+import com.team175.robot.util.CTREFactory;
 import com.team175.robot.util.drivers.AldrinTalon;
+import com.team175.robot.util.drivers.AldrinTalonSRX;
 import com.team175.robot.util.drivers.SimpleDoubleSolenoid;
 import com.team175.robot.util.tuning.CSVWritable;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -19,10 +23,11 @@ import java.util.function.Supplier;
  */
 public final class Lift extends AldrinSubsystem implements CSVWritable {
 
-    private final AldrinTalon mFront, mRear, mDrive;
+    private final AldrinTalonSRX mRear, mFront;
+    private final AldrinTalon mDrive;
     private final SimpleDoubleSolenoid mFrontBrake, mRearBrake;
-    private final DigitalInput mFrontForwardLimit, mRearForwardLimit, mFrontReverseLimit, mRearReverseLimit,
-            mFrontHabSensor, mRearHabSensor;
+    private final DigitalInput mFrontHabSensor, mRearHabSensor;
+    // private final DigitalInput mFrontForwardLimit, mRearForwardLimit, mFrontReverseLimit, mRearReverseLimit;
 
     private static Lift sInstance;
 
@@ -35,9 +40,10 @@ public final class Lift extends AldrinSubsystem implements CSVWritable {
     }
 
     private Lift() {
+        mRear = CTREFactory.getMasterTalon(Constants.REAR_LIFT_PORT);
+        mFront = CTREFactory.getMasterTalon(Constants.FRONT_LIFT_PORT);
+
         // Talon(portNum : int)
-        mFront = new AldrinTalon(Constants.LIFT_FRONT_PORT);
-        mRear = new AldrinTalon(Constants.LIFT_REAR_PORT);
         mDrive = new AldrinTalon(Constants.LIFT_DRIVE_PORT);
 
         // SimpleDoubleSolenoid(forwardChannel : int, reverseChannel : int, isOnPCMTwo : boolean)
@@ -47,12 +53,15 @@ public final class Lift extends AldrinSubsystem implements CSVWritable {
                 true);
 
         // DigitalInput(portNum : int)
-        mFrontForwardLimit = new DigitalInput(Constants.LIFT_FRONT_FORWARD_LIMIT_PORT);
+        /*mFrontForwardLimit = new DigitalInput(Constants.LIFT_FRONT_FORWARD_LIMIT_PORT);
         mRearForwardLimit = new DigitalInput(Constants.LIFT_REAR_FORWARD_LIMIT_PORT);
         mFrontReverseLimit = new DigitalInput(Constants.LIFT_FRONT_REVERSE_LIMIT_PORT);
-        mRearReverseLimit = new DigitalInput(Constants.LIFT_REAR_REVERSE_LIMIT_PORT);
+        mRearReverseLimit = new DigitalInput(Constants.LIFT_REAR_REVERSE_LIMIT_PORT);*/
         mFrontHabSensor = new DigitalInput(Constants.LIFT_FRONT_HAB_SENSOR_PORT);
         mRearHabSensor = new DigitalInput(Constants.LIFT_REAR_HAB_SENSOR_PORT);
+
+        mFront.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
+        mRear.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
 
         stop();
 
@@ -67,14 +76,14 @@ public final class Lift extends AldrinSubsystem implements CSVWritable {
     public void setFrontPower(double power) {
         // if (!isFrontForwardLimitHit() || !isFrontReverseLimitHit()) {
             // mFrontBrake.set(false);
-            mFront.set(power);
+            mFront.set(ControlMode.PercentOutput, power);
         // }
     }
 
     public void setRearPower(double power) {
         // if (!isRearForwardLimitHit() || !isRearReverseLimitHit()) {
             // mRearBrake.set(false);
-            mRear.set(power);
+            mRear.set(ControlMode.PercentOutput, power);
         // }
     }
 
@@ -91,11 +100,19 @@ public final class Lift extends AldrinSubsystem implements CSVWritable {
     }
 
     public double getFrontPower() {
-        return mFront.get();
+        return mFront.getMotorOutputPercent();
     }
 
     public double getRearPower() {
-        return mRear.get();
+        return mRear.getMotorOutputPercent();
+    }
+
+    public int getFrontPosition() {
+        return mFront.getSelectedSensorPosition();
+    }
+
+    public int getRearPosition() {
+        return mRear.getSelectedSensorPosition();
     }
 
     public double getDrivePower() {
@@ -111,19 +128,23 @@ public final class Lift extends AldrinSubsystem implements CSVWritable {
     }
 
     public boolean isFrontForwardLimitHit() {
-        return mFrontForwardLimit.get();
+        // return mFrontForwardLimit.get();
+        return false;
     }
 
     public boolean isRearForwardLimitHit() {
-        return mRearForwardLimit.get();
+        // return mRearForwardLimit.get();
+        return false;
     }
 
     public boolean isFrontReverseLimitHit() {
-        return mFrontReverseLimit.get();
+        // return mFrontReverseLimit.get();
+        return false;
     }
 
     public boolean isRearReverseLimitHit() {
-        return mRearReverseLimit.get();
+        // return mRearReverseLimit.get();
+        return false;
     }
 
     public boolean isFrontOnHab() {
@@ -152,6 +173,10 @@ public final class Lift extends AldrinSubsystem implements CSVWritable {
         m.put("FLiftPower", this::getFrontPower);
         m.put("RLiftPower", this::getRearPower);
         m.put("LiftDrivePower", this::getDrivePower);
+        m.put("FHabSensor", this::isFrontOnHab);
+        m.put("RHabSensor", this::isRearOnHab);
+        m.put("FLiftPos", this::getFrontPosition);
+        m.put("RLiftPos", this::getRearPosition);
         return m;
     }
 
