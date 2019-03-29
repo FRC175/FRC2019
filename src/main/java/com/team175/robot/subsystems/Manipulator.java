@@ -90,13 +90,22 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
         return !mDeploy.get();
     }
 
-    public void setRollerPower(double frontPower, double rearPower) {
-        mFrontRoller.set(frontPower);
-        mRearRoller.set(rearPower);
+    public void setFrontRollerPower(double power) {
+        mFrontRoller.set(power);
+    }
+
+    public void setRearRollerPower(double power) {
+        mRearRoller.set(power);
+    }
+
+    public void setRollerPower(double power) {
+        setFrontRollerPower(power);
+        setRearRollerPower(power);
     }
 
     public void setRollerPosition(ManipulatorRollerPosition position) {
-        setRollerPower(position.getFrontPower(), position.getRearPower());
+        setFrontRollerPower(position.getFrontPower());
+        setRearRollerPower(position.getRearPower());
 
         if (position == ManipulatorRollerPosition.SCORE_HATCH) {
             punchHatch(true);
@@ -104,7 +113,7 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
     }
 
     public void stopRollers() {
-        setRollerPosition(ManipulatorRollerPosition.IDLE);
+        setRollerPower(0);
         punchHatch(false);
     }
 

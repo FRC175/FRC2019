@@ -5,12 +5,19 @@ import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.team175.robot.Constants;
 
 import com.team175.robot.positions.LiftPosition;
+import com.team175.robot.profiles.RobotProfile;
+import com.team175.robot.util.CTREConfiguration;
+import com.team175.robot.util.CTREDiagnostics;
 import com.team175.robot.util.CTREFactory;
+import com.team175.robot.util.RobotManager;
 import com.team175.robot.util.drivers.AldrinTalon;
 import com.team175.robot.util.drivers.AldrinTalonSRX;
 import com.team175.robot.util.drivers.SimpleDoubleSolenoid;
 import com.team175.robot.util.tuning.CSVWritable;
+import com.team175.robot.util.tuning.ClosedLoopGains;
+import com.team175.robot.util.tuning.ClosedLoopTunable;
 import edu.wpi.first.wpilibj.DigitalInput;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -21,9 +28,9 @@ import java.util.function.Supplier;
  *
  * @author Arvind
  */
-public final class Lift extends AldrinSubsystem implements CSVWritable {
+public final class Lift extends AldrinSubsystem implements ClosedLoopTunable {
 
-    private final AldrinTalonSRX mRear, mFront;
+    private final AldrinTalonSRX mFront, mRear;
     private final AldrinTalon mDrive;
     private final SimpleDoubleSolenoid mFrontBrake, mRearBrake;
     private final DigitalInput mFrontHabSensor, mRearHabSensor;
@@ -40,8 +47,8 @@ public final class Lift extends AldrinSubsystem implements CSVWritable {
     }
 
     private Lift() {
-        mRear = CTREFactory.getMasterTalon(Constants.REAR_LIFT_PORT);
         mFront = CTREFactory.getMasterTalon(Constants.FRONT_LIFT_PORT);
+        mRear = CTREFactory.getMasterTalon(Constants.REAR_LIFT_PORT);
 
         // Talon(portNum : int)
         mDrive = new AldrinTalon(Constants.LIFT_DRIVE_PORT);
@@ -60,31 +67,32 @@ public final class Lift extends AldrinSubsystem implements CSVWritable {
         mFrontHabSensor = new DigitalInput(Constants.LIFT_FRONT_HAB_SENSOR_PORT);
         mRearHabSensor = new DigitalInput(Constants.LIFT_REAR_HAB_SENSOR_PORT);
 
-        mFront.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
-        mRear.configSelectedFeedbackSensor(FeedbackDevice.QuadEncoder);
+        RobotProfile profile = RobotManager.getProfile();
+        CTREConfiguration.config(mFront, profile.getFrontLiftConfig(), "FrontLift");
+        CTREConfiguration.config(mRear, profile.getRearLiftConfig(), "RearLift");
 
         stop();
 
         super.logInstantiation();
     }
 
-    /*public void setPower(double power) {
-        mFront.set(power);
-        mRear.set(power);
-    }*/
-
     public void setFrontPower(double power) {
-        // if (!isFrontForwardLimitHit() || !isFrontReverseLimitHit()) {
-            // mFrontBrake.set(false);
-            mFront.set(ControlMode.PercentOutput, power);
-        // }
+        /*if (!isFrontForwardLimitHit() || !isFrontReverseLimitHit()) {
+            mFrontBrake.set(false);
+        }*/
+        mFront.set(ControlMode.PercentOutput, power);
     }
 
     public void setRearPower(double power) {
-        // if (!isRearForwardLimitHit() || !isRearReverseLimitHit()) {
-            // mRearBrake.set(false);
-            mRear.set(ControlMode.PercentOutput, power);
-        // }
+        /*if (!isRearForwardLimitHit() || !isRearReverseLimitHit()) {
+            mRearBrake.set(false);
+        }*/
+        mRear.set(ControlMode.PercentOutput, power);
+    }
+
+    public void setPower(double power) {
+        setFrontPower(power);
+        setRearPower(power);
     }
 
     public void setFrontPosition(LiftPosition position) {
@@ -161,8 +169,7 @@ public final class Lift extends AldrinSubsystem implements CSVWritable {
 
     @Override
     public void stop() {
-        setFrontPower(0);
-        setRearPower(0);
+        setPower(0);
         setDrivePower(0);
         setFrontBrake(true);
         setRearBrake(true);
@@ -181,10 +188,21 @@ public final class Lift extends AldrinSubsystem implements CSVWritable {
     }
 
     @Override
+    public void updateGains() {
+        updateFromDashboard();
+    }
+
+    @Override
+    public void resetSensors() {
+        CTREDiagnostics.checkCommand(mFront.setPrimarySensorPosition(0), "Failed to zero FrontLift encoder!");
+        CTREDiagnostics.checkCommand(mRear.setPrimarySensorPosition(0), "Failed to zero RearLift encoder!");
+    }
+
+    @Override
     public Map<String, Supplier> getCSVTelemetry() {
         LinkedHashMap<String, Supplier> m = new LinkedHashMap<>();
-        /*m.put("front_lift_current", mFront::getPDPCurrent);
-        m.put("rear_lift_current", mRear::getPDPCurrent);*/
+        m.put("front_lift_current", mFront::getOutputCurrent);
+        m.put("rear_lift_current", mRear::getOutputCurrent);
         return m;
     }
 

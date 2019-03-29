@@ -21,6 +21,10 @@ public abstract class RobotProfile {
 
     public abstract CTREConfiguration getLateralDriveConfig();
 
+    public abstract CTREConfiguration getFrontLiftConfig();
+
+    public abstract CTREConfiguration getRearLiftConfig();
+
     public abstract CTREConfiguration getManipulatorArmMasterConfig();
 
     public abstract CTREConfiguration getManipulatorArmSlaveConfig();
@@ -36,6 +40,11 @@ public abstract class RobotProfile {
     public Transmission getLateralDriveTransmission() {
         return new Transmission(Constants.LATERAL_DRIVE_MAX_RPM, Constants.LATERAL_DRIVE_COUNTS_PER_REVOLUTION,
                 Constants.LATERAL_DRIVE_GEAR_RATIO);
+    }
+
+    public Transmission getLiftTransmission() {
+        return new Transmission(Constants.LIFT_MAX_RPM, Constants.LIFT_COUNTS_PER_REVOLUTION,
+                Constants.LIFT_GEAR_RATIO);
     }
 
     public Transmission getManipulatorArmTransmission() {

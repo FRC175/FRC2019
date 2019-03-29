@@ -46,6 +46,7 @@ public final class Vision extends AldrinSubsystem implements Runnable {
 
     @Override
     public void start() {
+        new Thread(this).start();
     }
 
     @Override

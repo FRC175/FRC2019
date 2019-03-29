@@ -31,15 +31,14 @@ public class ControlRearLift extends AldrinCommand {
         Drive.getInstance().stop();
         if (!mIsManual) {
             if (mPosition == LiftPosition.RETRACT) {
-                // Bring up and then disengage
+                // Bring up and then disengage brake
                 Lift.getInstance().setRearPosition(LiftPosition.EXTEND);
                 Timer.delay(0.175);
                 Lift.getInstance().setRearBrake(false);
                 Lift.getInstance().setRearPower(0);
-            } else if (mPosition == LiftPosition.EXTEND) {
-                Lift.getInstance().setRearBrake(false);
             }
         }
+        Lift.getInstance().setRearBrake(false);
         super.initialize();
     }
 

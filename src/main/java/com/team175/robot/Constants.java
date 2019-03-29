@@ -21,8 +21,8 @@ public final class Constants {
     public static final int LATERAL_DRIVE_PORT = 7;
     public static final int MANIPULATOR_ARM_MASTER_PORT = 10;
     public static final int MANIPULATOR_ARM_SLAVE_PORT = 9;
-    public static final int CANIFIER_PORT = -1; // TODO: Fix
-    public static final int COMPRESSOR_PORT = -1; // TODO: Fix
+    public static final int CANIFIER_PORT = 60; // TODO: Fix
+    public static final int COMPRESSOR_PORT = 0; // TODO: Fix
     public static final int PDP_PORT = 2;
     public static final int FRONT_LIFT_PORT = 15;
     public static final int REAR_LIFT_PORT = 16;
@@ -123,18 +123,21 @@ public final class Constants {
     public static final int DRIVE_MAX_RPM = 5330;
     public static final int ELEVATOR_MAX_RPM = 5840;
     public static final int LATERAL_DRIVE_MAX_RPM = 19300; // Assuming this is 655
+    public static final int LIFT_MAX_RPM = 19300; // Assuming this is 655
     public static final int MANIPULATOR_ARM_MAX_RPM = 90;
 
     // TODO: Verify gear ratio of LateralDrive and Elevator
     public static final double DRIVE_GEAR_RATIO = 3.66 / 1;
     public static final double ELEVATOR_GEAR_RATIO = 35 / 1;
     public static final double LATERAL_DRIVE_GEAR_RATIO = 64 / 1;
+    public static final double LIFT_GEAR_RATIO = 132 / 1;
     public static final double MANIPULATOR_ARM_GEAR_RATIO = 1 / 1;
 
     // talonSRXCounts = counts * 4
     public static final int DRIVE_COUNTS_PER_REVOLUTION = 4096;
     public static final int ELEVATOR_COUNTS_PER_REVOLUTION = 4096;
     public static final int LATERAL_DRIVE_COUNTS_PER_REVOLUTION = 512;
+    public static final int LIFT_COUNTS_PER_REVOLUTION = 512;
     public static final int MANIPULATOR_ARM_COUNTS_PER_REVOLUTION = 4096;
 
     // ----------------------------------------------------------------------------------------------------

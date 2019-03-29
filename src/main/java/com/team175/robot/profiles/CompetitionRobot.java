@@ -69,6 +69,24 @@ public class CompetitionRobot extends RobotProfile {
     }
 
     @Override
+    public CTREConfiguration getFrontLiftConfig() {
+        return new CTREConfiguration.Builder()
+                .setPrimarySensor(FeedbackDevice.QuadEncoder)
+                .setPrimaryGains(new ClosedLoopGains(0.1, 0, 0, super.getLiftTransmission().getKf(),
+                        0, 0))
+                .build();
+    }
+
+    @Override
+    public CTREConfiguration getRearLiftConfig() {
+        return new CTREConfiguration.Builder()
+                .setPrimarySensor(FeedbackDevice.QuadEncoder)
+                .setPrimaryGains(new ClosedLoopGains(0.1, 0, 0, super.getLiftTransmission().getKf(),
+                        0, 0))
+                .build();
+    }
+
+    @Override
     public CTREConfiguration getManipulatorArmMasterConfig() {
         return new CTREConfiguration.Builder()
                 .setPrimarySensor(FeedbackDevice.Analog)

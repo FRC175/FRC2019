@@ -35,7 +35,7 @@ public class RearLiftToPosition extends AldrinCommand {
     protected void end() {
         // This may stop the front while it's rising
         // Lift.getInstance().stop();
-        Lift.getInstance().setRearPosition(LiftPosition.IDLE);
+        Lift.getInstance().setRearPower(0);
         Lift.getInstance().setRearBrake(true);
         super.end();
     }
