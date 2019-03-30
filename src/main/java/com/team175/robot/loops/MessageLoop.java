@@ -18,6 +18,7 @@ public class MessageLoop implements Loop {
 
     @Override
     public void start() {
+
     }
 
     @Override

@@ -22,7 +22,7 @@ public class ElevatorToPosition extends AldrinCommand {
     @Override
     protected void initialize() {
         // Ensure elevator cannot move when manipulator is in stow position
-        if (Manipulator.getInstance().isDeployed() && !Manipulator.getInstance().isArmAtPosition(ManipulatorArmPosition.STOW)) {
+        if (!Manipulator.getInstance().isArmAtPosition(ManipulatorArmPosition.STOW)) {
             mLogger.debug("Setting elevator to {} position.", mPosition.toString());
             Elevator.getInstance().setPosition(mPosition);
         }

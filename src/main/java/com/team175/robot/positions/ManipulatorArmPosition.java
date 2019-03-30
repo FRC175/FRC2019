@@ -7,7 +7,7 @@ import com.team175.robot.util.RobotManager;
  */
 public enum ManipulatorArmPosition {
 
-    VELCRO_HATCH_PICKUP(0, 0),
+    VELCRO_HATCH_PICKUP(386, 294),
     FINGER_HATCH_PICKUP(386, 175),
     BALL_PICKUP(338, 186),
     SCORE(254, 75),
