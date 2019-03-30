@@ -31,6 +31,7 @@ public class ControlFrontLift extends AldrinCommand {
         Drive.getInstance().stop();
         if (!mIsManual) {
             if (mPosition == LiftPosition.RETRACT) {
+                // Lift.getInstance().setFrontBrake(false);
                 // Bring up and then disengage brake
                 Lift.getInstance().setFrontPosition(LiftPosition.EXTEND);
                 Timer.delay(0.175);

@@ -27,7 +27,7 @@ public class LED extends AldrinSubsystem {
     private int[] mColorArr;
     private boolean mIsOff;
 
-    private static final int BLINK_TIME = 1; // s
+    private static final int BLINK_TIME = 2; // s
 
     private static LED sInstance;
 
@@ -58,7 +58,7 @@ public class LED extends AldrinSubsystem {
         mIsOff = false;
         setColor(mWantedColor);
 
-        super.logInstantiation();
+        // super.logInstantiation();
     }
 
     public synchronized void setColor(Color color) {
@@ -69,6 +69,7 @@ public class LED extends AldrinSubsystem {
     }
 
     public synchronized void setColor(LEDColor color) {
+        mWantedState = LEDState.NORMAL;
         setColor(color.getColor());
     }
 
@@ -86,12 +87,14 @@ public class LED extends AldrinSubsystem {
     private void blinkColor() {
         if (Timer.getFPGATimestamp() - mStartTime <= mBlinkDur) {
             if (mIsOff) {
-                setColor(LEDColor.OFF);
+                setColor(new Color(0, 0, 0));
             } else {
                 setColor(mWantedColor);
             }
             mIsOff = !mIsOff;
             Timer.delay(0.2);
+        } else {
+            setColor(LEDColor.DEFAULT);
         }
     }
 
@@ -133,7 +136,7 @@ public class LED extends AldrinSubsystem {
                     moodLampCycle();
                     break;
                 case OFF:
-                    setColor(LEDColor.OFF);
+                    setColor(new Color(0, 0, 0));
                     break;
                 case NORMAL:
                 default:
@@ -145,8 +148,8 @@ public class LED extends AldrinSubsystem {
 
     @Override
     public void stop() {
-        // Turns off LEDs
-        setColor(LEDColor.OFF);
+        mWantedState = LEDState.OFF;
+        setColor(new Color(0, 0, 0));
     }
 
     @Override

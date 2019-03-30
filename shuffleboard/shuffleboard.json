@@ -577,21 +577,21 @@
         "tiles": {
           "2,0": {
             "size": [
-              6,
+              7,
               4
             ],
             "content": {
               "_type": "Camera Stream",
-              "_source0": "camera_server://Axis Camera",
-              "_title": "Axis Camera",
+              "_source0": "camera_server://USB Camera 0",
+              "_title": "USB Camera 1",
               "Crosshair/Show crosshair": true,
               "Crosshair/Crosshair color": "#FFFFFFFF",
               "Controls/Show controls": true,
               "Controls/Rotation": "NONE",
               "compression": -1.0,
               "fps": -1,
-              "imageWidth": -1,
-              "imageHeight": -1
+              "imageWidth": 0,
+              "imageHeight": 0
             }
           }
         }
@@ -729,6 +729,32 @@
               "_source0": "network_table:///SmartDashboard/ElevatorRevKp",
               "_title": "/SmartDashboard/ElevatorRevKp"
             }
+          },
+          "6,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/ElevatorRevLimit",
+              "_title": "/SmartDashboard/ElevatorRevLimit",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "6,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/ElevatorFwdLimit",
+              "_title": "/SmartDashboard/ElevatorFwdLimit",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
           }
         }
       }
@@ -745,13 +771,13 @@
         "tiles": {
           "2,0": {
             "size": [
-              6,
+              7,
               4
             ],
             "content": {
               "_type": "Camera Stream",
-              "_source0": "camera_server://Axis Camera",
-              "_title": "Axis Camera",
+              "_source0": "camera_server://USB Camera 0",
+              "_title": "USB Camera 0",
               "Crosshair/Show crosshair": true,
               "Crosshair/Crosshair color": "#FFFFFFFF",
               "Controls/Show controls": true,
@@ -760,67 +786,6 @@
               "fps": -1,
               "imageWidth": 0,
               "imageHeight": 0
-            }
-          }
-        }
-      }
-    },
-    {
-      "title": "Lift Testing",
-      "autoPopulate": false,
-      "autoPopulatePrefix": "",
-      "widgetPane": {
-        "gridSize": 128.0,
-        "showGrid": true,
-        "hgap": 16.0,
-        "vgap": 16.0,
-        "tiles": {
-          "4,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/FHabSensor",
-              "_title": "/SmartDashboard/FHabSensor",
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "5,0": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Boolean Box",
-              "_source0": "network_table:///SmartDashboard/RHabSensor",
-              "_title": "/SmartDashboard/RHabSensor",
-              "Colors/Color when true": "#7CFC00FF",
-              "Colors/Color when false": "#8B0000FF"
-            }
-          },
-          "4,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/FLiftPos",
-              "_title": "/SmartDashboard/FLiftPos"
-            }
-          },
-          "5,1": {
-            "size": [
-              1,
-              1
-            ],
-            "content": {
-              "_type": "Text View",
-              "_source0": "network_table:///SmartDashboard/RLiftPos",
-              "_title": "/SmartDashboard/RLiftPos"
             }
           }
         }
