@@ -729,6 +729,32 @@
               "_source0": "network_table:///SmartDashboard/ElevatorRevKp",
               "_title": "/SmartDashboard/ElevatorRevKp"
             }
+          },
+          "6,1": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/ElevatorRevLimit",
+              "_title": "/SmartDashboard/ElevatorRevLimit",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
+          },
+          "6,2": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Boolean Box",
+              "_source0": "network_table:///SmartDashboard/ElevatorFwdLimit",
+              "_title": "/SmartDashboard/ElevatorFwdLimit",
+              "Colors/Color when true": "#7CFC00FF",
+              "Colors/Color when false": "#8B0000FF"
+            }
           }
         }
       }
