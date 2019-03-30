@@ -9,6 +9,7 @@ package com.team175.robot;
 
 import com.team175.robot.commands.auto.CancelAuto;
 import com.team175.robot.commands.drive.ArcadeDrive;
+import com.team175.robot.commands.drive.CheesyDrive;
 import com.team175.robot.commands.drive.ResetGyro;
 import com.team175.robot.commands.drive.StraightDrive;
 import com.team175.robot.commands.elevator.ControlElevator;
@@ -20,6 +21,7 @@ import com.team175.robot.commands.lift.ControlRearLift;
 import com.team175.robot.commands.manipulator.ControlManipulatorArm;
 import com.team175.robot.commands.manipulator.ManipulateGamePieces;
 import com.team175.robot.commands.manipulator.ManipulatorArmToPosition;
+import com.team175.robot.commands.vision.RotateCamera;
 import com.team175.robot.positions.ElevatorPosition;
 import com.team175.robot.positions.LiftPosition;
 import com.team175.robot.positions.ManipulatorArmPosition;
@@ -43,18 +45,16 @@ public final class OI {
     private final Button mShift;
     private final Button mStraightDrive;
     private final Button mResetGyro;
-    // private final Button mLevelThreeClimb;
-    // private final Button mLevelTwoClimb;
+    /*private final Button mLevelThreeClimb;
+    private final Button mLevelTwoClimb;*/
     private final Button mCancelAuto;
-    /*private final Button mManualLift;
-    private final Button mManualFrontLift;
-    private final Button mManualRearLift;*/
     private final Button mManualLiftDrive;
     private final Button mExtendFrontLift;
     private final Button mRetractFrontLift;
     private final Button mExtendRearLift;
     private final Button mRetractRearLift;
     // private final Button mLineAlign;
+    private final Button mRotateCamera;
 
     // Operator Stick Buttons
     private final Button mManualElevator;
@@ -96,6 +96,7 @@ public final class OI {
         mDriverStick = new AldrinJoystick(Constants.DRIVER_STICK_PORT, Constants.DRIVER_STICK_DEAD_ZONE);
         mOperatorStick = new AldrinJoystick(Constants.OPERATOR_STICK_PORT, Constants.OPERATOR_STICK_DEAD_ZONE);
 
+
         // Driver Stick Buttons
         mManualLateralDrive = new SingleButton(mDriverStick, Constants.LATERAL_DRIVE_TRIGGER);
         mShift = new SingleButton(mDriverStick, Constants.SHIFT_BUTTON);
@@ -113,6 +114,7 @@ public final class OI {
         mExtendRearLift = new SingleButton(mDriverStick, Constants.EXTEND_REAR_LIFT_BUTTON);
         mRetractRearLift = new SingleButton(mDriverStick, Constants.RETRACT_REAR_LIFT_BUTTON);
         // mLineAlign = new SingleButton(mDriverStick, Constants.LINE_ALIGN_BUTTON);
+        mRotateCamera = new SingleButton(mDriverStick, Constants.ROTATE_CAMERA_BUTTON);
 
         // Operator Stick Buttons
         mManualElevator = new SingleButton(mOperatorStick, Constants.MANUAL_ELEVATOR_TRIGGER);
@@ -141,22 +143,20 @@ public final class OI {
         // ----------------------------------------------------------------------------------------------------
         // Driver Stick
         mManualLateralDrive.whileHeld(new ControlLateralDrive());
-        mShift.whileHeld(new ArcadeDrive(true));
+        mShift.whileHeld(new CheesyDrive(true));
         // mShift.whileHeld(new CheesyDrive(true));
         mStraightDrive.whileHeld(new StraightDrive());
         mResetGyro.whenPressed(new ResetGyro());
         // mLevelThreeClimb.whenPressed(new LevelThreeClimb());
         // mLevelTwoClimb.whenPressed(new LevelTwoClimb());
         mCancelAuto.whenPressed(new CancelAuto());
-        /*mManualLift.whileHeld(new ControlLift());
-        mManualFrontLift.whileHeld(new ControlFrontLift());
-        mManualRearLift.whileHeld(new ControlRearLift());*/
         mManualLiftDrive.whileHeld(new ControlLiftDrive());
         mExtendFrontLift.whileHeld(new ControlFrontLift(LiftPosition.EXTEND));
         mRetractFrontLift.whileHeld(new ControlFrontLift(LiftPosition.RETRACT));
         mExtendRearLift.whileHeld(new ControlRearLift(LiftPosition.EXTEND));
         mRetractRearLift.whileHeld(new ControlRearLift(LiftPosition.RETRACT));
         // mLineAlign.whenPressed(new LineAlignment());
+        mRotateCamera.whenPressed(new RotateCamera());
 
         // Operator Stick
         mManualElevator.whileHeld(new ControlElevator());

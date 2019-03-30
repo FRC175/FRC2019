@@ -94,7 +94,9 @@ public final class Constants {
     public static final int RETRACT_FRONT_LIFT_BUTTON = 10;
     public static final int EXTEND_REAR_LIFT_BUTTON = 11;
     public static final int RETRACT_REAR_LIFT_BUTTON = 9;
-    public static final int ROTATE_CAMERA_BUTTON = 8;
+    public static final int ROTATE_CAMERA_BUTTON = 7;
+
+
 
     // Operator Stick Buttons
     public static final int MANUAL_ELEVATOR_TRIGGER = 1;

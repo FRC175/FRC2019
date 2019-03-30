@@ -26,7 +26,7 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
     private int mWantedPosition;
     private ClosedLoopGains mForwardGains, mReverseGains;
 
-    private static final int ALLOWED_POSITION_DEVIATION = 50;
+    private static final int ALLOWED_POSITION_DEVIATION = 100;
 
     private static Elevator sInstance;
 

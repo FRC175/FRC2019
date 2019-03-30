@@ -40,6 +40,16 @@ public final class Robot extends TimedRobot {
     private Logger mLogger;
     private RobotManager mRobotManager;
 
+    private String[] mNaan = {
+            "Abdullah is watching you.",
+            "Jamie is the all supreme lord.",
+            "Bret is MVP",
+            "Andrew Jones was here.",
+            "Aaron likes his wifu!",
+            "Aaron's girlfriend is fake!"
+    };
+    private int mBriyani;
+
     @Override
     public void robotInit() {
         RobotManager.setProfile(false);
@@ -55,6 +65,7 @@ public final class Robot extends TimedRobot {
         mAutoModeChooser = AutoModeChooser.getInstance();
         mTunerChooser = TunerChooser.getInstance();
         mLogger = LoggerFactory.getLogger(getClass().getSimpleName());
+        mBriyani = (int) (Math.random() * 10) + 1;
 
         // Runs camera stream on separate thread
         new Thread(mVision).start();
@@ -85,7 +96,7 @@ public final class Robot extends TimedRobot {
         Scheduler.getInstance().run();
 
         // mLED.moodLampCycle();
-        // mRobotManager.updateFromDashboard();
+        mRobotManager.updateFromDashboard();
         // mElevator.updateFromDashboard();
         // mManipulator.updateFromDashboard();
     }
@@ -134,6 +145,8 @@ public final class Robot extends TimedRobot {
         Scheduler.getInstance().run();
 
         mRobotManager.outputToDashboard();
+
+
     }
 
     @Override

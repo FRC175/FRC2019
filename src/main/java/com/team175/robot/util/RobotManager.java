@@ -35,8 +35,8 @@ public final class RobotManager {
     private final Compressor mCompressor;
     private final PowerDistributionPanel mPDP;
     private final Logger mLogger;
-    private final Looper mSubsystemLooper;
 
+    private Looper mSubsystemLooper;
     private Looper mCSVLooper;
 
     private static Optional<RobotProfile> sProfile = Optional.empty();
@@ -59,7 +59,7 @@ public final class RobotManager {
         mCompressor = new Compressor(Constants.COMPRESSOR_PORT);
         mPDP = new PowerDistributionPanel(Constants.PDP_PORT);
         mLogger = LoggerFactory.getLogger(getClass().getSimpleName());
-        mSubsystemLooper = new Looper(LOOPER_PERIOD, (Loop) mSubsystems);
+        /*mSubsystemLooper = new Looper(LOOPER_PERIOD, (Loop) mSubsystems);
 
         LinkedHashMap<String, Supplier> data = new LinkedHashMap<>();
         // Add data from each subsystem's getCSVTelemetry()
@@ -73,7 +73,7 @@ public final class RobotManager {
             mCSVLooper = new Looper(LOOPER_PERIOD, new CSVWriterLoop(data, CSV_LOG_FILE_PATH));
         } catch (FileNotFoundException e) {
             mLogger.error("Failed to instantiate CSVLooper!", e);
-        }
+        }*/
     }
 
     public void outputToDashboard() {

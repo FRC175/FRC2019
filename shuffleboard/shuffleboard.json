@@ -783,7 +783,7 @@
             "content": {
               "_type": "Boolean Box",
               "_source0": "network_table:///SmartDashboard/FHabSensor",
-              "_title": "SmartDashboard/FHabSensor",
+              "_title": "/SmartDashboard/FHabSensor",
               "Colors/Color when true": "#7CFC00FF",
               "Colors/Color when false": "#8B0000FF"
             }
@@ -796,7 +796,7 @@
             "content": {
               "_type": "Boolean Box",
               "_source0": "network_table:///SmartDashboard/RHabSensor",
-              "_title": "SmartDashboard/RHabSensor",
+              "_title": "/SmartDashboard/RHabSensor",
               "Colors/Color when true": "#7CFC00FF",
               "Colors/Color when false": "#8B0000FF"
             }
@@ -809,7 +809,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/FLiftPos",
-              "_title": "SmartDashboard/FLiftPos"
+              "_title": "/SmartDashboard/FLiftPos"
             }
           },
           "5,1": {
@@ -820,7 +820,7 @@
             "content": {
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/RLiftPos",
-              "_title": "SmartDashboard/RLiftPos"
+              "_title": "/SmartDashboard/RLiftPos"
             }
           }
         }

@@ -31,7 +31,7 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
     private int mArmWantedPosition;
     private ClosedLoopGains mArmForwardGains, mArmReverseGains;
 
-    private static final int ALLOWED_POSITION_DEVIATION = 10;
+    private static final int ALLOWED_POSITION_DEVIATION = 5;
 
     private static Manipulator sInstance;
 
