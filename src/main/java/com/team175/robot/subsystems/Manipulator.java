@@ -18,7 +18,7 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 /**
- * TODO: Bring up Arm to score position when current spike is detected when grabbing ball
+ *
  *
  * @author Arvind
  */
@@ -54,7 +54,7 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
 
         // SimpleDoubleSolenoid(forwardChannel : int, reverseChannel : int)
         mHatchPunch = new SimpleDoubleSolenoid(Constants.MANIPULATOR_HATCH_PUNCH_FORWARD_CHANNEL,
-                Constants.MANIPULATOR_HATCH_PUNCH_REVERSE_CHANNEL);
+                Constants.MANIPULATOR_HATCH_PUNCH_REVERSE_CHANNEL); // Punch solenoid also controls fingers
         mBrake = new SimpleDoubleSolenoid(Constants.MANIPULATOR_BRAKE_FORWARD_CHANNEL, Constants.MANIPULATOR_BRAKE_REVERSE_CHANNEL);
         mDeploy = new SimpleDoubleSolenoid(Constants.MANIPULATOR_DEPLOY_FORWARD_CHANNEL, Constants.MANIPULATOR_DEPLOY_REVERSE_CHANNEL);
 

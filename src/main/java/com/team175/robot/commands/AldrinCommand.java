@@ -6,6 +6,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
+ * Represents the base of all commands
+ *
  * @author Arvind
  * @see Command
  */
@@ -23,7 +25,7 @@ public abstract class AldrinCommand extends Command {
         }
     }
 
-    public void logInstantiation() {
+    protected void logInstantiation() {
         mLogger.info("Command successfully instantiated.");
     }
 

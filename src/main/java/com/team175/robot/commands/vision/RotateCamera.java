@@ -15,10 +15,9 @@ public class RotateCamera extends AldrinCommand {
 
     @Override
     protected void initialize() {
-        // boolean isCameraDown = Vision.getInstance().isCameraDown();
-        boolean isCameraDown = false;
+        boolean isCameraDown = Vision.getInstance().isCameraDown();
         mLogger.info("Rotating camera to {} position", isCameraDown ? "up" : "down");
-        // Vision.getInstance().rotateCameraDown(!isCameraDown);
+        Vision.getInstance().rotateCameraDown(!isCameraDown);
         super.initialize();
     }
 

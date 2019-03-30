@@ -5,12 +5,14 @@ import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.ctre.phoenix.motorcontrol.can.BaseMotorController;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 import com.team175.robot.Constants;
+import com.team175.robot.positions.LEDColor;
+import com.team175.robot.subsystems.LED;
 import edu.wpi.first.wpilibj.Timer;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * An object that runs a series of diagnostics tests on a CTRE motor controller to verify motor integrity.
+ * Runs a series of diagnostics tests on a CTRE motor controller to verify motor integrity.
  *
  * @author Arvind
  */
@@ -143,6 +145,7 @@ public class CTREDiagnostics {
         if (code != ErrorCode.OK) {
             sLogger.warn("{}\n" +
                     "\tErrorCode: {}", msg, code.toString());
+            // LED.getInstance().blinkColor(LEDColor.ERROR);
         }
     }
 

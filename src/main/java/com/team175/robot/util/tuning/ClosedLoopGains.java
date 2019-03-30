@@ -1,6 +1,8 @@
 package com.team175.robot.util.tuning;
 
 /**
+ * Holds PID gains (Kp, Ki, Kd, Kf) and acceleration and cruise velocity data for CTRE closed loop control.
+ *
  * @author Arvind
  */
 public class ClosedLoopGains {

@@ -8,12 +8,10 @@
 package com.team175.robot;
 
 import com.team175.robot.commands.auto.CancelAuto;
-import com.team175.robot.commands.drive.ArcadeDrive;
 import com.team175.robot.commands.drive.CheesyDrive;
 import com.team175.robot.commands.drive.ResetGyro;
 import com.team175.robot.commands.drive.StraightDrive;
-import com.team175.robot.commands.elevator.ControlElevator;
-import com.team175.robot.commands.elevator.ElevatorToPosition;
+import com.team175.robot.commands.elevator.*;
 import com.team175.robot.commands.lateraldrive.ControlLateralDrive;
 import com.team175.robot.commands.lift.ControlFrontLift;
 import com.team175.robot.commands.lift.ControlLiftDrive;
@@ -21,11 +19,9 @@ import com.team175.robot.commands.lift.ControlRearLift;
 import com.team175.robot.commands.manipulator.ControlManipulatorArm;
 import com.team175.robot.commands.manipulator.ManipulateGamePieces;
 import com.team175.robot.commands.manipulator.ManipulatorArmToPosition;
+import com.team175.robot.commands.manipulator.SwitchIntakeMode;
 import com.team175.robot.commands.vision.RotateCamera;
-import com.team175.robot.positions.ElevatorPosition;
-import com.team175.robot.positions.LiftPosition;
-import com.team175.robot.positions.ManipulatorArmPosition;
-import com.team175.robot.positions.ManipulatorRollerPosition;
+import com.team175.robot.positions.*;
 import com.team175.robot.util.drivers.SingleButton;
 import com.team175.robot.util.drivers.AldrinJoystick;
 import com.team175.robot.util.drivers.NubDoubleButton;
@@ -65,12 +61,15 @@ public final class OI {
     private final Button mScoreCargo;
     private final Button mScoreCargoFast;
     private final Button mGrabCargo;
+    private final Button mSwitchToVelcroHatchMode;
+    private final Button mSwitchToFingerHatchMode;
+    private final Button mSwitchToCargoMode;
     private final Button mElevatorPositionOne;
     private final Button mElevatorPositionTwo;
     private final Button mElevatorPositionThree;
-    private final Button mElevatorPositionFour;
+    /*private final Button mElevatorPositionFour;
     private final Button mElevatorPositionFive;
-    private final Button mElevatorPositionSix;
+    private final Button mElevatorPositionSix;*/
     private final Button mElevatorCargoLoadingPosition;
     private final Button mElevatorGroundPickupPosition;
     private final Button mManipulatorArmStowPosition;
@@ -125,12 +124,15 @@ public final class OI {
         mScoreCargo = new SingleButton(mOperatorStick, Constants.SCORE_CARGO_BUTTON);
         mScoreCargoFast = new NubDoubleButton(mOperatorStick, Constants.SCORE_CARGO_BUTTON);
         mGrabCargo = new SingleButton(mOperatorStick, Constants.GRAB_CARGO_BUTTON);
-        mElevatorPositionOne = new SingleButton(mOperatorStick, Constants.ELEVATOR_POSITION_ONE_BUTTON);
-        mElevatorPositionTwo = new SingleButton(mOperatorStick, Constants.ELEVATOR_POSITION_TWO_BUTTON);
-        mElevatorPositionThree = new SingleButton(mOperatorStick, Constants.ELEVATOR_POSITION_THREE_BUTTON);
-        mElevatorPositionFour = new SingleButton(mOperatorStick, Constants.ELEVATOR_POSITION_FOUR_BUTTON);
+        mSwitchToVelcroHatchMode = new SingleButton(mOperatorStick, 7);
+        mSwitchToFingerHatchMode = new SingleButton(mOperatorStick, 9);
+        mSwitchToCargoMode = new SingleButton(mOperatorStick, 11);
+        mElevatorPositionOne = new SingleButton(mOperatorStick, 8);
+        mElevatorPositionTwo = new SingleButton(mOperatorStick, 10);
+        mElevatorPositionThree = new SingleButton(mOperatorStick, 12);
+        /*mElevatorPositionFour = new SingleButton(mOperatorStick, Constants.ELEVATOR_POSITION_FOUR_BUTTON);
         mElevatorPositionFive = new SingleButton(mOperatorStick, Constants.ELEVATOR_POSITION_FIVE_BUTTON);
-        mElevatorPositionSix = new SingleButton(mOperatorStick, Constants.ELEVATOR_POSITION_SIX_BUTTON);
+        mElevatorPositionSix = new SingleButton(mOperatorStick, Constants.ELEVATOR_POSITION_SIX_BUTTON);*/
         mElevatorCargoLoadingPosition = new NubDoubleButton(mOperatorStick, Constants.ELEVATOR_CARGO_LOADING_POSITION_BUTTON);
         mElevatorGroundPickupPosition = new NubDoubleButton(mOperatorStick, Constants.ELEVATOR_GROUND_PICKUP_POSITION_BUTTON);
         mManipulatorArmStowPosition = new SingleButton(mOperatorStick, Constants.MANIPULATOR_ARM_STOW_POSITION_BUTTON);
@@ -167,18 +169,21 @@ public final class OI {
         mScoreCargo.whileHeld(new ManipulateGamePieces(ManipulatorRollerPosition.SCORE_CARGO));
         mScoreCargoFast.whileHeld(new ManipulateGamePieces(ManipulatorRollerPosition.SCORE_CARGO_FAST));
         mGrabCargo.whileHeld(new ManipulateGamePieces(ManipulatorRollerPosition.GRAB_CARGO));
-        mElevatorPositionOne.whenPressed(new ElevatorToPosition(ElevatorPosition.HATCH_LEVEL_ONE));
-        mElevatorPositionTwo.whenPressed(new ElevatorToPosition(ElevatorPosition.CARGO_LEVEL_ONE));
-        mElevatorPositionThree.whenPressed(new ElevatorToPosition(ElevatorPosition.HATCH_LEVEL_TWO));
-        mElevatorPositionFour.whenPressed(new ElevatorToPosition(ElevatorPosition.CARGO_LEVEL_TWO));
-        mElevatorPositionFive.whenPressed(new ElevatorToPosition(ElevatorPosition.HATCH_LEVEL_THREE));
-        mElevatorPositionSix.whenPressed(new ElevatorToPosition(ElevatorPosition.CARGO_LEVEL_THREE));
+        mSwitchToVelcroHatchMode.whenPressed(new SwitchIntakeMode(IntakeMode.VELCRO_HATCH));
+        mSwitchToFingerHatchMode.whenPressed(new SwitchIntakeMode(IntakeMode.FINGER_HATCH));
+        mSwitchToCargoMode.whenPressed(new SwitchIntakeMode(IntakeMode.CARGO));
+        mElevatorPositionOne.whenPressed(new ElevatorToPositionOne());
+        mElevatorPositionTwo.whenPressed(new ElevatorToPositionTwo());
+        mElevatorPositionThree.whenPressed(new ElevatorToPositionThree());
+        /*mElevatorPositionFour.whenPressed(new ElevatorToPosition(ElevatorPosition.CARGO_LEVEL_TWO));
+        mElevatorPositionFive.whenPressed(new ElevatorToPosition(ElevatorPosition.FINGER_HATCH_LEVEL_THREE));
+        mElevatorPositionSix.whenPressed(new ElevatorToPosition(ElevatorPosition.CARGO_LEVEL_THREE));*/
         mElevatorCargoLoadingPosition.whenPressed(new ElevatorToPosition(ElevatorPosition.CARGO_LOADING));
         mElevatorGroundPickupPosition.whenPressed(new ElevatorToPosition(ElevatorPosition.GROUND_PICKUP));
         mManipulatorArmStowPosition.whenPressed(new ManipulatorArmToPosition(ManipulatorArmPosition.STOW));
         mManipulatorArmScorePosition.whenPressed(new ManipulatorArmToPosition(ManipulatorArmPosition.SCORE));
         mManipulatorArmBallPickupPosition.whenPressed(new ManipulatorArmToPosition(ManipulatorArmPosition.BALL_PICKUP));
-        mManipulatorArmGroundPosition.whenPressed(new ManipulatorArmToPosition(ManipulatorArmPosition.HATCH_PICKUP));
+        mManipulatorArmGroundPosition.whenPressed(new ManipulatorArmToPosition(ManipulatorArmPosition.FINGER_HATCH_PICKUP));
     }
 
     public double getDriverStickX() {

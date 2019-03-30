@@ -9,8 +9,8 @@ import com.team175.robot.Constants;
 import com.team175.robot.paths.Path;
 
 /**
- * A helper class to easily configure and follow paths using the Talon SRX MotionProfileArc mode. Code is heavily based
- * off of Team319's BobTrajectory library.
+ * Helps Talon SRXs be able to follow paths using the MotionProfileArc mode. Code is heavily based off of Team319's
+ * BobTrajectory library.
  *
  * @author Arvind
  */

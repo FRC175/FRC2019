@@ -13,7 +13,7 @@ import java.util.function.Supplier;
 public final class Vision extends AldrinSubsystem implements Runnable {
 
     private final CameraServer mCamera;
-    private final Servo mRotator;
+    private final Servo mRotate;
 
     private static Vision sInstance;
 
@@ -29,24 +29,26 @@ public final class Vision extends AldrinSubsystem implements Runnable {
         mCamera = CameraServer.getInstance();
 
         // Servo(portNum : int)
-        mRotator = new Servo(Constants.CAMERA_ROTATOR_PORT);
+        mRotate = new Servo(Constants.CAMERA_ROTATOR_PORT);
 
+        // Start with camera in up position
         rotateCameraDown(false);
 
         super.logInstantiation();
     }
 
-    public void rotateCameraDown(boolean enable) {
-        mRotator.set(enable ? 1 : 0);
+    public void rotateCameraDown(boolean rotateDown) {
+        mRotate.set(rotateDown ? 0.8 : 0.2);
     }
 
     public boolean isCameraDown() {
-        return mRotator.get() == 1;
+        return mRotate.get() == 0.8;
     }
 
     @Override
     public void start() {
-        new Thread(this).start();
+        new Thread(() -> mCamera.addAxisCamera("10.1.75.10")).start();
+        rotateCameraDown(false);
     }
 
     @Override

@@ -6,8 +6,7 @@ import com.ctre.phoenix.motorcontrol.FollowerType;
 import com.ctre.phoenix.motorcontrol.can.TalonSRX;
 
 /**
- * A helper class to implement multiple different drive types including Cheesy Drive and Arcade Drive to run on the
- * Talon SRX.
+ * Implements multiple different drive types including Cheesy Drive and Arcade Drive to run on the Talon SRX.
  *
  * @author Arvind
  */

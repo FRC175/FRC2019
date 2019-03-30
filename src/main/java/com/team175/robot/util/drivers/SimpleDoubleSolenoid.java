@@ -5,7 +5,7 @@ import edu.wpi.first.wpilibj.DoubleSolenoid;
 import edu.wpi.first.wpilibj.DoubleSolenoid.Value;
 
 /**
- * A wrapper that treats a double-acting solenoid as a single-acting one.
+ * Treats a double-acting solenoid as a single-acting one.
  *
  * @author Arvind
  */

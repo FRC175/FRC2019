@@ -8,8 +8,8 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * An object used to hold a CTRE Motor Controller's configuration settings in order to adapt to the different hardware
- * changes across the competition and practice robots. A builder is used in order to make this object immutable.
+ * Holds CTRE Motor Controller's configuration settings in order to adapt to the different hardware changes across the
+ * competition and practice robots. A builder is used in order to make this object immutable.
  *
  * @author Arvind
  */

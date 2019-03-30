@@ -4,7 +4,7 @@ import edu.wpi.first.wpilibj.AnalogInput;
 import edu.wpi.first.wpilibj.DigitalInput;
 
 /**
- * A simple wrapper class around analog and digital inputs to read voltage and target detection of the Pixy camera.
+ * Reads voltage and target detection from the analog and digital outputs of the Pixy camera.
  *
  * @author Arvind
  */

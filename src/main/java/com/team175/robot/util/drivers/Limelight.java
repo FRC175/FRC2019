@@ -4,7 +4,7 @@ import edu.wpi.first.networktables.NetworkTable;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
 /**
- * A wrapper created around a NetworkTable in order to more easily read data and control the Limelight camera.
+ * Holds Limelight NetworkTable data in a convenient wrapper.
  *
  * @author Arvind
  */

@@ -11,11 +11,11 @@ import java.util.stream.Stream;
 
 /**
  * A generic, reflective, immutable csv file writer that writes all of an objects' public accessor methods to a file.
- * Deprecated due to the fact that this is an over-engineered solution to a simple problem.
  *
  * @param <T>
  *         The type whose properties are written.
  * @author Arvind
+ * @deprecated This is an over-engineered solution to a simple problem.
  */
 @Deprecated
 public final class GenericCSVWriter<T> {

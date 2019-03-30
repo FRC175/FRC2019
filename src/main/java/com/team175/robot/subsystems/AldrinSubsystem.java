@@ -11,6 +11,8 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 /**
+ * Represents the base of all subsystems.
+ *
  * @author Arvind
  */
 public abstract class AldrinSubsystem extends Subsystem implements Loop {
@@ -21,31 +23,31 @@ public abstract class AldrinSubsystem extends Subsystem implements Loop {
     protected final Logger mLogger = LoggerFactory.getLogger(getClass().getSimpleName());
 
     /**
-     * A method called when the subsystem is started or entering teleop or autonomous.
+     * Starts subsystem. Called when entering teleop or autonomous.
      */
     public abstract void start();
 
     /**
-     * A method called when the subsystem is stopped or entering disabled mode.
+     * Stops subsystem. Called when entering disabled mode.
      */
     public abstract void stop();
 
     /**
-     * Returns a map with telemetry data of a subsystem.
+     * Gets a map with telemetry data of a subsystem.
      *
      * @return Map with telemetry data of subsystem
      */
     public abstract Map<String, Supplier> getTelemetry();
 
     /**
-     * A method called by subsystems when instantiation is complete.
+     * Logs the completion of subsystem instantiation.
      */
-    public void logInstantiation() {
+    protected void logInstantiation() {
         mLogger.info("Subsystem successfully instantiated.");
     }
 
     /**
-     * Filters the different types of data from the getTelemetry() map and sends it to the SmartDashboard.
+     * Filters the different types of data from the {@link #getTelemetry()} map and sends it to the SmartDashboard.
      */
     public void outputToDashboard() {
         if (getTelemetry() != null) {
@@ -65,11 +67,6 @@ public abstract class AldrinSubsystem extends Subsystem implements Loop {
         }
     }
 
-    @Override
-    public void loop() {
-        outputToDashboard();
-    }
-
     /* Optional Design Patterns */
 
     /**
@@ -82,23 +79,24 @@ public abstract class AldrinSubsystem extends Subsystem implements Loop {
     }
 
     /**
-     * Called to perform actions periodically.
-     */
-    public void onPeriodic() {
-        outputToDashboard();
-    }
-
-    /**
      * Updates subsystems with modified fields from the SmartDashboard.
      */
     public void updateFromDashboard() {
     }
 
     /**
-     * Makes initDefaultCommand() optional.
+     * Makes initDefaultCommand optional.
      */
     @Override
     protected void initDefaultCommand() {
+    }
+
+    /**
+     * Makes loop optional.
+     */
+    @Override
+    public void loop() {
+        outputToDashboard();
     }
 
 }

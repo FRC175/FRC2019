@@ -5,7 +5,8 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 /**
  * A loop that sends random messages to the SmartDashboard. Primary use is for trolling the drivers.
  *
- * @author Abdullah, Arvind
+ * @author Abdullah
+ * @author Arvind
  */
 public class MessageLoop implements Loop {
 

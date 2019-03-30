@@ -21,8 +21,8 @@ import java.util.*;
 import java.util.function.Supplier;
 
 /**
- * An object that contains all the subsystems and various other components (i.e. Compressor and PDP) of the robot to be
- * able to control them all from one place.
+ * Contains all the subsystems and various other components (i.e. Compressor and PDP) of the robot to be able to control
+ * them all from one place.
  *
  * TODO: Maybe be able to control both compressors.
  * TODO: Clean up.
