@@ -34,9 +34,12 @@ public final class CSVWriter {
     /**
      * Constructs a new CSVWriter.
      *
-     * @param data The map of the data to write to the CSV file
-     * @param filePath The path in which to write a CSV file
-     * @param delimiter The specified delimiter of the CSV file
+     * @param data
+     *         The map of the data to write to the CSV file
+     * @param filePath
+     *         The path in which to write a CSV file
+     * @param delimiter
+     *         The specified delimiter of the CSV file
      * @throws FileNotFoundException
      */
     public CSVWriter(Map<String, Supplier> data, String filePath, String delimiter)

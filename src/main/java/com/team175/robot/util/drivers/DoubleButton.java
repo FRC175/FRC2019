@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.buttons.Button;
  * An object that allows for the use of a command when two buttons are pressed at once.
  *
  * @author Arvind
+ * @see Button
  */
 public class DoubleButton extends Button {
 

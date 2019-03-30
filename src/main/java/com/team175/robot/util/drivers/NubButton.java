@@ -5,6 +5,7 @@ import edu.wpi.first.wpilibj.buttons.Button;
 
 /**
  * @author Arvind
+ * @see Button
  */
 public class NubButton extends Button {
 

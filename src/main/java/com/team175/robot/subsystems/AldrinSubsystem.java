@@ -21,6 +21,16 @@ public abstract class AldrinSubsystem extends Subsystem implements Loop {
     protected final Logger mLogger = LoggerFactory.getLogger(getClass().getSimpleName());
 
     /**
+     * A method called when the subsystem is started or entering teleop or autonomous.
+     */
+    public abstract void start();
+
+    /**
+     * A method called when the subsystem is stopped or entering disabled mode.
+     */
+    public abstract void stop();
+
+    /**
      * Returns a map with telemetry data of a subsystem.
      *
      * @return Map with telemetry data of subsystem

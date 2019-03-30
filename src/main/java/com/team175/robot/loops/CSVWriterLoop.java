@@ -6,6 +6,11 @@ import java.io.FileNotFoundException;
 import java.util.Map;
 import java.util.function.Supplier;
 
+/**
+ * Writes periodically to a CSV file using a loop.
+ *
+ * @author Arvind
+ */
 public class CSVWriterLoop implements Loop {
 
     protected final CSVWriter mWriter;
