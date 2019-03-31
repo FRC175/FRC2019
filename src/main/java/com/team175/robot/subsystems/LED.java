@@ -3,7 +3,6 @@ package com.team175.robot.subsystems;
 import com.ctre.phoenix.CANifier;
 import com.ctre.phoenix.CANifier.LEDChannel;
 import com.team175.robot.Constants;
-import com.team175.robot.loops.Loop;
 import com.team175.robot.positions.LEDColor;
 import com.team175.robot.util.CTREDiagnostics;
 import edu.wpi.first.wpilibj.Timer;
@@ -24,7 +23,6 @@ public class LED extends AldrinSubsystem {
     private Color mWantedColor;
     private LEDState mWantedState;
     private double mStartTime, mBlinkDur;
-    private int[] mColorArr;
     private boolean mIsOff;
 
     private static final int BLINK_TIME = 2; // s
@@ -54,11 +52,10 @@ public class LED extends AldrinSubsystem {
         mWantedColor = new Color(0, 0, 0);
         mWantedState = LEDState.OFF;
         mStartTime = mBlinkDur = 0;
-        mColorArr = new int[3];
         mIsOff = false;
         setColor(mWantedColor);
 
-        // super.logInstantiation();
+        super.logInstantiation();
     }
 
     public synchronized void setColor(Color color) {
@@ -69,7 +66,7 @@ public class LED extends AldrinSubsystem {
     }
 
     public synchronized void setColor(LEDColor color) {
-        mWantedState = LEDState.NORMAL;
+        // mWantedState = LEDState.NORMAL;
         setColor(color.getColor());
     }
 
@@ -87,35 +84,37 @@ public class LED extends AldrinSubsystem {
     private void blinkColor() {
         if (Timer.getFPGATimestamp() - mStartTime <= mBlinkDur) {
             if (mIsOff) {
-                setColor(new Color(0, 0, 0));
+                setColor(LEDColor.OFF);
             } else {
                 setColor(mWantedColor);
             }
             mIsOff = !mIsOff;
             Timer.delay(0.2);
         } else {
-            setColor(LEDColor.DEFAULT);
+            mWantedState = LEDState.NORMAL;
+            // setColor(LEDColor.DEFAULT);
         }
     }
 
     public synchronized void moodLampCycle(boolean enable) {
-        mWantedState = enable ? LEDState.MOOD_LAMP : LEDState.OFF;
+        mWantedState = enable ? LEDState.MOOD_LAMP : LEDState.NORMAL;
+        mIsOff = false;
     }
 
     private void moodLampCycle() {
         // Start at red
-        mColorArr[0] = 255;
-        mColorArr[1] = 0;
-        mColorArr[2] = 0;
+        int[] colorElements = { 255, 0, 0 };
 
+        // Cycle through rainbow
+        // Credit to some tutorial for the Arduino
         for (int decColor = 0; decColor < 3; decColor++) {
             int incColor = decColor == 2 ? 0 : decColor + 1;
 
             for (int i = 0; i < 255; i++) {
-                mColorArr[decColor]--;
-                mColorArr[incColor]++;
+                colorElements[decColor]--;
+                colorElements[incColor]++;
+                setColor(new Color(colorElements[0], colorElements[1], colorElements[2]));
 
-                setColor(new Color(mColorArr[0], mColorArr[1], mColorArr[2]));
                 Timer.delay(0.01);
             }
         }
@@ -123,6 +122,8 @@ public class LED extends AldrinSubsystem {
 
     @Override
     public void start() {
+        mWantedState = LEDState.NORMAL;
+        setColor(LEDColor.DEFAULT);
     }
 
     @Override
@@ -136,10 +137,11 @@ public class LED extends AldrinSubsystem {
                     moodLampCycle();
                     break;
                 case OFF:
-                    setColor(new Color(0, 0, 0));
+                    setColor(LEDColor.OFF);
                     break;
                 case NORMAL:
                 default:
+                    setColor(LEDColor.DEFAULT);
                     break;
             }
             outputToDashboard();
@@ -149,7 +151,7 @@ public class LED extends AldrinSubsystem {
     @Override
     public void stop() {
         mWantedState = LEDState.OFF;
-        setColor(new Color(0, 0, 0));
+        setColor(LEDColor.OFF);
     }
 
     @Override

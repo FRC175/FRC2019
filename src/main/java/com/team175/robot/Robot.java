@@ -73,7 +73,7 @@ public final class Robot extends TimedRobot {
         // Add velocity collection command to dashboard
         SmartDashboard.putData("Collect Velocity Data", new CollectVelocityData());
         // Add LED tuning command to dashboard
-        SmartDashboard.putData("LED Color Chooser", new ControlLED());
+        // SmartDashboard.putData("LED Color Chooser", new ControlLED());
         // According to ChiefDelphi, disabling this should fix the loop overrun message
         LiveWindow.disableAllTelemetry();
     }

@@ -14,6 +14,7 @@ import com.team175.robot.util.drivers.AldrinVictorSPX;
 public final class CTREFactory {
 
     private static final int S_CURVE_STRENGTH = 4; // Half smoothing (0-8)
+    private static final int ALLOWABLE_CLOSED_LOOP_ERROR = 100;
 
     // Prevent CTREFactory from being instantiated
     private CTREFactory() {
@@ -33,7 +34,7 @@ public final class CTREFactory {
     private static void configClosedLoop(BaseMotorController bmc) {
         configOpenLoop(bmc);
         bmc.configMotionSCurveStrength(S_CURVE_STRENGTH, Constants.TIMEOUT_MS);
-        bmc.configAllowableClosedloopError(Constants.PRIMARY_GAINS_SLOT, 100, Constants.TIMEOUT_MS);
+        bmc.configAllowableClosedloopError(Constants.PRIMARY_GAINS_SLOT, ALLOWABLE_CLOSED_LOOP_ERROR, Constants.TIMEOUT_MS);
     }
 
     public static AldrinTalonSRX getTalon(int portNum) {

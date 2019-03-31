@@ -25,7 +25,6 @@ import java.util.function.Supplier;
  * them all from one place.
  *
  * TODO: Maybe be able to control both compressors.
- * TODO: Clean up.
  *
  * @author Arvind
  */
@@ -38,6 +37,7 @@ public final class RobotManager {
 
     private Looper mSubsystemLooper;
     private Looper mCSVLooper;
+    private Looper mMessageLooper;
 
     private static Optional<RobotProfile> sProfile = Optional.empty();
     private static RobotManager sInstance;
@@ -59,7 +59,7 @@ public final class RobotManager {
         mCompressor = new Compressor(Constants.COMPRESSOR_PORT);
         mPDP = new PowerDistributionPanel(Constants.PDP_PORT);
         mLogger = LoggerFactory.getLogger(getClass().getSimpleName());
-        /*mSubsystemLooper = new Looper(LOOPER_PERIOD, (Loop) mSubsystems);
+        mSubsystemLooper = new Looper(LOOPER_PERIOD, mSubsystems);
 
         LinkedHashMap<String, Supplier> data = new LinkedHashMap<>();
         // Add data from each subsystem's getCSVTelemetry()
@@ -73,7 +73,7 @@ public final class RobotManager {
             mCSVLooper = new Looper(LOOPER_PERIOD, new CSVWriterLoop(data, CSV_LOG_FILE_PATH));
         } catch (FileNotFoundException e) {
             mLogger.error("Failed to instantiate CSVLooper!", e);
-        }*/
+        }
     }
 
     public void outputToDashboard() {
@@ -87,7 +87,7 @@ public final class RobotManager {
         SmartDashboard.putNumber("PDPPower", mPDP.getTotalPower());
 
         // Compressor
-        // SmartDashboard.putNumber("CompressorCurrent", mCompressor.getCompressorCurrent());
+        SmartDashboard.putNumber("CompressorCurrent", mCompressor.getCompressorCurrent());
     }
 
     public void updateFromDashboard() {

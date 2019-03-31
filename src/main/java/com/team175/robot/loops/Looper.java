@@ -17,14 +17,14 @@ import java.util.List;
  */
 public final class Looper {
 
-    private final List<Loop> mLoops;
+    private final List<? extends Loop> mLoops;
     private final Notifier mNotifier;
     private final Logger mLogger;
     private final double mPeriod;
 
     private boolean mIsRunning;
 
-    public Looper(double period, List<Loop> loops) {
+    public Looper(double period, List<? extends Loop> loops) {
         mLoops = loops;
         mNotifier = new Notifier(() -> mLoops.forEach(Loop::loop));
         mLogger = LoggerFactory.getLogger(getClass().getSimpleName());
