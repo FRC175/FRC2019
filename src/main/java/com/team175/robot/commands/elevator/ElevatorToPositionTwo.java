@@ -18,7 +18,7 @@ public class ElevatorToPositionTwo extends AldrinCommand {
     protected void initialize() {
         ElevatorPosition position = ElevatorPosition.GROUND_PICKUP;
 
-        switch (ManipulatorMode.getMode()) {
+        switch (Manipulator.getInstance().getMode()) {
             case VELCRO_HATCH:
                 position = ElevatorPosition.VELCRO_HATCH_LEVEL_TWO;
                 break;

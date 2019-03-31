@@ -62,6 +62,7 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
 
         // mArmWantedPosition = 0;
         mArmWantedPosition = ManipulatorArmPosition.SCORE.getPosition();
+        mMode = ManipulatorMode.VELCRO_HATCH;
 
         RobotProfile profile = RobotManager.getProfile();
         CTREConfiguration.config(mArmMaster, profile.getManipulatorArmMasterConfig(), "ManipulatorArm");

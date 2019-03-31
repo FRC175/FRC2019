@@ -12,10 +12,10 @@ wireless_rio_ip = "10.1.75.2"
 ssh.load_system_host_keys()
 
 # Automatically connect to right IP
-if os.system("ping -c 1 " + usb_rio_ip) == 0:
-    ssh.connect(wireless_rio_ip, "lvuser")
-else:
+if os.system("ping -c 1 " + usb_rio_ip) != 0:
     ssh.connect(usb_rio_ip, "lvuser")
+else:
+    ssh.connect(wireless_rio_ip, "lvuser")
 
 style.use('fivethirtyeight')
 # style.use('dark_background')
@@ -30,7 +30,7 @@ def animate(i):
     # data = graph_data.split('\n')
 
     # Read all lines of CSV
-    stdin, stdout, stderr = ssh.exec_command('cat /home/lvuser/csvlog/telemetry.csv')
+    stdin, stdout, stderr = ssh.exec_command('cat /home/lvuser/csvlog/tuning-data.csv')
     data = stdout.readlines()
 
     position_arr = []

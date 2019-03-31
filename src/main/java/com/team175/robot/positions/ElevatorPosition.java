@@ -14,11 +14,11 @@ public enum ElevatorPosition {
     FINGER_HATCH_LEVEL_TWO(11647, 16344),
     VELCRO_HATCH_LEVEL_TWO(11647, 11180),
     CARGO_LEVEL_ONE(4007, 4007),
-    FINGER_HATCH_LEVEL_ONE(4400, 4362),
+    FINGER_HATCH_LEVEL_ONE(4400, 5371),
     VELCRO_HATCH_LEVEL_ONE(281, 348),
     CARGO_LOADING(10000, 10000),
     GROUND_PICKUP_ABOVE(1918, 1211),
-    GROUND_PICKUP(415, 415);
+    GROUND_PICKUP(415, 1199);
 
     private final int mCompetitionPosition;
     private final int mPracticePosition;

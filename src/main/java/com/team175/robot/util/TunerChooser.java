@@ -23,6 +23,7 @@ public final class TunerChooser {
         DRIVE,
         ELEVATOR,
         LATERAL_DRIVE,
+        LIFT,
         MANIPULATOR_ARM;
     }
 
@@ -39,6 +40,7 @@ public final class TunerChooser {
         mChooser.addOption("Drive", SubsystemToTune.DRIVE);
         mChooser.addOption("Elevator", SubsystemToTune.ELEVATOR);
         mChooser.addOption("Lateral Drive", SubsystemToTune.LATERAL_DRIVE);
+        mChooser.addOption("Lift", SubsystemToTune.LIFT);
         mChooser.addOption("Manipulator Arm", SubsystemToTune.MANIPULATOR_ARM);
         outputToDashboard();
     }
@@ -69,13 +71,13 @@ public final class TunerChooser {
 
     public void start() {
         if (mTuner != null) {
-            mTuner.start();
+            mTuner.initialize();
         }
     }
 
     public void stop() {
         if (mTuner != null) {
-            mTuner.cancel();
+            mTuner.end();
             mTuner = null;
         }
     }
