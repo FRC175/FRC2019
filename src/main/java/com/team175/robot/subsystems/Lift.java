@@ -156,11 +156,11 @@ public final class Lift extends AldrinSubsystem implements ClosedLoopTunable {
     }
 
     public boolean isFrontOnHab() {
-        return mFrontHabSensor.get();
+        return !mFrontHabSensor.get();
     }
 
     public boolean isRearOnHab() {
-        return mRearHabSensor.get();
+        return !mRearHabSensor.get();
     }
 
     @Override

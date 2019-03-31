@@ -53,7 +53,7 @@ public final class Constants {
     public static final int LIFT_DRIVE_PORT = 9;
     public static final int MANIPULATOR_FRONT_ROLLER_PORT = 7;
     public static final int MANIPULATOR_REAR_ROLLER_PORT = 6;
-    public static final int CAMERA_ROTATOR_PORT = 4;
+    public static final int CAMERA_ROTATE_PORT = 4;
 
     // Digital Inputs
     public static final int LIFT_FRONT_FORWARD_LIMIT_PORT = 0;
