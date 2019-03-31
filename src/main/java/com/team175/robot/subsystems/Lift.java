@@ -1,7 +1,6 @@
 package com.team175.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
-import com.ctre.phoenix.motorcontrol.FeedbackDevice;
 import com.team175.robot.Constants;
 
 import com.team175.robot.positions.LiftPosition;
@@ -13,7 +12,6 @@ import com.team175.robot.util.RobotManager;
 import com.team175.robot.util.drivers.AldrinTalon;
 import com.team175.robot.util.drivers.AldrinTalonSRX;
 import com.team175.robot.util.drivers.SimpleDoubleSolenoid;
-import com.team175.robot.util.tuning.CSVWritable;
 import com.team175.robot.util.tuning.ClosedLoopGains;
 import com.team175.robot.util.tuning.ClosedLoopTunable;
 import edu.wpi.first.wpilibj.DigitalInput;
@@ -24,8 +22,6 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 /**
- * TODO: Determine PDP Channel
- *
  * @author Arvind
  */
 public final class Lift extends AldrinSubsystem implements ClosedLoopTunable {
@@ -35,6 +31,9 @@ public final class Lift extends AldrinSubsystem implements ClosedLoopTunable {
     private final SimpleDoubleSolenoid mFrontBrake, mRearBrake;
     private final DigitalInput mFrontHabSensor, mRearHabSensor;
     // private final DigitalInput mFrontForwardLimit, mRearForwardLimit, mFrontReverseLimit, mRearReverseLimit;
+
+    private int mFrontWantedPosition, mRearWantedPosition;
+    private ClosedLoopGains mFrontGains, mRearGains;
 
     private static Lift sInstance;
 
@@ -67,10 +66,15 @@ public final class Lift extends AldrinSubsystem implements ClosedLoopTunable {
         mFrontHabSensor = new DigitalInput(Constants.LIFT_FRONT_HAB_SENSOR_PORT);
         mRearHabSensor = new DigitalInput(Constants.LIFT_REAR_HAB_SENSOR_PORT);
 
+        mFrontWantedPosition = mRearWantedPosition = 0;
+
         RobotProfile profile = RobotManager.getProfile();
         CTREConfiguration.config(mFront, profile.getFrontLiftConfig(), "FrontLift");
         CTREConfiguration.config(mRear, profile.getRearLiftConfig(), "RearLift");
+        mFrontGains = CTREConfiguration.getGains(profile.getFrontLiftConfig(), true);
+        mRearGains = CTREConfiguration.getGains(profile.getRearLiftConfig(), true);
 
+        // resetSensors();
         stop();
 
         super.logInstantiation();
@@ -95,10 +99,12 @@ public final class Lift extends AldrinSubsystem implements ClosedLoopTunable {
         setRearPower(power);
     }
 
+    @Deprecated
     public void setFrontPosition(LiftPosition position) {
         setFrontPower(position.getPower());
     }
 
+    @Deprecated
     public void setRearPosition(LiftPosition position) {
         setRearPower(position.getPower());
     }
@@ -115,6 +121,24 @@ public final class Lift extends AldrinSubsystem implements ClosedLoopTunable {
         return mRear.getMotorOutputPercent();
     }
 
+    public double getDrivePower() {
+        return mDrive.get();
+    }
+
+    public void setFrontPosition(int position) {
+        mFrontWantedPosition = position;
+        mLogger.debug("Setting front position to {}.", mFrontWantedPosition);
+        mLogger.debug("Current front position: {}", getFrontPosition());
+        mFront.set(ControlMode.MotionMagic, mFrontWantedPosition);
+    }
+
+    public void setRearPosition(int position) {
+        mRearWantedPosition = position;
+        mLogger.debug("Setting rear position to {}.", mRearWantedPosition);
+        mLogger.debug("Current rear position: {}", getRearPosition());
+        mRear.set(ControlMode.MotionMagic, mRearWantedPosition);
+    }
+
     public int getFrontPosition() {
         return mFront.getSelectedSensorPosition();
     }
@@ -123,8 +147,14 @@ public final class Lift extends AldrinSubsystem implements ClosedLoopTunable {
         return mRear.getSelectedSensorPosition();
     }
 
-    public double getDrivePower() {
-        return mDrive.get();
+    public void setFrontGains(ClosedLoopGains gains) {
+        mFrontGains = gains;
+        CTREConfiguration.setGains(mFront, mFrontGains, true, "FrontLift");
+    }
+
+    public void setRearGains(ClosedLoopGains gains) {
+        mRearGains = gains;
+        CTREConfiguration.setGains(mRear, mRearGains, true, "RearLift");
     }
 
     public void setFrontBrake(boolean enable) {
@@ -175,16 +205,56 @@ public final class Lift extends AldrinSubsystem implements ClosedLoopTunable {
         setRearBrake(true);
     }
 
+    @Override
     public Map<String, Supplier> getTelemetry() {
         LinkedHashMap<String, Supplier> m = new LinkedHashMap<>();
-        m.put("FLiftPower", this::getFrontPower);
-        m.put("RLiftPower", this::getRearPower);
-        m.put("LiftDrivePower", this::getDrivePower);
-        m.put("FHabSensor", this::isFrontOnHab);
-        m.put("RHabSensor", this::isRearOnHab);
+
+        m.put("FLiftKp", () -> mFrontGains.getKp());
+        m.put("FLiftKd", () -> mFrontGains.getKd());
+        // m.put("FLiftError", this::getFrontClosedLoopError);
         m.put("FLiftPos", this::getFrontPosition);
+        // m.put("FLiftVel", this::getFrontVelocity);
+        m.put("FLiftPower", this::getFrontPower);
+        m.put("FLiftWantedPos", () -> mFrontWantedPosition);
+        m.put("FHabSensor", this::isFrontOnHab);
+
+        m.put("RLiftKp", () -> mRearGains.getKp());
+        m.put("RLiftKd", () -> mRearGains.getKd());
+        // m.put("RLiftError", this::getRearClosedLoopError);
         m.put("RLiftPos", this::getRearPosition);
+        // m.put("RLiftVel", this::getRearVelocity);
+        m.put("RLiftPower", this::getRearPower);
+        m.put("RLiftWantedPos", () -> mRearWantedPosition);
+        m.put("RHabSensor", this::isRearOnHab);
+
+        m.put("LiftKf", () -> mFrontGains.getKf());
+        m.put("LiftAccel", () -> mFrontGains.getAcceleration());
+        m.put("LiftCruiseVel", () -> mFrontGains.getCruiseVelocity());
+        m.put("LiftDrivePower", this::getDrivePower);
+
         return m;
+    }
+
+    @Override
+    public void updateFromDashboard() {
+        setFrontGains(new ClosedLoopGains(
+                SmartDashboard.getNumber("FLiftKp", 0),
+                0,
+                SmartDashboard.getNumber("FLiftKd", 0),
+                SmartDashboard.getNumber("LiftKf", 0),
+                (int) SmartDashboard.getNumber("LiftAccel", 0),
+                (int) SmartDashboard.getNumber("LiftCruiseVel", 0)
+        ));
+        setRearGains(new ClosedLoopGains(
+                SmartDashboard.getNumber("RLiftKp", 0),
+                0,
+                SmartDashboard.getNumber("RLiftKd", 0),
+                SmartDashboard.getNumber("LiftKf", 0),
+                (int) SmartDashboard.getNumber("LiftAccel", 0),
+                (int) SmartDashboard.getNumber("LiftCruiseVel", 0)
+        ));
+        setFrontPosition((int) SmartDashboard.getNumber("FLiftWantedPos", 0));
+        setRearPosition((int) SmartDashboard.getNumber("RLiftWantedPos", 0));
     }
 
     @Override
@@ -201,8 +271,10 @@ public final class Lift extends AldrinSubsystem implements ClosedLoopTunable {
     @Override
     public Map<String, Supplier> getCSVTelemetry() {
         LinkedHashMap<String, Supplier> m = new LinkedHashMap<>();
-        m.put("front_lift_current", mFront::getOutputCurrent);
-        m.put("rear_lift_current", mRear::getOutputCurrent);
+        m.put("front_lift_position", mFront::getOutputCurrent);
+        m.put("rear_lift_position", mRear::getOutputCurrent);
+        m.put("front_lift_wanted_position", () -> mFrontWantedPosition);
+        m.put("rear_lift_wanted_position", () -> mRearWantedPosition);
         return m;
     }
 

@@ -1,8 +1,6 @@
 package com.team175.robot.commands.manipulator;
 
 import com.team175.robot.commands.AldrinCommand;
-import com.team175.robot.positions.ElevatorPosition;
-import com.team175.robot.positions.IntakeMode;
 import com.team175.robot.positions.ManipulatorArmPosition;
 import com.team175.robot.subsystems.Elevator;
 import com.team175.robot.subsystems.Manipulator;
@@ -13,24 +11,29 @@ import com.team175.robot.subsystems.Manipulator;
 public class ManipulatorArmToPosition extends AldrinCommand {
 
     private ManipulatorArmPosition mPosition;
-    
+
     public ManipulatorArmToPosition(ManipulatorArmPosition position) {
         requires(Manipulator.getInstance(), Elevator.getInstance());
         mPosition = position;
         super.logInstantiation();
     }
 
-    public ManipulatorArmToPosition(boolean toScorePosition) {
+    /**
+     * Creates ManipulatorArmToPosition command by determining position from Manipulator mode and isScorePosition.
+     *
+     * @param isScorePosition Whether to move the Manipulator to a score position
+     */
+    public ManipulatorArmToPosition(boolean isScorePosition) {
         requires(Manipulator.getInstance(), Elevator.getInstance());
-        switch (IntakeMode.getMode()) {
+        switch (Manipulator.getInstance().getMode()) {
             case VELCRO_HATCH:
-                mPosition = toScorePosition ? ManipulatorArmPosition.SCORE : ManipulatorArmPosition.VELCRO_HATCH_PICKUP;
+                mPosition = isScorePosition ? ManipulatorArmPosition.SCORE : ManipulatorArmPosition.VELCRO_HATCH_PICKUP;
                 break;
             case FINGER_HATCH:
                 mPosition = ManipulatorArmPosition.FINGER_HATCH_PICKUP;
                 break;
             case CARGO:
-                mPosition = toScorePosition ? ManipulatorArmPosition.SCORE : ManipulatorArmPosition.BALL_PICKUP;
+                mPosition = isScorePosition ? ManipulatorArmPosition.SCORE : ManipulatorArmPosition.BALL_PICKUP;
                 break;
         }
         super.logInstantiation();

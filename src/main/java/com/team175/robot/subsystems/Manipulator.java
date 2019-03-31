@@ -3,6 +3,7 @@ package com.team175.robot.subsystems;
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.team175.robot.Constants;
 import com.team175.robot.positions.ManipulatorArmPosition;
+import com.team175.robot.positions.ManipulatorMode;
 import com.team175.robot.positions.ManipulatorRollerPosition;
 import com.team175.robot.profiles.RobotProfile;
 import com.team175.robot.util.*;
@@ -30,6 +31,7 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
 
     private int mArmWantedPosition;
     private ClosedLoopGains mArmForwardGains, mArmReverseGains;
+    private ManipulatorMode mMode;
 
     private static final int ALLOWED_POSITION_DEVIATION = 5;
 
@@ -199,6 +201,14 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
     public void setArmReverseGains(ClosedLoopGains gains) {
         mArmReverseGains = gains;
         CTREConfiguration.setGains(mArmMaster, mArmReverseGains, false, "ManipulatorArm");
+    }
+
+    public void setMode(ManipulatorMode mode) {
+        mMode = mode;
+    }
+
+    public ManipulatorMode getMode() {
+        return mMode;
     }
 
     @Override

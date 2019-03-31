@@ -2,7 +2,6 @@ package com.team175.robot.commands.elevator;
 
 import com.team175.robot.commands.AldrinCommand;
 import com.team175.robot.positions.ElevatorPosition;
-import com.team175.robot.positions.IntakeMode;
 import com.team175.robot.positions.ManipulatorArmPosition;
 import com.team175.robot.subsystems.Elevator;
 import com.team175.robot.subsystems.Manipulator;
@@ -16,9 +15,10 @@ public class ElevatorToPositionOne extends AldrinCommand {
 
     @Override
     protected void initialize() {
-        ElevatorPosition position = ElevatorPosition.GROUND_PICKUP;
+        ElevatorPosition position = ElevatorPosition.CARGO_LEVEL_ONE;
 
-        switch (IntakeMode.getMode()) {
+        // Get position from Manipulator mode
+        switch (Manipulator.getInstance().getMode()) {
             case VELCRO_HATCH:
                 position = ElevatorPosition.VELCRO_HATCH_LEVEL_ONE;
                 break;

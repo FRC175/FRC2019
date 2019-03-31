@@ -4,6 +4,7 @@ import com.team175.robot.Constants;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.Servo;
 
+import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.function.Supplier;
 
@@ -57,7 +58,10 @@ public final class Vision extends AldrinSubsystem implements Runnable {
 
     @Override
     public Map<String, Supplier> getTelemetry() {
-        return null;
+        LinkedHashMap<String, Supplier> m = new LinkedHashMap<>();
+        m.put("CameraRotateAngle", mRotate::get);
+        m.put("IsCameraDown", this::isCameraDown);
+        return m;
     }
 
     @Override
