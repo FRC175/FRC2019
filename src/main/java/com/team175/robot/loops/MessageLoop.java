@@ -10,25 +10,30 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
  */
 public class MessageLoop implements Loop {
 
-    private String[] mMessages;
+    private final String[] mMessages;
+    private final String mDashboardKey;
 
     public MessageLoop(String[] messages, String dashboardKey) {
         mMessages = messages;
+        mDashboardKey = dashboardKey;
     }
 
     @Override
     public void start() {
-
+        SmartDashboard.putString(mDashboardKey, "yo!");
+        // System.out.println("yo!");
     }
 
     @Override
     public void loop() {
-
+        SmartDashboard.putString(mDashboardKey, mMessages[(int) (Math.random() * mMessages.length)]);
+        // System.out.println(mMessages[(int) (Math.random() * mMessages.length)]);
     }
 
     @Override
     public void stop() {
-
+        SmartDashboard.putString(mDashboardKey, "fin!");
+        // System.out.println("fin!");
     }
 
 }

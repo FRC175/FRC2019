@@ -40,16 +40,6 @@ public final class Robot extends TimedRobot {
     private Logger mLogger;
     private RobotManager mRobotManager;
 
-    private String[] mNaan = {
-            "Abdullah is watching you.",
-            "Jamie is the all supreme lord.",
-            "Bret is MVP",
-            "Andrew Jones was here.",
-            "Aaron likes his wifu!",
-            "Aaron's girlfriend is fake!"
-    };
-    private int mBriyani;
-
     @Override
     public void robotInit() {
         RobotManager.setProfile(false);
@@ -65,15 +55,12 @@ public final class Robot extends TimedRobot {
         mAutoModeChooser = AutoModeChooser.getInstance();
         mTunerChooser = TunerChooser.getInstance();
         mLogger = LoggerFactory.getLogger(getClass().getSimpleName());
-        mBriyani = (int) (Math.random() * 10) + 1;
 
         // Runs camera stream on separate thread
         new Thread(mVision).start();
         mRobotManager.outputToDashboard();
         // Add velocity collection command to dashboard
         SmartDashboard.putData("Collect Velocity Data", new CollectVelocityData());
-        // Add LED tuning command to dashboard
-        // SmartDashboard.putData("LED Color Chooser", new ControlLED());
         // According to ChiefDelphi, disabling this should fix the loop overrun message
         LiveWindow.disableAllTelemetry();
     }
@@ -87,7 +74,6 @@ public final class Robot extends TimedRobot {
         mTunerChooser.stop();
         mRobotManager.outputToDashboard();
 
-        /*mRobotManager.stopCompressor();*/
         mLogger.debug("Beginning disabled!");
     }
 
@@ -95,10 +81,8 @@ public final class Robot extends TimedRobot {
     public void disabledPeriodic() {
         Scheduler.getInstance().run();
 
-        // mLED.moodLampCycle();
+        // mLED.moodLampCycle(true);
         mRobotManager.updateFromDashboard();
-        // mElevator.updateFromDashboard();
-        // mManipulator.updateFromDashboard();
     }
 
     @Override
@@ -137,6 +121,8 @@ public final class Robot extends TimedRobot {
         mManipulator.setBrake(true);
         mLateralDrive.deploy(false);
 
+        // mRobotManager.startSubsystems();
+
         mLogger.debug("Beginning teleop!");
     }
 
@@ -145,8 +131,6 @@ public final class Robot extends TimedRobot {
         Scheduler.getInstance().run();
 
         mRobotManager.outputToDashboard();
-
-
     }
 
     @Override
@@ -165,8 +149,6 @@ public final class Robot extends TimedRobot {
 
         mTunerChooser.updateFromDashboard();
         mTunerChooser.start();
-
-        /*mRobotManager.startCompressor();*/
     }
 
     @Override

@@ -37,7 +37,7 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
     private double mWantedAngle;
     private ClosedLoopGains mLeftGains, mRightGains, mPigeonGains;
 
-    public static final double RAMP_TIME = 0;
+    private static final double RAMP_TIME = 0;
 
     private static Drive sInstance;
 
