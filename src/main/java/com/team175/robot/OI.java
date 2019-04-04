@@ -95,7 +95,6 @@ public final class OI {
         mDriverStick = new AldrinJoystick(Constants.DRIVER_STICK_PORT, Constants.DRIVER_STICK_DEAD_ZONE);
         mOperatorStick = new AldrinJoystick(Constants.OPERATOR_STICK_PORT, Constants.OPERATOR_STICK_DEAD_ZONE);
 
-
         // Driver Stick Buttons
         mManualLateralDrive = new SingleButton(mDriverStick, Constants.LATERAL_DRIVE_TRIGGER);
         mShift = new SingleButton(mDriverStick, Constants.SHIFT_BUTTON);

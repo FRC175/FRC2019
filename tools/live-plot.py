@@ -34,6 +34,7 @@ def animate(i):
     data = stdout.readlines()
 
     position_arr = []
+    wanted_position_arr = []
     time_arr = []
 
     # Skip headers in processing
@@ -43,12 +44,13 @@ def animate(i):
     for line in iter_data:
         if len(line) > 1:
             # TODO: Add variables from different headers
-            position, time = line.split(',')
+            position, wanted_position, time = line.split(',')
             position_arr.append(float(position))
+            wanted_position_arr.append(float(wanted_position))
             time_arr.append(float(time))
 
     ax1.clear()
-    ax1.plot(time_arr, position_arr)
+    ax1.plot(time_arr, position_arr, wanted_position_arr)
 
 
 ani = animation.FuncAnimation(fig, animate, interval=1000)

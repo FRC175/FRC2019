@@ -39,11 +39,11 @@ public final class Vision extends AldrinSubsystem implements Runnable {
     }
 
     public void rotateCameraDown(boolean rotateDown) {
-        mRotate.set(rotateDown ? 0.8 : 0.2);
+        mRotate.set(rotateDown ? 0.3 : 0.5);
     }
 
     public boolean isCameraDown() {
-        return mRotate.get() == 0.8;
+        return mRotate.get() == 0.3;
     }
 
     @Override

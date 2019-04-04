@@ -42,7 +42,7 @@ public final class Robot extends TimedRobot {
 
     @Override
     public void robotInit() {
-        RobotManager.setProfile(false);
+        RobotManager.setProfile(true);
         mRobotManager = RobotManager.getInstance();
         mDrive = Drive.getInstance();
         mElevator = Elevator.getInstance();
@@ -72,6 +72,7 @@ public final class Robot extends TimedRobot {
     @Override
     public void disabledInit() {
         mTunerChooser.stop();
+        // mRobotManager.stopSubsystems();
         mRobotManager.outputToDashboard();
 
         mLogger.debug("Beginning disabled!");

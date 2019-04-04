@@ -11,7 +11,7 @@ import com.team175.robot.subsystems.Manipulator;
 public class ManipulatorArmToPosition extends AldrinCommand {
 
     private ManipulatorArmPosition mPosition;
-    private boolean mAuto;
+    private boolean mIsScorePosition, mAuto;
 
     public ManipulatorArmToPosition(ManipulatorArmPosition position) {
         requires(Manipulator.getInstance(), Elevator.getInstance());
@@ -27,6 +27,7 @@ public class ManipulatorArmToPosition extends AldrinCommand {
      */
     public ManipulatorArmToPosition(boolean isScorePosition) {
         requires(Manipulator.getInstance(), Elevator.getInstance());
+        mIsScorePosition = isScorePosition;
         mPosition = ManipulatorArmPosition.SCORE;
         mAuto = true;
         super.logInstantiation();
@@ -35,15 +36,16 @@ public class ManipulatorArmToPosition extends AldrinCommand {
     @Override
     protected void initialize() {
         if (mAuto) {
+            // Automatically detect mode and choose appropriate action
             switch (Manipulator.getInstance().getMode()) {
                 case VELCRO_HATCH:
-                    mPosition = false ? ManipulatorArmPosition.SCORE : ManipulatorArmPosition.VELCRO_HATCH_PICKUP;
+                    mPosition = mIsScorePosition ? ManipulatorArmPosition.SCORE : ManipulatorArmPosition.VELCRO_HATCH_PICKUP;
                     break;
                 case FINGER_HATCH:
                     mPosition = ManipulatorArmPosition.FINGER_HATCH_PICKUP;
                     break;
                 case CARGO:
-                    mPosition = false ? ManipulatorArmPosition.SCORE : ManipulatorArmPosition.BALL_PICKUP;
+                    mPosition = mIsScorePosition ? ManipulatorArmPosition.SCORE : ManipulatorArmPosition.BALL_PICKUP;
                     break;
             }
         }
