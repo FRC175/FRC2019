@@ -4,9 +4,10 @@ import java.awt.Color;
 
 public enum LEDColor {
 
-    DEFAULT(0, 0, 0),
+    DEFAULT(255, 255, 0), // Yellow
+    DISABLED(0, 255, 0), // Green
     GRABBED(0, 0, 0),
-    ERROR(0, 0, 0),
+    ERROR(255, 0, 0),
     OFF(0, 0, 0);
 
     private final Color mColor;

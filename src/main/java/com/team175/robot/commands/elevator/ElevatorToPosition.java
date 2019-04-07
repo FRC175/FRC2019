@@ -26,6 +26,10 @@ public class ElevatorToPosition extends AldrinCommand {
             mLogger.debug("Setting elevator to {} position.", mPosition.toString());
             Elevator.getInstance().setPosition(mPosition);
         }
+        if (mPosition == ElevatorPosition.CARGO_GROUND_PICKUP) {
+            mLogger.debug("Bringing manipulator to ball pickup position.");
+            Manipulator.getInstance().setArmPosition(ManipulatorArmPosition.BALL_PICKUP);
+        }
         super.initialize();
     }
 

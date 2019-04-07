@@ -1,5 +1,6 @@
 package com.team175.robot.positions;
 
+import com.team175.robot.subsystems.Manipulator;
 import com.team175.robot.util.RobotManager;
 
 /**
@@ -7,15 +8,16 @@ import com.team175.robot.util.RobotManager;
  */
 public enum ElevatorPosition {
 
-    CARGO_LEVEL_THREE(23738, 24937),
-    FINGER_HATCH_LEVEL_THREE(21495, 21698),
-    VELCRO_HATCH_LEVEL_THREE(21495, 21698),
+    CARGO_LEVEL_THREE(23000, 24937),
+    FINGER_HATCH_LEVEL_THREE(23000, 21698),
+    VELCRO_HATCH_LEVEL_THREE(22859, 21698),
     CARGO_LEVEL_TWO(14520, 14520),
-    FINGER_HATCH_LEVEL_TWO(11647, 16344),
+    FINGER_HATCH_LEVEL_TWO(15422, 16344),
     VELCRO_HATCH_LEVEL_TWO(11647, 11180),
     CARGO_LEVEL_ONE(4007, 4007),
     FINGER_HATCH_LEVEL_ONE(4400, 5371),
     VELCRO_HATCH_LEVEL_ONE(281, 348),
+    CARGO_GROUND_PICKUP(666, 666),
     CARGO_LOADING(10000, 10000),
     GROUND_PICKUP_ABOVE(1918, 1211),
     GROUND_PICKUP(415, 1199);
@@ -30,6 +32,42 @@ public enum ElevatorPosition {
 
     public int getPosition() {
         return RobotManager.isCompetitionRobot() ? mCompetitionPosition : mPracticePosition;
+    }
+
+    public static ElevatorPosition getPositionOne() {
+        switch (Manipulator.getInstance().getMode()) {
+            case FINGER_HATCH:
+                return FINGER_HATCH_LEVEL_ONE;
+            case CARGO:
+                return CARGO_LEVEL_ONE;
+            case VELCRO_HATCH:
+            default:
+                return VELCRO_HATCH_LEVEL_ONE;
+        }
+    }
+
+    public static ElevatorPosition getPositionTwo() {
+        switch (Manipulator.getInstance().getMode()) {
+            case FINGER_HATCH:
+                return FINGER_HATCH_LEVEL_TWO;
+            case CARGO:
+                return CARGO_LEVEL_TWO;
+            case VELCRO_HATCH:
+            default:
+                return VELCRO_HATCH_LEVEL_TWO;
+        }
+    }
+
+    public static ElevatorPosition getPositionThree() {
+        switch (Manipulator.getInstance().getMode()) {
+            case FINGER_HATCH:
+                return FINGER_HATCH_LEVEL_THREE;
+            case CARGO:
+                return CARGO_LEVEL_THREE;
+            case VELCRO_HATCH:
+            default:
+                return VELCRO_HATCH_LEVEL_THREE;
+        }
     }
 
 }

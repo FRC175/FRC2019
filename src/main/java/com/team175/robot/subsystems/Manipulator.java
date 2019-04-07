@@ -19,8 +19,6 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 /**
- *
- *
  * @author Arvind
  */
 public final class Manipulator extends AldrinSubsystem implements ClosedLoopTunable {
@@ -32,10 +30,16 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
     private int mArmWantedPosition;
     private ClosedLoopGains mArmForwardGains, mArmReverseGains;
     private ManipulatorMode mMode;
+    private ManipulatorState mWantedState;
 
-    private static final int ALLOWED_POSITION_DEVIATION = 5;
+    private static final int ALLOWED_POSITION_DEVIATION = 3;
 
     private static Manipulator sInstance;
+
+    private enum ManipulatorState {
+        POSITION,
+        MANUAL;
+    }
 
     public static Manipulator getInstance() {
         if (sInstance == null) {
@@ -63,6 +67,7 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
         // mArmWantedPosition = 0;
         mArmWantedPosition = ManipulatorArmPosition.SCORE.getPosition();
         mMode = ManipulatorMode.VELCRO_HATCH;
+        mWantedState = ManipulatorState.MANUAL;
 
         RobotProfile profile = RobotManager.getProfile();
         CTREConfiguration.config(mArmMaster, profile.getManipulatorArmMasterConfig(), "ManipulatorArm");
@@ -136,7 +141,8 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
         return mHatchPunch.get();
     }
 
-    public void setArmPower(double power) {
+    public synchronized void setArmPower(double power) {
+        mWantedState = ManipulatorState.MANUAL;
         setBrake(false);
         mArmMaster.set(ControlMode.PercentOutput, power);
     }
@@ -154,7 +160,8 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
         return mArmMaster.getMotorOutputVoltage();
     }
 
-    public void setArmPosition(int position) {
+    public synchronized void setArmPosition(int position) {
+        mWantedState = ManipulatorState.POSITION;
         setBrake(false);
         mArmWantedPosition = position;
 
@@ -180,10 +187,6 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
 
     public int getArmVelocity() {
         return mArmMaster.getSelectedSensorVelocity();
-    }
-
-    public void setArmWantedPosition(int position) {
-        mArmWantedPosition = position;
     }
 
     public boolean isArmAtPosition(ManipulatorArmPosition position) {
@@ -217,9 +220,37 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
     }
 
     @Override
+    public void loop() {
+        switch (mWantedState) {
+            case POSITION:
+                if (isArmAtWantedPosition()) {
+                    // Deploy manipulator when going to most positions
+                    if (mArmWantedPosition != ManipulatorArmPosition.STOW.getPosition()
+                            && mArmWantedPosition != ManipulatorArmPosition.FINGER_HATCH_PICKUP.getPosition()) {
+                        Manipulator.getInstance().deploy(true);
+                    }
+                    stop();
+                } else {
+                    // Stow manipulator after reaching stow or finger hatch pickup
+                    if (mArmWantedPosition == ManipulatorArmPosition.STOW.getPosition()
+                            || mArmWantedPosition == ManipulatorArmPosition.FINGER_HATCH_PICKUP.getPosition()) {
+                        Manipulator.getInstance().deploy(false);
+                    }
+                    setBrake(false);
+                }
+                break;
+            case MANUAL:
+            default:
+                break;
+        }
+        outputToDashboard();
+    }
+
+    @Override
     public void stop() {
         stopArm();
         stopRollers();
+        mWantedState = ManipulatorState.MANUAL;
     }
 
     @Override

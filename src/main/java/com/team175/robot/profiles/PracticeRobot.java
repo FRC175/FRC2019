@@ -98,6 +98,7 @@ public class PracticeRobot extends RobotProfile {
                 // Reverse Gains
                 .setAuxGains(new ClosedLoopGains(20, 0, 0, super.getManipulatorArmTransmission().getKf(),
                         600, 600))
+                // .setForwardSoftLimit(0)
                 .build();
     }
 

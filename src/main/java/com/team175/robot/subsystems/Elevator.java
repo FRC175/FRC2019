@@ -25,10 +25,16 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
 
     private int mWantedPosition;
     private ClosedLoopGains mForwardGains, mReverseGains;
+    private ElevatorState mWantedState;
 
     private static final int ALLOWED_POSITION_DEVIATION = 100;
 
     private static Elevator sInstance;
+
+    private enum ElevatorState {
+        POSITION,
+        MANUAL;
+    }
 
     public static Elevator getInstance() {
         if (sInstance == null) {
@@ -43,6 +49,7 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
         mMaster = CTREFactory.getMasterTalon(Constants.ELEVATOR_PORT);
 
         mWantedPosition = 0;
+        mWantedState = ElevatorState.MANUAL;
 
         RobotProfile profile = RobotManager.getProfile();
         CTREConfiguration.config(mMaster, profile.getElevatorConfig(), "Elevator");
@@ -54,14 +61,17 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
         CTREDiagnostics.checkCommand(mMaster.configReverseLimitSwitchSource(LimitSwitchSource.FeedbackConnector,
                 LimitSwitchNormal.NormallyClosed, Constants.TIMEOUT_MS),
                 "Failed to config elevator reverse limit switch!");
+        /*CTREDiagnostics.checkCommand(mMaster.configClearPositionOnLimitF(true, Constants.TIMEOUT_MS),
+                "Failed to config elevator zero on reverse limit switch!");*/
 
         mMaster.setBrakeMode(true);
-        resetSensors();
+        // resetSensors();
 
         super.logInstantiation();
     }
 
     public void setPower(double power) {
+        mWantedState = ElevatorState.MANUAL;
         mMaster.set(ControlMode.PercentOutput, power);
     }
 
@@ -74,6 +84,7 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
     }
 
     public void setPosition(int position) {
+        mWantedState = ElevatorState.POSITION;
         mWantedPosition = position;
 
         if (mWantedPosition > getPosition()) { // Going Up
@@ -100,6 +111,11 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
         return mMaster.getSelectedSensorVelocity();
     }
 
+    public void setToWantedPosition() {
+        setPosition(mWantedPosition);
+    }
+
+    @Deprecated
     public void setWantedPosition(int position) {
         mWantedPosition = position;
     }
@@ -108,12 +124,12 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
         return Math.abs(getPosition() - mWantedPosition) <= ALLOWED_POSITION_DEVIATION;
     }
 
-    public boolean isForwardLimitHit() {
-        return mMaster.getSensorCollection().isFwdLimitSwitchClosed();
+    public boolean isTopLimitHit() {
+        return !mMaster.getSensorCollection().isFwdLimitSwitchClosed();
     }
 
-    public boolean isReverseLimitHit() {
-        return mMaster.getSensorCollection().isRevLimitSwitchClosed();
+    public boolean isBottomLimitHit() {
+        return !mMaster.getSensorCollection().isRevLimitSwitchClosed();
     }
 
     public void setForwardGains(ClosedLoopGains gains) {
@@ -128,6 +144,24 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
 
     @Override
     public void start() {
+    }
+
+    @Override
+    public void loop() {
+        switch (mWantedState) {
+            case MANUAL:
+                mWantedPosition = getPosition();
+                break;
+            case POSITION:
+            default:
+                break;
+        }
+
+        if (isBottomLimitHit()) {
+            resetSensors();
+        }
+
+        outputToDashboard();
     }
 
     @Override
@@ -154,8 +188,8 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
         m.put("ElevatorPower", this::getPower);
         m.put("ElevatorVolt", this::getVoltage);
         m.put("ElevatorCurrent", mMaster::getOutputCurrent);
-        m.put("ElevatorFwdLimit", this::isForwardLimitHit);
-        m.put("ElevatorRevLimit", this::isReverseLimitHit);
+        m.put("ElevatorFwdLimit", this::isTopLimitHit);
+        m.put("ElevatorRevLimit", this::isBottomLimitHit);
 
         return m;
     }

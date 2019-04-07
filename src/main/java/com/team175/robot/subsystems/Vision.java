@@ -2,7 +2,9 @@ package com.team175.robot.subsystems;
 
 import com.team175.robot.Constants;
 import edu.wpi.first.cameraserver.CameraServer;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Servo;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
@@ -39,21 +41,21 @@ public final class Vision extends AldrinSubsystem implements Runnable {
     }
 
     public void rotateCameraDown(boolean rotateDown) {
-        mRotate.set(rotateDown ? 0.3 : 0.5);
+        mRotate.set(rotateDown ? 0.4 : 0.7);
     }
 
     public boolean isCameraDown() {
-        return mRotate.get() == 0.3;
+        return mRotate.get() == 0.4;
     }
 
     @Override
     public void start() {
-        new Thread(() -> mCamera.addAxisCamera("10.1.75.10")).start();
-        rotateCameraDown(false);
+        // new Thread(() -> mCamera.addAxisCamera("10.1.75.10")).start();
     }
 
     @Override
     public void stop() {
+        rotateCameraDown(false);
     }
 
     @Override
@@ -62,6 +64,11 @@ public final class Vision extends AldrinSubsystem implements Runnable {
         m.put("CameraRotateAngle", mRotate::get);
         m.put("IsCameraDown", this::isCameraDown);
         return m;
+    }
+
+    @Override
+    public void updateFromDashboard() {
+        mRotate.set(SmartDashboard.getNumber("CameraRotateAngle", 0));
     }
 
     @Override

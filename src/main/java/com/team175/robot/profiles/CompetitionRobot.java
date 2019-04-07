@@ -15,7 +15,7 @@ public class CompetitionRobot extends RobotProfile {
         return new CTREConfiguration.Builder()
                 .setPrimarySensor(FeedbackDevice.QuadEncoder)
                 .setPrimaryGains(new ClosedLoopGains(0.1, 0, 0, super.getDriveTransmission().getKf(),
-                        0, 0))
+                        super.getDriveTransmission().getVelocity(), super.getDriveTransmission().getVelocity()))
                 .build();
     }
 
@@ -30,7 +30,7 @@ public class CompetitionRobot extends RobotProfile {
                 .setInverted(true)
                 .setPrimarySensor(FeedbackDevice.QuadEncoder)
                 .setPrimaryGains(new ClosedLoopGains(0.1, 0, 0, super.getDriveTransmission().getKf(),
-                        0, 0))
+                        super.getDriveTransmission().getVelocity(), super.getDriveTransmission().getVelocity()))
                 .setAuxGains(new ClosedLoopGains(0.1, 0, 0, 0, 0, 0))
                 .build();
     }
@@ -49,12 +49,12 @@ public class CompetitionRobot extends RobotProfile {
                 .setPrimarySensor(FeedbackDevice.CTRE_MagEncoder_Relative)
                 .setSensorPhase(true)
                 // Forward Gains
-                .setPrimaryGains(new ClosedLoopGains(12, 0, 0, super.getElevatorTransmission().getKf(),
-                        1000, 1000
+                .setPrimaryGains(new ClosedLoopGains(12, 0, 24, super.getElevatorTransmission().getKf(),
+                        super.getElevatorTransmission().getVelocity(), super.getElevatorTransmission().getVelocity()
                 ))
                 // Reverse Gains
-                .setAuxGains(new ClosedLoopGains(8, 0, 0, super.getElevatorTransmission().getKf(),
-                        1000, 1000
+                .setAuxGains(new ClosedLoopGains(3, 0, 6, super.getElevatorTransmission().getKf(),
+                        super.getElevatorTransmission().getVelocity(), super.getElevatorTransmission().getVelocity()
                 ))
                 .build();
     }
@@ -64,7 +64,7 @@ public class CompetitionRobot extends RobotProfile {
         return new CTREConfiguration.Builder()
                 .setPrimarySensor(FeedbackDevice.QuadEncoder)
                 .setPrimaryGains(new ClosedLoopGains(0.1, 0, 0, super.getLateralDriveTransmission().getKf(),
-                        0, 0))
+                        super.getLateralDriveTransmission().getVelocity(), super.getLateralDriveTransmission().getVelocity()))
                 .build();
     }
 
@@ -73,7 +73,7 @@ public class CompetitionRobot extends RobotProfile {
         return new CTREConfiguration.Builder()
                 .setPrimarySensor(FeedbackDevice.QuadEncoder)
                 .setPrimaryGains(new ClosedLoopGains(0.1, 0, 0, super.getLiftTransmission().getKf(),
-                        0, 0))
+                        super.getLiftTransmission().getVelocity(), super.getLiftTransmission().getVelocity()))
                 .build();
     }
 
@@ -82,7 +82,7 @@ public class CompetitionRobot extends RobotProfile {
         return new CTREConfiguration.Builder()
                 .setPrimarySensor(FeedbackDevice.QuadEncoder)
                 .setPrimaryGains(new ClosedLoopGains(0.1, 0, 0, super.getLiftTransmission().getKf(),
-                        0, 0))
+                        super.getLiftTransmission().getVelocity(), super.getLiftTransmission().getVelocity()))
                 .build();
     }
 
@@ -91,11 +91,12 @@ public class CompetitionRobot extends RobotProfile {
         return new CTREConfiguration.Builder()
                 .setPrimarySensor(FeedbackDevice.Analog)
                 // Forward Gains
-                .setPrimaryGains(new ClosedLoopGains(24, 0, 48, super.getManipulatorArmTransmission().getKf(),
-                        600, 600))
+                .setPrimaryGains(new ClosedLoopGains(12, 0, 24, super.getManipulatorArmTransmission().getKf(),
+                        super.getManipulatorArmTransmission().getVelocity(), super.getManipulatorArmTransmission().getVelocity()))
                 // Reverse Gains
-                .setAuxGains(new ClosedLoopGains(50, 0, 100, super.getManipulatorArmTransmission().getKf(),
-                        600, 600))
+                .setAuxGains(new ClosedLoopGains(125, 0, 250, super.getManipulatorArmTransmission().getKf(),
+                        super.getManipulatorArmTransmission().getVelocity(), super.getManipulatorArmTransmission().getVelocity()))
+                // .setForwardSoftLimit(100)
                 .build();
     }
 

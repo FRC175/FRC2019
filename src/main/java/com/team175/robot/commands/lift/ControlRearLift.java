@@ -29,7 +29,7 @@ public class ControlRearLift extends AldrinCommand {
     @Override
     protected void initialize() {
         Drive.getInstance().stop();
-        if (!mIsManual) {
+        /*if (!mIsManual) {
             if (mPosition == LiftPosition.RETRACT) {
                 // Bring up and then disengage brake
                 Lift.getInstance().setRearPosition(LiftPosition.EXTEND);
@@ -37,8 +37,21 @@ public class ControlRearLift extends AldrinCommand {
                 Lift.getInstance().setRearBrake(false);
                 Lift.getInstance().setRearPower(0);
             }
-        }
+        }*/
         Lift.getInstance().setRearBrake(false);
+        /*if (!mIsManual) {
+            if (mPosition == LiftPosition.EXTEND) {
+                Drive.getInstance().setHighGear(true);
+                Drive.getInstance().setPower(1);
+            } else {
+                Drive.getInstance().stop();
+            }
+        }*/
+
+        if (!mIsManual) {
+            Lift.getInstance().setRearPosition(mPosition);
+        }
+
         super.initialize();
     }
 
@@ -46,8 +59,16 @@ public class ControlRearLift extends AldrinCommand {
     protected void execute() {
         if (mIsManual) {
             Lift.getInstance().setRearPower(OI.getInstance().getDriverStickY());
+        }
+
+        if (Lift.getInstance().getRearPosition() < -550) {
+            Drive.getInstance().setHighGear(true);
+            Drive.getInstance().setPower(0.7);
+            Lift.getInstance().setDrivePower(1);
         } else {
-            Lift.getInstance().setRearPosition(mPosition);
+            Drive.getInstance().setHighGear(false);
+            Drive.getInstance().stop();
+            Lift.getInstance().setDrivePower(0);
         }
     }
 

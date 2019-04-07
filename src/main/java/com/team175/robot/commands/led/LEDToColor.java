@@ -16,7 +16,7 @@ public class LEDToColor extends AldrinCommand {
 
     @Override
     protected void initialize() {
-        LED.getInstance().setColor(mColor);
+        // LED.getInstance().setColor(mColor);
         super.initialize();
     }
 

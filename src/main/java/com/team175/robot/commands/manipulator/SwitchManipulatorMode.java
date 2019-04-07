@@ -25,4 +25,10 @@ public class SwitchManipulatorMode extends AldrinCommand {
         return true;
     }
 
+    @Override
+    protected void end() {
+        mLogger.debug("Manipulator is now in {} mode.", Manipulator.getInstance().getMode().toString());
+        super.end();
+    }
+
 }

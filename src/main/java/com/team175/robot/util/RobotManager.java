@@ -2,8 +2,8 @@ package com.team175.robot.util;
 
 import com.team175.robot.Constants;
 import com.team175.robot.loops.CSVWriterLoop;
-import com.team175.robot.loops.Loop;
 import com.team175.robot.loops.Looper;
+import com.team175.robot.loops.MessageLoop;
 import com.team175.robot.profiles.CompetitionRobot;
 import com.team175.robot.profiles.PracticeRobot;
 import com.team175.robot.profiles.RobotProfile;
@@ -34,16 +34,36 @@ public final class RobotManager {
     private final Compressor mCompressor;
     private final PowerDistributionPanel mPDP;
     private final Logger mLogger;
+    private final String[] mNaan = {
+            "Abdullah is watching you.",
+            "Jamie is the all supreme lord.",
+            "Bret is MVP",
+            "Andrew Jones was here.",
+            "Dimepiece is Gulag MemeLord!",
+            "Aaron likes his waifu!",
+            "Aaron's girlfriend is fake!",
+            "Join the Abdullah, cult or else...",
+            "Join the Arvind, fan club or else...",
+            "Big Jim Morin fan here!",
+            "Without Boyer, our robot would not work.",
+            "Jamie likes lolis.",
+            "What are you doing?!",
+            "Ben is the absolute unit.",
+            "Don't miss!",
+            "Roland is turning in his grave.",
+            "Tyrique misses you.",
+            "Everyone disliked that.",
+            "This messaging system was brought to you by the 254.",
+    };
 
-    private Looper mSubsystemLooper;
-    private Looper mCSVLooper;
-    private Looper mMessageLooper;
+    private Looper mSubsystemLooper, mCSVLooper, mMessageLooper, mLEDLooper;
 
     private static Optional<RobotProfile> sProfile = Optional.empty();
     private static RobotManager sInstance;
 
     private static final String CSV_LOG_FILE_PATH = "/home/lvuser/csvlog/subsystem-telemetry.csv";
     private static final double LOOPER_PERIOD = 0.01;
+    private static final double MESSAGE_PERIOD = 1;
 
     public static RobotManager getInstance() {
         if (sInstance == null) {
@@ -55,11 +75,13 @@ public final class RobotManager {
 
     private RobotManager() {
         mSubsystems = List.of(Drive.getInstance(), Elevator.getInstance(), LateralDrive.getInstance(), Lift.getInstance(),
-                Manipulator.getInstance());
+                Manipulator.getInstance(), Vision.getInstance());
         mCompressor = new Compressor(Constants.COMPRESSOR_PORT);
         mPDP = new PowerDistributionPanel(Constants.PDP_PORT);
         mLogger = LoggerFactory.getLogger(getClass().getSimpleName());
         mSubsystemLooper = new Looper(LOOPER_PERIOD, mSubsystems);
+        mMessageLooper = new Looper(MESSAGE_PERIOD, new MessageLoop(mNaan, "Survey Says"));
+        // mLEDLooper = new Looper(LOOPER_PERIOD, LED.getInstance());
 
         LinkedHashMap<String, Supplier> data = new LinkedHashMap<>();
         // Add data from each subsystem's getCSVTelemetry()
@@ -129,6 +151,22 @@ public final class RobotManager {
     public void stopSubsystems() {
         mSubsystemLooper.stop();
         stopCompressor();
+    }
+
+    public void startMessaging() {
+        mMessageLooper.start();
+    }
+
+    public void stopMessaging() {
+        mMessageLooper.stop();
+    }
+
+    public void startLED() {
+        // mLEDLooper.start();
+    }
+
+    public void stopLED() {
+        // mLEDLooper.stop();
     }
 
     public static void setProfile(boolean isCompBot) {

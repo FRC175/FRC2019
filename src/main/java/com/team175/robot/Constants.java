@@ -27,7 +27,6 @@ public final class Constants {
     public static final int FRONT_LIFT_PORT = 15;
     public static final int REAR_LIFT_PORT = 16;
 
-
     // Pneumatics
     public static final int SHIFT_FORWARD_CHANNEL = 4;
     public static final int SHIFT_REVERSE_CHANNEL = 5;
@@ -96,8 +95,6 @@ public final class Constants {
     public static final int RETRACT_REAR_LIFT_BUTTON = 9;
     public static final int ROTATE_CAMERA_BUTTON = 8;
 
-
-
     // Operator Stick Buttons
     public static final int MANUAL_ELEVATOR_TRIGGER = 1;
     public static final int TOGGLE_MANIPULATOR_BUTTON = 2;
@@ -105,12 +102,16 @@ public final class Constants {
     public static final int GRAB_HATCH_BUTTON = 3;
     public static final int SCORE_CARGO_BUTTON = 6;
     public static final int GRAB_CARGO_BUTTON = 4;
+    public static final int SWITCH_TO_VELCRO_BUTTON = 7;
+    public static final int SWITCH_TO_FINGER_BUTTON = 9;
+    public static final int SWITCH_TO_CARGO_BUTTON = 11;
     public static final int ELEVATOR_POSITION_ONE_BUTTON = 8;
     public static final int ELEVATOR_POSITION_TWO_BUTTON = 10;
     public static final int ELEVATOR_POSITION_THREE_BUTTON = 12;
     public static final int ELEVATOR_POSITION_FOUR_BUTTON = 10;
     public static final int ELEVATOR_POSITION_FIVE_BUTTON = 11;
     public static final int ELEVATOR_POSITION_SIX_BUTTON = 12;
+    public static final int ELEVATOR_CARGO_GROUND_PICKUP_POSITION_BUTTON = 11;
     public static final int ELEVATOR_CARGO_LOADING_POSITION_BUTTON = 9;
     public static final int ELEVATOR_GROUND_PICKUP_POSITION_BUTTON = 7;
     public static final int MANIPULATOR_ARM_STOW_POSITION_BUTTON = 2;

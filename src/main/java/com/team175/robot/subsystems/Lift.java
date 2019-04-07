@@ -2,7 +2,6 @@ package com.team175.robot.subsystems;
 
 import com.ctre.phoenix.motorcontrol.ControlMode;
 import com.team175.robot.Constants;
-
 import com.team175.robot.positions.LiftPosition;
 import com.team175.robot.profiles.RobotProfile;
 import com.team175.robot.util.CTREConfiguration;
@@ -22,6 +21,8 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 /**
+ * TODO: Add current limiting
+ *
  * @author Arvind
  */
 public final class Lift extends AldrinSubsystem implements ClosedLoopTunable {
@@ -73,8 +74,10 @@ public final class Lift extends AldrinSubsystem implements ClosedLoopTunable {
         CTREConfiguration.config(mRear, profile.getRearLiftConfig(), "RearLift");
         mFrontGains = CTREConfiguration.getGains(profile.getFrontLiftConfig(), true);
         mRearGains = CTREConfiguration.getGains(profile.getRearLiftConfig(), true);
+        mFront.configCurrentLimit(5, 10, 100, false);
+        mRear.configCurrentLimit(5, 10, 100, false);
 
-        // resetSensors();
+        resetSensors();
         stop();
 
         super.logInstantiation();
@@ -84,6 +87,12 @@ public final class Lift extends AldrinSubsystem implements ClosedLoopTunable {
         /*if (!isFrontForwardLimitHit() || !isFrontReverseLimitHit()) {
             mFrontBrake.set(false);
         }*/
+        if (power > 0) {
+            mFront.enableCurrentLimit(true);
+        } else {
+            mFront.enableCurrentLimit(false);
+        }
+
         mFront.set(ControlMode.PercentOutput, power);
     }
 
@@ -91,6 +100,13 @@ public final class Lift extends AldrinSubsystem implements ClosedLoopTunable {
         /*if (!isRearForwardLimitHit() || !isRearReverseLimitHit()) {
             mRearBrake.set(false);
         }*/
+
+        if (power > 0) {
+            mRear.enableCurrentLimit(true);
+        } else {
+            mRear.enableCurrentLimit(false);
+        }
+
         mRear.set(ControlMode.PercentOutput, power);
     }
 

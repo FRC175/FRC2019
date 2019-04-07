@@ -1,5 +1,6 @@
 package com.team175.robot.commands.lift;
 
+import com.team175.robot.OI;
 import com.team175.robot.commands.AldrinCommand;
 import com.team175.robot.subsystems.Lift;
 
@@ -13,7 +14,11 @@ public class ControlLiftDrive extends AldrinCommand {
     @Override
     protected void initialize() {
         super.initialize();
-        Lift.getInstance().setDrivePower(1);
+    }
+
+    @Override
+    protected void execute() {
+        Lift.getInstance().setDrivePower(OI.getInstance().getDriverStickY());
     }
 
     @Override

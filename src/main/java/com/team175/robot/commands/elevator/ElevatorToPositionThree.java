@@ -16,24 +16,14 @@ public class ElevatorToPositionThree extends AldrinCommand {
 
     @Override
     protected void initialize() {
-        ElevatorPosition position = ElevatorPosition.GROUND_PICKUP;
-
-        switch (Manipulator.getInstance().getMode()) {
-            case VELCRO_HATCH:
-                position = ElevatorPosition.VELCRO_HATCH_LEVEL_THREE;
-                break;
-            case FINGER_HATCH:
-                position = ElevatorPosition.FINGER_HATCH_LEVEL_THREE;
-                break;
-            case CARGO:
-                position = ElevatorPosition.CARGO_LEVEL_THREE;
-                break;
-        }
-
         // Ensure elevator cannot move when manipulator is in stow position
         if (!Manipulator.getInstance().isArmAtPosition(ManipulatorArmPosition.STOW)) {
-            mLogger.debug("Setting elevator to {} position.", position.toString());
-            Elevator.getInstance().setPosition(position);
+            mLogger.debug("Setting elevator to {} position.", ElevatorPosition.getPositionThree().toString());
+            Elevator.getInstance().setPosition(ElevatorPosition.getPositionThree());
+        }
+        if (ElevatorPosition.getPositionOne() == ElevatorPosition.FINGER_HATCH_LEVEL_THREE) {
+            mLogger.debug("Bringing manipulator to tilted finger hatch position.");
+            Manipulator.getInstance().setArmPosition(ManipulatorArmPosition.FINGER_HATCH_TILT);
         }
         super.initialize();
     }

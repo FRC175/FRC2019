@@ -30,7 +30,7 @@ public class ControlElevator extends AldrinCommand {
         if (!Manipulator.getInstance().isArmAtPosition(ManipulatorArmPosition.STOW)) {
             // mLogger.debug("ElevatorPosition: {}", Elevator.getInstance().getPosition());
             Elevator.getInstance().setPower(OI.getInstance().getOperatorStickY());
-            mPosition = Elevator.getInstance().getPosition();
+            // mPosition = Elevator.getInstance().getPosition();
         }
         super.initialize();
     }
@@ -43,7 +43,8 @@ public class ControlElevator extends AldrinCommand {
     @Override
     protected void end() {
         // Keep elevator at wanted position
-        Elevator.getInstance().setWantedPosition(mPosition);
+        // Elevator.getInstance().setWantedPosition(mPosition);
+        Elevator.getInstance().setToWantedPosition();
         mLogger.debug("Final elevator position: {}", Elevator.getInstance().getPosition());
         Elevator.getInstance().stop();
         super.end();

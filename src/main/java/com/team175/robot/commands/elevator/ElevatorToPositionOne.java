@@ -15,25 +15,14 @@ public class ElevatorToPositionOne extends AldrinCommand {
 
     @Override
     protected void initialize() {
-        ElevatorPosition position = ElevatorPosition.CARGO_LEVEL_ONE;
-
-        // Get position from Manipulator mode
-        switch (Manipulator.getInstance().getMode()) {
-            case VELCRO_HATCH:
-                position = ElevatorPosition.VELCRO_HATCH_LEVEL_ONE;
-                break;
-            case FINGER_HATCH:
-                position = ElevatorPosition.FINGER_HATCH_LEVEL_ONE;
-                break;
-            case CARGO:
-                position = ElevatorPosition.CARGO_LEVEL_ONE;
-                break;
-        }
-
         // Ensure elevator cannot move when manipulator is in stow position
         if (!Manipulator.getInstance().isArmAtPosition(ManipulatorArmPosition.STOW)) {
-            mLogger.debug("Setting elevator to {} position.", position.toString());
-            Elevator.getInstance().setPosition(position);
+            mLogger.debug("Setting elevator to {} position.", ElevatorPosition.getPositionOne().toString());
+            Elevator.getInstance().setPosition(ElevatorPosition.getPositionOne());
+        }
+        if (ElevatorPosition.getPositionOne() == ElevatorPosition.FINGER_HATCH_LEVEL_ONE) {
+            mLogger.debug("Bringing manipulator to finger hatch pickup position.");
+            Manipulator.getInstance().setArmPosition(ManipulatorArmPosition.FINGER_HATCH_PICKUP);
         }
         super.initialize();
     }

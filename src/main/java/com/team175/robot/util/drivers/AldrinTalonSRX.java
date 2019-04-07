@@ -38,6 +38,13 @@ public class AldrinTalonSRX extends TalonSRX {
         super.setNeutralMode(enable ? NeutralMode.Brake : NeutralMode.Coast);
     }
 
+    public void configCurrentLimit(int current, int currentLimit, int currentDuration, boolean enable) {
+        super.configContinuousCurrentLimit(current, Constants.TIMEOUT_MS);
+        super.configPeakCurrentLimit(currentLimit, Constants.TIMEOUT_MS);
+        super.configPeakCurrentDuration(currentDuration, Constants.TIMEOUT_MS);
+        super.enableCurrentLimit(enable);
+    }
+
     public double getPDPCurrent() {
         if (mPDPChannel == -1) {
             throw new UnsupportedOperationException("Talon SRX " + super.getDeviceID() +

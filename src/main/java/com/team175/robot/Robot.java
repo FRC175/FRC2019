@@ -7,16 +7,13 @@
 
 package com.team175.robot;
 
-import com.team175.robot.commands.led.ControlLED;
-import com.team175.robot.commands.tuning.CollectVelocityData;
+import com.team175.robot.positions.LEDColor;
 import com.team175.robot.subsystems.*;
 import com.team175.robot.util.AutoModeChooser;
 import com.team175.robot.util.RobotManager;
 import com.team175.robot.util.TunerChooser;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.command.Scheduler;
-import edu.wpi.first.wpilibj.livewindow.LiveWindow;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -56,13 +53,13 @@ public final class Robot extends TimedRobot {
         mTunerChooser = TunerChooser.getInstance();
         mLogger = LoggerFactory.getLogger(getClass().getSimpleName());
 
+        // mRobotManager.startLED();
         // Runs camera stream on separate thread
         new Thread(mVision).start();
+        // Initialize SmartDashboard values
         mRobotManager.outputToDashboard();
         // Add velocity collection command to dashboard
-        SmartDashboard.putData("Collect Velocity Data", new CollectVelocityData());
-        // According to ChiefDelphi, disabling this should fix the loop overrun message
-        LiveWindow.disableAllTelemetry();
+        // SmartDashboard.putData("Collect Velocity Data", new CollectVelocityData());
     }
 
     @Override
@@ -72,8 +69,10 @@ public final class Robot extends TimedRobot {
     @Override
     public void disabledInit() {
         mTunerChooser.stop();
-        // mRobotManager.stopSubsystems();
+        mRobotManager.stopSubsystems();
+        mRobotManager.startMessaging();
         mRobotManager.outputToDashboard();
+        // mLED.setStaticColor(LEDColor.DISABLED);
 
         mLogger.debug("Beginning disabled!");
     }
@@ -82,7 +81,6 @@ public final class Robot extends TimedRobot {
     public void disabledPeriodic() {
         Scheduler.getInstance().run();
 
-        // mLED.moodLampCycle(true);
         mRobotManager.updateFromDashboard();
     }
 
@@ -90,6 +88,9 @@ public final class Robot extends TimedRobot {
     public void autonomousInit() {
         mAutoModeChooser.updateFromDashboard();
         mAutoModeChooser.start();
+
+        mRobotManager.startSubsystems();
+        mRobotManager.stopMessaging();
 
         if (mAutoModeChooser.isAutoModeSelected()) {
             mDrive.setHighGear(true);
@@ -101,6 +102,7 @@ public final class Robot extends TimedRobot {
         mDrive.resetSensors();
         mManipulator.setBrake(true);
         mLateralDrive.deploy(false);
+        // mLED.setStaticColor(LEDColor.DEFAULT);
 
         mLogger.debug("Beginning auto!");
     }
@@ -108,21 +110,21 @@ public final class Robot extends TimedRobot {
     @Override
     public void autonomousPeriodic() {
         Scheduler.getInstance().run();
-
-        mRobotManager.outputToDashboard();
     }
 
     @Override
     public void teleopInit() {
         mAutoModeChooser.stop();
 
+        mRobotManager.startSubsystems();
+        mRobotManager.stopMessaging();
+
         mDrive.setHighGear(false);
         mDrive.setBrakeMode(false);
         mDrive.resetSensors();
         mManipulator.setBrake(true);
         mLateralDrive.deploy(false);
-
-        // mRobotManager.startSubsystems();
+        // mLED.setStaticColor(LEDColor.DEFAULT);
 
         mLogger.debug("Beginning teleop!");
     }
@@ -130,13 +132,14 @@ public final class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
-
-        mRobotManager.outputToDashboard();
     }
 
     @Override
     public void testInit() {
         mLogger.debug("Beginning test!");
+
+        mRobotManager.stopMessaging();
+        // mLED.updateColor();
 
         /*mLogger.info("Beginning robot diagnostics test.");
 

@@ -58,13 +58,15 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
         mRightSlave = CTREFactory.getSlaveTalon(Constants.RIGHT_SLAVE_DRIVE_PORT, mRightMaster);
 
         // PigeonIMU(talonSRX : TalonSRX)
-        mPigeon = new PigeonIMU(mLeftSlave);
+        // mPigeon = new PigeonIMU(mLeftSlave);
+        mPigeon = null;
 
         // SimpleDoubleSolenoid(forwardChannel : int, reverseChannel : int)
         mShift = new SimpleDoubleSolenoid(Constants.SHIFT_FORWARD_CHANNEL, Constants.SHIFT_REVERSE_CHANNEL);
 
         // PathHelper(master : TalonSRX, follower : TalonSRX, pigeon : PigeonIMU)
-        mPathHelper = new PathHelper(mRightMaster, mLeftMaster, mPigeon);
+        // mPathHelper = new PathHelper(mRightMaster, mLeftMaster, mPigeon);
+        mPathHelper = null;
         // DriveHelper(left : TalonSRX, right : TalonSRX)
         mDriveHelper = new DriveHelper(mLeftMaster, mRightMaster);
 
@@ -84,7 +86,7 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
                 "Failed to config LeftMaster ramp!");
         CTREDiagnostics.checkCommand(mRightMaster.configOpenloopRamp(RAMP_TIME, Constants.TIMEOUT_MS),
                 "Failed to config RightMaster ramp!");
-        mPathHelper.configTalons();
+        // mPathHelper.configTalons();
         resetSensors();
 
         setHighGear(false);
@@ -223,7 +225,7 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
     }
 
     public void resetGyro() {
-        CTREDiagnostics.checkCommand(mPigeon.setYaw(0, Constants.TIMEOUT_MS), "Failed to zero Pigeon yaw!");
+        // CTREDiagnostics.checkCommand(mPigeon.setYaw(0, Constants.TIMEOUT_MS), "Failed to zero Pigeon yaw!");
     }
 
     @Override
@@ -265,7 +267,7 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
         m.put("DriveAccel", () -> mRightGains.getAcceleration());
         m.put("DriveCruiseVel", () -> mRightGains.getCruiseVelocity());
         m.put("DriveWantedAngle", () -> mWantedAngle);
-        m.put("GyroAngle", this::getAngle);
+        // m.put("GyroAngle", this::getAngle);
         m.put("DriveIsHighGear", this::isHighGear);
 
         return m;
@@ -327,7 +329,7 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
     @Override
     public void resetSensors() {
         resetEncoders();
-        resetGyro();
+        // resetGyro();
     }
 
     @Override

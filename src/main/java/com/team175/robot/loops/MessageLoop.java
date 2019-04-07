@@ -21,19 +21,16 @@ public class MessageLoop implements Loop {
     @Override
     public void start() {
         SmartDashboard.putString(mDashboardKey, "yo!");
-        // System.out.println("yo!");
     }
 
     @Override
     public void loop() {
         SmartDashboard.putString(mDashboardKey, mMessages[(int) (Math.random() * mMessages.length)]);
-        // System.out.println(mMessages[(int) (Math.random() * mMessages.length)]);
     }
 
     @Override
     public void stop() {
-        SmartDashboard.putString(mDashboardKey, "fin!");
-        // System.out.println("fin!");
+        SmartDashboard.putString(mDashboardKey, "Prepare for the worst!");
     }
 
 }

@@ -566,7 +566,7 @@
       }
     },
     {
-      "title": "Just Camera",
+      "title": "Camera Testing",
       "autoPopulate": false,
       "autoPopulatePrefix": "",
       "widgetPane": {
@@ -577,7 +577,7 @@
         "tiles": {
           "4,0": {
             "size": [
-              3,
+              6,
               4
             ],
             "content": {
@@ -592,6 +592,17 @@
               "fps": -1,
               "imageWidth": -1,
               "imageHeight": -1
+            }
+          },
+          "2,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/CameraRotateAngle",
+              "_title": "/SmartDashboard/CameraRotateAngle"
             }
           }
         }
@@ -609,7 +620,7 @@
         "tiles": {
           "4,0": {
             "size": [
-              2,
+              1,
               1
             ],
             "content": {
@@ -660,6 +671,17 @@
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/ManipArmFwdKp",
               "_title": "/SmartDashboard/ManipArmFwdKp"
+            }
+          },
+          "5,0": {
+            "size": [
+              1,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/ManipArmWantedPos",
+              "_title": "/SmartDashboard/ManipArmWantedPos"
             }
           }
         }
@@ -771,19 +793,7 @@
       }
     },
     {
-      "title": "Driver",
-      "autoPopulate": false,
-      "autoPopulatePrefix": "",
-      "widgetPane": {
-        "gridSize": 128.0,
-        "showGrid": true,
-        "hgap": 16.0,
-        "vgap": 16.0,
-        "tiles": {}
-      }
-    },
-    {
-      "title": "Tab 7",
+      "title": "Lift Testing",
       "autoPopulate": false,
       "autoPopulatePrefix": "",
       "widgetPane": {
@@ -860,6 +870,49 @@
               "_type": "Text View",
               "_source0": "network_table:///SmartDashboard/RLiftWantedPos",
               "_title": "/SmartDashboard/RLiftWantedPos"
+            }
+          }
+        }
+      }
+    },
+    {
+      "title": "Driver",
+      "autoPopulate": false,
+      "autoPopulatePrefix": "",
+      "widgetPane": {
+        "gridSize": 128.0,
+        "showGrid": true,
+        "hgap": 16.0,
+        "vgap": 16.0,
+        "tiles": {
+          "3,0": {
+            "size": [
+              6,
+              4
+            ],
+            "content": {
+              "_type": "Camera Stream",
+              "_source0": "camera_server://Axis Camera",
+              "_title": "Axis Camera",
+              "Crosshair/Show crosshair": true,
+              "Crosshair/Crosshair color": "#FFFFFFFF",
+              "Controls/Show controls": true,
+              "Controls/Rotation": "NONE",
+              "compression": -1.0,
+              "fps": -1,
+              "imageWidth": 0,
+              "imageHeight": 0
+            }
+          },
+          "0,0": {
+            "size": [
+              3,
+              1
+            ],
+            "content": {
+              "_type": "Text View",
+              "_source0": "network_table:///SmartDashboard/Survey Says",
+              "_title": "SmartDashboard/Survey Says"
             }
           }
         }
