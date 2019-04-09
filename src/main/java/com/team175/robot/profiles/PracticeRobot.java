@@ -14,7 +14,7 @@ public class PracticeRobot extends RobotProfile {
         return new CTREConfiguration.Builder()
                 .setPrimarySensor(FeedbackDevice.QuadEncoder)
                 .setPrimaryGains(new ClosedLoopGains(0.1, 0, 0, super.getDriveTransmission().getKf(),
-                        0, 0))
+                        super.getDriveTransmission().getVelocity(), super.getDriveTransmission().getVelocity()))
                 .build();
     }
 
@@ -29,8 +29,9 @@ public class PracticeRobot extends RobotProfile {
                 .setInverted(true)
                 .setPrimarySensor(FeedbackDevice.QuadEncoder)
                 .setPrimaryGains(new ClosedLoopGains(0.1, 0, 0, super.getDriveTransmission().getKf(),
-                        0, 0))
-                .setAuxGains(new ClosedLoopGains(0.1, 0, 0, 0, 0, 0))
+                        super.getDriveTransmission().getVelocity(), super.getDriveTransmission().getVelocity()))
+                .setAuxGains(new ClosedLoopGains(0.1, 0, 0, 0,
+                        super.getDriveTransmission().getVelocity(), super.getDriveTransmission().getVelocity()))
                 .build();
     }
 
@@ -49,11 +50,11 @@ public class PracticeRobot extends RobotProfile {
                 .setSensorPhase(true)
                 // Forward Gains
                 .setPrimaryGains(new ClosedLoopGains(8, 0, 0, super.getElevatorTransmission().getKf(),
-                        1000, 1000
+                        super.getElevatorTransmission().getVelocity(), super.getElevatorTransmission().getVelocity()
                 ))
                 // Reverse Gains
                 .setAuxGains(new ClosedLoopGains(8, 0, 0, super.getElevatorTransmission().getKf(),
-                        1000, 1000
+                        super.getElevatorTransmission().getVelocity(), super.getElevatorTransmission().getVelocity()
                 ))
                 .build();
     }
@@ -64,7 +65,7 @@ public class PracticeRobot extends RobotProfile {
                 .setInverted(true)
                 .setPrimarySensor(FeedbackDevice.QuadEncoder)
                 .setPrimaryGains(new ClosedLoopGains(0.1, 0, 0, super.getLateralDriveTransmission().getKf(),
-                        0, 0))
+                        super.getLateralDriveTransmission().getVelocity(), super.getLateralDriveTransmission().getVelocity()))
                 .build();
     }
 
@@ -73,7 +74,7 @@ public class PracticeRobot extends RobotProfile {
         return new CTREConfiguration.Builder()
                 .setPrimarySensor(FeedbackDevice.QuadEncoder)
                 .setPrimaryGains(new ClosedLoopGains(0.1, 0, 0, super.getLiftTransmission().getKf(),
-                        0, 0))
+                        super.getLiftTransmission().getVelocity(), super.getLiftTransmission().getVelocity()))
                 .build();
     }
 
@@ -82,7 +83,7 @@ public class PracticeRobot extends RobotProfile {
         return new CTREConfiguration.Builder()
                 .setPrimarySensor(FeedbackDevice.QuadEncoder)
                 .setPrimaryGains(new ClosedLoopGains(0.1, 0, 0, super.getLiftTransmission().getKf(),
-                        0, 0))
+                        super.getLiftTransmission().getVelocity(), super.getLiftTransmission().getVelocity()))
                 .build();
     }
 
@@ -94,10 +95,10 @@ public class PracticeRobot extends RobotProfile {
                 .setSensorPhase(true)
                 // Forward Gains
                 .setPrimaryGains(new ClosedLoopGains(12, 0, 0, super.getManipulatorArmTransmission().getKf(),
-                        600, 600))
+                        super.getManipulatorArmTransmission().getVelocity(), super.getManipulatorArmTransmission().getVelocity()))
                 // Reverse Gains
                 .setAuxGains(new ClosedLoopGains(20, 0, 0, super.getManipulatorArmTransmission().getKf(),
-                        600, 600))
+                        super.getManipulatorArmTransmission().getVelocity(), super.getManipulatorArmTransmission().getVelocity()))
                 // .setForwardSoftLimit(0)
                 .build();
     }

@@ -9,7 +9,6 @@ import com.team175.robot.profiles.PracticeRobot;
 import com.team175.robot.profiles.RobotProfile;
 import com.team175.robot.subsystems.*;
 import com.team175.robot.util.tuning.CSVWritable;
-import edu.wpi.first.wpilibj.Compressor;
 import edu.wpi.first.wpilibj.PowerDistributionPanel;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -21,17 +20,13 @@ import java.util.*;
 import java.util.function.Supplier;
 
 /**
- * Contains all the subsystems and various other components (i.e. Compressor and PDP) of the robot to be able to control
- * them all from one place.
- *
- * TODO: Maybe be able to control both compressors.
+ * Contains all the subsystems and various other components of the robot to be able to control them all from one place.
  *
  * @author Arvind
  */
 public final class RobotManager {
 
     private final List<AldrinSubsystem> mSubsystems;
-    private final Compressor mCompressor;
     private final PowerDistributionPanel mPDP;
     private final Logger mLogger;
     private final String[] mNaan = {
@@ -76,7 +71,6 @@ public final class RobotManager {
     private RobotManager() {
         mSubsystems = List.of(Drive.getInstance(), Elevator.getInstance(), LateralDrive.getInstance(), Lift.getInstance(),
                 Manipulator.getInstance(), Vision.getInstance());
-        mCompressor = new Compressor(Constants.COMPRESSOR_PORT);
         mPDP = new PowerDistributionPanel(Constants.PDP_PORT);
         mLogger = LoggerFactory.getLogger(getClass().getSimpleName());
         mSubsystemLooper = new Looper(LOOPER_PERIOD, mSubsystems);
@@ -107,21 +101,10 @@ public final class RobotManager {
         SmartDashboard.putNumber("PDPCurrent", mPDP.getTotalCurrent());
         SmartDashboard.putNumber("PDPEnergy", mPDP.getTotalEnergy());
         SmartDashboard.putNumber("PDPPower", mPDP.getTotalPower());
-
-        // Compressor
-        SmartDashboard.putNumber("CompressorCurrent", mCompressor.getCompressorCurrent());
     }
 
     public void updateFromDashboard() {
         mSubsystems.forEach(AldrinSubsystem::updateFromDashboard);
-    }
-
-    public void startCSVLogging() {
-        mCSVLooper.start();
-    }
-
-    public void stopCSVLogging() {
-        mCSVLooper.stop();
     }
 
     public boolean checkSubsystems() {
@@ -130,14 +113,6 @@ public final class RobotManager {
             isGood &= subsystem.checkSubsystem();
         }
         return isGood;
-    }
-
-    public void startCompressor() {
-        mCompressor.start();
-    }
-
-    public void stopCompressor() {
-        mCompressor.stop();
     }
 
     public double getCurrentForPDPChannel(int channel) {
@@ -150,7 +125,14 @@ public final class RobotManager {
 
     public void stopSubsystems() {
         mSubsystemLooper.stop();
-        stopCompressor();
+    }
+
+    public void startCSVLogging() {
+        mCSVLooper.start();
+    }
+
+    public void stopCSVLogging() {
+        mCSVLooper.stop();
     }
 
     public void startMessaging() {

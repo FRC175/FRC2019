@@ -16,13 +16,13 @@ import java.util.function.Supplier;
 /**
  * @author Arvind
  */
-public class LED extends AldrinSubsystem {
+public final class LED extends AldrinSubsystem {
 
     private final CANifier mController;
 
     private Color mWantedColor;
     private LEDState mWantedState;
-    private double mStartTime, mBlinkDur;
+    private double mStartTime, mBlinkDur, mCounter;
 
     private static final int BLINK_TIME = 2; // s
 
@@ -30,9 +30,8 @@ public class LED extends AldrinSubsystem {
 
     private enum LEDState {
         BLINK_COLOR,
-        MOOD_LAMP,
-        MANUAL,
-        UPDATE;
+        COLOR_CYCLE,
+        MANUAL;
     }
 
     public static LED getInstance() {
@@ -48,10 +47,11 @@ public class LED extends AldrinSubsystem {
         CTREDiagnostics.checkCommand(mController.configFactoryDefault(Constants.TIMEOUT_MS),
                 "Failed to config CANifier to factory defaults.");
 
-        mWantedColor = new Color(0, 0, 0);
+        mWantedColor = LEDColor.OFF.getColor();
         mWantedState = LEDState.MANUAL;
         mStartTime = Timer.getFPGATimestamp();
-        mBlinkDur = 0;
+        mBlinkDur = BLINK_TIME;
+        mCounter = 0;
 
         super.logInstantiation();
     }
@@ -97,28 +97,50 @@ public class LED extends AldrinSubsystem {
     }
 
     private void blinkColor() {
-        if (((Timer.getFPGATimestamp() - mStartTime) / mBlinkDur) % 2 == 0) {
-            setColor(mWantedColor);
+        if ((Timer.getFPGATimestamp() - mStartTime) <= mBlinkDur) {
+            if (((Timer.getFPGATimestamp() - mStartTime) / mBlinkDur) % 2 == 0) {
+                setColor(mWantedColor);
+            } else {
+                setColor(LEDColor.OFF);
+            }
         } else {
-            setColor(LEDColor.OFF);
-        }
-
-        if ((Timer.getFPGATimestamp() - mStartTime) > mBlinkDur) {
-            mWantedColor = LEDColor.DEFAULT.getColor();
-            mWantedState = LEDState.MANUAL;
+            setStaticColor(LEDColor.DEFAULT);
         }
     }
 
-    public synchronized void moodLamp(boolean enable) {
-        mWantedState = enable ? LEDState.MOOD_LAMP : LEDState.MANUAL;
+    public synchronized void colorCycle(boolean enable) {
+        mWantedState = enable ? LEDState.COLOR_CYCLE : LEDState.MANUAL;
+        mCounter = 0;
     }
 
-    private void moodLamp() {
-        // Start at red
-        int[] colorElements = { 255, 0, 0 };
+    private void colorCycle() {
+        setColor(new Color(
+                // 127.5 * sin(x) + 127.5
+                (int) (127.5 * Math.sin(mCounter) + 127.5),
+                // 127.5 * sin(x + (PI/2)) + 127.5
+                (int) (127.5 * Math.sin(mCounter + (Math.PI / 2)) + 127.5),
+                // 127.5 * sin(x + (3PI/2)) + 127.5
+                (int) (127.5 * Math.sin(mCounter + ((3 * Math.PI) / 2)) + 127.5)
+        ));
+        mCounter = mCounter + (Math.PI / 120);
 
         // Cycle through rainbow
         // Credit to some tutorial for the Arduino
+
+        // Start at red
+        /*int[] colorElements = { 255, 0, 0 };
+
+        for (int decColor = 0; decColor < 3; decColor++) {
+            int incColor = decColor == 2 ? 0 : decColor + 1;
+
+            for (int i = 0; i < 255; i++) {
+                colorElements[decColor]--;
+                colorElements[incColor]++;
+                setColor(new Color(colorElements[0], colorElements[1], colorElements[2]));
+
+                Timer.delay(0.01);
+            }
+        }*/
 
         /*incColor = decColor == 2 ? 0 : decColor + 1;
         if (decColor < 3) {
@@ -135,28 +157,13 @@ public class LED extends AldrinSubsystem {
         } else if (decColor == 3) {
             decColor = 0;
         }*/
-
-        /*for (int decColor = 0; decColor < 3; decColor++) {
-            int incColor = decColor == 2 ? 0 : decColor + 1;
-
-            for (int i = 0; i < 255; i++) {
-                colorElements[decColor]--;
-                colorElements[incColor]++;
-                setColor(new Color(colorElements[0], colorElements[1], colorElements[2]));
-
-                Timer.delay(0.01);
-            }
-        }*/
-        setColor(LEDColor.DEFAULT);
-    }
-
-    public synchronized void updateColor() {
-        mWantedState = LEDState.UPDATE;
     }
 
     @Override
     public void start() {
-        setColor(LEDColor.DEFAULT);
+        mWantedColor = LEDColor.DEFAULT.getColor();
+        mWantedState = LEDState.MANUAL;
+        setColor(mWantedColor);
     }
 
     @Override
@@ -166,27 +173,24 @@ public class LED extends AldrinSubsystem {
                 case BLINK_COLOR:
                     blinkColor();
                     break;
-                case MOOD_LAMP:
-                    moodLamp();
-                    break;
-                case UPDATE:
-                    updateFromDashboard();
+                case COLOR_CYCLE:
+                    colorCycle();
                     break;
                 case MANUAL:
                 default:
                     setColor(mWantedColor);
                     break;
             }
-            if (mWantedState != LEDState.UPDATE) {
-                outputToDashboard();
-            }
+
+            outputToDashboard();
         }
     }
 
     @Override
     public void stop() {
+        mWantedColor = LEDColor.OFF.getColor();
         mWantedState = LEDState.MANUAL;
-        setColor(LEDColor.OFF);
+        setColor(mWantedColor);
     }
 
     @Override
@@ -195,6 +199,7 @@ public class LED extends AldrinSubsystem {
         m.put("LEDRed", mWantedColor::getRed);
         m.put("LEDGreen", mWantedColor::getGreen);
         m.put("LEDBlue", mWantedColor::getBlue);
+        m.put("LEDState", () -> mWantedState);
         return m;
     }
 

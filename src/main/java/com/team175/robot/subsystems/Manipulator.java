@@ -221,29 +221,38 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
 
     @Override
     public void loop() {
-        switch (mWantedState) {
-            case POSITION:
-                if (isArmAtWantedPosition()) {
-                    // Deploy manipulator when going to most positions
-                    if (mArmWantedPosition != ManipulatorArmPosition.STOW.getPosition()
-                            && mArmWantedPosition != ManipulatorArmPosition.FINGER_HATCH_PICKUP.getPosition()) {
-                        Manipulator.getInstance().deploy(true);
+        synchronized (this) {
+            switch (mWantedState) {
+                case POSITION:
+                    if (isArmAtWantedPosition()) {
+                        // Deploy manipulator when going to most positions
+                        if (mArmWantedPosition != ManipulatorArmPosition.STOW.getPosition()
+                                && mArmWantedPosition != ManipulatorArmPosition.FINGER_HATCH_PICKUP.getPosition()) {
+                            Manipulator.getInstance().deploy(true);
+                        }
+                        stop();
+                    } else {
+                        // Stow manipulator after reaching stow or finger hatch pickup
+                        if (mArmWantedPosition == ManipulatorArmPosition.STOW.getPosition()
+                                || mArmWantedPosition == ManipulatorArmPosition.FINGER_HATCH_PICKUP.getPosition()) {
+                            Manipulator.getInstance().deploy(false);
+                        }
+                        setBrake(false);
                     }
-                    stop();
-                } else {
-                    // Stow manipulator after reaching stow or finger hatch pickup
-                    if (mArmWantedPosition == ManipulatorArmPosition.STOW.getPosition()
-                            || mArmWantedPosition == ManipulatorArmPosition.FINGER_HATCH_PICKUP.getPosition()) {
-                        Manipulator.getInstance().deploy(false);
-                    }
-                    setBrake(false);
-                }
-                break;
-            case MANUAL:
-            default:
-                break;
+                    break;
+                case MANUAL:
+                default:
+                    break;
+            }
+
+            outputToDashboard();
+
+            /*
+            if ballIsCollected {
+                LED.getInstance().blinkColor(LEDColor.GRABBED);
+            }
+             */
         }
-        outputToDashboard();
     }
 
     @Override

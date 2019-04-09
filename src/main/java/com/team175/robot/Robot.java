@@ -39,7 +39,7 @@ public final class Robot extends TimedRobot {
 
     @Override
     public void robotInit() {
-        RobotManager.setProfile(true);
+        RobotManager.setProfile(false);
         mRobotManager = RobotManager.getInstance();
         mDrive = Drive.getInstance();
         mElevator = Elevator.getInstance();
@@ -139,7 +139,7 @@ public final class Robot extends TimedRobot {
         mLogger.debug("Beginning test!");
 
         mRobotManager.stopMessaging();
-        // mLED.updateColor();
+        // mRobotManager.stopLED();
 
         /*mLogger.info("Beginning robot diagnostics test.");
 
@@ -158,6 +158,8 @@ public final class Robot extends TimedRobot {
     @Override
     public void testPeriodic() {
         Scheduler.getInstance().run();
+
+        // mLED.updateFromDashboard();
     }
 
     public static double getDefaultPeriod() {

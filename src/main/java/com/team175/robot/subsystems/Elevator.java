@@ -5,6 +5,7 @@ import com.ctre.phoenix.motorcontrol.LimitSwitchNormal;
 import com.ctre.phoenix.motorcontrol.LimitSwitchSource;
 import com.team175.robot.Constants;
 import com.team175.robot.positions.ElevatorPosition;
+import com.team175.robot.positions.LEDColor;
 import com.team175.robot.profiles.RobotProfile;
 import com.team175.robot.util.*;
 import com.team175.robot.util.drivers.AldrinTalonSRX;
@@ -22,6 +23,7 @@ import java.util.function.Supplier;
 public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable {
 
     private final AldrinTalonSRX mMaster;
+    private final LED mLED;
 
     private int mWantedPosition;
     private ClosedLoopGains mForwardGains, mReverseGains;
@@ -47,6 +49,8 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
     private Elevator() {
         // CTREFactory.getMasterTalon(portNum : int)
         mMaster = CTREFactory.getMasterTalon(Constants.ELEVATOR_PORT);
+
+        mLED = LED.getInstance();
 
         mWantedPosition = 0;
         mWantedState = ElevatorState.MANUAL;
@@ -157,8 +161,13 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
                 break;
         }
 
+        if (isTopLimitHit()) {
+            // mLED.setStaticColor(LEDColor.LIMIT_HIT);
+        }
+
         if (isBottomLimitHit()) {
             resetSensors();
+            // mLED.blinkColor(LEDColor.LIMIT_HIT);
         }
 
         outputToDashboard();
