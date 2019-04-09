@@ -37,7 +37,7 @@ public final class RobotManager {
     private final String[] mNaan = {
             "Abdullah is watching you.",
             "Jamie is the all supreme lord.",
-            "Bret is MVP",
+            "Bret is MVP.",
             "Andrew Jones was here.",
             "Dimepiece is Gulag MemeLord!",
             "Aaron likes his waifu!",
@@ -53,7 +53,7 @@ public final class RobotManager {
             "Roland is turning in his grave.",
             "Tyrique misses you.",
             "Everyone disliked that.",
-            "This messaging system was brought to you by the 254.",
+            "This messaging system was brought to you by team 254."
     };
 
     private Looper mSubsystemLooper, mCSVLooper, mMessageLooper, mLEDLooper;

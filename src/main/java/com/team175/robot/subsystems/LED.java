@@ -75,11 +75,11 @@ public class LED extends AldrinSubsystem {
         setColor(color.getColor());
     }
 
-    private void setColor() {
+    /*private void setColor() {
         mController.setLEDOutput((double) mWantedColor.getRed() / 255, LEDChannel.LEDChannelA);
         mController.setLEDOutput((double) mWantedColor.getGreen() / 255, LEDChannel.LEDChannelB);
         mController.setLEDOutput((double) mWantedColor.getBlue() / 255, LEDChannel.LEDChannelC);
-    }
+    }*/
 
     public synchronized void blinkColor(Color color, int timeDur) {
         mWantedColor = color;
@@ -98,7 +98,7 @@ public class LED extends AldrinSubsystem {
 
     private void blinkColor() {
         if (((Timer.getFPGATimestamp() - mStartTime) / mBlinkDur) % 2 == 0) {
-            setColor();
+            setColor(mWantedColor);
         } else {
             setColor(LEDColor.OFF);
         }
@@ -174,7 +174,7 @@ public class LED extends AldrinSubsystem {
                     break;
                 case MANUAL:
                 default:
-                    setColor();
+                    setColor(mWantedColor);
                     break;
             }
             if (mWantedState != LEDState.UPDATE) {
