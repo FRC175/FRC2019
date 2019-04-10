@@ -38,6 +38,7 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
 
     private enum ManipulatorState {
         POSITION,
+        HOLD_POSITION,
         MANUAL;
     }
 
@@ -225,20 +226,24 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
             switch (mWantedState) {
                 case POSITION:
                     if (isArmAtWantedPosition()) {
-                        // Deploy manipulator when going to most positions
+                        // Deploy manipulator after going to most positions
                         if (mArmWantedPosition != ManipulatorArmPosition.STOW.getPosition()
                                 && mArmWantedPosition != ManipulatorArmPosition.FINGER_HATCH_PICKUP.getPosition()) {
                             Manipulator.getInstance().deploy(true);
                         }
-                        stop();
+                        stopArm();
                     } else {
-                        // Stow manipulator after reaching stow or finger hatch pickup
+                        // Stow manipulator before reaching stow or finger hatch pickup
                         if (mArmWantedPosition == ManipulatorArmPosition.STOW.getPosition()
                                 || mArmWantedPosition == ManipulatorArmPosition.FINGER_HATCH_PICKUP.getPosition()) {
                             Manipulator.getInstance().deploy(false);
                         }
                         setBrake(false);
+                        // TODO: Determine way to auto correct arm
+                        // setArmPosition(mArmWantedPosition);
                     }
+                    break;
+                case HOLD_POSITION:
                     break;
                 case MANUAL:
                 default:

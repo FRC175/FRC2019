@@ -104,6 +104,9 @@ public final class Robot extends TimedRobot {
         mLateralDrive.deploy(false);
         // mLED.setStaticColor(LEDColor.DEFAULT);
 
+        // Let people know robot has been enabled
+        // mLED.blinkColor(LEDColor.ENABLED);
+
         mLogger.debug("Beginning auto!");
     }
 
@@ -125,6 +128,9 @@ public final class Robot extends TimedRobot {
         mManipulator.setBrake(true);
         mLateralDrive.deploy(false);
         // mLED.setStaticColor(LEDColor.DEFAULT);
+
+        // Let people know robot has been enabled
+        // mLED.blinkColor(LEDColor.ENABLED);
 
         mLogger.debug("Beginning teleop!");
     }

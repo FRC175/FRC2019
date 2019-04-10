@@ -59,6 +59,7 @@ public final class RobotManager {
     private static final String CSV_LOG_FILE_PATH = "/home/lvuser/csvlog/subsystem-telemetry.csv";
     private static final double LOOPER_PERIOD = 0.01;
     private static final double MESSAGE_PERIOD = 1;
+    private static final double LED_PERIOD = 0.01; // TODO: Maybe change to 0.05 to match 195's
 
     public static RobotManager getInstance() {
         if (sInstance == null) {
@@ -75,7 +76,7 @@ public final class RobotManager {
         mLogger = LoggerFactory.getLogger(getClass().getSimpleName());
         mSubsystemLooper = new Looper(LOOPER_PERIOD, mSubsystems);
         mMessageLooper = new Looper(MESSAGE_PERIOD, new MessageLoop(mNaan, "Survey Says"));
-        // mLEDLooper = new Looper(LOOPER_PERIOD, LED.getInstance());
+        // mLEDLooper = new Looper(LED_PERIOD, LED.getInstance());
 
         LinkedHashMap<String, Supplier> data = new LinkedHashMap<>();
         // Add data from each subsystem's getCSVTelemetry()

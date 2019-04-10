@@ -103,6 +103,8 @@ public final class LED extends AldrinSubsystem {
             } else {
                 setColor(LEDColor.OFF);
             }
+            // TODO: Determine if this works
+            Timer.delay(0.2);
         } else {
             setStaticColor(LEDColor.DEFAULT);
         }
@@ -114,6 +116,7 @@ public final class LED extends AldrinSubsystem {
     }
 
     private void colorCycle() {
+        // TODO: Fix to include red
         setColor(new Color(
                 // 127.5 * sin(x) + 127.5
                 (int) (127.5 * Math.sin(mCounter) + 127.5),
