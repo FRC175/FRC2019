@@ -12,6 +12,7 @@ import com.team175.robot.util.drivers.AldrinTalonSRX;
 import com.team175.robot.util.drivers.SimpleDoubleSolenoid;
 import com.team175.robot.util.tuning.ClosedLoopGains;
 import com.team175.robot.util.tuning.ClosedLoopTunable;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.util.LinkedHashMap;
@@ -218,7 +219,11 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
 
     @Override
     public void start() {
-        setArmPosition(ManipulatorArmPosition.STOW);
+        if (DriverStation.getInstance().isAutonomous()) {
+            setArmPosition(ManipulatorArmPosition.STOW);
+        } else {
+            stopArm();
+        }
     }
 
     @Override
@@ -236,7 +241,8 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
                     } else {
                         // Stow manipulator before reaching stow or finger hatch pickup
                         if (mArmWantedPosition == ManipulatorArmPosition.STOW.getPosition()
-                                || mArmWantedPosition == ManipulatorArmPosition.FINGER_HATCH_PICKUP.getPosition()) {
+                                || mArmWantedPosition == ManipulatorArmPosition.FINGER_HATCH_PICKUP.getPosition()
+                                || mArmWantedPosition == ManipulatorArmPosition.FINGER_HATCH_TILT.getPosition()) {
                             Manipulator.getInstance().deploy(false);
                         }
                         setBrake(false);
@@ -245,6 +251,12 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
                     }
                     break;
                 case HOLD_POSITION:
+                    if (isArmAtWantedPosition()) {
+                        stopArm();
+                    } else {
+                        setBrake(false);
+                        // setArmPosition();
+                    }
                     break;
                 case MANUAL:
                 default:

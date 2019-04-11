@@ -1,6 +1,7 @@
 package com.team175.robot.subsystems;
 
 import com.team175.robot.Constants;
+import com.team175.robot.positions.ManipulatorArmPosition;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Servo;
@@ -13,10 +14,10 @@ import java.util.function.Supplier;
 /**
  * @author Arvind
  */
-public final class Vision extends AldrinSubsystem implements Runnable {
+public final class Vision extends AldrinSubsystem {
 
-    private final CameraServer mCamera;
     private final Servo mRotate;
+    private final Manipulator mManipulator; // I don't like one subsystem requiring another but it has to be done
 
     private static Vision sInstance;
 
@@ -29,7 +30,10 @@ public final class Vision extends AldrinSubsystem implements Runnable {
     }
 
     private Vision() {
-        mCamera = CameraServer.getInstance();
+        // Run camera on separate thread
+        new Thread(() -> CameraServer.getInstance().addAxisCamera("10.1.75.10")).start();
+
+        mManipulator = Manipulator.getInstance();
 
         // Servo(portNum : int)
         mRotate = new Servo(Constants.CAMERA_ROTATE_PORT);
@@ -50,7 +54,14 @@ public final class Vision extends AldrinSubsystem implements Runnable {
 
     @Override
     public void start() {
-        // new Thread(() -> mCamera.addAxisCamera("10.1.75.10")).start();
+    }
+
+    @Override
+    public void loop() {
+        // TODO: Check
+        if (mManipulator.getArmPosition() < ManipulatorArmPosition.STOW.getPosition()) {
+            rotateCameraDown(false);
+        }
     }
 
     @Override
@@ -69,11 +80,6 @@ public final class Vision extends AldrinSubsystem implements Runnable {
     @Override
     public void updateFromDashboard() {
         mRotate.set(SmartDashboard.getNumber("CameraRotateAngle", 0));
-    }
-
-    @Override
-    public void run() {
-        mCamera.addAxisCamera("10.1.75.10");
     }
 
 }

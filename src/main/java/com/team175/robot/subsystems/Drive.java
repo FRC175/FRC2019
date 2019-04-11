@@ -12,6 +12,7 @@ import com.team175.robot.util.drivers.AldrinTalonSRX;
 import com.team175.robot.util.drivers.SimpleDoubleSolenoid;
 import com.team175.robot.util.tuning.ClosedLoopGains;
 import com.team175.robot.util.tuning.ClosedLoopTunable;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 
 import java.util.ArrayList;
@@ -230,6 +231,14 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
 
     @Override
     public void start() {
+        resetSensors();
+        if (DriverStation.getInstance().isAutonomous() && AutoModeChooser.getInstance().isAutoModeSelected()) {
+            setHighGear(true);
+            setBrakeMode(true);
+        } else {
+            setHighGear(false);
+            setBrakeMode(false);
+        }
     }
 
     @Override

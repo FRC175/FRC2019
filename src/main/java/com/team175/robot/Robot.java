@@ -8,6 +8,7 @@
 package com.team175.robot;
 
 import com.team175.robot.positions.LEDColor;
+import com.team175.robot.positions.ManipulatorArmPosition;
 import com.team175.robot.subsystems.*;
 import com.team175.robot.util.AutoModeChooser;
 import com.team175.robot.util.RobotManager;
@@ -33,7 +34,7 @@ public final class Robot extends TimedRobot {
     private Vision mVision;
     private OI mOI;
     private AutoModeChooser mAutoModeChooser;
-    private TunerChooser mTunerChooser;
+    // private TunerChooser mTunerChooser;
     private Logger mLogger;
     private RobotManager mRobotManager;
 
@@ -50,12 +51,10 @@ public final class Robot extends TimedRobot {
         mVision = Vision.getInstance();
         mOI = OI.getInstance();
         mAutoModeChooser = AutoModeChooser.getInstance();
-        mTunerChooser = TunerChooser.getInstance();
+        // mTunerChooser = TunerChooser.getInstance();
         mLogger = LoggerFactory.getLogger(getClass().getSimpleName());
 
         // mRobotManager.startLED();
-        // Runs camera stream on separate thread
-        new Thread(mVision).start();
         // Initialize SmartDashboard values
         mRobotManager.outputToDashboard();
         // Add velocity collection command to dashboard
@@ -68,7 +67,7 @@ public final class Robot extends TimedRobot {
 
     @Override
     public void disabledInit() {
-        mTunerChooser.stop();
+        // mTunerChooser.stop();
         mRobotManager.stopSubsystems();
         mRobotManager.startMessaging();
         mRobotManager.outputToDashboard();
@@ -92,16 +91,6 @@ public final class Robot extends TimedRobot {
         mRobotManager.startSubsystems();
         mRobotManager.stopMessaging();
 
-        if (mAutoModeChooser.isAutoModeSelected()) {
-            mDrive.setHighGear(true);
-            mDrive.setBrakeMode(true);
-        } else {
-            mDrive.setHighGear(false);
-            mDrive.setBrakeMode(false);
-        }
-        mDrive.resetSensors();
-        mManipulator.setBrake(true);
-        mLateralDrive.deploy(false);
         // mLED.setStaticColor(LEDColor.DEFAULT);
 
         // Let people know robot has been enabled
@@ -122,11 +111,7 @@ public final class Robot extends TimedRobot {
         mRobotManager.startSubsystems();
         mRobotManager.stopMessaging();
 
-        mDrive.setHighGear(false);
-        mDrive.setBrakeMode(false);
-        mDrive.resetSensors();
-        mManipulator.setBrake(true);
-        mLateralDrive.deploy(false);
+        // mManipulator.setBrake(true);
         // mLED.setStaticColor(LEDColor.DEFAULT);
 
         // Let people know robot has been enabled
@@ -157,8 +142,8 @@ public final class Robot extends TimedRobot {
             mLogger.info("Robot passed diagnostics test!");
         }*/
 
-        mTunerChooser.updateFromDashboard();
-        mTunerChooser.start();
+        // mTunerChooser.updateFromDashboard();
+        // mTunerChooser.start();
     }
 
     @Override

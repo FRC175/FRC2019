@@ -156,6 +156,7 @@ public final class LateralDrive extends AldrinSubsystem implements ClosedLoopTun
 
     @Override
     public void start() {
+        deploy(false);
     }
 
     @Override
