@@ -66,7 +66,7 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
         mDeploy = new SimpleDoubleSolenoid(Constants.MANIPULATOR_DEPLOY_FORWARD_CHANNEL, Constants.MANIPULATOR_DEPLOY_REVERSE_CHANNEL);
 
         // mArmWantedPosition = 0;
-        mArmWantedPosition = ManipulatorArmPosition.SCORE.getPosition();
+        mArmWantedPosition = ManipulatorArmPosition.STOW.getPosition();
         mMode = ManipulatorMode.VELCRO_HATCH;
         mWantedState = ManipulatorState.MANUAL;
 
@@ -77,7 +77,7 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
         mArmReverseGains = CTREConfiguration.getGains(profile.getManipulatorArmMasterConfig(), false);
 
         mArmMaster.setBrakeMode(true);
-        deploy(true);
+        deploy(false);
         stop();
 
         super.logInstantiation();
@@ -218,6 +218,7 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
 
     @Override
     public void start() {
+        setArmPosition(ManipulatorArmPosition.STOW);
     }
 
     @Override

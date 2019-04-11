@@ -49,11 +49,11 @@ public class PracticeRobot extends RobotProfile {
                 .setPrimarySensor(FeedbackDevice.CTRE_MagEncoder_Relative)
                 .setSensorPhase(true)
                 // Forward Gains
-                .setPrimaryGains(new ClosedLoopGains(8, 0, 0, super.getElevatorTransmission().getKf(),
+                .setPrimaryGains(new ClosedLoopGains(12, 0, 24, super.getElevatorTransmission().getKf(),
                         super.getElevatorTransmission().getVelocity(), super.getElevatorTransmission().getVelocity()
                 ))
                 // Reverse Gains
-                .setAuxGains(new ClosedLoopGains(8, 0, 0, super.getElevatorTransmission().getKf(),
+                .setAuxGains(new ClosedLoopGains(3, 0, 6, super.getElevatorTransmission().getKf(),
                         super.getElevatorTransmission().getVelocity(), super.getElevatorTransmission().getVelocity()
                 ))
                 .build();
@@ -94,12 +94,12 @@ public class PracticeRobot extends RobotProfile {
                 .setPrimarySensor(FeedbackDevice.Analog)
                 .setSensorPhase(true)
                 // Forward Gains
-                .setPrimaryGains(new ClosedLoopGains(12, 0, 0, super.getManipulatorArmTransmission().getKf(),
+                .setPrimaryGains(new ClosedLoopGains(5, 0, 10, super.getManipulatorArmTransmission().getKf(),
                         super.getManipulatorArmTransmission().getVelocity(), super.getManipulatorArmTransmission().getVelocity()))
                 // Reverse Gains
-                .setAuxGains(new ClosedLoopGains(20, 0, 0, super.getManipulatorArmTransmission().getKf(),
+                .setAuxGains(new ClosedLoopGains(125, 0, 250, super.getManipulatorArmTransmission().getKf(),
                         super.getManipulatorArmTransmission().getVelocity(), super.getManipulatorArmTransmission().getVelocity()))
-                // .setForwardSoftLimit(0)
+                // .setForwardSoftLimit(100)
                 .build();
     }
 

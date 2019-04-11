@@ -21,7 +21,7 @@ public class ElevatorToPositionThree extends AldrinCommand {
             mLogger.debug("Setting elevator to {} position.", ElevatorPosition.getPositionThree().toString());
             Elevator.getInstance().setPosition(ElevatorPosition.getPositionThree());
         }
-        if (ElevatorPosition.getPositionOne() == ElevatorPosition.FINGER_HATCH_LEVEL_THREE) {
+        if (ElevatorPosition.getPositionThree() == ElevatorPosition.FINGER_HATCH_LEVEL_THREE) {
             mLogger.debug("Bringing manipulator to tilted finger hatch position.");
             Manipulator.getInstance().setArmPosition(ManipulatorArmPosition.FINGER_HATCH_TILT);
         }
