@@ -152,6 +152,7 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
     public void stopArm() {
         setArmPower(0);
         setBrake(true);
+        mWantedState = ManipulatorState.HOLD_POSITION;
     }
 
     public double getArmPower() {
@@ -232,34 +233,36 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
             switch (mWantedState) {
                 case POSITION:
                     if (isArmAtWantedPosition()) {
+                        // TODO: Determine way to deploy manipulator on time
                         // Deploy manipulator after going to most positions
                         if (mArmWantedPosition != ManipulatorArmPosition.STOW.getPosition()
-                                && mArmWantedPosition != ManipulatorArmPosition.FINGER_HATCH_PICKUP.getPosition()) {
-                            Manipulator.getInstance().deploy(true);
+                                && mArmWantedPosition != ManipulatorArmPosition.FINGER_HATCH_PICKUP.getPosition()
+                                && mArmWantedPosition != ManipulatorArmPosition.FINGER_HATCH_TILT.getPosition()) {
+                            deploy(true);
                         }
                         stopArm();
                     } else {
-                        // Stow manipulator before reaching stow or finger hatch pickup
+                        // Stow manipulator before moving to stow or finger hatch pickup
                         if (mArmWantedPosition == ManipulatorArmPosition.STOW.getPosition()
                                 || mArmWantedPosition == ManipulatorArmPosition.FINGER_HATCH_PICKUP.getPosition()
                                 || mArmWantedPosition == ManipulatorArmPosition.FINGER_HATCH_TILT.getPosition()) {
-                            Manipulator.getInstance().deploy(false);
+                            deploy(false);
                         }
                         setBrake(false);
-                        // TODO: Determine way to auto correct arm
-                        // setArmPosition(mArmWantedPosition);
                     }
                     break;
+                // TODO: Determine best way to auto correct arm
                 case HOLD_POSITION:
                     if (isArmAtWantedPosition()) {
-                        stopArm();
+                        setArmPower(0);
+                        setBrake(true);
                     } else {
-                        setBrake(false);
-                        // setArmPosition();
+                        setArmPosition(mArmWantedPosition);
                     }
                     break;
                 case MANUAL:
                 default:
+                    mArmWantedPosition = getArmPosition();
                     break;
             }
 

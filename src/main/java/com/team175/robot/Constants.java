@@ -121,14 +121,12 @@ public final class Constants {
     // ----------------------------------------------------------------------------------------------------
     // Physical Constants
     // ----------------------------------------------------------------------------------------------------
-    // TODO: Verify max speed of motors
     public static final int DRIVE_MAX_RPM = 5330;
     public static final int ELEVATOR_MAX_RPM = 5840;
-    public static final int LATERAL_DRIVE_MAX_RPM = 19300; // Assuming this is 655
-    public static final int LIFT_MAX_RPM = 19300; // Assuming this is 655
+    public static final int LATERAL_DRIVE_MAX_RPM = 19300;
+    public static final int LIFT_MAX_RPM = 19300;
     public static final int MANIPULATOR_ARM_MAX_RPM = 90;
 
-    // TODO: Verify gear ratio of LateralDrive and Elevator
     public static final double DRIVE_GEAR_RATIO = 3.66 / 1;
     public static final double ELEVATOR_GEAR_RATIO = 35 / 1;
     public static final double LATERAL_DRIVE_GEAR_RATIO = 64 / 1;

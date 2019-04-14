@@ -57,7 +57,7 @@ public final class RobotManager {
     private static RobotManager sInstance;
 
     private static final String CSV_LOG_FILE_PATH = "/home/lvuser/csvlog/subsystem-telemetry.csv";
-    private static final double LOOPER_PERIOD = 0.01;
+    private static final double LOOPER_PERIOD = 0.005;
     private static final double MESSAGE_PERIOD = 1;
     private static final double LED_PERIOD = 0.01; // TODO: Maybe change to 0.05 to match 195's
 

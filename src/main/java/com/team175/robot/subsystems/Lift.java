@@ -21,8 +21,6 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 /**
- * TODO: Add current limiting
- *
  * @author Arvind
  */
 public final class Lift extends AldrinSubsystem implements ClosedLoopTunable {

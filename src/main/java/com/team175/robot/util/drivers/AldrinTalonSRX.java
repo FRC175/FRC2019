@@ -8,8 +8,6 @@ import com.team175.robot.Constants;
 import com.team175.robot.util.RobotManager;
 
 /**
- * TODO: Delete PIDF methods
- *
  * @author Arvind
  * @see TalonSRX
  */

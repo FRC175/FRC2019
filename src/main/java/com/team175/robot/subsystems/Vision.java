@@ -2,6 +2,7 @@ package com.team175.robot.subsystems;
 
 import com.team175.robot.Constants;
 import com.team175.robot.positions.ManipulatorArmPosition;
+import com.team175.robot.util.drivers.Limelight;
 import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.Servo;
@@ -16,10 +17,18 @@ import java.util.function.Supplier;
  */
 public final class Vision extends AldrinSubsystem {
 
+    // private final Limelight mLimelight;
     private final Servo mRotate;
     private final Manipulator mManipulator; // I don't like one subsystem requiring another but it has to be done
 
+    private VisionState mWantedState;
+
     private static Vision sInstance;
+
+    private enum VisionState {
+        UPDATE,
+        MANUAL;
+    }
 
     public static Vision getInstance() {
         if (sInstance == null) {
@@ -30,6 +39,8 @@ public final class Vision extends AldrinSubsystem {
     }
 
     private Vision() {
+        // mLimelight = new Limelight();
+
         // Run camera on separate thread
         new Thread(() -> CameraServer.getInstance().addAxisCamera("10.1.75.10")).start();
 
@@ -37,6 +48,8 @@ public final class Vision extends AldrinSubsystem {
 
         // Servo(portNum : int)
         mRotate = new Servo(Constants.CAMERA_ROTATE_PORT);
+
+        mWantedState = VisionState.MANUAL;
 
         // Start with camera in up position
         rotateCameraDown(false);
@@ -54,6 +67,7 @@ public final class Vision extends AldrinSubsystem {
 
     @Override
     public void start() {
+        // mLimelight.setLEDState(false);
     }
 
     @Override

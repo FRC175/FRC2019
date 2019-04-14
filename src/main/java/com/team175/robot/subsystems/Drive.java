@@ -37,10 +37,16 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
     private int mLeftWantedPosition, mRightWantedPosition;
     private double mWantedAngle;
     private ClosedLoopGains mLeftGains, mRightGains, mPigeonGains;
+    private DriveState mWantedState;
 
     private static final double RAMP_TIME = 0;
 
     private static Drive sInstance;
+
+    private enum DriveState {
+        POSITION,
+        MANUAL;
+    }
 
     public static Drive getInstance() {
         if (sInstance == null) {
@@ -73,6 +79,7 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
 
         mLeftWantedPosition = mRightWantedPosition = 0;
         mWantedAngle = 0;
+        mWantedState = DriveState.MANUAL;
 
         RobotProfile profile = RobotManager.getProfile();
         CTREConfiguration.config(mLeftMaster, profile.getLeftMasterConfig(), "LeftMaster");
@@ -217,6 +224,11 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
         CTREDiagnostics.checkCommand(mLeftMaster.setPrimarySensorPosition(0), "Failed to zero LeftMaster encoder!");
         CTREDiagnostics.checkCommand(mRightMaster.setPrimarySensorPosition(0), "Failed to zero RightMaster encoder!");
         // CTREDiagnostics.checkCommand(mRightMaster.setAuxSensorPosition(0), "Failed to zero RightMaster aux sensor!");
+    }
+
+    // TODO: Implement method using Pigeon and have elevator come down automatically
+    public boolean isTiltOccuring() {
+        return false;
     }
 
     public double getAngle() {

@@ -19,8 +19,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 /**
- * TODO: Consider using FastTimedRobot.
- *
  * @author Arvind
  */
 public final class Robot extends TimedRobot {
