@@ -8,8 +8,13 @@ public class ActionRunner {
         mRunner = new Runner(a::loop, a::isFinished);
     }
 
-    public static void runAction(Action a) {
-
+    public static void runAction(Action... actions) {
+        for (Action a : actions) {
+            // isFinished
+            // start
+            // stop
+            // loop
+        }
     }
 
 }
