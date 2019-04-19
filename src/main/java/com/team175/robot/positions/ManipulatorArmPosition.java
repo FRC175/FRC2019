@@ -11,8 +11,8 @@ public enum ManipulatorArmPosition {
     VELCRO_HATCH_PICKUP(386, 431),
     FINGER_HATCH_PICKUP(317, 298),
     FINGER_HATCH_TILT(295, 272),
-    BALL_PICKUP(320, 328),
-    SCORE(254, 195),
+    BALL_PICKUP(320, 308),
+    SCORE(254, 199),
     STOW(187, 90);
 
     private final int mCompetitionPosition;

@@ -266,7 +266,7 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
                     break;
             }
 
-            outputToDashboard();
+            // outputToDashboard();
 
             /*
             if ballIsCollected {

@@ -81,7 +81,9 @@ public class PracticeRobot extends RobotProfile {
     @Override
     public CTREConfiguration getRearLiftConfig() {
         return new CTREConfiguration.Builder()
+                // .setInverted(true)
                 .setPrimarySensor(FeedbackDevice.QuadEncoder)
+                .setSensorPhase(true)
                 .setPrimaryGains(new ClosedLoopGains(0.1, 0, 0, super.getLiftTransmission().getKf(),
                         super.getLiftTransmission().getVelocity(), super.getLiftTransmission().getVelocity()))
                 .build();

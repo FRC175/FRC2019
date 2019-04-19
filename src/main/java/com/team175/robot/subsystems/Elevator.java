@@ -170,7 +170,7 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
             // mLED.blinkColor(LEDColor.LIMIT_HIT);
         }
 
-        outputToDashboard();
+        // outputToDashboard();
     }
 
     @Override

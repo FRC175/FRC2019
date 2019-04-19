@@ -47,12 +47,17 @@ public final class Looper {
     }
 
     public synchronized void stop() {
-        if (mIsRunning) {
+        // if (mIsRunning) {
             mLogger.info("Stopping loops.");
             mNotifier.stop();
-            mLoops.forEach(Loop::stop);
             mIsRunning = false;
-        }
+            for (Loop l : mLoops) {
+                mLogger.info("Stopping {}.", l.toString());
+                l.stop();
+            }
+            // mLoops.forEach(Loop::stop);
+            mIsRunning = false;
+        // }
     }
 
 }

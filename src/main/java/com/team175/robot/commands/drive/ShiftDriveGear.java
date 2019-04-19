@@ -10,25 +10,27 @@ import com.team175.robot.subsystems.Drive;
  */
 public class ShiftDriveGear extends AldrinCommand {
 
-    public ShiftDriveGear() {
+    private boolean mIsHighGear;
+
+    public ShiftDriveGear(boolean isHighGear) {
         requires(Drive.getInstance());
+        mIsHighGear = isHighGear;
         super.logInstantiation();
     }
 
     @Override
     protected void initialize() {
-        Drive.getInstance().setHighGear(true);
+        Drive.getInstance().setHighGear(mIsHighGear);
         super.initialize();
     }
 
     @Override
     protected boolean isFinished() {
-        return false;
+        return true;
     }
 
     @Override
     protected void end() {
-        Drive.getInstance().setHighGear(false);
         super.end();
     }
 

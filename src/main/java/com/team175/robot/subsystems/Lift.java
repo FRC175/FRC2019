@@ -21,6 +21,9 @@ import java.util.Map;
 import java.util.function.Supplier;
 
 /**
+ * FRONT: -3250
+ * REAR: -2000
+ *
  * @author Arvind
  */
 public final class Lift extends AldrinSubsystem implements ClosedLoopTunable {
@@ -72,8 +75,8 @@ public final class Lift extends AldrinSubsystem implements ClosedLoopTunable {
         CTREConfiguration.config(mRear, profile.getRearLiftConfig(), "RearLift");
         mFrontGains = CTREConfiguration.getGains(profile.getFrontLiftConfig(), true);
         mRearGains = CTREConfiguration.getGains(profile.getRearLiftConfig(), true);
-        mFront.configCurrentLimit(5, 10, 100, false);
-        mRear.configCurrentLimit(5, 10, 100, false);
+        mFront.configCurrentLimit(5, 30, 100, false);
+        mRear.configCurrentLimit(5, 30, 100, false);
 
         resetSensors();
         stop();
@@ -85,11 +88,11 @@ public final class Lift extends AldrinSubsystem implements ClosedLoopTunable {
         /*if (!isFrontForwardLimitHit() || !isFrontReverseLimitHit()) {
             mFrontBrake.set(false);
         }*/
-        if (power > 0) {
+        /*if (power > 0) {
             mFront.enableCurrentLimit(true);
         } else {
             mFront.enableCurrentLimit(false);
-        }
+        }*/
 
         mFront.set(ControlMode.PercentOutput, power);
     }
@@ -99,11 +102,11 @@ public final class Lift extends AldrinSubsystem implements ClosedLoopTunable {
             mRearBrake.set(false);
         }*/
 
-        if (power > 0) {
+        /*if (power > 0) {
             mRear.enableCurrentLimit(true);
         } else {
             mRear.enableCurrentLimit(false);
-        }
+        }*/
 
         mRear.set(ControlMode.PercentOutput, power);
     }
@@ -151,6 +154,14 @@ public final class Lift extends AldrinSubsystem implements ClosedLoopTunable {
         mLogger.debug("Setting rear position to {}.", mRearWantedPosition);
         mLogger.debug("Current rear position: {}", getRearPosition());
         mRear.set(ControlMode.MotionMagic, mRearWantedPosition);
+    }
+
+    public void setPosition(int position) {
+        mFrontWantedPosition = position;
+        mLogger.debug("Setting position to {}.", mFrontWantedPosition);
+        mLogger.debug("Current position: {}", getFrontPosition());
+        mRear.follow(mFront);
+        mFront.set(ControlMode.MotionMagic, mFrontWantedPosition);
     }
 
     public int getFrontPosition() {
@@ -212,7 +223,14 @@ public final class Lift extends AldrinSubsystem implements ClosedLoopTunable {
     }
 
     @Override
+    public void loop() {
+        // outputToDashboard();
+        mLogger.debug("yo");
+    }
+
+    @Override
     public void stop() {
+        mLogger.info("Stopped.");
         setPower(0);
         setDrivePower(0);
         setFrontBrake(true);

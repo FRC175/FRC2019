@@ -97,7 +97,8 @@ public final class Drive extends AldrinSubsystem implements ClosedLoopTunable {
         // mPathHelper.configTalons();
         resetSensors();
 
-        setHighGear(false);
+        // Normally on high gear
+        setHighGear(true);
         stop();
 
         super.logInstantiation();

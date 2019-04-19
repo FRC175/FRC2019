@@ -10,6 +10,7 @@ package com.team175.robot;
 import com.team175.robot.commands.auto.CancelAuto;
 import com.team175.robot.commands.drive.CheesyDrive;
 import com.team175.robot.commands.drive.ResetGyro;
+import com.team175.robot.commands.drive.ShiftDriveGear;
 import com.team175.robot.commands.drive.StraightDrive;
 import com.team175.robot.commands.elevator.*;
 import com.team175.robot.commands.lateraldrive.ControlLateralDrive;
@@ -35,7 +36,8 @@ public final class OI {
 
     // Driver Stick Buttons
     private final Button mManualLateralDrive;
-    private final Button mShift;
+    private final Button mShiftLow;
+    private final Button mShiftHigh;
     private final Button mStraightDrive;
     private final Button mResetGyro;
     /*private final Button mLevelThreeClimb;
@@ -95,7 +97,8 @@ public final class OI {
 
         // Driver Stick Buttons
         mManualLateralDrive = new SingleButton(mDriverStick, Constants.LATERAL_DRIVE_TRIGGER);
-        mShift = new SingleButton(mDriverStick, Constants.SHIFT_BUTTON);
+        mShiftLow = new SingleButton(mDriverStick, Constants.SHIFT_LOW_BUTTON);
+        mShiftHigh = new SingleButton(mDriverStick, Constants.SHIFT_HIGH_BUTTON);
         mStraightDrive = new SingleButton(mDriverStick, Constants.STRAIGHT_DRIVE_BUTTON);
         mResetGyro = new SingleButton(mDriverStick, Constants.RESET_GYRO_BUTTON);
         // mLevelThreeClimb = new SingleButton(mDriverStick, Constants.LEVEL_THREE_CLIMB_BUTTON);
@@ -140,8 +143,9 @@ public final class OI {
         // ----------------------------------------------------------------------------------------------------
         // Driver Stick
         mManualLateralDrive.whileHeld(new ControlLateralDrive());
-        mShift.whileHeld(new CheesyDrive(true));
-        // mShift.whileHeld(new CheesyDrive(true));
+        mShiftLow.whenPressed(new ShiftDriveGear(false));
+        mShiftHigh.whenPressed(new ShiftDriveGear(true));
+        // mShiftLow.whileHeld(new CheesyDrive(true));
         mStraightDrive.whileHeld(new StraightDrive());
         mResetGyro.whenPressed(new ResetGyro());
         // mLevelThreeClimb.whenPressed(new LevelThreeClimb());

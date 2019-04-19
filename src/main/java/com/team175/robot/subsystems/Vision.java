@@ -58,11 +58,11 @@ public final class Vision extends AldrinSubsystem {
     }
 
     public void rotateCameraDown(boolean rotateDown) {
-        mRotate.set(rotateDown ? 0.4 : 0.7);
+        mRotate.set(rotateDown ? 0.57 : 0.7); // 0.57 for practice bot
     }
 
     public boolean isCameraDown() {
-        return mRotate.get() == 0.4;
+        return mRotate.get() == 0.57;
     }
 
     @Override
@@ -95,5 +95,4 @@ public final class Vision extends AldrinSubsystem {
     public void updateFromDashboard() {
         mRotate.set(SmartDashboard.getNumber("CameraRotateAngle", 0));
     }
-
 }
