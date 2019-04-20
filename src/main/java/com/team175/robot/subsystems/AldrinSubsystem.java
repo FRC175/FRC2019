@@ -25,12 +25,12 @@ public abstract class AldrinSubsystem extends Subsystem implements Loop {
     /**
      * Starts subsystem. Called when entering teleop or autonomous.
      */
-    public abstract void start();
+    // public abstract void start();
 
     /**
      * Stops subsystem. Called when entering disabled mode.
      */
-    public abstract void stop();
+    // public abstract void stop();
 
     /**
      * Gets a map with telemetry data of a subsystem.
@@ -96,7 +96,7 @@ public abstract class AldrinSubsystem extends Subsystem implements Loop {
      */
     @Override
     public void loop() {
-        // outputToDashboard();
+        outputToDashboard();
     }
 
 }

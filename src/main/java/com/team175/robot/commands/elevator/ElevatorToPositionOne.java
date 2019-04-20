@@ -24,6 +24,11 @@ public class ElevatorToPositionOne extends AldrinCommand {
             mLogger.debug("Bringing manipulator to finger hatch pickup position.");
             Manipulator.getInstance().setArmPosition(ManipulatorArmPosition.FINGER_HATCH_PICKUP);
         }
+        if (ElevatorPosition.getPositionOne() == ElevatorPosition.VELCRO_HATCH_LEVEL_ONE
+                || ElevatorPosition.getPositionOne() == ElevatorPosition.CARGO_LEVEL_ONE) {
+            mLogger.debug("Bringing manipulator to score position.");
+            Manipulator.getInstance().setArmPosition(ManipulatorArmPosition.SCORE);
+        }
         super.initialize();
     }
 

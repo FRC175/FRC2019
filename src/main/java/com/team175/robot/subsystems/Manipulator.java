@@ -266,7 +266,7 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
                     break;
             }
 
-            // outputToDashboard();
+            outputToDashboard();
 
             /*
             if ballIsCollected {
@@ -280,7 +280,7 @@ public final class Manipulator extends AldrinSubsystem implements ClosedLoopTuna
     public void stop() {
         stopArm();
         stopRollers();
-        mWantedState = ManipulatorState.MANUAL;
+        // mWantedState = ManipulatorState.MANUAL;
     }
 
     @Override

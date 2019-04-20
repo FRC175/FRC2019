@@ -222,11 +222,11 @@ public final class Lift extends AldrinSubsystem implements ClosedLoopTunable {
     public void start() {
     }
 
-    @Override
+    /*@Override
     public void loop() {
-        // outputToDashboard();
-        mLogger.debug("yo");
-    }
+        *//*outputToDashboard();
+        mLogger.debug("yo");*//*
+    }*/
 
     @Override
     public void stop() {

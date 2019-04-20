@@ -163,6 +163,7 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
 
         if (isTopLimitHit()) {
             // mLED.setStaticColor(LEDColor.LIMIT_HIT);
+            setPosition(24000);
         }
 
         if (isBottomLimitHit()) {
@@ -170,7 +171,7 @@ public final class Elevator extends AldrinSubsystem implements ClosedLoopTunable
             // mLED.blinkColor(LEDColor.LIMIT_HIT);
         }
 
-        // outputToDashboard();
+        outputToDashboard();
     }
 
     @Override

@@ -47,7 +47,7 @@ public final class Looper {
     }
 
     public synchronized void stop() {
-        // if (mIsRunning) {
+        if (mIsRunning) {
             mLogger.info("Stopping loops.");
             mNotifier.stop();
             mIsRunning = false;
@@ -57,7 +57,7 @@ public final class Looper {
             }
             // mLoops.forEach(Loop::stop);
             mIsRunning = false;
-        // }
+        }
     }
 
 }

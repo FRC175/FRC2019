@@ -100,6 +100,8 @@ public final class Robot extends TimedRobot {
     @Override
     public void autonomousPeriodic() {
         Scheduler.getInstance().run();
+
+        mRobotManager.outputToDashboard();
     }
 
     @Override
@@ -121,6 +123,8 @@ public final class Robot extends TimedRobot {
     @Override
     public void teleopPeriodic() {
         Scheduler.getInstance().run();
+
+        mRobotManager.outputToDashboard();
     }
 
     @Override

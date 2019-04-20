@@ -32,7 +32,8 @@ public class ControlManipulatorArm extends AldrinCommand {
     @Override
     protected void end() {
         mLogger.debug("Final arm position: {}", Manipulator.getInstance().getArmPosition());
-        Manipulator.getInstance().stopArm();
+        Manipulator.getInstance().setArmPower(0);
+        Manipulator.getInstance().setBrake(true);
         super.end();
     }
 

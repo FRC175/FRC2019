@@ -76,6 +76,7 @@ public final class Vision extends AldrinSubsystem {
         if (mManipulator.getArmPosition() < ManipulatorArmPosition.STOW.getPosition()) {
             rotateCameraDown(false);
         }
+        outputToDashboard();
     }
 
     @Override

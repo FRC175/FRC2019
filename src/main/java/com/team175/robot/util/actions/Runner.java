@@ -121,7 +121,59 @@ public class Runner implements AutoCloseable {
     }
 
     public Runner(Runnable run) {
-        this(run, () -> false);
+        // this(run, () -> false);
+        mHandler = run;
+        mLock = new ReentrantLock();
+        mNotifier = new AtomicInteger();
+        mLogger = LoggerFactory.getLogger(getClass().getSimpleName());
+        mNotifier.set(NotifierJNI.initializeNotifier());
+
+        mThread = new Thread(() -> {
+            while (!Thread.interrupted()) {
+                int notifier = mNotifier.get();
+                if (notifier == 0) {
+                    break;
+                }
+                if (NotifierJNI.waitForNotifierAlarm(notifier) == 0) {
+                    break;
+                }
+
+                Runnable handler;
+                mLock.lock();
+                try {
+                    handler = mHandler;
+                    if (mIsPeriodic) {
+                        mExpTime += mPeriod;
+                        updateAlarm();
+                    } else {
+                        // need to update the alarm to cause it to wait again
+                        updateAlarm((long) -1);
+                    }
+                } finally {
+                    mLock.unlock();
+                }
+
+                if (handler != null) {
+                    handler.run();
+                }
+            }
+        });
+        mThread.setName("Notifier");
+        mThread.setDaemon(true);
+        mThread.setUncaughtExceptionHandler((thread, error) -> {
+            Throwable cause = error.getCause();
+            if (cause != null) {
+                error = cause;
+            }
+            mLogger.error("Unhandled exception: {}", error.toString(), error);
+            mLogger.error("The loopFunc() method (or methods called by it) should have handled the exception above.");
+            /*DriverStation.reportError("Unhandled exception: " + error.toString(), error.getStackTrace());
+            DriverStation.reportError(
+                    "The loopFunc() method (or methods called by it) should have handled "
+                            + "the exception above.", false);*/
+
+        });
+        mThread.start();
     }
 
     /*@Override
@@ -233,6 +285,7 @@ public class Runner implements AutoCloseable {
      * function will block until the handler call is complete.
      */
     public void stop() {
+        mLogger.info("Stopping stuff - sdfklajsdlkfjsadlkfjasdlf");
         NotifierJNI.cancelNotifierAlarm(mNotifier.get());
     }
 
